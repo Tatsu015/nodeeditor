@@ -95,7 +95,7 @@ QList<Node*> AnalyzeCircuit::ExecuteOrderSort(AnalyzeCircuit::ConnectedGraph* fb
     std::reverse(visitedNodes.begin(), visitedNodes.end());
     qDebug() << "======  " + fbd->m_name + " ======";
     foreach (Node* node, visitedNodes) {
-        qDebug() << node->Name();
+        qDebug() << node->name();
     }
     return visitedNodes;
 }
@@ -155,7 +155,7 @@ bool AnalyzeCircuit::CheckAllPortFilled(const QList<Node*>& nodes)
     foreach (Node* node, nodes) {
         foreach (Port* port, node->ports()) {
             if(0 == port->connections().count()){
-                QString msg = BASE_MESSAGE + node->Name();
+                QString msg = BASE_MESSAGE + node->name();
                 m_listWidget->onAddErrorWidgetItem(node, msg, Error);
                 ret = false;
             }

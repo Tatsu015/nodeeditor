@@ -6,8 +6,12 @@
 #include "Tool.h"
 #include "AnalyzeCircuit.h"
 #include <QDebug>
+#include <QMenu>
+#include "Editor.h"
 #include "ErrorListWidget.h"
 #include "Node.h"
+#include "Save.h"
+#include "Open.h"
 
 const static QString MODE_IN     = "In";
 const static QString MODE_OUT    = "Out";
@@ -24,8 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->graphicsView->setRenderHints(QPainter::Antialiasing);
 
     // setup scene
-    m_scene = new Scene();
-    m_ui->graphicsView->setScene(m_scene);
+    m_ui->graphicsView->setScene(Editor::getInstance()->scene());
 
     // setup tool bar
     addToolBar(Qt::LeftToolBarArea, m_ui->mainToolBar);
@@ -34,8 +37,17 @@ MainWindow::MainWindow(QWidget *parent) :
     addToolBarAction(new QAction(/*QIcon("../resource/hidden.png"), */MODE_HIDDEN));
     setDefaultToolBarAction(MODE_HIDDEN);
 
+    // setup action
+    Editor::getInstance()->addAction(new Open());
+    Editor::getInstance()->addAction(new Save());
+
     // setup menu
-    AnalyzeCircuit* ep = new AnalyzeCircuit(m_scene);
+    QMenu* fileMenu = new QMenu("File");
+    m_ui->menuBar->addMenu(fileMenu);
+    fileMenu->addAction(Editor::getInstance()->action(Save::ACTION_SAVE)->action());
+    fileMenu->addAction(Editor::getInstance()->action(Open::ACTION_OPEN)->action());
+
+    AnalyzeCircuit* ep = new AnalyzeCircuit(Editor::getInstance()->scene());
     m_ui->menuBar->addAction(ep->ExportScriptAction());
 
     addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());

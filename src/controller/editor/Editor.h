@@ -2,24 +2,29 @@
 #define EDITOR_H
 
 #include <QList>
-#include "Scene.h"
 
 class Scene;
 class AbstractAction;
 
+
 class Editor
 {
 public:
-    Editor();
-    ~Editor();
+    static Editor* getInstance();
 
-    AbstractAction* action(QString& name);
+    AbstractAction* action(const QString &name);
+    void addAction(AbstractAction* action);
 
     Scene *scene() const;
 
 private:
     QList<AbstractAction*> m_actions;
     Scene* m_scene = nullptr;
+
+private:
+    Editor();
+    ~Editor();
 };
+
 
 #endif // EDITOR_H

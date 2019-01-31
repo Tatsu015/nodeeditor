@@ -15,10 +15,11 @@ public:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    QString Name() const;
+    QString name() const;
+    void setName(const QString &name);
 
-    void addPort(Port* port);
     QList<Port*> ports() const;
+    void addPort(Port* port);
 
     QList<Node*> adjastOutNodes();
     QList<Node*> adjastInNodes();
@@ -27,6 +28,7 @@ public:
     virtual void changeType() = 0;
 
     EPosition portPosition(Port* port);
+
 
 protected:
     const static uint32_t NODE_SIZE      = 50;

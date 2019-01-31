@@ -34,8 +34,12 @@ INCLUDEPATH += \
     view/widget \
     view/window
 
-
 HEADERS += \
+    controller/editor/Editor.h \
+    controller/extend/AbstractAction.h \
+    controller/extend/AnalyzeCircuit.h \
+    controller/extend/Open.h \
+    controller/extend/Save.h \
     controller/tool/Tool.h \
     model/connection/Connection.h \
     model/connection/Connector.h \
@@ -47,13 +51,14 @@ HEADERS += \
     util/Common.h \
     view/scene/Scene.h \
     view/widget/ErrorListWidget.h \
-    view/window/MainWindow.h \
-    controller/extend/AnalyzeCircuit.h \
-    controller/editor/Editor.h \
-    controller/extend/AbstractAction.h \
-    controller/extend/Save.h
+    view/window/MainWindow.h
 
 SOURCES += \
+    controller/editor/Editor.cpp \
+    controller/extend/AbstractAction.cpp \
+    controller/extend/AnalyzeCircuit.cpp \
+    controller/extend/Open.cpp \
+    controller/extend/Save.cpp \
     controller/tool/Tool.cpp \
     model/connection/Connection.cpp \
     model/connection/Connector.cpp \
@@ -66,11 +71,7 @@ SOURCES += \
     view/scene/Scene.cpp \
     view/widget/ErrorListWidget.cpp \
     view/window/MainWindow.cpp \
-    main.cpp \
-    controller/extend/AnalyzeCircuit.cpp \
-    controller/editor/Editor.cpp \
-    controller/extend/AbstractAction.cpp \
-    controller/extend/Save.cpp
+    main.cpp
 
 FORMS += \
     view/window/MainWindow.ui

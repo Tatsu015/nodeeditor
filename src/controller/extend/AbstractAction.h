@@ -8,12 +8,13 @@ class QAction;
 class AbstractAction : public QObject
 {
     Q_OBJECT
+
 public:
     explicit AbstractAction(QObject *parent = nullptr);
     virtual ~AbstractAction();
 
     virtual QAction* action() = 0;
-    QString name();
+    virtual QString name() = 0;
 
 public slots:
     virtual void execute() = 0;

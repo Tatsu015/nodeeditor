@@ -25,6 +25,7 @@ public:
     virtual void keyReleaseEvent(QKeyEvent *event);
 
     QList<Node*> nodes() const;
+    void addNode(Node *node);
 
 private:
     Port* findPort(QPointF scenePos);

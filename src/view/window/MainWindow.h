@@ -33,7 +33,6 @@ private:
 
 private:
     Ui::MainWindow* m_ui    = nullptr;
-    Scene*          m_scene = nullptr;
     QMap<QString, ToolBarAction*> m_toolBarActions;
 };
 

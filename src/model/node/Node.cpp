@@ -36,6 +36,21 @@ QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVaria
     return QGraphicsPathItem::itemChange(change, value);
 }
 
+QString Node::name() const
+{
+    return m_name;
+}
+
+void Node::setName(const QString &name)
+{
+    m_name = name;
+}
+
+QList<Port*> Node::ports() const
+{
+    return m_ports;
+}
+
 void Node::addPort(Port* port)
 {
     m_ports << port;
@@ -119,14 +134,4 @@ EPosition Node::portPosition(Port* port)
     else{
         return Right;
     }
-}
-
-QList<Port*> Node::ports() const
-{
-    return m_ports;
-}
-
-QString Node::Name() const
-{
-    return m_name;
 }

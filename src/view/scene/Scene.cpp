@@ -400,11 +400,16 @@ void Scene::createNode(QPointF scenePos)
 
     QPointF ofs(node->boundingRect().center());
     node->setPos(scenePos - ofs);
-    addItem(node);
-    m_nodes << node;
+    addNode(node);
 }
 
 QList<Node*> Scene::nodes() const
 {
     return m_nodes;
+}
+
+void Scene::addNode(Node *node)
+{
+    m_nodes << node;
+    addItem(node);
 }

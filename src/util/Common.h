@@ -3,6 +3,8 @@
 
 #include <QString>
 
+#define CLASS_NAME (abi::__cxa_demangle(typeid(*this).name(),0,0,0))
+
 extern QString btos(bool value);
 extern bool    stob(const QString& value);
 
