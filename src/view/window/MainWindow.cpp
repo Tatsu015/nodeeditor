@@ -23,12 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
+    Editor::getInstance()->setGraphicsView(m_ui->graphicsView);
+
+    Editor::getInstance()->init();
+
     // setup graphics view
     m_ui->graphicsView->setBackgroundBrush(QBrush(QColor(75,75,75)));
     m_ui->graphicsView->setRenderHints(QPainter::Antialiasing);
-
-    // setup scene
-    m_ui->graphicsView->setScene(Editor::getInstance()->scene());
 
     // setup tool bar
     addToolBar(Qt::LeftToolBarArea, m_ui->mainToolBar);
@@ -47,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fileMenu->addAction(Editor::getInstance()->action(Save::ACTION_SAVE)->action());
     fileMenu->addAction(Editor::getInstance()->action(Open::ACTION_OPEN)->action());
 
-    AnalyzeCircuit* ep = new AnalyzeCircuit(Editor::getInstance()->scene());
+    AnalyzeCircuit* ep = new AnalyzeCircuit();
     m_ui->menuBar->addAction(ep->ExportScriptAction());
 
     addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());

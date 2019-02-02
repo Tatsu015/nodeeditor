@@ -21,9 +21,6 @@ public slots:
     virtual void execute();
 
 private:
-    QByteArray toJson();
-
-private:
     QAction* m_action = nullptr;
 };
 

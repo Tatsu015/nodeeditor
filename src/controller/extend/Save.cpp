@@ -33,33 +33,5 @@ QString Save::name()
 
 void Save::execute()
 {
-    QByteArray data = toJson();
-
-
-    QFile file("test.json");
-    file.open(QIODevice::WriteOnly);
-    file.write(data);
-    file.close();
 }
 
-QByteArray Save::toJson()
-{
-    Scene* scene = Editor::getInstance()->scene();
-
-    QJsonArray nodeJsonArray;
-    foreach (Node* node, scene->nodes()) {
-        QJsonObject nodeJsonObj;
-        nodeJsonObj["name"] = node->name();
-        nodeJsonObj["x"]    = node->pos().x();
-        nodeJsonObj["y"]    = node->pos().y();
-
-        nodeJsonArray.append(nodeJsonObj);
-    }
-
-    QJsonObject jsonObj;
-    jsonObj["nodes"] = nodeJsonArray;
-
-    QJsonDocument doc(jsonObj);
-
-    return doc.toJson();
-}

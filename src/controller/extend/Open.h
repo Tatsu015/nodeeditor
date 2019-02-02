@@ -20,8 +20,6 @@ public:
 public slots:
     virtual void execute();
 
-private:
-    void fromJson(const QByteArray &data);
 
 private:
     QAction* m_action = nullptr;

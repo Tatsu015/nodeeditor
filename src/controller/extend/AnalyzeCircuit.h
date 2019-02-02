@@ -9,14 +9,13 @@
 
 class QAction;
 class Node;
-class Scene;
 
 class AnalyzeCircuit : public QObject
 {
     Q_OBJECT
 
 public:
-    AnalyzeCircuit(Scene* scene, QObject *parent=nullptr);
+    AnalyzeCircuit(QObject *parent=nullptr);
     virtual ~AnalyzeCircuit();
 
     QAction* ExportScriptAction() const;
@@ -52,7 +51,6 @@ private:
 
 private:
     QAction* m_exportScriptAction = nullptr;
-    Scene*   m_scene = nullptr;
     QDockWidget* m_dockWidget = nullptr;
     ErrorListWidget* m_listWidget = nullptr;
 };

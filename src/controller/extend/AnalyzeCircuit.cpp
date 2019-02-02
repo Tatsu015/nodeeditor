@@ -2,16 +2,17 @@
 #include "InNode.h"
 #include "OutNode.h"
 #include "HiddenNode.h"
-#include "Scene.h"
 #include "Port.h"
 #include "ErrorListWidget.h"
+#include "Editor.h"
+#include "Project.h"
+#include "Scene.h"
 #include <QAction>
 #include <QDebug>
 #include <algorithm>
 
-AnalyzeCircuit::AnalyzeCircuit(Scene* scene, QObject *parent):
-    QObject(parent),
-    m_scene(scene)
+AnalyzeCircuit::AnalyzeCircuit(QObject *parent):
+    QObject(parent)
 {
     m_exportScriptAction = new QAction("Export");
     m_exportScriptAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
@@ -30,13 +31,14 @@ AnalyzeCircuit::~AnalyzeCircuit()
 
 void AnalyzeCircuit::Export()
 {
-    QList<Node*> nodes = m_scene->nodes();
+
+    QList<Node*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
     if(!CheckAllPortFilled(nodes)){
         qDebug() << "Do not connect finish!";
         return;
     }
-    QList<ConnectedGraph*> connectedGtaphs = ConnectedGraphs(m_scene->nodes());
+    QList<ConnectedGraph*> connectedGtaphs = ConnectedGraphs(nodes);
     foreach (ConnectedGraph* fbd, connectedGtaphs) {
         ExecuteOrderSort(fbd);
     }

@@ -3,8 +3,9 @@
 
 #include <QList>
 
-class Scene;
+class Project;
 class AbstractAction;
+class QGraphicsView;
 
 
 class Editor
@@ -12,14 +13,19 @@ class Editor
 public:
     static Editor* getInstance();
 
+    void init();
     AbstractAction* action(const QString &name);
     void addAction(AbstractAction* action);
 
-    Scene *scene() const;
+
+    Project *project() const;
+
+    void setGraphicsView(QGraphicsView *graphicsView);
 
 private:
     QList<AbstractAction*> m_actions;
-    Scene* m_scene = nullptr;
+    Project* m_project            = nullptr;
+    QGraphicsView* m_graphicsView = nullptr;
 
 private:
     Editor();

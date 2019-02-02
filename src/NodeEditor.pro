@@ -28,9 +28,10 @@ INCLUDEPATH += \
     controller/tool \
     model/connection \
     model/node \
+    model/scene \
     model/port \
+    model/project \
     util \
-    view/scene \
     view/widget \
     view/window
 
@@ -48,10 +49,11 @@ HEADERS += \
     model/node/Node.h \
     model/node/OutNode.h \
     model/port/Port.h \
+    model/scene/Scene.h \
     util/Common.h \
-    view/scene/Scene.h \
     view/widget/ErrorListWidget.h \
-    view/window/MainWindow.h
+    view/window/MainWindow.h \
+    model/project/Project.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -67,11 +69,12 @@ SOURCES += \
     model/node/Node.cpp \
     model/node/OutNode.cpp \
     model/port/Port.cpp \
+    model/scene/Scene.cpp \
     util/Common.cpp \
-    view/scene/Scene.cpp \
     view/widget/ErrorListWidget.cpp \
     view/window/MainWindow.cpp \
-    main.cpp
+    main.cpp \
+    model/project/Project.cpp
 
 FORMS += \
     view/window/MainWindow.ui
