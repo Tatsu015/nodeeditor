@@ -2,10 +2,14 @@
 #include "Port.h"
 #include <QPen>
 #include <QBrush>
+#include "NamePublisher.h"
+#include "Define.h"
 
 OutNode::OutNode(QGraphicsItem* parent):
-    Node(parent)
+    AbstractNode(parent)
 {
+    m_nodeType = NODE_OUT;
+
     const static QBrush BLUSH = QBrush(QColor("#2a2aa5"));
     const static QPen   PEN   = QPen(QColor("#000080"),PEN_SIZE);
     setBrush(BLUSH);
@@ -27,7 +31,7 @@ OutNode::~OutNode()
 {
 }
 
-void OutNode::changeType()
+AbstractNode *OutNode::create()
 {
-    // nop
+    return new OutNode();
 }

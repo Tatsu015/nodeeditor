@@ -1,4 +1,4 @@
-#include "AnalyzeCircuit.h"
+#include "AnalyzeCircuitAction.h"
 #include "InNode.h"
 #include "OutNode.h"
 #include "HiddenNode.h"
@@ -11,7 +11,7 @@
 #include <QDebug>
 #include <algorithm>
 
-AnalyzeCircuit::AnalyzeCircuit(QObject *parent):
+AnalyzeCircuitAction::AnalyzeCircuitAction(QObject *parent):
     QObject(parent)
 {
     m_exportScriptAction = new QAction("Export");
@@ -22,17 +22,17 @@ AnalyzeCircuit::AnalyzeCircuit(QObject *parent):
     m_dockWidget->setWidget(m_listWidget);
 
     QObject::connect(m_exportScriptAction, &QAction::triggered,
-                     this, &AnalyzeCircuit::Export);
+                     this, &AnalyzeCircuitAction::Export);
 }
 
-AnalyzeCircuit::~AnalyzeCircuit()
+AnalyzeCircuitAction::~AnalyzeCircuitAction()
 {
 }
 
-void AnalyzeCircuit::Export()
+void AnalyzeCircuitAction::Export()
 {
 
-    QList<Node*> nodes = Editor::getInstance()->project()->scene()->nodes();
+    QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
     if(!CheckAllPortFilled(nodes)){
         qDebug() << "Do not connect finish!";
@@ -44,23 +44,23 @@ void AnalyzeCircuit::Export()
     }
 }
 
-QList<AnalyzeCircuit::ConnectedGraph*> AnalyzeCircuit::ConnectedGraphs(const QList<Node*>& nodes)
+QList<AnalyzeCircuitAction::ConnectedGraph*> AnalyzeCircuitAction::ConnectedGraphs(const QList<AbstractNode*>& nodes)
 {
     QList<ConnectedGraph*> fbds;
-    QList<Node*> unusedNode = nodes;
+    QList<AbstractNode*> unusedNode = nodes;
     uint64_t id = 0;
 
     while (unusedNode.count()) {
-        QList<Node*> connectedNodes;
-        Node* node = unusedNode.last();
-        QList<Node*> unvisitedNodes;
+        QList<AbstractNode*> connectedNodes;
+        AbstractNode* node = unusedNode.last();
+        QList<AbstractNode*> unvisitedNodes;
         unvisitedNodes << node;
 
         while (unvisitedNodes.count()) {
-            Node* checkNode = unvisitedNodes.takeLast();
+            AbstractNode* checkNode = unvisitedNodes.takeLast();
             connectedNodes << checkNode;
             unusedNode.removeOne(checkNode);
-            foreach (Node* adjastNode, checkNode->adjastNodes()) {
+            foreach (AbstractNode* adjastNode, checkNode->adjastNodes()) {
                 if(!connectedNodes.contains(adjastNode)){
                     unvisitedNodes << adjastNode;
                 }
@@ -76,15 +76,15 @@ QList<AnalyzeCircuit::ConnectedGraph*> AnalyzeCircuit::ConnectedGraphs(const QLi
     return fbds;
 }
 
-QList<Node*> AnalyzeCircuit::ExecuteOrderSort(AnalyzeCircuit::ConnectedGraph* fbd)
+QList<AbstractNode*> AnalyzeCircuitAction::ExecuteOrderSort(AnalyzeCircuitAction::ConnectedGraph* fbd)
 {
-    QList<Node*> visitedNodes;
-    QList<Node*> unvisitedNodes = fbd->m_outNodes;
+    QList<AbstractNode*> visitedNodes;
+    QList<AbstractNode*> unvisitedNodes = fbd->m_outNodes;
 
     while (unvisitedNodes.count()) {
-        Node* visitNode = unvisitedNodes.takeLast();
+        AbstractNode* visitNode = unvisitedNodes.takeLast();
         visitedNodes << visitNode;
-        foreach (Node* adjastInNode, visitNode->adjastInNodes()) {
+        foreach (AbstractNode* adjastInNode, visitNode->adjastInNodes()) {
             if(!visitedNodes.contains(adjastInNode)){
                 unvisitedNodes.append(adjastInNode);
             }
@@ -96,16 +96,16 @@ QList<Node*> AnalyzeCircuit::ExecuteOrderSort(AnalyzeCircuit::ConnectedGraph* fb
 
     std::reverse(visitedNodes.begin(), visitedNodes.end());
     qDebug() << "======  " + fbd->m_name + " ======";
-    foreach (Node* node, visitedNodes) {
+    foreach (AbstractNode* node, visitedNodes) {
         qDebug() << node->name();
     }
     return visitedNodes;
 }
 
-QList<Node*> AnalyzeCircuit::InNodes(const QList<Node*>& nodes)
+QList<AbstractNode*> AnalyzeCircuitAction::InNodes(const QList<AbstractNode*>& nodes)
 {
-    QList<Node*> inNodes;
-    foreach (Node* node, nodes) {
+    QList<AbstractNode*> inNodes;
+    foreach (AbstractNode* node, nodes) {
         InNode* inNode = dynamic_cast<InNode*>(node);
         if(inNode){
             inNodes << inNode;
@@ -114,10 +114,10 @@ QList<Node*> AnalyzeCircuit::InNodes(const QList<Node*>& nodes)
     return inNodes;
 }
 
-QList<Node*> AnalyzeCircuit::OutNodes(const QList<Node*>& nodes)
+QList<AbstractNode*> AnalyzeCircuitAction::OutNodes(const QList<AbstractNode*>& nodes)
 {
-    QList<Node*> outNodes;
-    foreach (Node* node, nodes) {
+    QList<AbstractNode*> outNodes;
+    foreach (AbstractNode* node, nodes) {
         OutNode* outNode = dynamic_cast<OutNode*>(node);
         if(outNode){
             outNodes << outNode;
@@ -126,10 +126,10 @@ QList<Node*> AnalyzeCircuit::OutNodes(const QList<Node*>& nodes)
     return outNodes;
 }
 
-QList<Node*> AnalyzeCircuit::HiddenNodes(const QList<Node*>& nodes)
+QList<AbstractNode*> AnalyzeCircuitAction::HiddenNodes(const QList<AbstractNode*>& nodes)
 {
-    QList<Node*> hiddenNodes;
-    foreach (Node* node, nodes) {
+    QList<AbstractNode*> hiddenNodes;
+    foreach (AbstractNode* node, nodes) {
         HiddenNode* hiddenNode = dynamic_cast<HiddenNode*>(node);
         if(hiddenNode){
             hiddenNodes << hiddenNode;
@@ -138,23 +138,23 @@ QList<Node*> AnalyzeCircuit::HiddenNodes(const QList<Node*>& nodes)
     return hiddenNodes;
 }
 
-QDockWidget* AnalyzeCircuit::DockWidget() const
+QDockWidget* AnalyzeCircuitAction::DockWidget() const
 {
     return m_dockWidget;
 }
 
-QAction* AnalyzeCircuit::ExportScriptAction() const
+QAction* AnalyzeCircuitAction::ExportScriptAction() const
 {
     return m_exportScriptAction;
 }
 
-bool AnalyzeCircuit::CheckAllPortFilled(const QList<Node*>& nodes)
+bool AnalyzeCircuitAction::CheckAllPortFilled(const QList<AbstractNode*>& nodes)
 {
     ClearError();
     const QString BASE_MESSAGE = "not connected port : ";
 
     bool ret = true;
-    foreach (Node* node, nodes) {
+    foreach (AbstractNode* node, nodes) {
         foreach (Port* port, node->ports()) {
             if(0 == port->connections().count()){
                 QString msg = BASE_MESSAGE + node->name();

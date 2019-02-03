@@ -1,18 +1,18 @@
-#ifndef SAVE_H
-#define SAVE_H
+#ifndef OPEN_H
+#define OPEN_H
 
 #include "AbstractAction.h"
 
 class QJsonObject;
 
-class Save : public AbstractAction
+class OpenAction : public AbstractAction
 {
 public:
-    const static QString ACTION_SAVE;
+    const static QString ACTION_OPEN;
 
 public:
-    Save(QObject *parent = nullptr);
-    virtual ~Save();
+    OpenAction(QObject *parent = nullptr);
+    virtual ~OpenAction();
 
     virtual QAction* action();
     virtual QString name();
@@ -20,8 +20,9 @@ public:
 public slots:
     virtual void execute();
 
+
 private:
     QAction* m_action = nullptr;
 };
 
-#endif // SAVE_H
+#endif // OPEN_H

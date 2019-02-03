@@ -25,6 +25,8 @@ CONFIG += c++11
 INCLUDEPATH += \
     controller/editor \
     controller/extend \
+    controller/factory \
+    controller/publisher \
     controller/tool \
     model/connection \
     model/node \
@@ -38,35 +40,34 @@ INCLUDEPATH += \
 HEADERS += \
     controller/editor/Editor.h \
     controller/extend/AbstractAction.h \
-    controller/extend/AnalyzeCircuit.h \
-    controller/extend/Open.h \
-    controller/extend/Save.h \
     controller/tool/Tool.h \
     model/connection/Connection.h \
     model/connection/Connector.h \
     model/node/HiddenNode.h \
     model/node/InNode.h \
-    model/node/Node.h \
     model/node/OutNode.h \
     model/port/Port.h \
     model/scene/Scene.h \
     util/Common.h \
     view/widget/ErrorListWidget.h \
     view/window/MainWindow.h \
-    model/project/Project.h
+    model/project/Project.h \
+    controller/factory/NodeFactory.h \
+    model/node/AbstractNode.h \
+    util/Define.h \
+    controller/publisher/NamePublisher.h \
+    controller/extend/OpenAction.h \
+    controller/extend/SaveAction.h \
+    controller/extend/AnalyzeCircuitAction.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
     controller/extend/AbstractAction.cpp \
-    controller/extend/AnalyzeCircuit.cpp \
-    controller/extend/Open.cpp \
-    controller/extend/Save.cpp \
     controller/tool/Tool.cpp \
     model/connection/Connection.cpp \
     model/connection/Connector.cpp \
     model/node/HiddenNode.cpp \
     model/node/InNode.cpp \
-    model/node/Node.cpp \
     model/node/OutNode.cpp \
     model/port/Port.cpp \
     model/scene/Scene.cpp \
@@ -74,7 +75,13 @@ SOURCES += \
     view/widget/ErrorListWidget.cpp \
     view/window/MainWindow.cpp \
     main.cpp \
-    model/project/Project.cpp
+    model/project/Project.cpp \
+    controller/factory/NodeFactory.cpp \
+    model/node/AbstractNode.cpp \
+    controller/publisher/NamePublisher.cpp \
+    controller/extend/OpenAction.cpp \
+    controller/extend/SaveAction.cpp \
+    controller/extend/AnalyzeCircuitAction.cpp
 
 FORMS += \
     view/window/MainWindow.ui

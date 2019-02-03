@@ -1,19 +1,17 @@
 #ifndef InNode_H
 #define InNode_H
 
-#include "Node.h"
+#include "AbstractNode.h"
 
 class QGraphicsSimpleTextItem;
 
-const static QString IN = "In";
-
-class InNode : public Node
+class InNode : public AbstractNode
 {
 public:
     InNode(QGraphicsItem *parent = nullptr);
     virtual ~InNode();
 
-    virtual void changeType();
+    virtual AbstractNode* create();
 
 private:
     QGraphicsSimpleTextItem* m_typeText = nullptr;

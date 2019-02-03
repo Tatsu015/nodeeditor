@@ -4,8 +4,8 @@
 #include "Project.h"
 #include "Editor.h"
 #include "Scene.h"
-#include "Node.h"
-#include "HiddenNode.h"
+#include "AbstractNode.h"
+#include "NodeFactory.h"
 
 Project::Project()
 {
@@ -44,7 +44,8 @@ bool Project::save(const QString &filePath)
 
     m_filePath = filePath;
 
-    f.write(toJson());
+    QByteArray data = toJson();
+    f.write(data);
     f.close();
 
     return true;
@@ -60,11 +61,12 @@ QByteArray Project::toJson()
     Scene* scene = Editor::getInstance()->project()->scene();
 
     QJsonArray nodeJsonArray;
-    foreach (Node* node, scene->nodes()) {
+    foreach (AbstractNode* node, scene->nodes()) {
         QJsonObject nodeJsonObj;
-        nodeJsonObj["name"] = node->name();
-        nodeJsonObj["x"]    = node->pos().x();
-        nodeJsonObj["y"]    = node->pos().y();
+        nodeJsonObj["name"]     = node->name();
+        nodeJsonObj["nodetype"] = node->nodeType();
+        nodeJsonObj["x"]        = node->pos().x();
+        nodeJsonObj["y"]        = node->pos().y();
 
         nodeJsonArray.append(nodeJsonObj);
     }
@@ -85,12 +87,13 @@ void Project::fromJson(const QByteArray &data)
 
     Scene* scene = Editor::getInstance()->project()->scene();
     foreach (QJsonValue nodeJsonVal, nodeJsonObjs) {
-        HiddenNode* node = new HiddenNode();
 
-        QString name = nodeJsonVal["name"].toString();
-        qreal   x    = nodeJsonVal["x"].toDouble();
-        qreal   y    = nodeJsonVal["y"].toDouble();
+        QString name     = nodeJsonVal["name"].toString();
+        QString nodeType = nodeJsonVal["nodetype"].toString();
+        qreal   x        = nodeJsonVal["x"].toDouble();
+        qreal   y        = nodeJsonVal["y"].toDouble();
 
+        AbstractNode* node = NodeFactory::getInstance()->createNode(nodeType, name);
         node->setName(name);
         node->setPos(x, y);
 

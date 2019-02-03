@@ -1,18 +1,18 @@
 #include "HiddenNode.h"
 #include "Port.h"
+#include "NamePublisher.h"
 #include <QPen>
 #include <QBrush>
 #include <QFont>
+#include "Define.h"
 
 HiddenNode::HiddenNode(QGraphicsItem* parent):
-    Node(parent),
-    m_types(QStringList({"&", "|", "1", }))
+    AbstractNode(parent)
 {
-    m_activeType = m_types.first();
+    m_nodeType = NODE_HIDDEN;
 
     const static QBrush  BLUSH      = QBrush(QColor("#2aa52a"));
     const static QPen    PEN        = QPen(QColor("#008000"),PEN_SIZE);
-    const static QColor  TEXT_COLOR = QColor("#008000");
     setBrush(BLUSH);
     setPen(PEN);
 
@@ -40,26 +40,13 @@ HiddenNode::HiddenNode(QGraphicsItem* parent):
     port3->setPos(boundingRect().width() - PORT_POS_X_OFS,
                   boundingRect().center().y() - port3->boundingRect().height()*0.5);
     addPort(port3);
-
-    m_typeText = new QGraphicsSimpleTextItem(m_activeType, this);
-    QFont f;
-    f.setPointSize(24);
-    m_typeText->setPen(QPen(TEXT_COLOR));
-    m_typeText->setBrush(QBrush(TEXT_COLOR));
-    m_typeText->setFont(f);
-    m_typeText->setPos(boundingRect().center() - m_typeText->boundingRect().center());
 }
 
 HiddenNode::~HiddenNode()
 {
 }
 
-void HiddenNode::changeType()
+AbstractNode *HiddenNode::create()
 {
-    int nextIndex = m_types.indexOf(m_activeType) + 1;
-    int kind  = m_types.count();
-
-    m_activeType = m_types[nextIndex % kind];
-    m_typeText->setText(m_activeType);
-    m_typeText->setPos(boundingRect().center() - m_typeText->boundingRect().center());
+    return new HiddenNode();
 }

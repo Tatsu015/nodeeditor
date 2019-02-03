@@ -4,10 +4,14 @@
 #include <QPen>
 #include <QBrush>
 #include <QGraphicsSimpleTextItem>
+#include "NamePublisher.h"
+#include "Define.h"
 
 InNode::InNode(QGraphicsItem* parent):
-    Node(parent)
+    AbstractNode(parent)
 {
+    m_nodeType = NODE_IN;
+
     m_activeType = "true";
 
     const static QBrush  BLUSH      = QBrush(QColor("#a52a2a"));
@@ -37,10 +41,7 @@ InNode::~InNode()
 {
 }
 
-void InNode::changeType()
+AbstractNode *InNode::create()
 {
-    bool oldValue    = stob(m_typeText->text());
-    QString newValue = btos(!oldValue);
-    m_typeText->setText(newValue);
-    m_typeText->setPos(boundingRect().center() - m_typeText->boundingRect().center());
+    return new InNode();
 }

@@ -3,7 +3,7 @@
 
 #include <QGraphicsScene>
 
-class Node;
+class AbstractNode;
 class InNode;
 class Connection;
 class Connector;
@@ -24,14 +24,14 @@ public:
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void keyReleaseEvent(QKeyEvent *event);
 
-    QList<Node*> nodes() const;
-    void addNode(Node *node);
+    QList<AbstractNode*> nodes() const;
+    void addNode(AbstractNode *node);
 
 private:
     Port* findPort(QPointF scenePos);
     Port* findStartPort(QPointF scenePos);
     Port* findEndPort(QPointF scenePos);
-    QList<Node*> findNodes(QPointF scenePos);
+    QList<AbstractNode*> findNodes(QPointF scenePos);
     Connection* findConnection(QPointF scenePos);
 
     QList<Port*> aroundEndPorts(QPointF scenePos);
@@ -41,12 +41,12 @@ private:
     bool existPort(QPointF scenePos);
 
     void createNode(QPointF scenePos);
-    void removeNode(Node* node);
+    void removeNode(AbstractNode* node);
 
     void showConnector(QPointF scenePos);
 
 private:
-    QList<Node*> m_nodes;
+    QList<AbstractNode*> m_nodes;
     Connection*  m_tmpConnection  = nullptr;
     Connector*   m_tmpConnector   = nullptr;
     Port*        m_startPort      = nullptr;

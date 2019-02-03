@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QGraphicsSceneMouseEvent>
+#include "Define.h"
 
 Scene::Scene(QObject* parent):
     QGraphicsScene(-750,-1000,2000,2000,parent),
@@ -193,13 +194,6 @@ void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
 void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(existNode(event->scenePos())){
-        Node* node = findNodes(event->scenePos()).first();
-        node->changeType();
-        QGraphicsScene::mouseDoubleClickEvent(event);
-        return;
-    }
-
     if(existPort(event->scenePos())){
         QGraphicsScene::mouseDoubleClickEvent(event);
         return;
@@ -214,7 +208,7 @@ void Scene::keyPressEvent(QKeyEvent* event)
 {
     if(Qt::Key_Delete == event->key()){
         foreach (QGraphicsItem* item, selectedItems()) {
-            removeNode(dynamic_cast<Node*>(item));
+            removeNode(dynamic_cast<AbstractNode*>(item));
         }
     }
     else if(Qt::Key_Control == event->key()){
@@ -222,7 +216,7 @@ void Scene::keyPressEvent(QKeyEvent* event)
     }
     else if(Qt::Key_A == event->key()){
         if(m_isControlPressed){
-            foreach (Node* node, nodes()) {
+            foreach (AbstractNode* node, nodes()) {
                 node->setSelected(true);
             }
         }
@@ -322,11 +316,11 @@ Connection*Scene::findConnection(QPointF scenePos)
     return nullptr;
 }
 
-QList<Node*> Scene::findNodes(QPointF scenePos)
+QList<AbstractNode*> Scene::findNodes(QPointF scenePos)
 {
-    QList<Node*> nodes;
+    QList<AbstractNode*> nodes;
     foreach (QGraphicsItem* item, items(scenePos)) {
-        Node* node = dynamic_cast<Node*>(item);
+        AbstractNode* node = dynamic_cast<AbstractNode*>(item);
         if(node){
             nodes << node;
         }
@@ -338,7 +332,7 @@ QList<Node*> Scene::findNodes(QPointF scenePos)
 bool Scene::existNode(QPointF scenePos)
 {
     foreach (QGraphicsItem* item, items(scenePos)) {
-        Node* node = dynamic_cast<Node*>(item);
+        AbstractNode* node = dynamic_cast<AbstractNode*>(item);
         if(node){
             return true;
         }
@@ -359,7 +353,7 @@ bool Scene::existPort(QPointF scenePos)
     return false;
 }
 
-void Scene::removeNode(Node* node)
+void Scene::removeNode(AbstractNode* node)
 {
     foreach (Port* removeNodePort, node->ports()) {
         foreach (Connection* connection, removeNodePort->connections()) {
@@ -383,32 +377,25 @@ void Scene::showConnector(QPointF scenePos)
     m_tmpConnector->setPos(scenePos);
 }
 
+#include "NodeFactory.h"
 void Scene::createNode(QPointF scenePos)
 {
     QString activeTool = Tool::getInstance()->activeTool();
 
-    Node* node = nullptr;
-    if(IN == activeTool){
-        node = new InNode();
-    }
-    else if (OUT == activeTool){
-        node = new OutNode();
-    }
-    else{
-        node = new HiddenNode();
-    }
+    AbstractNode* node = nullptr;
+    node = NodeFactory::getInstance()->createNode(activeTool);
 
     QPointF ofs(node->boundingRect().center());
     node->setPos(scenePos - ofs);
     addNode(node);
 }
 
-QList<Node*> Scene::nodes() const
+QList<AbstractNode*> Scene::nodes() const
 {
     return m_nodes;
 }
 
-void Scene::addNode(Node *node)
+void Scene::addNode(AbstractNode *node)
 {
     m_nodes << node;
     addItem(node);

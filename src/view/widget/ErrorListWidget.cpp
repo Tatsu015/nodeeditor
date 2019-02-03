@@ -1,6 +1,6 @@
 #include "ErrorListWidget.h"
-#include "AnalyzeCircuit.h"
-#include "Node.h"
+#include "AnalyzeCircuitAction.h"
+#include "AbstractNode.h"
 
 
 ErrorListWidget::ErrorListWidget(QWidget* parent)
@@ -11,7 +11,7 @@ ErrorListWidget::~ErrorListWidget()
 {
 }
 
-void ErrorListWidget::onAddErrorWidgetItem(Node* node, const QString& errorMessage, BugType type)
+void ErrorListWidget::onAddErrorWidgetItem(AbstractNode* node, const QString& errorMessage, BugType type)
 {
     QMap<BugType, QString> BUGTYPE_ICONNAME = {
         {Warning, "../resource/warning.png"},

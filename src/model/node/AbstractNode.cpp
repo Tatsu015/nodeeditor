@@ -1,30 +1,23 @@
-#include "Node.h"
+#include "AbstractNode.h"
 #include "Connection.h"
 #include "Port.h"
 #include <QBrush>
 #include <QPen>
 #include <QGraphicsSimpleTextItem>
 
-Node::Node(QGraphicsItem* parent):
+AbstractNode::AbstractNode(QGraphicsItem* parent):
     QGraphicsPathItem(parent)
 {
-    static uint64_t num;
-    m_name = "Node" + QString::number(num++);
-    m_nameText = new QGraphicsSimpleTextItem(m_name, this);
-    m_nameText->setPos(0,-20);
-    m_nameText->setPen(QPen(Qt::white));
-    m_nameText->setBrush(QBrush(Qt::white));
-
     setFlag(ItemIsSelectable);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
 }
 
-Node::~Node()
+AbstractNode::~AbstractNode()
 {
 }
 
-QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
+QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)
 {
     if(ItemPositionChange == change){
         foreach (Port* port, m_ports) {
@@ -36,32 +29,40 @@ QVariant Node::itemChange(QGraphicsItem::GraphicsItemChange change, const QVaria
     return QGraphicsPathItem::itemChange(change, value);
 }
 
-QString Node::name() const
+QString AbstractNode::name() const
 {
     return m_name;
 }
 
-void Node::setName(const QString &name)
+void AbstractNode::setName(const QString &name)
 {
     m_name = name;
 }
 
-QList<Port*> Node::ports() const
+void AbstractNode::setupNameText()
+{
+    m_nameText = new QGraphicsSimpleTextItem(m_name, this);
+    m_nameText->setPos(0,-20);
+    m_nameText->setPen(QPen(Qt::white));
+    m_nameText->setBrush(QBrush(Qt::white));
+}
+
+QList<Port*> AbstractNode::ports() const
 {
     return m_ports;
 }
 
-void Node::addPort(Port* port)
+void AbstractNode::addPort(Port* port)
 {
     m_ports << port;
 }
 
-QList<Node*> Node::adjastOutNodes()
+QList<AbstractNode*> AbstractNode::adjastOutNodes()
 {
-    QList<Node*> nodes;
+    QList<AbstractNode*> nodes;
     foreach (Port* port, m_ports) {
         foreach (Connection* connection, port->connections()) {
-            Node* outNode = dynamic_cast<Node*>(connection->endPort()->parentItem());
+            AbstractNode* outNode = dynamic_cast<AbstractNode*>(connection->endPort()->parentItem());
             if(outNode != this){
                 nodes << outNode;
             }
@@ -70,12 +71,12 @@ QList<Node*> Node::adjastOutNodes()
     return nodes;
 }
 
-QList<Node*> Node::adjastInNodes()
+QList<AbstractNode*> AbstractNode::adjastInNodes()
 {
-    QList<Node*> nodes;
+    QList<AbstractNode*> nodes;
     foreach (Port* port, m_ports) {
         foreach (Connection* connection, port->connections()) {
-            Node* inNode = dynamic_cast<Node*>(connection->startPort()->parentItem());
+            AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
             if(inNode != this){
                 nodes << inNode;
             }
@@ -84,19 +85,19 @@ QList<Node*> Node::adjastInNodes()
     return nodes;
 }
 
-QList<Node*> Node::adjastNodes()
+QList<AbstractNode*> AbstractNode::adjastNodes()
 {
-    QList<Node*> nodes;
+    QList<AbstractNode*> nodes;
     foreach (Port* port, m_ports) {
         foreach (Connection* connection, port->connections()) {
-            Node* inNode = dynamic_cast<Node*>(connection->startPort()->parentItem());
+            AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
             if(inNode != this){
                 // when exist loop, this check need
                 if(!nodes.contains(inNode)){
                     nodes << inNode;
                 }
             }
-            Node* outNode = dynamic_cast<Node*>(connection->endPort()->parentItem());
+            AbstractNode* outNode = dynamic_cast<AbstractNode*>(connection->endPort()->parentItem());
             if(outNode != this){
                 // when exist loop, this check need
                 if(!nodes.contains(outNode)){
@@ -109,7 +110,7 @@ QList<Node*> Node::adjastNodes()
     return nodes;
 }
 
-EPosition Node::portPosition(Port* port)
+EPosition AbstractNode::portPosition(Port* port)
 {
     QPointF center     = sceneBoundingRect().center();
     QPointF portCenter = port->sceneBoundingRect().center();
@@ -134,4 +135,9 @@ EPosition Node::portPosition(Port* port)
     else{
         return Right;
     }
+}
+
+QString AbstractNode::nodeType() const
+{
+    return m_nodeType;
 }

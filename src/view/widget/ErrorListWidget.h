@@ -5,8 +5,8 @@
 #include "Common.h"
 
 class QWidget;
-class AnalyzeCircuit;
-class Node;
+class AnalyzeCircuitAction;
+class AbstractNode;
 
 class ErrorListWidget : public QListWidget
 {
@@ -15,7 +15,7 @@ public:
     virtual ~ErrorListWidget();
 
 public slots:
-    void onAddErrorWidgetItem(Node* node, const QString& errorMessage, BugType type);
+    void onAddErrorWidgetItem(AbstractNode* node, const QString& errorMessage, BugType type);
 };
 
 #endif // ERRORLISTWIDGET_H

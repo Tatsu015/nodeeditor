@@ -4,14 +4,19 @@
 #include "ui_MainWindow.h"
 #include "Scene.h"
 #include "Tool.h"
-#include "AnalyzeCircuit.h"
+#include "AnalyzeCircuitAction.h"
 #include <QDebug>
 #include <QMenu>
 #include "Editor.h"
 #include "ErrorListWidget.h"
-#include "Node.h"
-#include "Save.h"
-#include "Open.h"
+#include "NodeFactory.h"
+#include "AbstractNode.h"
+#include "HiddenNode.h"
+#include "InNode.h"
+#include "OutNode.h"
+#include "SaveAction.h"
+#include "OpenAction.h"
+#include "Define.h"
 
 const static QString MODE_IN     = "In";
 const static QString MODE_OUT    = "Out";
@@ -24,8 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->setupUi(this);
 
     Editor::getInstance()->setGraphicsView(m_ui->graphicsView);
-
     Editor::getInstance()->init();
+
+    NodeFactory::getInstance()->addNode(NODE_IN,     new InNode());
+    NodeFactory::getInstance()->addNode(NODE_OUT,    new OutNode());
+    NodeFactory::getInstance()->addNode(NODE_HIDDEN, new HiddenNode());
 
     // setup graphics view
     m_ui->graphicsView->setBackgroundBrush(QBrush(QColor(75,75,75)));
@@ -33,22 +41,22 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // setup tool bar
     addToolBar(Qt::LeftToolBarArea, m_ui->mainToolBar);
-    addToolBarAction(new QAction(/*QIcon("../resource/in.png")    , */MODE_IN    ));
-    addToolBarAction(new QAction(/*QIcon("../resource/out.png")   , */MODE_OUT   ));
-    addToolBarAction(new QAction(/*QIcon("../resource/hidden.png"), */MODE_HIDDEN));
-    setDefaultToolBarAction(MODE_HIDDEN);
+    addToolBarAction(new QAction(/*QIcon("../resource/in.png")    , */NODE_IN    ));
+    addToolBarAction(new QAction(/*QIcon("../resource/out.png")   , */NODE_OUT   ));
+    addToolBarAction(new QAction(/*QIcon("../resource/hidden.png"), */NODE_HIDDEN));
+    setDefaultToolBarAction(NODE_HIDDEN);
 
     // setup action
-    Editor::getInstance()->addAction(new Open());
-    Editor::getInstance()->addAction(new Save());
+    Editor::getInstance()->addAction(new OpenAction());
+    Editor::getInstance()->addAction(new SaveAction());
 
     // setup menu
     QMenu* fileMenu = new QMenu("File");
     m_ui->menuBar->addMenu(fileMenu);
-    fileMenu->addAction(Editor::getInstance()->action(Save::ACTION_SAVE)->action());
-    fileMenu->addAction(Editor::getInstance()->action(Open::ACTION_OPEN)->action());
+    fileMenu->addAction(Editor::getInstance()->action(SaveAction::ACTION_SAVE)->action());
+    fileMenu->addAction(Editor::getInstance()->action(OpenAction::ACTION_OPEN)->action());
 
-    AnalyzeCircuit* ep = new AnalyzeCircuit();
+    AnalyzeCircuitAction* ep = new AnalyzeCircuitAction();
     m_ui->menuBar->addAction(ep->ExportScriptAction());
 
     addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());

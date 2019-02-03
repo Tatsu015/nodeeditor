@@ -7,28 +7,32 @@
 class Port;
 class QGraphicsSimpleTextItem;
 
-class Node : public QGraphicsPathItem
+class AbstractNode : public QGraphicsPathItem
 {
 public:
-    Node(QGraphicsItem *parent = nullptr);
-    virtual ~Node();
+    AbstractNode(QGraphicsItem *parent = nullptr);
+    virtual ~AbstractNode();
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    virtual AbstractNode* create() = 0;
 
     QString name() const;
     void setName(const QString &name);
 
+    void setupNameText();
+
+
     QList<Port*> ports() const;
     void addPort(Port* port);
 
-    QList<Node*> adjastOutNodes();
-    QList<Node*> adjastInNodes();
-    QList<Node*> adjastNodes();
-
-    virtual void changeType() = 0;
+    QList<AbstractNode*> adjastOutNodes();
+    QList<AbstractNode*> adjastInNodes();
+    QList<AbstractNode*> adjastNodes();
 
     EPosition portPosition(Port* port);
 
+    QString nodeType() const;
 
 protected:
     const static uint32_t NODE_SIZE      = 50;
@@ -39,6 +43,9 @@ protected:
 
     QGraphicsSimpleTextItem* m_typeText = nullptr;
     QString m_activeType;
+
+protected:
+    QString m_nodeType;
 
 private:
     QList<Port*> m_ports;
