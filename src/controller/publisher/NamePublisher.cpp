@@ -10,14 +10,14 @@ NamePublisher* NamePublisher::getInstance()
 
 QString NamePublisher::createName(const QString &baseName)
 {
-    uint64_t nowNumber = m_nextNumber[baseName];
-    uint64_t nextNum   = nowNumber + 1;
-    m_nextNumber[baseName] = nextNum;
+    uint64_t lastNumber    = m_lastNumber[baseName];
+    uint64_t nextNum       = lastNumber + 1;
+    m_lastNumber[baseName] = nextNum;
 
-    return baseName + SEPALATOR + QString::number(nowNumber);
+    return baseName + SEPALATOR + QString::number(nextNum);
 }
 
-void NamePublisher::updateNextNumber(QString name)
+void NamePublisher::updateLastNumber(QString name)
 {
     QStringList element = name.split(SEPALATOR);
     if(element.count() < 2){
@@ -25,22 +25,22 @@ void NamePublisher::updateNextNumber(QString name)
     }
 
     QString  baseName   = element.first();
-    if(!m_nextNumber.keys().contains(baseName)){
+    if(!m_lastNumber.keys().contains(baseName)){
         return;
     }
 
     uint64_t usedNumber = element.last().toLong();
-    uint64_t nextNumber = m_nextNumber[baseName];
+    uint64_t lastNumber = m_lastNumber[baseName];
 
-    if(nextNumber < usedNumber){
-        m_nextNumber[baseName] = usedNumber;
+    if(lastNumber < usedNumber){
+        m_lastNumber[baseName] = usedNumber;
     }
 }
 
 void NamePublisher::resetNumbers()
 {
-    foreach (QString key, m_nextNumber.keys()) {
-        m_nextNumber[key] = 0;
+    foreach (QString key, m_lastNumber.keys()) {
+        m_lastNumber[key] = 0;
     }
 }
 

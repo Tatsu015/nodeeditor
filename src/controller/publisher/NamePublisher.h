@@ -11,11 +11,11 @@ public:
     static NamePublisher* getInstance();
 
     QString createName(const QString& baseName);
-    void updateNextNumber(QString name);
+    void updateLastNumber(QString name);
     void resetNumbers();
 
 private:
-    QMap<QString, uint64_t> m_nextNumber;
+    QMap<QString, uint64_t> m_lastNumber;
 
 private:
     NamePublisher();
