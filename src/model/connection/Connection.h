@@ -12,6 +12,8 @@ public:
     Connection(QGraphicsItem *parent = nullptr);
     virtual ~Connection();
 
+    Connection* create();
+
     void setStartPos(const QPointF& startPos);
     void setEndPos(const QPointF& endPos);
 
@@ -23,10 +25,20 @@ public:
     Port* startPort() const;
     Port* endPort() const;
 
+    void removeStartPort();
+    void removeEndPort();
+
     Port* oppositeSidePort(Port* port);
     void addConnector(Connector* connector);
 
+    QString name() const;
+    void setName(const QString &name);
+
+    QString connectionType() const;
+
 private:
+    QString m_name      = "";
+    QString m_connectionType = "";
     QPointF m_startPos;
     QPointF m_endPos;
     Port*   m_startPort = nullptr;

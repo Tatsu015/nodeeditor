@@ -20,21 +20,21 @@ HiddenNode::HiddenNode(QGraphicsItem* parent):
     path.addRoundedRect(0,0,NODE_SIZE, NODE_SIZE, ROUND_RADIUS, ROUND_RADIUS);
     setPath(path);
 
-    Port* port1 = new Port(Input, this);
+    Port* port1 = new Port(Input, 1, this);
     port1->setPen(PEN);
     port1->setBrush(BLUSH);
     port1->setPos(-port1->boundingRect().width() + PORT_POS_X_OFS,
                   PORT_POS_Y_OFS);
     addPort(port1);
 
-    Port* port2 = new Port(Input, this);
+    Port* port2 = new Port(Input, 2, this);
     port2->setPen(PEN);
     port2->setBrush(BLUSH);
     port2->setPos(-port2->boundingRect().width() + PORT_POS_X_OFS,
                   boundingRect().height() - port2->boundingRect().height() - PORT_POS_Y_OFS);
     addPort(port2);
 
-    Port* port3 = new Port(Output, this);
+    Port* port3 = new Port(Output, 3, this);
     port3->setPen(PEN);
     port3->setBrush(BLUSH);
     port3->setPos(boundingRect().width() - PORT_POS_X_OFS,

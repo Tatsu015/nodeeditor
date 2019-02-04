@@ -57,6 +57,16 @@ void AbstractNode::addPort(Port* port)
     m_ports << port;
 }
 
+Port *AbstractNode::port(const uint64_t number)
+{
+    foreach (Port* port, m_ports) {
+        if(number == port->number()){
+            return port;
+        }
+    }
+    return nullptr;
+}
+
 QList<AbstractNode*> AbstractNode::adjastOutNodes()
 {
     QList<AbstractNode*> nodes;

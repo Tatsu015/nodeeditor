@@ -14,7 +14,7 @@ enum IO : uint32_t{
 class Port : public QGraphicsPathItem
 {
 public:
-    Port(IO io, QGraphicsItem *parent = nullptr);
+    Port(IO io, uint64_t number, QGraphicsItem *parent = nullptr);
     virtual ~Port();
 
     QPointF centerScenePos();
@@ -25,9 +25,12 @@ public:
 
     IO io() const;
 
+    uint64_t number() const;
+
 private:
     QList<Connection*> m_connections;
     IO m_io;
+    uint64_t m_number = 0;
 };
 
 #endif // PORT_H

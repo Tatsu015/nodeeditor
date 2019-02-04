@@ -18,14 +18,15 @@ AbstractNode *NodeFactory::createNode(const QString &type, QString name)
     AbstractNode* node = m_nodeMap[type]->create();
 
     QString newName = name;
-    if(name.isEmpty()){
+    if(newName.isEmpty()){
         newName = NamePublisher::getInstance()->createName(node->nodeType());
+    }
+    else {
+        NamePublisher::getInstance()->updateLastNumber(name);
     }
 
     node->setName(newName);
     node->setupNameText();
-
-    NamePublisher::getInstance()->updateLastNumber(name);
 
     return node;
 }

@@ -10,6 +10,8 @@
 #include <QKeyEvent>
 #include <QGraphicsSceneMouseEvent>
 #include "Define.h"
+#include "NodeFactory.h"
+#include "ConnectionFactory.h"
 
 Scene::Scene(QObject* parent):
     QGraphicsScene(-750,-1000,2000,2000,parent),
@@ -106,10 +108,10 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
     QPointF startPortCenterPos = m_startPort->centerScenePos();
 
-    m_tmpConnection = new Connection();
+    m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
     m_tmpConnection->setStartPos(startPortCenterPos);
     m_tmpConnection->setEndPos(startPortCenterPos);
-    addItem(m_tmpConnection);
+    addConnection(m_tmpConnection);
 
     QGraphicsScene::mousePressEvent(event);
 }
@@ -280,26 +282,26 @@ Port*Scene::findEndPort(QPointF scenePos)
     return nullptr;
 }
 
-QList<Port*> Scene::aroundEndPorts(QPointF scenePos)
-{
-    QList<QGraphicsItem *> aroundItems = items(scenePos.x() - 20,
-                                               scenePos.y() - 20,
-                                               40,
-                                               40,
-                                               Qt::IntersectsItemShape,
-                                               Qt::AscendingOrder);
+//QList<Port*> Scene::aroundEndPorts(QPointF scenePos)
+//{
+//    QList<QGraphicsItem *> aroundItems = items(scenePos.x() - 20,
+//                                               scenePos.y() - 20,
+//                                               40,
+//                                               40,
+//                                               Qt::IntersectsItemShape,
+//                                               Qt::AscendingOrder);
 
-    QList<Port*> aroundEndPorts;
-    foreach (QGraphicsItem* item, aroundItems) {
-        Port* port = dynamic_cast<Port*>(item);
-        if(port){
-            if(Input == port->io()){
-                aroundEndPorts << port;
-            }
-        }
-    }
-    return aroundEndPorts;
-}
+//    QList<Port*> aroundEndPorts;
+//    foreach (QGraphicsItem* item, aroundItems) {
+//        Port* port = dynamic_cast<Port*>(item);
+//        if(port){
+//            if(Input == port->io()){
+//                aroundEndPorts << port;
+//            }
+//        }
+//    }
+//    return aroundEndPorts;
+//}
 
 Connection*Scene::findConnection(QPointF scenePos)
 {
@@ -353,21 +355,6 @@ bool Scene::existPort(QPointF scenePos)
     return false;
 }
 
-void Scene::removeNode(AbstractNode* node)
-{
-    foreach (Port* removeNodePort, node->ports()) {
-        foreach (Connection* connection, removeNodePort->connections()) {
-            removeNodePort->removeConnection(connection);
-            Port* oppositeSidePort = connection->oppositeSidePort(removeNodePort);
-            oppositeSidePort->removeConnection(connection);
-            removeItem(connection);
-            delete connection;
-        }
-    }
-    removeItem(node);
-    delete node;
-}
-
 void Scene::showConnector(QPointF scenePos)
 {
     if(!m_tmpConnector){
@@ -375,19 +362,6 @@ void Scene::showConnector(QPointF scenePos)
         addItem(m_tmpConnector);
     }
     m_tmpConnector->setPos(scenePos);
-}
-
-#include "NodeFactory.h"
-void Scene::createNode(QPointF scenePos)
-{
-    QString activeTool = Tool::getInstance()->activeTool();
-
-    AbstractNode* node = nullptr;
-    node = NodeFactory::getInstance()->createNode(activeTool);
-
-    QPointF ofs(node->boundingRect().center());
-    node->setPos(scenePos - ofs);
-    addNode(node);
 }
 
 QList<AbstractNode*> Scene::nodes() const
@@ -399,4 +373,54 @@ void Scene::addNode(AbstractNode *node)
 {
     m_nodes << node;
     addItem(node);
+}
+
+void Scene::removeNode(AbstractNode* node)
+{
+    foreach (Port* removeNodePort, node->ports()) {
+        foreach (Connection* connection, removeNodePort->connections()) {
+            removeNodePort->removeConnection(connection);
+            Port* oppositeSidePort = connection->oppositeSidePort(removeNodePort);
+            oppositeSidePort->removeConnection(connection);
+            removeItem(connection);
+            delete connection;
+        }
+    }
+    m_nodes.removeOne(node);
+    removeItem(node);
+    delete node;
+}
+
+QList<Connection *> Scene::connections() const
+{
+    return m_connections;
+}
+
+void Scene::addConnection(Connection *connection)
+{
+    m_connections.append(connection);
+    addItem(connection);
+}
+
+void Scene::removeConnection(Connection *connection)
+{
+    connection->startPort()->removeConnection(connection);
+    connection->endPort()->removeConnection(connection);
+
+    connection->removeStartPort();
+    connection->removeEndPort();
+
+    m_connections.removeOne(connection);
+}
+
+void Scene::createNode(QPointF scenePos)
+{
+    QString activeTool = Tool::getInstance()->activeTool();
+
+    AbstractNode* node = nullptr;
+    node = NodeFactory::getInstance()->createNode(activeTool);
+
+    QPointF ofs(node->boundingRect().center());
+    node->setPos(scenePos - ofs);
+    addNode(node);
 }

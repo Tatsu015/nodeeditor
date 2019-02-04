@@ -19,7 +19,7 @@ OutNode::OutNode(QGraphicsItem* parent):
     path.addRoundedRect(0,0,NODE_SIZE, NODE_SIZE*0.5, ROUND_RADIUS, ROUND_RADIUS);
     setPath(path);
 
-    Port* port1 = new Port(Input, this);
+    Port* port1 = new Port(Input, 1, this);
     port1->setPen(PEN);
     port1->setBrush(BLUSH);
     port1->setPos(-port1->boundingRect().width() + PORT_POS_X_OFS,

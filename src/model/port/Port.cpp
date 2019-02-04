@@ -5,8 +5,9 @@
 
 const static uint32_t PORT_SIZE = 12;
 
-Port::Port(IO io, QGraphicsItem* parent):
+Port::Port(IO io, uint64_t number, QGraphicsItem* parent):
     QGraphicsPathItem(parent),
+    m_number(number),
     m_io(io)
 {
     QPainterPath path;
@@ -41,5 +42,10 @@ QList<Connection*> Port::connections() const
 IO Port::io() const
 {
     return m_io;
+}
+
+uint64_t Port::number() const
+{
+    return m_number;
 }
 

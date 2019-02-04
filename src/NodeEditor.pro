@@ -58,7 +58,8 @@ HEADERS += \
     controller/publisher/NamePublisher.h \
     controller/extend/OpenAction.h \
     controller/extend/SaveAction.h \
-    controller/extend/AnalyzeCircuitAction.h
+    controller/extend/AnalyzeCircuitAction.h \
+    controller/factory/ConnectionFactory.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -81,7 +82,8 @@ SOURCES += \
     controller/publisher/NamePublisher.cpp \
     controller/extend/OpenAction.cpp \
     controller/extend/SaveAction.cpp \
-    controller/extend/AnalyzeCircuitAction.cpp
+    controller/extend/AnalyzeCircuitAction.cpp \
+    controller/factory/ConnectionFactory.cpp
 
 FORMS += \
     view/window/MainWindow.ui

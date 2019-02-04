@@ -10,6 +10,8 @@
 #include "Editor.h"
 #include "ErrorListWidget.h"
 #include "NodeFactory.h"
+#include "ConnectionFactory.h"
+#include "Connection.h"
 #include "AbstractNode.h"
 #include "HiddenNode.h"
 #include "InNode.h"
@@ -34,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     NodeFactory::getInstance()->addNode(NODE_IN,     new InNode());
     NodeFactory::getInstance()->addNode(NODE_OUT,    new OutNode());
     NodeFactory::getInstance()->addNode(NODE_HIDDEN, new HiddenNode());
+
+    ConnectionFactory::getInstance()->addConnection(CONNECTION, new Connection());
 
     // setup graphics view
     m_ui->graphicsView->setBackgroundBrush(QBrush(QColor(75,75,75)));

@@ -26,27 +26,34 @@ public:
 
     QList<AbstractNode*> nodes() const;
     void addNode(AbstractNode *node);
+    void removeNode(AbstractNode* node);
+
+    QList<Connection *> connections() const;
+    void addConnection(Connection *connection);
+    void removeConnection(Connection* connection);
 
 private:
     Port* findPort(QPointF scenePos);
     Port* findStartPort(QPointF scenePos);
     Port* findEndPort(QPointF scenePos);
+
     QList<AbstractNode*> findNodes(QPointF scenePos);
+
     Connection* findConnection(QPointF scenePos);
 
-    QList<Port*> aroundEndPorts(QPointF scenePos);
+//    QList<Port*> aroundEndPorts(QPointF scenePos);
 
     bool existInNode(QPointF scenePos);
     bool existNode(QPointF scenePos);
     bool existPort(QPointF scenePos);
 
     void createNode(QPointF scenePos);
-    void removeNode(AbstractNode* node);
 
     void showConnector(QPointF scenePos);
 
 private:
     QList<AbstractNode*> m_nodes;
+    QList<Connection*>   m_connections;
     Connection*  m_tmpConnection  = nullptr;
     Connector*   m_tmpConnector   = nullptr;
     Port*        m_startPort      = nullptr;

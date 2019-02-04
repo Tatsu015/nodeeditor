@@ -2,15 +2,22 @@
 #include "Port.h"
 #include "Connector.h"
 #include <QPen>
+#include "Define.h"
 
 Connection::Connection(QGraphicsItem* parent):
     QGraphicsPathItem(parent)
 {
+    m_connectionType = CONNECTION;
     setPen(QPen(Qt::gray, 2));
 }
 
 Connection::~Connection()
 {
+}
+
+Connection *Connection::create()
+{
+    return new Connection();
 }
 
 void Connection::setStartPos(const QPointF& startPos)
@@ -74,6 +81,16 @@ Port* Connection::endPort() const
     return m_endPort;
 }
 
+void Connection::removeStartPort()
+{
+    m_startPort = nullptr;
+}
+
+void Connection::removeEndPort()
+{
+    m_endPort = nullptr;
+}
+
 Port*Connection::oppositeSidePort(Port* port)
 {
     if(port == m_startPort){
@@ -88,4 +105,19 @@ void Connection::addConnector(Connector* connector)
 {
     connector->setParentItem(this);
     m_connectors << connector;
+}
+
+QString Connection::name() const
+{
+    return m_name;
+}
+
+void Connection::setName(const QString &name)
+{
+    m_name = name;
+}
+
+QString Connection::connectionType() const
+{
+    return m_connectionType;
 }
