@@ -31,6 +31,7 @@ public:
     QList<Connection *> connections() const;
     void addConnection(Connection *connection);
     void removeConnection(Connection* connection);
+    void connectConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName, int32_t endPortNumber);
 
 private:
     Port* findPort(QPointF scenePos);
@@ -38,10 +39,9 @@ private:
     Port* findEndPort(QPointF scenePos);
 
     QList<AbstractNode*> findNodes(QPointF scenePos);
+    AbstractNode* findNode(const QString& nodeName);
 
     Connection* findConnection(QPointF scenePos);
-
-//    QList<Port*> aroundEndPorts(QPointF scenePos);
 
     bool existInNode(QPointF scenePos);
     bool existNode(QPointF scenePos);

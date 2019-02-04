@@ -6,6 +6,9 @@
 #include "Scene.h"
 #include "AbstractNode.h"
 #include "NodeFactory.h"
+#include "Connection.h"
+#include "Port.h"
+
 
 Project::Project()
 {
@@ -71,8 +74,23 @@ QByteArray Project::toJson()
         nodeJsonArray.append(nodeJsonObj);
     }
 
+    QJsonArray linkJsonArray;
+    foreach (Connection* connection, scene->connections()) {
+        QJsonObject connectionJsonObj;
+        Port* startPort = connection->startPort();
+        Port* endPort   = connection->endPort();
+
+        connectionJsonObj["startNodeName"]   = startPort->parentNode()->name();
+        connectionJsonObj["startPortNumber"] = QString::number(startPort->number());
+        connectionJsonObj["endNodeName"]     = endPort->parentNode()->name();
+        connectionJsonObj["endPortNumber"]   = QString::number(endPort->number());
+
+        linkJsonArray.append(connectionJsonObj);
+    }
+
     QJsonObject jsonObj;
     jsonObj["nodes"] = nodeJsonArray;
+    jsonObj["link"]  = linkJsonArray;
 
     QJsonDocument doc(jsonObj);
 
@@ -83,9 +101,9 @@ void Project::fromJson(const QByteArray &data)
 {
     QJsonDocument doc(QJsonDocument::fromJson(data));
     QJsonObject rootObj(doc.object());
-    QJsonArray nodeJsonObjs = rootObj["nodes"].toArray();
-
     Scene* scene = Editor::getInstance()->project()->scene();
+
+    QJsonArray nodeJsonObjs = rootObj["nodes"].toArray();
     foreach (QJsonValue nodeJsonVal, nodeJsonObjs) {
 
         QString name     = nodeJsonVal["name"].toString();
@@ -98,6 +116,16 @@ void Project::fromJson(const QByteArray &data)
         node->setPos(x, y);
 
         scene->addNode(node);
+    }
+
+    QJsonArray linkJsonObjs = rootObj["link"].toArray();
+    foreach (QJsonValue linkJsonVal, linkJsonObjs) {
+        QString  startNodeName   = linkJsonVal["startNodeName"].toString();
+        uint32_t startPortNumber = linkJsonVal["startPortNumber"].toString().toInt();
+        QString  endNodeName     = linkJsonVal["endNodeName"].toString();
+        uint32_t endPortNumber   = linkJsonVal["endPortNumber"].toString().toInt();
+
+        scene->connectConnection(startNodeName, startPortNumber, endNodeName, endPortNumber);
     }
 }
 

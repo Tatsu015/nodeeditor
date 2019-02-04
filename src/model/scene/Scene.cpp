@@ -282,27 +282,6 @@ Port*Scene::findEndPort(QPointF scenePos)
     return nullptr;
 }
 
-//QList<Port*> Scene::aroundEndPorts(QPointF scenePos)
-//{
-//    QList<QGraphicsItem *> aroundItems = items(scenePos.x() - 20,
-//                                               scenePos.y() - 20,
-//                                               40,
-//                                               40,
-//                                               Qt::IntersectsItemShape,
-//                                               Qt::AscendingOrder);
-
-//    QList<Port*> aroundEndPorts;
-//    foreach (QGraphicsItem* item, aroundItems) {
-//        Port* port = dynamic_cast<Port*>(item);
-//        if(port){
-//            if(Input == port->io()){
-//                aroundEndPorts << port;
-//            }
-//        }
-//    }
-//    return aroundEndPorts;
-//}
-
 Connection*Scene::findConnection(QPointF scenePos)
 {
     QList<QGraphicsItem *> pressedItems = items(scenePos);
@@ -329,6 +308,16 @@ QList<AbstractNode*> Scene::findNodes(QPointF scenePos)
     }
 
     return nodes;
+}
+
+AbstractNode *Scene::findNode(const QString &nodeName)
+{
+    foreach (AbstractNode* node, m_nodes) {
+        if(nodeName == node->name()){
+            return node;
+        }
+    }
+    return nullptr;
 }
 
 bool Scene::existNode(QPointF scenePos)
@@ -411,6 +400,26 @@ void Scene::removeConnection(Connection *connection)
     connection->removeEndPort();
 
     m_connections.removeOne(connection);
+}
+
+void Scene::connectConnection(const QString &startNodeName, int32_t startPortNumber, const QString &endNodeName, int32_t endPortNumber)
+{
+    AbstractNode* startNode = findNode(startNodeName);
+    AbstractNode* endNode   = findNode(endNodeName);
+
+    Port* startPort = startNode->port(startPortNumber);
+    Port* endPort   = endNode->port(endPortNumber);
+
+    Connection* connection = new Connection();
+    connection->setStartPort(startPort);
+    connection->setEndPort(endPort);
+
+    startPort->addConnection(connection);
+    endPort->addConnection(connection);
+
+    addConnection(connection);
+
+    connection->updatePath();
 }
 
 void Scene::createNode(QPointF scenePos)

@@ -5,6 +5,7 @@
 
 class Connection;
 class Port;
+class AbstractNode;
 
 enum IO : uint32_t{
     Input,
@@ -14,7 +15,7 @@ enum IO : uint32_t{
 class Port : public QGraphicsPathItem
 {
 public:
-    Port(IO io, uint64_t number, QGraphicsItem *parent = nullptr);
+    Port(IO io, uint32_t number, QGraphicsItem *parent = nullptr);
     virtual ~Port();
 
     QPointF centerScenePos();
@@ -25,12 +26,15 @@ public:
 
     IO io() const;
 
-    uint64_t number() const;
+    uint32_t number() const;
+
+    AbstractNode *parentNode() const;
 
 private:
     QList<Connection*> m_connections;
+    AbstractNode*      m_parentNode = nullptr;
     IO m_io;
-    uint64_t m_number = 0;
+    uint32_t m_number = 0;
 };
 
 #endif // PORT_H

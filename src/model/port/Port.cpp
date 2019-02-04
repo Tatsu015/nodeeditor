@@ -1,12 +1,14 @@
 #include "Port.h"
 #include  "Connection.h"
+#include "AbstractNode.h"
 #include <QBrush>
 #include <QPen>
 
 const static uint32_t PORT_SIZE = 12;
 
-Port::Port(IO io, uint64_t number, QGraphicsItem* parent):
+Port::Port(IO io, uint32_t number, QGraphicsItem* parent):
     QGraphicsPathItem(parent),
+    m_parentNode(dynamic_cast<AbstractNode*>(parent)),
     m_number(number),
     m_io(io)
 {
@@ -44,8 +46,13 @@ IO Port::io() const
     return m_io;
 }
 
-uint64_t Port::number() const
+uint32_t Port::number() const
 {
     return m_number;
+}
+
+AbstractNode *Port::parentNode() const
+{
+    return m_parentNode;
 }
 
