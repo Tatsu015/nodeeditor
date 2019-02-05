@@ -9,8 +9,8 @@ const static uint32_t PORT_SIZE = 12;
 Port::Port(IO io, uint32_t number, QGraphicsItem* parent):
     QGraphicsPathItem(parent),
     m_parentNode(dynamic_cast<AbstractNode*>(parent)),
-    m_number(number),
-    m_io(io)
+    m_io(io),
+    m_number(number)
 {
     QPainterPath path;
     path.addEllipse(0,0,PORT_SIZE, PORT_SIZE);

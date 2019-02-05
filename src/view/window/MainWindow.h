@@ -28,10 +28,6 @@ private:
     };
 
 private:
-    void addToolBarAction(QAction* action);
-    void setDefaultToolBarAction(QString actionName);
-
-private:
     Ui::MainWindow* m_ui    = nullptr;
     QMap<QString, ToolBarAction*> m_toolBarActions;
 };

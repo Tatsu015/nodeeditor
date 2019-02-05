@@ -3,7 +3,8 @@
 #include "AbstractNode.h"
 
 
-ErrorListWidget::ErrorListWidget(QWidget* parent)
+ErrorListWidget::ErrorListWidget(QWidget* parent):
+    QListWidget(parent)
 {
 }
 
@@ -13,6 +14,8 @@ ErrorListWidget::~ErrorListWidget()
 
 void ErrorListWidget::onAddErrorWidgetItem(AbstractNode* node, const QString& errorMessage, BugType type)
 {
+    Q_UNUSED(node);
+
     QMap<BugType, QString> BUGTYPE_ICONNAME = {
         {Warning, "../resource/warning.png"},
         {Error,   "../resource/error.png"}

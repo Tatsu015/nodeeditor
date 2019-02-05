@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 INCLUDEPATH += \
+    controller/builder \
     controller/editor \
     controller/extend \
     controller/factory \
@@ -59,7 +60,8 @@ HEADERS += \
     controller/extend/OpenAction.h \
     controller/extend/SaveAction.h \
     controller/extend/AnalyzeCircuitAction.h \
-    controller/factory/ConnectionFactory.h
+    controller/factory/ConnectionFactory.h \
+    controller/builder/Builder.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -83,7 +85,8 @@ SOURCES += \
     controller/extend/OpenAction.cpp \
     controller/extend/SaveAction.cpp \
     controller/extend/AnalyzeCircuitAction.cpp \
-    controller/factory/ConnectionFactory.cpp
+    controller/factory/ConnectionFactory.cpp \
+    controller/builder/Builder.cpp
 
 FORMS += \
     view/window/MainWindow.ui

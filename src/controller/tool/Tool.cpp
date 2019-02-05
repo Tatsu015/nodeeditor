@@ -11,17 +11,18 @@ void Tool::addTool(const QString& tool)
     m_tools << tool;
 }
 
-void Tool::changeActiveTool(const QString& activeTool)
+void Tool::changeActiveTool(const QString& activeToolName)
 {
-    m_activeTool = activeTool;
+    m_activeToolName = activeToolName;
 }
 
 QString Tool::activeTool() const
 {
-    return m_activeTool;
+    return m_activeToolName;
 }
 
-Tool::Tool()
+Tool::Tool(QObject *parent):
+    QObject(parent)
 {
 }
 

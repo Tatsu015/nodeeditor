@@ -1,24 +1,27 @@
 #ifndef TOOL_H
 #define TOOL_H
 
+#include <QObject>
 #include <QStringList>
 
-class Tool
+class Tool : public QObject
 {
+    Q_OBJECT
+
 public:
     static Tool* getInstance();
 
     void addTool(const QString& tool);
 
     QString activeTool() const;
-    void changeActiveTool(const QString& activeTool);
+    void changeActiveTool(const QString& activeToolName);
 
 private:
-    QString     m_activeTool;
+    QString     m_activeToolName;
     QStringList m_tools;
 
 private:
-    Tool();
+    Tool(QObject *parent=nullptr);
     ~Tool();
 };
 

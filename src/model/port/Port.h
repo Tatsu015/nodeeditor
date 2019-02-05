@@ -34,7 +34,7 @@ private:
     QList<Connection*> m_connections;
     AbstractNode*      m_parentNode = nullptr;
     IO m_io;
-    uint32_t m_number = 0;
+    uint32_t m_number;
 };
 
 #endif // PORT_H
