@@ -19,9 +19,10 @@ public:
     virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent *event);
 
 private:
-    void redrawTmpConnection(Scene *scene, Port* startPort, QPointF nowScenePos);
-    void decideConnection();
-    void removeTmpConnection();
+    void addTmpConnection(Scene *scene, Port* startPort);
+    void redrawTmpConnection(QPointF nowScenePos);
+    void decideConnection(Port *endPort);
+    void removeTmpConnection(Scene *scene);
 
 private:
     Port* m_startPort = nullptr;

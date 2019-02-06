@@ -25,6 +25,7 @@ public:
     AbstractTool* tool(const QString& toolName) const;
     AbstractTool* activeTool() const;
     void changeActiveTool(const QString& toolName);
+    void changeDefaultTool();
 
 private:
     QList<AbstractAction*> m_actions;

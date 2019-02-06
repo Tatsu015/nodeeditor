@@ -24,6 +24,8 @@ void ConnectionCreationTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEv
     }
 
     m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+    addTmpConnection(scene, m_startPort);
+
     m_isUsing = true;
 }
 
@@ -33,29 +35,33 @@ void ConnectionCreationTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEve
         return;
     }
 
-    redrawTmpConnection(scene, m_startPort, event->scenePos());
+    redrawTmpConnection(event->scenePos());
 }
 
+#include "Editor.h"
 void ConnectionCreationTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent *event)
 {
     if(!m_startPort){
         return;
     }
 
+    m_isUsing = false;
+
     Port* endPort = scene->findPort(event->scenePos());
     if(!endPort){
-        removeTmpConnection();
+        removeTmpConnection(scene);
+        return;
     }
     if(m_startPort == endPort){
-        removeTmpConnection();
+        removeTmpConnection(scene);
+        return;
     }
     if(m_startPort->parentNode() == endPort->parentNode()){
-        removeTmpConnection();
+        removeTmpConnection(scene);
+        return;
     }
 
-    decideConnection();
-
-    m_isUsing = false;
+    decideConnection(endPort);
 }
 
 void ConnectionCreationTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent *event)
@@ -64,17 +70,29 @@ void ConnectionCreationTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneM
     Q_UNUSED(event);
 }
 
-void ConnectionCreationTool::redrawTmpConnection(Scene* scene, Port *startPort, QPointF nowScenePos)
+void ConnectionCreationTool::addTmpConnection(Scene *scene, Port *startPort)
 {
-    m_tmpConnection->updatePath(startPort, nowScenePos);
+    scene->addConnection(m_tmpConnection, startPort);
 }
 
-void ConnectionCreationTool::decideConnection()
+void ConnectionCreationTool::redrawTmpConnection(QPointF nowScenePos)
 {
-
+    m_tmpConnection->updatePath(m_startPort, nowScenePos);
 }
 
-void ConnectionCreationTool::removeTmpConnection()
+void ConnectionCreationTool::decideConnection(Port* endPort)
 {
+    m_tmpConnection->setEndPort(endPort);
+    m_tmpConnection->setEndPos(endPort->centerScenePos());
+    endPort->addConnection(m_tmpConnection);
 
+    m_tmpConnection->updatePath();
+
+    m_tmpConnection = nullptr;
+    m_startPort     = nullptr;
+}
+
+void ConnectionCreationTool::removeTmpConnection(Scene *scene)
+{
+    scene->removeConnection(m_tmpConnection);
 }

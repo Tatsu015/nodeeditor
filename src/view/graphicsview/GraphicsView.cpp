@@ -20,16 +20,6 @@ GraphicsView::~GraphicsView()
 {
 }
 
-//#include <QDebug>
-//#include "Scene.h"
-//void GraphicsView::mouseMoveEvent(QMouseEvent *event)
-//{
-//    Scene* s = dynamic_cast<Scene*>(scene());
-//    qDebug() << "view : " << event->pos();
-//    qDebug() << "node : " << s->existNode(event->pos());
-//    QGraphicsView::mouseMoveEvent(event);
-//}
-
 void GraphicsView::wheelEvent(QWheelEvent* event)
 {
     if(!m_isControlPressed){

@@ -12,6 +12,8 @@ NodeCreateTool::NodeCreateTool():
     m_nodeTypes.append(NODE_IN    );
     m_nodeTypes.append(NODE_OUT   );
     m_nodeTypes.append(NODE_HIDDEN);
+
+    m_activeNodeType = m_nodeTypes.first();
 }
 
 NodeCreateTool::~NodeCreateTool()

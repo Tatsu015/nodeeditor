@@ -68,6 +68,11 @@ void Editor::changeActiveTool(const QString &toolName)
     m_activeTool = m_tools[toolName];
 }
 
+void Editor::changeDefaultTool()
+{
+    changeActiveTool("NODE");
+}
+
 Editor::Editor():
     m_graphicsView()
 {
