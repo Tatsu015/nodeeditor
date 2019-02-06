@@ -4,9 +4,8 @@
 #include <QDebug>
 #include "Editor.h"
 #include "Project.h"
+#include "Define.h"
 
-
-const QString OpenAction::ACTION_OPEN = "Open";
 
 OpenAction::OpenAction(QObject *parent):
     AbstractAction(parent)
@@ -17,11 +16,6 @@ OpenAction::OpenAction(QObject *parent):
 
 OpenAction::~OpenAction()
 {
-}
-
-QAction *OpenAction::action()
-{
-    return m_action;
 }
 
 QString OpenAction::name()

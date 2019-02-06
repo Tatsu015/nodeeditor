@@ -9,3 +9,8 @@ AbstractAction::~AbstractAction()
 {
 }
 
+QAction *AbstractAction::action()
+{
+    return m_action;
+}
+

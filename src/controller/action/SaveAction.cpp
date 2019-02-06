@@ -7,8 +7,7 @@
 #include <QJsonDocument>
 #include "AbstractNode.h"
 #include "Project.h"
-
-const QString SaveAction::ACTION_SAVE = "Save";
+#include "Define.h"
 
 SaveAction::SaveAction(QObject *parent):
     AbstractAction(parent)
@@ -19,11 +18,6 @@ SaveAction::SaveAction(QObject *parent):
 
 SaveAction::~SaveAction()
 {
-}
-
-QAction *SaveAction::action()
-{
-    return m_action;
 }
 
 QString SaveAction::name()

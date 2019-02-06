@@ -9,6 +9,7 @@
 #include "OutNode.h"
 #include "SaveAction.h"
 #include "OpenAction.h"
+#include "AnalyzeCircuitAction.h"
 #include "Define.h"
 #include "Builder.h"
 
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // setup action
     Editor::getInstance()->addAction(new OpenAction());
     Editor::getInstance()->addAction(new SaveAction());
+    Editor::getInstance()->addAction(new AnalyzeCircuitAction());
 
     Builder::getInstance()->build(this, m_ui);
 }

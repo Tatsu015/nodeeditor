@@ -5,6 +5,8 @@
 #include "ConnectionFactory.h"
 #include "Define.h"
 #include "Connection.h"
+#include "Editor.h"
+
 
 ConnectionCreationTool::ConnectionCreationTool()
 {
@@ -31,6 +33,7 @@ void ConnectionCreationTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEv
 
 void ConnectionCreationTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(scene);
     if(!m_startPort){
         return;
     }
@@ -38,7 +41,6 @@ void ConnectionCreationTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEve
     redrawTmpConnection(event->scenePos());
 }
 
-#include "Editor.h"
 void ConnectionCreationTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent *event)
 {
     if(!m_startPort){

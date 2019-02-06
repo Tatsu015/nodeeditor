@@ -337,6 +337,21 @@ void Scene::addConnection(Connection *connection, Port *startPort, Port *endPort
     addItem(connection);
 }
 
+void Scene::addConnection(const QString &startNodeName, int32_t startPortNumber, const QString &endNodeName, int32_t endPortNumber)
+{
+    AbstractNode* startNode = findNode(startNodeName);
+    AbstractNode* endNode   = findNode(endNodeName);
+
+    Port* startPort = startNode->port(startPortNumber);
+    Port* endPort   = endNode->port(endPortNumber);
+
+    Connection* connection = new Connection();
+
+    addConnection(connection, startPort, endPort);
+
+    connection->updatePath();
+}
+
 void Scene::removeConnection(Connection *connection)
 {
     // when connection is tmp connection,
@@ -358,17 +373,3 @@ void Scene::removeConnection(Connection *connection)
     connection = nullptr;
 }
 
-void Scene::connectConnection(const QString &startNodeName, int32_t startPortNumber, const QString &endNodeName, int32_t endPortNumber)
-{
-    AbstractNode* startNode = findNode(startNodeName);
-    AbstractNode* endNode   = findNode(endNodeName);
-
-    Port* startPort = startNode->port(startPortNumber);
-    Port* endPort   = endNode->port(endPortNumber);
-
-    Connection* connection = new Connection();
-
-    addConnection(connection, startPort, endPort);
-
-    connection->updatePath();
-}

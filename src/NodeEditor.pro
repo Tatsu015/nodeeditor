@@ -25,7 +25,7 @@ CONFIG += c++11
 INCLUDEPATH += \
     controller/builder \
     controller/editor \
-    controller/extend \
+    controller/action \
     controller/factory \
     controller/publisher \
     controller/tool \
@@ -40,7 +40,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     controller/editor/Editor.h \
-    controller/extend/AbstractAction.h \
+    controller/action/AbstractAction.h \
     controller/tool/Tool.h \
     model/connection/Connection.h \
     model/connection/Connector.h \
@@ -57,9 +57,9 @@ HEADERS += \
     model/node/AbstractNode.h \
     util/Define.h \
     controller/publisher/NamePublisher.h \
-    controller/extend/OpenAction.h \
-    controller/extend/SaveAction.h \
-    controller/extend/AnalyzeCircuitAction.h \
+    controller/action/OpenAction.h \
+    controller/action/SaveAction.h \
+    controller/action/AnalyzeCircuitAction.h \
     controller/factory/ConnectionFactory.h \
     controller/builder/Builder.h \
     view/graphicsview/GraphicsView.h \
@@ -70,7 +70,7 @@ HEADERS += \
 
 SOURCES += \
     controller/editor/Editor.cpp \
-    controller/extend/AbstractAction.cpp \
+    controller/action/AbstractAction.cpp \
     controller/tool/Tool.cpp \
     model/connection/Connection.cpp \
     model/connection/Connector.cpp \
@@ -87,9 +87,9 @@ SOURCES += \
     controller/factory/NodeFactory.cpp \
     model/node/AbstractNode.cpp \
     controller/publisher/NamePublisher.cpp \
-    controller/extend/OpenAction.cpp \
-    controller/extend/SaveAction.cpp \
-    controller/extend/AnalyzeCircuitAction.cpp \
+    controller/action/OpenAction.cpp \
+    controller/action/SaveAction.cpp \
+    controller/action/AnalyzeCircuitAction.cpp \
     controller/factory/ConnectionFactory.cpp \
     controller/builder/Builder.cpp \
     view/graphicsview/GraphicsView.cpp \

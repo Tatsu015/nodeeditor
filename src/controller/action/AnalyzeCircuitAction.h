@@ -1,7 +1,7 @@
 #ifndef ANALYZECURCUIT_H
 #define ANALYZECURCUIT_H
 
-#include <QObject>
+#include "AbstractAction.h"
 #include <QList>
 #include <QDockWidget>
 #include "ErrorListWidget.h"
@@ -10,13 +10,15 @@
 class QAction;
 class AbstractNode;
 
-class AnalyzeCircuitAction : public QObject
+class AnalyzeCircuitAction : public AbstractAction
 {
     Q_OBJECT
 
 public:
     AnalyzeCircuitAction(QObject *parent=nullptr);
     virtual ~AnalyzeCircuitAction();
+
+    virtual QString name();
 
     QAction* ExportScriptAction() const;
 
@@ -30,7 +32,7 @@ signals:
 
 
 private slots:
-    void Export();
+    void execute();
 
 private:
     struct ConnectedGraph
@@ -50,7 +52,7 @@ private:
     QList<AbstractNode*> HiddenNodes(const QList<AbstractNode*>& nodes);
 
 private:
-    QAction* m_exportScriptAction = nullptr;
+    QAction* m_action = nullptr;
     QDockWidget* m_dockWidget = nullptr;
     ErrorListWidget* m_listWidget = nullptr;
 };

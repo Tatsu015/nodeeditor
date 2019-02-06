@@ -18,8 +18,7 @@
 #include "HiddenNode.h"
 #include "InNode.h"
 #include "OutNode.h"
-#include "SaveAction.h"
-#include "OpenAction.h"
+#include "AbstractAction.h"
 #include "Define.h"
 #include "NodeCreateTool.h"
 
@@ -50,11 +49,17 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui)
 {
     Q_UNUSED(mainWindow);
 
-    // setup menu
     QMenu* fileMenu = new QMenu("File");
     ui->menuBar->addMenu(fileMenu);
-    fileMenu->addAction(Editor::getInstance()->action(SaveAction::ACTION_SAVE)->action());
-    fileMenu->addAction(Editor::getInstance()->action(OpenAction::ACTION_OPEN)->action());
+    fileMenu->addAction(Editor::getInstance()->action(ACTION_OPEN)->action());
+    fileMenu->addAction(Editor::getInstance()->action(ACTION_SAVE)->action());
+
+    QMenu* viewMenu = new QMenu("View");
+    ui->menuBar->addMenu(viewMenu);
+    QMenu* dockMenu = new QMenu("Dock");
+    viewMenu->addMenu(dockMenu);
+    AnalyzeCircuitAction* ep = dynamic_cast<AnalyzeCircuitAction*>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
+    dockMenu->addAction(ep->DockWidget()->toggleViewAction());
 }
 
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui)
@@ -71,7 +76,7 @@ void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui)
 
 void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui)
 {
-    AnalyzeCircuitAction* ep = new AnalyzeCircuitAction();
+    AnalyzeCircuitAction* ep = dynamic_cast<AnalyzeCircuitAction*>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
     ui->menuBar->addAction(ep->ExportScriptAction());
 
     mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());

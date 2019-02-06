@@ -10,28 +10,33 @@
 #include <QAction>
 #include <QDebug>
 #include <algorithm>
+#include "Define.h"
 
 AnalyzeCircuitAction::AnalyzeCircuitAction(QObject *parent):
-    QObject(parent)
+    AbstractAction(parent)
 {
-    m_exportScriptAction = new QAction("Export");
-    m_exportScriptAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+    m_action = new QAction(ACTION_ANALYZE_CIRCUIT);
+    m_action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
 
     m_dockWidget = new QDockWidget();
+    m_dockWidget->setWindowTitle("Debug");
     m_listWidget = new ErrorListWidget();
     m_dockWidget->setWidget(m_listWidget);
 
-    QObject::connect(m_exportScriptAction, &QAction::triggered,
-                     this, &AnalyzeCircuitAction::Export);
+    QObject::connect(m_action, &QAction::triggered, this, &AnalyzeCircuitAction::execute);
 }
 
 AnalyzeCircuitAction::~AnalyzeCircuitAction()
 {
 }
 
-void AnalyzeCircuitAction::Export()
+QString AnalyzeCircuitAction::name()
 {
+    return ACTION_ANALYZE_CIRCUIT;
+}
 
+void AnalyzeCircuitAction::execute()
+{
     QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
     if(!CheckAllPortFilled(nodes)){
@@ -145,7 +150,7 @@ QDockWidget* AnalyzeCircuitAction::DockWidget() const
 
 QAction* AnalyzeCircuitAction::ExportScriptAction() const
 {
-    return m_exportScriptAction;
+    return m_action;
 }
 
 bool AnalyzeCircuitAction::CheckAllPortFilled(const QList<AbstractNode*>& nodes)

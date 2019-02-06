@@ -124,7 +124,7 @@ void Project::fromJson(const QByteArray &data)
         QString  endNodeName     = linkJsonVal["endNodeName"].toString();
         uint32_t endPortNumber   = linkJsonVal["endPortNumber"].toString().toInt();
 
-        scene->connectConnection(startNodeName, startPortNumber, endNodeName, endPortNumber);
+        scene->addConnection(startNodeName, startPortNumber, endNodeName, endPortNumber);
     }
 }
 
