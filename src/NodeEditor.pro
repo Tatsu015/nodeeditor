@@ -61,7 +61,12 @@ HEADERS += \
     controller/extend/SaveAction.h \
     controller/extend/AnalyzeCircuitAction.h \
     controller/factory/ConnectionFactory.h \
-    controller/builder/Builder.h
+    controller/builder/Builder.h \
+    view/graphicsview/GraphicsView.h \
+    controller/tool/NodeCreateTool.h \
+    controller/tool/AbstractTool.h \
+    controller/tool/ConnectionCreationTool.h \
+    view/widget/NodeToolBar.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -86,7 +91,12 @@ SOURCES += \
     controller/extend/SaveAction.cpp \
     controller/extend/AnalyzeCircuitAction.cpp \
     controller/factory/ConnectionFactory.cpp \
-    controller/builder/Builder.cpp
+    controller/builder/Builder.cpp \
+    view/graphicsview/GraphicsView.cpp \
+    controller/tool/NodeCreateTool.cpp \
+    controller/tool/AbstractTool.cpp \
+    controller/tool/ConnectionCreationTool.cpp \
+    view/widget/NodeToolBar.cpp
 
 FORMS += \
     view/window/MainWindow.ui

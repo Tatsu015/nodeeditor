@@ -4,6 +4,9 @@
 #include "Project.h"
 #include "AbstractAction.h"
 
+#include "NodeCreateTool.h"
+#include "ConnectionCreationTool.h"
+
 Editor* Editor::getInstance()
 {
     static Editor s;
@@ -18,6 +21,11 @@ void Editor::init()
     Project* newProject = Editor::getInstance()->project();
     Scene*   newScene   = newProject->scene();
     m_graphicsView->setScene(newScene);
+
+    m_tools["NODE"]       = new NodeCreateTool();
+    m_tools["CONNECTION"] = new ConnectionCreationTool();
+
+    m_activeTool = m_tools["NODE"];
 }
 
 AbstractAction *Editor::action(const QString& name)
@@ -43,6 +51,21 @@ Project *Editor::project() const
 void Editor::setGraphicsView(QGraphicsView *graphicsView)
 {
     m_graphicsView = graphicsView;
+}
+
+AbstractTool *Editor::tool(const QString &toolName) const
+{
+    return m_tools[toolName];
+}
+
+AbstractTool *Editor::activeTool() const
+{
+    return m_activeTool;
+}
+
+void Editor::changeActiveTool(const QString &toolName)
+{
+    m_activeTool = m_tools[toolName];
 }
 
 Editor::Editor():

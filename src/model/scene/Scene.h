@@ -25,16 +25,20 @@ public:
     virtual void keyReleaseEvent(QKeyEvent *event);
 
     QList<AbstractNode*> nodes() const;
-    void addNode(AbstractNode *node);
+    void addNode(AbstractNode *node, QPointF scenePos);
     void removeNode(AbstractNode* node);
 
     QList<Connection *> connections() const;
-    void addConnection(Connection *connection);
+    void addConnection(Connection *connection, Port* startPort);
+    void addConnection(Connection *connection, Port* startPort, Port* endPort);
     void removeConnection(Connection* connection);
     void connectConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName, int32_t endPortNumber);
 
-private:
+    bool existNode(QPointF pos);
+    bool existPort(QPointF scenePos);
     Port* findPort(QPointF scenePos);
+
+private:
     Port* findStartPort(QPointF scenePos);
     Port* findEndPort(QPointF scenePos);
 
@@ -44,10 +48,6 @@ private:
     Connection* findConnection(QPointF scenePos);
 
     bool existInNode(QPointF scenePos);
-    bool existNode(QPointF scenePos);
-    bool existPort(QPointF scenePos);
-
-    void createNode(QPointF scenePos);
 
     void showConnector(QPointF scenePos);
 

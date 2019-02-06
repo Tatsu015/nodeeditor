@@ -34,7 +34,6 @@ private:
     void buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui);
     void buildDockWidget(MainWindow* mainWindow, Ui::MainWindow* ui);
 
-    void addToolBarAction(QAction* action, Ui::MainWindow *ui);
     void setDefaultToolBarAction(QString actionName);
 
 private slots:

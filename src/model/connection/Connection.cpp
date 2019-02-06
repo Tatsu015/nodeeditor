@@ -71,6 +71,20 @@ void Connection::updatePath()
     setPath(path);
 }
 
+void Connection::updatePath(Port *startPort, Port *endPort)
+{
+    m_startPort = startPort;
+    m_endPort   = endPort;
+    updatePath();
+}
+
+void Connection::updatePath(Port *startPort, QPointF endScenePos)
+{
+    m_startPort = startPort;
+    m_endPos = endScenePos;
+    updatePath();
+}
+
 Port* Connection::startPort() const
 {
     return m_startPort;

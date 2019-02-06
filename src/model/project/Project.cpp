@@ -113,9 +113,8 @@ void Project::fromJson(const QByteArray &data)
 
         AbstractNode* node = NodeFactory::getInstance()->createNode(nodeType, name);
         node->setName(name);
-        node->setPos(x, y);
 
-        scene->addNode(node);
+        scene->addNode(node, QPointF(x, y));
     }
 
     QJsonArray linkJsonObjs = rootObj["link"].toArray();

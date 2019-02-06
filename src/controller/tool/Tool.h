@@ -14,7 +14,9 @@ public:
     void addTool(const QString& tool);
 
     QString activeTool() const;
-    void changeActiveTool(const QString& activeToolName);
+
+public slots:
+    void changeActiveTool(const QString& nodeToolName);
 
 private:
     QString     m_activeToolName;

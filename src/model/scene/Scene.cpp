@@ -12,6 +12,11 @@
 #include "Define.h"
 #include "NodeFactory.h"
 #include "ConnectionFactory.h"
+#include "NodeCreateTool.h"
+#include "Editor.h"
+#include "AbstractTool.h"
+
+
 
 Scene::Scene(QObject* parent):
     QGraphicsScene(-750,-1000,2000,2000,parent),
@@ -105,104 +110,113 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent* event)
         QGraphicsScene::mousePressEvent(event);
         return;
     }
+    Editor::getInstance()->activeTool()->mousePressEvent(this, event);
 
-    QPointF startPortCenterPos = m_startPort->centerScenePos();
+//    QPointF startPortCenterPos = m_startPort->centerScenePos();
 
-    m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
-    m_tmpConnection->setStartPos(startPortCenterPos);
-    m_tmpConnection->setEndPos(startPortCenterPos);
-    addConnection(m_tmpConnection);
+//    m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+//    m_tmpConnection->setStartPos(startPortCenterPos);
+//    m_tmpConnection->setEndPos(startPortCenterPos);
+//    addConnection(m_tmpConnection);
 
     QGraphicsScene::mousePressEvent(event);
 }
 
 void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(!m_tmpConnection){
-        QGraphicsScene::mouseMoveEvent(event);
-        return;
+    if(!Editor::getInstance()->activeTool()->isUsing()){
+        if(existNode(event->scenePos())){
+            qDebug() << "node";
+            Editor::getInstance()->changeActiveTool("NODE");
+        }
+        else if(existPort(event->scenePos())){
+            qDebug() << "port";
+            Editor::getInstance()->changeActiveTool("CONNECTION");
+        }
+        else{
+            qDebug() << "none";
+            Editor::getInstance()->changeActiveTool("NODE");
+        }
     }
-    m_tmpConnection->setEndPos(event->scenePos());
 
-    Connection* endConnection = findConnection(event->scenePos());
-    if(endConnection){
-        if(!m_tmpConnector){
-            m_tmpConnector = new Connector();
-            QPointF ofs(m_tmpConnector->boundingRect().center());
-            m_tmpConnector->setPos(event->scenePos() - ofs);
-            addItem(m_tmpConnector);
-        }
-    }
-    else{
-        if(m_tmpConnector){
-            removeItem(m_tmpConnector);
-            m_tmpConnector->setParentItem(nullptr);
-            m_tmpConnector = nullptr;
-        }
-    }
+    Editor::getInstance()->activeTool()->mousePressEvent(this, event);
+//    if(!m_tmpConnection){
+//        QGraphicsScene::mouseMoveEvent(event);
+//        return;
+//    }
+//    m_tmpConnection->setEndPos(event->scenePos());
+
+//    Connection* endConnection = findConnection(event->scenePos());
+//    if(endConnection){
+//        if(!m_tmpConnector){
+//            m_tmpConnector = new Connector();
+//            QPointF ofs(m_tmpConnector->boundingRect().center());
+//            m_tmpConnector->setPos(event->scenePos() - ofs);
+//            addItem(m_tmpConnector);
+//        }
+//    }
+//    else{
+//        if(m_tmpConnector){
+//            removeItem(m_tmpConnector);
+//            m_tmpConnector->setParentItem(nullptr);
+//            m_tmpConnector = nullptr;
+//        }
+//    }
 
     QGraphicsScene::mouseMoveEvent(event);
 }
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(!m_tmpConnection){
-        QGraphicsScene::mouseReleaseEvent(event);
-        return;
-    }
 
-    Port* endPort = findPort(event->scenePos());
-    if(endPort){
-        if(Input == endPort->io()){
-            m_tmpConnection->setStartPort(m_startPort);
-            m_tmpConnection->setEndPort(endPort);
-        }
-        else{
-            m_tmpConnection->setStartPort(endPort);
-            m_tmpConnection->setEndPort(m_startPort);
-        }
+//    if(!m_tmpConnection){
+//        QGraphicsScene::mouseReleaseEvent(event);
+//        return;
+//    }
 
-        m_startPort->addConnection(m_tmpConnection);
-        endPort->addConnection(m_tmpConnection);
+//    Port* endPort = findPort(event->scenePos());
+//    if(endPort){
+//        if(Input == endPort->io()){
+//            m_tmpConnection->setStartPort(m_startPort);
+//            m_tmpConnection->setEndPort(endPort);
+//        }
+//        else{
+//            m_tmpConnection->setStartPort(endPort);
+//            m_tmpConnection->setEndPort(m_startPort);
+//        }
 
-        m_tmpConnection = nullptr;
+//        m_startPort->addConnection(m_tmpConnection);
+//        endPort->addConnection(m_tmpConnection);
 
-        QGraphicsScene::mouseReleaseEvent(event);
-        return;
-    }
+//        m_tmpConnection = nullptr;
 
-    if(m_tmpConnector){
-        //        Connection* endConnection = FindConnection(event->scenePos());
-        //        endConnection->AddConnector(m_tmpConnector);
+//        QGraphicsScene::mouseReleaseEvent(event);
+//        return;
+//    }
 
-        //        m_tmpConnection->SetStartPort(m_startPort);
-        //        m_tmpConnection->SetEndPort(nullptr);
+//    if(m_tmpConnector){
+//        //        Connection* endConnection = FindConnection(event->scenePos());
+//        //        endConnection->AddConnector(m_tmpConnector);
 
-        //        m_startPort->AddConnection(m_tmpConnection);
+//        //        m_tmpConnection->SetStartPort(m_startPort);
+//        //        m_tmpConnection->SetEndPort(nullptr);
 
-        //        m_tmpConnection = nullptr;
+//        //        m_startPort->AddConnection(m_tmpConnection);
 
-        //        QGraphicsScene::mouseReleaseEvent(event);
-        //        return;
-    }
+//        //        m_tmpConnection = nullptr;
 
-    removeItem(m_tmpConnection);
-    delete m_tmpConnection;
-    m_tmpConnection = nullptr;
+//        //        QGraphicsScene::mouseReleaseEvent(event);
+//        //        return;
+//    }
+
+//    removeConnection(m_tmpConnection);
+    Editor::getInstance()->activeTool()->mousePressEvent(this, event);
     QGraphicsScene::mousePressEvent(event);
-    return;
-
 }
 
 void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(existPort(event->scenePos())){
-        QGraphicsScene::mouseDoubleClickEvent(event);
-        return;
-    }
-
-    createNode(event->scenePos());
-
+    Editor::getInstance()->activeTool()->mouseDoubleClickEvent(this, event);
     QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
@@ -358,8 +372,9 @@ QList<AbstractNode*> Scene::nodes() const
     return m_nodes;
 }
 
-void Scene::addNode(AbstractNode *node)
+void Scene::addNode(AbstractNode *node, QPointF scenePos)
 {
+    node->setPos(scenePos);
     m_nodes << node;
     addItem(node);
 }
@@ -368,16 +383,18 @@ void Scene::removeNode(AbstractNode* node)
 {
     foreach (Port* removeNodePort, node->ports()) {
         foreach (Connection* connection, removeNodePort->connections()) {
-            removeNodePort->removeConnection(connection);
-            Port* oppositeSidePort = connection->oppositeSidePort(removeNodePort);
-            oppositeSidePort->removeConnection(connection);
-            removeItem(connection);
-            delete connection;
+            removeConnection(connection);
+//            removeNodePort->removeConnection(connection);
+//            Port* oppositeSidePort = connection->oppositeSidePort(removeNodePort);
+//            oppositeSidePort->removeConnection(connection);
+//            removeItem(connection);
+//            delete connection;
         }
     }
     m_nodes.removeOne(node);
     removeItem(node);
     delete node;
+    node = nullptr;
 }
 
 QList<Connection *> Scene::connections() const
@@ -385,21 +402,51 @@ QList<Connection *> Scene::connections() const
     return m_connections;
 }
 
-void Scene::addConnection(Connection *connection)
+void Scene::addConnection(Connection *connection, Port *startPort)
 {
+    connection->setStartPort(startPort);
+    connection->setStartPos(startPort->centerScenePos());
+    startPort->addConnection(connection);
+
+    connection->setEndPos(startPort->centerScenePos());
+
+    m_connections.append(connection);
+    addItem(connection);
+}
+
+void Scene::addConnection(Connection *connection, Port *startPort, Port *endPort)
+{
+    connection->setStartPort(startPort);
+    connection->setStartPos(startPort->centerScenePos());
+    startPort->addConnection(connection);
+
+    connection->setEndPort(endPort);
+    connection->setEndPos(endPort->centerScenePos());
+    endPort->addConnection(connection);
+
     m_connections.append(connection);
     addItem(connection);
 }
 
 void Scene::removeConnection(Connection *connection)
 {
-    connection->startPort()->removeConnection(connection);
-    connection->endPort()->removeConnection(connection);
+    // when connection is tmp connection,
+    // start or end port maybe become null pointer
+    Port* startPort = connection->startPort();
+    if(startPort){
+        startPort->removeConnection(connection);
+        connection->removeStartPort();
+    }
 
-    connection->removeStartPort();
-    connection->removeEndPort();
+    Port* endPort = connection->endPort();
+    if(endPort){
+        endPort->removeConnection(connection);
+        connection->removeEndPort();
+    }
 
     m_connections.removeOne(connection);
+    delete connection;
+    connection = nullptr;
 }
 
 void Scene::connectConnection(const QString &startNodeName, int32_t startPortNumber, const QString &endNodeName, int32_t endPortNumber)
@@ -411,25 +458,8 @@ void Scene::connectConnection(const QString &startNodeName, int32_t startPortNum
     Port* endPort   = endNode->port(endPortNumber);
 
     Connection* connection = new Connection();
-    connection->setStartPort(startPort);
-    connection->setEndPort(endPort);
 
-    startPort->addConnection(connection);
-    endPort->addConnection(connection);
-
-    addConnection(connection);
+    addConnection(connection, startPort, endPort);
 
     connection->updatePath();
-}
-
-void Scene::createNode(QPointF scenePos)
-{
-    QString activeTool = Tool::getInstance()->activeTool();
-
-    AbstractNode* node = nullptr;
-    node = NodeFactory::getInstance()->createNode(activeTool);
-
-    QPointF ofs(node->boundingRect().center());
-    node->setPos(scenePos - ofs);
-    addNode(node);
 }

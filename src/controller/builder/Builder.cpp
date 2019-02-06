@@ -21,6 +21,8 @@
 #include "SaveAction.h"
 #include "OpenAction.h"
 #include "Define.h"
+#include "NodeCreateTool.h"
+
 
 Builder* Builder::getInstance()
 {
@@ -58,11 +60,13 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui)
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui)
 {
     // setup tool bar
-    mainWindow->addToolBar(Qt::LeftToolBarArea, ui->mainToolBar);
-    addToolBarAction(new QAction(/*QIcon("../resource/in.png")    , */NODE_IN    ), ui);
-    addToolBarAction(new QAction(/*QIcon("../resource/out.png")   , */NODE_OUT   ), ui);
-    addToolBarAction(new QAction(/*QIcon("../resource/hidden.png"), */NODE_HIDDEN), ui);
-    setDefaultToolBarAction(NODE_HIDDEN);
+    NodeCreateTool* nodeCreationTool = dynamic_cast<NodeCreateTool*>(Editor::getInstance()->tool("NODE"));
+    ui->nodeToolBar->setNodeCreationTool(nodeCreationTool);
+
+    mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);
+    foreach (QString nodeType, nodeCreationTool->nodeTypes()) {
+        ui->nodeToolBar->addToolBarAction(nodeType);
+    }
 }
 
 void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui)
@@ -71,23 +75,6 @@ void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui)
     ui->menuBar->addAction(ep->ExportScriptAction());
 
     mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());
-}
-
-void Builder::addToolBarAction(QAction *action, Ui::MainWindow *ui)
-{
-    ui->mainToolBar->addAction(action);
-
-    ToolBarAction* toolBarAction = new ToolBarAction();
-    toolBarAction->m_action = action;
-    toolBarAction->m_button = dynamic_cast<QToolButton*>(ui->mainToolBar->widgetForAction(action));
-    QString actionName = action->text();
-
-    toolBarAction->m_button->setCheckable(true);
-
-    m_toolBarActions[actionName] = toolBarAction;
-    Tool::getInstance()->addTool(actionName);
-
-    connect(toolBarAction->m_action, &QAction::triggered, this, &Builder::onChangeTool);
 }
 
 void Builder::setDefaultToolBarAction(QString actionName)

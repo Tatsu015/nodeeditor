@@ -11,9 +11,9 @@ void Tool::addTool(const QString& tool)
     m_tools << tool;
 }
 
-void Tool::changeActiveTool(const QString& activeToolName)
+void Tool::changeActiveTool(const QString& nodeToolName)
 {
-    m_activeToolName = activeToolName;
+    m_activeToolName = nodeToolName;
 }
 
 QString Tool::activeTool() const

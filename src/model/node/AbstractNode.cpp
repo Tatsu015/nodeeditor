@@ -15,6 +15,7 @@ AbstractNode::AbstractNode(QGraphicsItem* parent):
 
 AbstractNode::~AbstractNode()
 {
+    qDeleteAll(m_ports);
 }
 
 QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value)

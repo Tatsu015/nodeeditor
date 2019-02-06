@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QGraphicsView" name="graphicsView"/>
+     <widget class="GraphicsView" name="graphicsView"/>
     </item>
    </layout>
   </widget>
@@ -26,11 +26,11 @@
      <x>0</x>
      <y>0</y>
      <width>893</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
+  <widget class="NodeToolBar" name="nodeToolBar">
    <property name="allowedAreas">
     <set>Qt::AllToolBarAreas</set>
    </property>
@@ -47,6 +47,18 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>view/graphicsview/GraphicsView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NodeToolBar</class>
+   <extends>QToolBar</extends>
+   <header>view/widget/NodeToolBar.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
