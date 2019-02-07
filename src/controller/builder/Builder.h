@@ -2,7 +2,6 @@
 #define BUILDER_H
 
 #include <QMap>
-#include <QObject>
 #include <QString>
 
 class QAction;
@@ -13,7 +12,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class Builder : public QObject {
+class Builder {
  private:
   struct ToolBarAction {
     QAction* m_action = nullptr;
@@ -32,14 +31,11 @@ class Builder : public QObject {
 
   void setDefaultToolBarAction(QString actionName);
 
- private slots:
-  void onChangeTool();
-
  private:
   QMap<QString, ToolBarAction*> m_toolBarActions;
 
  private:
-  Builder(QObject* parent = nullptr);
+  Builder();
   ~Builder();
 };
 

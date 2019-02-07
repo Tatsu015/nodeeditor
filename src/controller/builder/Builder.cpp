@@ -81,11 +81,6 @@ void Builder::setDefaultToolBarAction(QString actionName) {
   acr->setChecked(true);
 }
 
-void Builder::onChangeTool() {
-  QString toolName = dynamic_cast<QAction *>(sender())->text();
-  Tool::getInstance()->changeActiveTool(toolName);
-}
-
-Builder::Builder(QObject *parent) : QObject(parent) {}
+Builder::Builder() {}
 
 Builder::~Builder() {}

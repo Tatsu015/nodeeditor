@@ -10,6 +10,7 @@ NodeCreateTool::NodeCreateTool() : AbstractTool(TOOL_NODE_CREATE) {
   m_nodeTypes.append(NODE_IN);
   m_nodeTypes.append(NODE_OUT);
   m_nodeTypes.append(NODE_AND);
+  m_nodeTypes.append(NODE_OR);
 
   m_activeNodeType = m_nodeTypes.first();
 }

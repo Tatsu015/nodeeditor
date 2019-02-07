@@ -66,7 +66,8 @@ HEADERS += \
     controller/tool/AbstractTool.h \
     controller/tool/ConnectionCreationTool.h \
     view/widget/NodeToolBar.h \
-    model/node/AndNode.h
+    model/node/AndNode.h \
+    model/node/OrNode.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -96,7 +97,8 @@ SOURCES += \
     controller/tool/AbstractTool.cpp \
     controller/tool/ConnectionCreationTool.cpp \
     view/widget/NodeToolBar.cpp \
-    model/node/AndNode.cpp
+    model/node/AndNode.cpp \
+    model/node/OrNode.cpp
 
 FORMS += \
     view/window/MainWindow.ui

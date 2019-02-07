@@ -6,6 +6,17 @@
 #include "NodeCreateTool.h"
 #include "Project.h"
 #include "Scene.h"
+#include "NodeFactory.h"
+#include "OpenAction.h"
+#include "OutNode.h"
+#include "OrNode.h"
+#include "SaveAction.h"
+#include "AnalyzeCircuitAction.h"
+#include "AndNode.h"
+#include "InNode.h"
+#include "ConnectionFactory.h"
+#include "Connection.h"
+
 
 Editor *Editor::getInstance() {
   static Editor s;
@@ -13,6 +24,18 @@ Editor *Editor::getInstance() {
 }
 
 void Editor::init() {
+    NodeFactory::getInstance()->addNode(new InNode());
+    NodeFactory::getInstance()->addNode(new OutNode());
+    NodeFactory::getInstance()->addNode(new AndNode());
+    NodeFactory::getInstance()->addNode(new OrNode());
+
+    ConnectionFactory::getInstance()->addConnection(new Connection());
+
+    // setup action
+    Editor::getInstance()->addAction(new OpenAction());
+    Editor::getInstance()->addAction(new SaveAction());
+    Editor::getInstance()->addAction(new AnalyzeCircuitAction());
+
   m_project = new Project();
   m_project->init();
 
