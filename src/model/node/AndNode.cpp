@@ -10,7 +10,10 @@ AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_AND;
 
   QPainterPath path;
-  path.addRoundedRect(0, 0, SIZE, SIZE, ROUND_RADIUS, ROUND_RADIUS);
+  path.lineTo(0, HEIGHT);
+  path.lineTo(WIDTH*0.5, HEIGHT);
+  path.arcTo(0, 0, WIDTH, HEIGHT, 270, 180);
+  path.closeSubpath();
   setPath(path);
 
   Port* port1 = new Port(Input, 1, this);

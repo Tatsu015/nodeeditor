@@ -9,7 +9,7 @@ OutNode::OutNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_OUT;
 
   QPainterPath path;
-  path.addRoundedRect(0, 0, SIZE, SIZE * 0.5, ROUND_RADIUS, ROUND_RADIUS);
+  path.addRoundedRect(0, 0, WIDTH, HEIGHT * 0.5, ROUND_RADIUS, ROUND_RADIUS);
   setPath(path);
 
   Port* port1 = new Port(Input, 1, this);

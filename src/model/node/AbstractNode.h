@@ -37,7 +37,8 @@ class AbstractNode : public QGraphicsPathItem {
   const static QColor FILL_COLOR;
   const static QColor LINE_COLOR;
   const static QColor TEXT_COLOR;
-  const static uint32_t SIZE = 50;
+  const static uint32_t WIDTH  = 50;
+  const static uint32_t HEIGHT = 50;
   const static uint32_t PEN_SIZE = 3;
   const static uint32_t ROUND_RADIUS = 3;
   const static uint32_t PORT_POS_X_OFS = 2;
