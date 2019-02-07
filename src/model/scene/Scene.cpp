@@ -1,6 +1,8 @@
 #include "Scene.h"
+#include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QGuiApplication>
 #include <QKeyEvent>
 #include "AbstractTool.h"
 #include "AndNode.h"
@@ -157,12 +159,12 @@ Port* Scene::findPort(QPointF scenePos) {
 
 void Scene::changeActiveTool(const QPointF nowScenePos) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
-    if (existNode(nowScenePos)) {
-      Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
-    } else if (existPort(nowScenePos)) {
+    if (existPort(nowScenePos)) {
       Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
+      QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
     } else {
       Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+      QGuiApplication::restoreOverrideCursor();
     }
   }
 }
