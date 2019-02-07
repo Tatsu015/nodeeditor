@@ -62,12 +62,12 @@ HEADERS += \
     controller/factory/ConnectionFactory.h \
     controller/builder/Builder.h \
     view/graphicsview/GraphicsView.h \
-    controller/tool/NodeCreateTool.h \
+    controller/tool/NodeEditTool.h \
     controller/tool/AbstractTool.h \
-    controller/tool/ConnectionCreationTool.h \
     view/widget/NodeToolBar.h \
     model/node/AndNode.h \
-    model/node/OrNode.h
+    model/node/OrNode.h \
+    controller/tool/ConnectionCreateTool.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -93,12 +93,12 @@ SOURCES += \
     controller/factory/ConnectionFactory.cpp \
     controller/builder/Builder.cpp \
     view/graphicsview/GraphicsView.cpp \
-    controller/tool/NodeCreateTool.cpp \
+    controller/tool/NodeEditTool.cpp \
     controller/tool/AbstractTool.cpp \
-    controller/tool/ConnectionCreationTool.cpp \
     view/widget/NodeToolBar.cpp \
     model/node/AndNode.cpp \
-    model/node/OrNode.cpp
+    model/node/OrNode.cpp \
+    controller/tool/ConnectionCreateTool.cpp
 
 FORMS += \
     view/window/MainWindow.ui

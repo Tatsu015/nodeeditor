@@ -1,5 +1,5 @@
-#ifndef NODECREATETOOL_H
-#define NODECREATETOOL_H
+#ifndef NodeEditTool_H
+#define NodeEditTool_H
 
 #include <QPointF>
 #include <QStringList>
@@ -8,10 +8,10 @@
 class QAction;
 class AbstractNode;
 
-class NodeCreateTool : public AbstractTool {
+class NodeEditTool : public AbstractTool {
  public:
-  NodeCreateTool();
-  virtual ~NodeCreateTool();
+  NodeEditTool();
+  virtual ~NodeEditTool();
 
   virtual void mousePressEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
   virtual void mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
@@ -27,4 +27,4 @@ class NodeCreateTool : public AbstractTool {
   QString m_activeNodeType = "";
 };
 
-#endif  // NODECREATETOOL_H
+#endif  // NodeEditTool_H

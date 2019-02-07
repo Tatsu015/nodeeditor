@@ -1,5 +1,5 @@
-#ifndef CONNECTIONCREATIONTOOL_H
-#define CONNECTIONCREATIONTOOL_H
+#ifndef CONNECTIONCREATETOOL_H
+#define CONNECTIONCREATETOOL_H
 
 #include <QPointF>
 #include "AbstractTool.h"
@@ -7,10 +7,10 @@
 class Port;
 class Connection;
 
-class ConnectionCreationTool : public AbstractTool {
+class ConnectionCreateTool : public AbstractTool {
  public:
-  ConnectionCreationTool();
-  virtual ~ConnectionCreationTool();
+  ConnectionCreateTool();
+  virtual ~ConnectionCreateTool();
 
   virtual void mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
@@ -28,4 +28,4 @@ class ConnectionCreationTool : public AbstractTool {
   Connection* m_tmpConnection = nullptr;
 };
 
-#endif  // CONNECTIONCREATIONTOOL_H
+#endif  // CONNECTIONCREATETOOL_H

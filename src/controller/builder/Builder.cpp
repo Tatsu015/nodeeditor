@@ -15,7 +15,7 @@
 #include "ErrorListWidget.h"
 #include "InNode.h"
 #include "MainWindow.h"
-#include "NodeCreateTool.h"
+#include "NodeEditTool.h"
 #include "NodeFactory.h"
 #include "OutNode.h"
 #include "Scene.h"
@@ -59,11 +59,11 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {
   // setup tool bar
-  NodeCreateTool *nodeCreationTool = dynamic_cast<NodeCreateTool *>(Editor::getInstance()->tool(TOOL_NODE_CREATE));
-  ui->nodeToolBar->setNodeCreationTool(nodeCreationTool);
+  NodeEditTool *nodeEditTool = dynamic_cast<NodeEditTool *>(Editor::getInstance()->tool(TOOL_NODE_CREATE));
+  ui->nodeToolBar->setNodeEditTool(nodeEditTool);
 
   mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);
-  foreach (QString nodeType, nodeCreationTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
+  foreach (QString nodeType, nodeEditTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
 }
 
 void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui) {

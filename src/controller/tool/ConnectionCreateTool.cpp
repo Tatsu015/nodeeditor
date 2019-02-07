@@ -1,4 +1,4 @@
-#include "ConnectionCreationTool.h"
+#include "ConnectionCreateTool.h"
 #include <QGraphicsSceneMouseEvent>
 #include "Connection.h"
 #include "ConnectionFactory.h"
@@ -7,11 +7,11 @@
 #include "Port.h"
 #include "Scene.h"
 
-ConnectionCreationTool::ConnectionCreationTool() : AbstractTool(TOOL_CONNECTION_CREATE) {}
+ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {}
 
-ConnectionCreationTool::~ConnectionCreationTool() {}
+ConnectionCreateTool::~ConnectionCreateTool() {}
 
-void ConnectionCreationTool::mousePressEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
+void ConnectionCreateTool::mousePressEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
   m_startPort = scene->findPort(event->scenePos());
   if (!m_startPort) {
     return;
@@ -23,7 +23,7 @@ void ConnectionCreationTool::mousePressEvent(Scene *scene, QGraphicsSceneMouseEv
   m_isUsing = true;
 }
 
-void ConnectionCreationTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
+void ConnectionCreateTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
   Q_UNUSED(scene);
   if (!m_startPort) {
     return;
@@ -32,7 +32,7 @@ void ConnectionCreationTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEve
   redrawTmpConnection(event->scenePos());
 }
 
-void ConnectionCreationTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
+void ConnectionCreateTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
   if (!m_startPort) {
     return;
   }
@@ -56,16 +56,16 @@ void ConnectionCreationTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouse
   decideConnection(endPort);
 }
 
-void ConnectionCreationTool::mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
+void ConnectionCreateTool::mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
   Q_UNUSED(scene);
   Q_UNUSED(event);
 }
 
-void ConnectionCreationTool::addTmpConnection(Scene *scene, Port *startPort) { scene->addConnection(m_tmpConnection, startPort); }
+void ConnectionCreateTool::addTmpConnection(Scene *scene, Port *startPort) { scene->addConnection(m_tmpConnection, startPort); }
 
-void ConnectionCreationTool::redrawTmpConnection(QPointF nowScenePos) { m_tmpConnection->updatePath(m_startPort, nowScenePos); }
+void ConnectionCreateTool::redrawTmpConnection(QPointF nowScenePos) { m_tmpConnection->updatePath(m_startPort, nowScenePos); }
 
-void ConnectionCreationTool::decideConnection(Port *endPort) {
+void ConnectionCreateTool::decideConnection(Port *endPort) {
   m_tmpConnection->setEndPort(endPort);
   m_tmpConnection->setEndPos(endPort->centerScenePos());
   endPort->addConnection(m_tmpConnection);
@@ -76,4 +76,4 @@ void ConnectionCreationTool::decideConnection(Port *endPort) {
   m_startPort = nullptr;
 }
 
-void ConnectionCreationTool::removeTmpConnection(Scene *scene) { scene->removeConnection(m_tmpConnection); }
+void ConnectionCreateTool::removeTmpConnection(Scene *scene) { scene->removeConnection(m_tmpConnection); }

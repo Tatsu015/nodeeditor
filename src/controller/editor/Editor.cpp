@@ -1,9 +1,9 @@
 #include "Editor.h"
 #include <QGraphicsView>
 #include "AbstractAction.h"
-#include "ConnectionCreationTool.h"
+#include "ConnectionCreateTool.h"
 #include "Define.h"
-#include "NodeCreateTool.h"
+#include "NodeEditTool.h"
 #include "Project.h"
 #include "Scene.h"
 #include "NodeFactory.h"
@@ -75,8 +75,8 @@ void Editor::addTool(AbstractTool *tool) {
 }
 
 void Editor::initTool() {
-  addTool(new NodeCreateTool());
-  addTool(new ConnectionCreationTool());
+  addTool(new NodeEditTool());
+  addTool(new ConnectionCreateTool());
 
   // set default tool
   m_activeTool = m_tools[TOOL_NODE_CREATE];

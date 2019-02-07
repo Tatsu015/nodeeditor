@@ -3,7 +3,7 @@
 
 #include <QToolBar>
 
-class NodeCreateTool;
+class NodeEditTool;
 
 class NodeToolBar : public QToolBar {
   Q_OBJECT
@@ -14,13 +14,13 @@ class NodeToolBar : public QToolBar {
 
   void addToolBarAction(const QString &nodeType);
 
-  void setNodeCreationTool(NodeCreateTool *nodeCreationTool);
+  void setNodeEditTool(NodeEditTool *NodeEditTool);
 
  private slots:
   void onChangeTool();
 
  private:
-  NodeCreateTool *m_nodeCreationTool = nullptr;
+  NodeEditTool *m_NodeEditTool = nullptr;
 };
 
 #endif  // NODETOOLBAR_H

@@ -12,7 +12,7 @@
 #include "Define.h"
 #include "Editor.h"
 #include "InNode.h"
-#include "NodeCreateTool.h"
+#include "NodeEditTool.h"
 #include "NodeFactory.h"
 #include "OutNode.h"
 #include "Port.h"

@@ -1,5 +1,5 @@
 #include "NodeToolBar.h"
-#include "NodeCreateTool.h"
+#include "NodeEditTool.h"
 
 NodeToolBar::NodeToolBar(QWidget* parent) : QToolBar(parent) {}
 
@@ -13,7 +13,7 @@ void NodeToolBar::addToolBarAction(const QString& nodeType) {
 
 void NodeToolBar::onChangeTool() {
   QAction* action = dynamic_cast<QAction*>(sender());
-  m_nodeCreationTool->setActiveNodeType(action->text());
+  m_NodeEditTool->setActiveNodeType(action->text());
 }
 
-void NodeToolBar::setNodeCreationTool(NodeCreateTool* nodeCreationTool) { m_nodeCreationTool = nodeCreationTool; }
+void NodeToolBar::setNodeEditTool(NodeEditTool* NodeEditTool) { m_NodeEditTool = NodeEditTool; }
