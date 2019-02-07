@@ -6,7 +6,7 @@
 #include "NodeFactory.h"
 #include "Scene.h"
 
-NodeCreateTool::NodeCreateTool() : AbstractTool() {
+NodeCreateTool::NodeCreateTool() : AbstractTool(TOOL_NODE_CREATE) {
   m_nodeTypes.append(NODE_IN);
   m_nodeTypes.append(NODE_OUT);
   m_nodeTypes.append(NODE_HIDDEN);

@@ -3,7 +3,6 @@
 #include "Builder.h"
 #include "Connection.h"
 #include "ConnectionFactory.h"
-#include "Define.h"
 #include "Editor.h"
 #include "HiddenNode.h"
 #include "InNode.h"
@@ -19,11 +18,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::Main
   Editor::getInstance()->setGraphicsView(m_ui->graphicsView);
   Editor::getInstance()->init();
 
-  NodeFactory::getInstance()->addNode(NODE_IN, new InNode());
-  NodeFactory::getInstance()->addNode(NODE_OUT, new OutNode());
-  NodeFactory::getInstance()->addNode(NODE_HIDDEN, new HiddenNode());
+  NodeFactory::getInstance()->addNode(new InNode());
+  NodeFactory::getInstance()->addNode(new OutNode());
+  NodeFactory::getInstance()->addNode(new HiddenNode());
 
-  ConnectionFactory::getInstance()->addConnection(CONNECTION, new Connection());
+  ConnectionFactory::getInstance()->addConnection(new Connection());
 
   // setup action
   Editor::getInstance()->addAction(new OpenAction());

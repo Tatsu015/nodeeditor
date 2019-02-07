@@ -10,7 +10,7 @@ class ConnectionFactory {
  public:
   static ConnectionFactory* getInstance();
 
-  void addConnection(const QString& type, Connection* connection);
+  void addConnection(Connection* connection);
   Connection* createConnection(const QString& type, QString name = "");
 
  private:

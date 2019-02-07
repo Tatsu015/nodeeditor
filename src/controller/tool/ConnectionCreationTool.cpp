@@ -7,7 +7,7 @@
 #include "Port.h"
 #include "Scene.h"
 
-ConnectionCreationTool::ConnectionCreationTool() {}
+ConnectionCreationTool::ConnectionCreationTool() : AbstractTool(TOOL_CONNECTION_CREATE) {}
 
 ConnectionCreationTool::~ConnectionCreationTool() {}
 

@@ -7,7 +7,7 @@ ConnectionFactory *ConnectionFactory::getInstance() {
   return &s;
 }
 
-void ConnectionFactory::addConnection(const QString &type, Connection *connection) { m_connectionMap[type] = connection; }
+void ConnectionFactory::addConnection(Connection *connection) { m_connectionMap[connection->connectionType()] = connection; }
 
 Connection *ConnectionFactory::createConnection(const QString &type, QString name) {
   Connection *connection = m_connectionMap[type]->create();

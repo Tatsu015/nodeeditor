@@ -10,7 +10,7 @@ class NodeFactory {
  public:
   static NodeFactory* getInstance();
 
-  void addNode(const QString& type, AbstractNode* node);
+  void addNode(AbstractNode* node);
   AbstractNode* createNode(const QString& type, QString name = "");
 
  private:

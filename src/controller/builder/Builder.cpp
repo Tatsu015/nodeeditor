@@ -67,10 +67,12 @@ void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {
 }
 
 void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui) {
-  AnalyzeCircuitAction *ep = dynamic_cast<AnalyzeCircuitAction *>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
-  ui->menuBar->addAction(ep->ExportScriptAction());
+  AnalyzeCircuitAction *analyzeCircuitAction = dynamic_cast<AnalyzeCircuitAction *>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
+  ui->menuBar->addAction(analyzeCircuitAction->ExportScriptAction());
 
-  mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), ep->DockWidget());
+  QDockWidget *errorDockWidget = analyzeCircuitAction->DockWidget();
+  errorDockWidget->hide();
+  mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), errorDockWidget);
 }
 
 void Builder::setDefaultToolBarAction(QString actionName) {

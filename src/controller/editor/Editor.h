@@ -26,6 +26,10 @@ class Editor {
   void changeDefaultTool();
 
  private:
+  void addTool(AbstractTool* tool);
+  void initTool();
+
+ private:
   QList<AbstractAction*> m_actions;
   QMap<QString, AbstractTool*> m_tools;
   AbstractTool* m_activeTool = nullptr;
