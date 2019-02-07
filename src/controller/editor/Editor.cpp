@@ -44,9 +44,12 @@ AbstractTool *Editor::activeTool() const { return m_activeTool; }
 
 void Editor::changeActiveTool(const QString &toolName) { m_activeTool = m_tools[toolName]; }
 
-void Editor::changeDefaultTool() { changeActiveTool("NODE"); }
+void Editor::changeDefaultTool() { changeActiveTool(TOOL_NODE_CREATE); }
 
-void Editor::addTool(AbstractTool *tool) { m_tools[tool->name()] = tool; }
+void Editor::addTool(AbstractTool *tool) {
+  QString name = tool->name();
+  m_tools[name] = tool;
+}
 
 void Editor::initTool() {
   addTool(new NodeCreateTool());

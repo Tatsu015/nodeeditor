@@ -3,8 +3,6 @@
 
 #include "AbstractNode.h"
 
-const static QString OUT = "Out";
-
 class OutNode : public AbstractNode {
  public:
   OutNode(QGraphicsItem* parent = nullptr);

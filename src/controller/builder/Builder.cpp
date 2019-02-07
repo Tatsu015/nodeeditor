@@ -7,12 +7,12 @@
 #include "AbstractAction.h"
 #include "AbstractNode.h"
 #include "AnalyzeCircuitAction.h"
+#include "AndNode.h"
 #include "Connection.h"
 #include "ConnectionFactory.h"
 #include "Define.h"
 #include "Editor.h"
 #include "ErrorListWidget.h"
-#include "HiddenNode.h"
 #include "InNode.h"
 #include "MainWindow.h"
 #include "NodeCreateTool.h"
@@ -59,7 +59,7 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {
   // setup tool bar
-  NodeCreateTool *nodeCreationTool = dynamic_cast<NodeCreateTool *>(Editor::getInstance()->tool("NODE"));
+  NodeCreateTool *nodeCreationTool = dynamic_cast<NodeCreateTool *>(Editor::getInstance()->tool(TOOL_NODE_CREATE));
   ui->nodeToolBar->setNodeCreationTool(nodeCreationTool);
 
   mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);

@@ -2,10 +2,10 @@
 #include <QAction>
 #include <QDebug>
 #include <algorithm>
+#include "AndNode.h"
 #include "Define.h"
 #include "Editor.h"
 #include "ErrorListWidget.h"
-#include "HiddenNode.h"
 #include "InNode.h"
 #include "OutNode.h"
 #include "Port.h"
@@ -117,7 +117,7 @@ QList<AbstractNode*> AnalyzeCircuitAction::OutNodes(const QList<AbstractNode*>& 
 QList<AbstractNode*> AnalyzeCircuitAction::HiddenNodes(const QList<AbstractNode*>& nodes) {
   QList<AbstractNode*> hiddenNodes;
   foreach (AbstractNode* node, nodes) {
-    HiddenNode* hiddenNode = dynamic_cast<HiddenNode*>(node);
+    AndNode* hiddenNode = dynamic_cast<AndNode*>(node);
     if (hiddenNode) {
       hiddenNodes << hiddenNode;
     }

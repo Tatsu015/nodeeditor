@@ -3,12 +3,12 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include "AbstractTool.h"
+#include "AndNode.h"
 #include "Connection.h"
 #include "ConnectionFactory.h"
 #include "Connector.h"
 #include "Define.h"
 #include "Editor.h"
-#include "HiddenNode.h"
 #include "InNode.h"
 #include "NodeCreateTool.h"
 #include "NodeFactory.h"
@@ -96,24 +96,13 @@ void Scene::autoSet() {
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-  if (!Editor::getInstance()->activeTool()->isUsing()) {
-    if (existNode(event->scenePos())) {
-      qDebug() << "node";
-      Editor::getInstance()->changeActiveTool("NODE");
-    } else if (existPort(event->scenePos())) {
-      qDebug() << "port";
-      Editor::getInstance()->changeActiveTool("CONNECTION");
-    } else {
-      qDebug() << "none";
-      Editor::getInstance()->changeActiveTool("NODE");
-    }
-  }
-
+  changeActiveTool(event->scenePos());
   Editor::getInstance()->activeTool()->mousePressEvent(this, event);
   QGraphicsScene::mousePressEvent(event);
 }
 
 void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+  changeActiveTool(event->scenePos());
   Editor::getInstance()->activeTool()->mouseMoveEvent(this, event);
   QGraphicsScene::mouseMoveEvent(event);
 }
@@ -152,7 +141,9 @@ void Scene::keyReleaseEvent(QKeyEvent* event) {
 }
 
 Port* Scene::findPort(QPointF scenePos) {
-  QList<QGraphicsItem*> pressedItems = items(scenePos);
+  QPointF offset = QPointF(2, 2);
+  QRectF searchArea = QRectF(scenePos - offset, scenePos + offset);
+  QList<QGraphicsItem*> pressedItems = items(searchArea);
 
   Port* port = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
@@ -162,6 +153,18 @@ Port* Scene::findPort(QPointF scenePos) {
     }
   }
   return nullptr;
+}
+
+void Scene::changeActiveTool(const QPointF nowScenePos) {
+  if (!Editor::getInstance()->activeTool()->isUsing()) {
+    if (existNode(nowScenePos)) {
+      Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+    } else if (existPort(nowScenePos)) {
+      Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
+    } else {
+      Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+    }
+  }
 }
 
 Port* Scene::findStartPort(QPointF scenePos) {

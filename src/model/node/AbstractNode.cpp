@@ -5,10 +5,19 @@
 #include "Connection.h"
 #include "Port.h"
 
+const QColor AbstractNode::FILL_COLOR = QColor("#666666");
+const QColor AbstractNode::LINE_COLOR = QColor("#AAAAAA");
+const QColor AbstractNode::TEXT_COLOR = QColor("#333333");
+
 AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   setFlag(ItemIsSelectable);
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
+
+  const static QBrush BLUSH = QBrush(FILL_COLOR);
+  const static QPen PEN = QPen(LINE_COLOR, PEN_SIZE);
+  setBrush(BLUSH);
+  setPen(PEN);
 }
 
 AbstractNode::~AbstractNode() { qDeleteAll(m_ports); }

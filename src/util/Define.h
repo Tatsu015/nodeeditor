@@ -12,7 +12,7 @@ const static QString TOOL_NODE_CREATE = "NodeCreate";
 
 const static QString NODE_IN = "IN";
 const static QString NODE_OUT = "OUT";
-const static QString NODE_HIDDEN = "HIDDEN";
+const static QString NODE_AND = "AND";
 
 const static QString CONNECTION = "CONNECTION";
 

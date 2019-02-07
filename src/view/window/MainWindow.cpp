@@ -1,10 +1,10 @@
 #include "MainWindow.h"
 #include "AnalyzeCircuitAction.h"
+#include "AndNode.h"
 #include "Builder.h"
 #include "Connection.h"
 #include "ConnectionFactory.h"
 #include "Editor.h"
-#include "HiddenNode.h"
 #include "InNode.h"
 #include "NodeFactory.h"
 #include "OpenAction.h"
@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), m_ui(new Ui::Main
 
   NodeFactory::getInstance()->addNode(new InNode());
   NodeFactory::getInstance()->addNode(new OutNode());
-  NodeFactory::getInstance()->addNode(new HiddenNode());
+  NodeFactory::getInstance()->addNode(new AndNode());
 
   ConnectionFactory::getInstance()->addConnection(new Connection());
 

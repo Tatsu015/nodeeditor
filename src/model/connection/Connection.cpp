@@ -4,9 +4,11 @@
 #include "Define.h"
 #include "Port.h"
 
+const QColor Connection::LINE_COLOR = QColor("#AAAAAA");
+
 Connection::Connection(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   m_connectionType = CONNECTION;
-  setPen(QPen(Qt::gray, 2));
+  setPen(QPen(LINE_COLOR, PEN_SIZE));
 }
 
 Connection::~Connection() {}

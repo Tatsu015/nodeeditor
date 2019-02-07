@@ -1,6 +1,6 @@
 #include "AbstractTool.h"
 
-AbstractTool::AbstractTool(const QString &name) {}
+AbstractTool::AbstractTool(const QString &name) : m_name(name) {}
 
 AbstractTool::~AbstractTool() {}
 

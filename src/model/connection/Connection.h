@@ -37,6 +37,10 @@ class Connection : public QGraphicsPathItem {
 
   QString connectionType() const;
 
+ protected:
+  const static QColor LINE_COLOR;
+  const static uint32_t PEN_SIZE = 3;
+
  private:
   QString m_name = "";
   QString m_connectionType = "";

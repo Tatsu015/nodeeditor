@@ -29,6 +29,13 @@ class Port : public QGraphicsPathItem {
 
   AbstractNode* parentNode() const;
 
+ protected:
+  const static uint32_t WIDTH = 12;
+  const static uint32_t HEIGHT = 3;
+  const static QColor FILL_COLOR;
+  const static QColor LINE_COLOR;
+  const static uint32_t PEN_SIZE = 0;
+
  private:
   QList<Connection*> m_connections;
   AbstractNode* m_parentNode = nullptr;

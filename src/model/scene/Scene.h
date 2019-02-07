@@ -38,6 +38,7 @@ class Scene : public QGraphicsScene {
   Port* findPort(QPointF scenePos);
 
  private:
+  void changeActiveTool(const QPointF nowScenePos);
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 

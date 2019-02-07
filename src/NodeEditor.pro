@@ -44,7 +44,6 @@ HEADERS += \
     controller/tool/Tool.h \
     model/connection/Connection.h \
     model/connection/Connector.h \
-    model/node/HiddenNode.h \
     model/node/InNode.h \
     model/node/OutNode.h \
     model/port/Port.h \
@@ -66,7 +65,8 @@ HEADERS += \
     controller/tool/NodeCreateTool.h \
     controller/tool/AbstractTool.h \
     controller/tool/ConnectionCreationTool.h \
-    view/widget/NodeToolBar.h
+    view/widget/NodeToolBar.h \
+    model/node/AndNode.h
 
 SOURCES += \
     controller/editor/Editor.cpp \
@@ -74,7 +74,6 @@ SOURCES += \
     controller/tool/Tool.cpp \
     model/connection/Connection.cpp \
     model/connection/Connector.cpp \
-    model/node/HiddenNode.cpp \
     model/node/InNode.cpp \
     model/node/OutNode.cpp \
     model/port/Port.cpp \
@@ -96,7 +95,8 @@ SOURCES += \
     controller/tool/NodeCreateTool.cpp \
     controller/tool/AbstractTool.cpp \
     controller/tool/ConnectionCreationTool.cpp \
-    view/widget/NodeToolBar.cpp
+    view/widget/NodeToolBar.cpp \
+    model/node/AndNode.cpp
 
 FORMS += \
     view/window/MainWindow.ui

@@ -4,12 +4,17 @@
 #include "AbstractNode.h"
 #include "Connection.h"
 
-const static uint32_t PORT_SIZE = 12;
+const QColor Port::FILL_COLOR = QColor("#AAAAAA");
+const QColor Port::LINE_COLOR = QColor("#AAAAAA");
 
 Port::Port(IO io, uint32_t number, QGraphicsItem* parent)
     : QGraphicsPathItem(parent), m_parentNode(dynamic_cast<AbstractNode*>(parent)), m_io(io), m_number(number) {
+  const static QBrush BLUSH = QBrush(FILL_COLOR);
+  const static QPen PEN = QPen(LINE_COLOR, PEN_SIZE);
+  setPen(PEN);
+  setBrush(BLUSH);
   QPainterPath path;
-  path.addEllipse(0, 0, PORT_SIZE, PORT_SIZE);
+  path.addRect(0, 0, WIDTH, HEIGHT);
   setPath(path);
 }
 

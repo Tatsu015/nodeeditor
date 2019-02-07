@@ -9,7 +9,7 @@
 NodeCreateTool::NodeCreateTool() : AbstractTool(TOOL_NODE_CREATE) {
   m_nodeTypes.append(NODE_IN);
   m_nodeTypes.append(NODE_OUT);
-  m_nodeTypes.append(NODE_HIDDEN);
+  m_nodeTypes.append(NODE_AND);
 
   m_activeNodeType = m_nodeTypes.first();
 }
