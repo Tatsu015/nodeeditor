@@ -1,28 +1,18 @@
 #include "ErrorListWidget.h"
-#include "AnalyzeCircuitAction.h"
 #include "AbstractNode.h"
+#include "AnalyzeCircuitAction.h"
 
+ErrorListWidget::ErrorListWidget(QWidget* parent) : QListWidget(parent) {}
 
-ErrorListWidget::ErrorListWidget(QWidget* parent):
-    QListWidget(parent)
-{
-}
+ErrorListWidget::~ErrorListWidget() {}
 
-ErrorListWidget::~ErrorListWidget()
-{
-}
+void ErrorListWidget::onAddErrorWidgetItem(AbstractNode* node, const QString& errorMessage, BugType type) {
+  Q_UNUSED(node);
 
-void ErrorListWidget::onAddErrorWidgetItem(AbstractNode* node, const QString& errorMessage, BugType type)
-{
-    Q_UNUSED(node);
+  QMap<BugType, QString> BUGTYPE_ICONNAME = {{Warning, "../resource/warning.png"}, {Error, "../resource/error.png"}};
 
-    QMap<BugType, QString> BUGTYPE_ICONNAME = {
-        {Warning, "../resource/warning.png"},
-        {Error,   "../resource/error.png"}
-    };
-
-    QListWidgetItem* widgetItem = new QListWidgetItem(errorMessage);
-    widgetItem->setIcon(QIcon(BUGTYPE_ICONNAME[type]));
-    addItem(widgetItem);
-    show();
+  QListWidgetItem* widgetItem = new QListWidgetItem(errorMessage);
+  widgetItem->setIcon(QIcon(BUGTYPE_ICONNAME[type]));
+  addItem(widgetItem);
+  show();
 }

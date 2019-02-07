@@ -8,36 +8,33 @@ class AbstractAction;
 class QGraphicsView;
 class AbstractTool;
 
+class Editor {
+ public:
+  static Editor* getInstance();
 
-class Editor
-{
-public:
-    static Editor* getInstance();
+  void init();
+  AbstractAction* action(const QString& name);
+  void addAction(AbstractAction* action);
 
-    void init();
-    AbstractAction* action(const QString &name);
-    void addAction(AbstractAction* action);
+  Project* project() const;
 
-    Project *project() const;
+  void setGraphicsView(QGraphicsView* graphicsView);
 
-    void setGraphicsView(QGraphicsView *graphicsView);
+  AbstractTool* tool(const QString& toolName) const;
+  AbstractTool* activeTool() const;
+  void changeActiveTool(const QString& toolName);
+  void changeDefaultTool();
 
-    AbstractTool* tool(const QString& toolName) const;
-    AbstractTool* activeTool() const;
-    void changeActiveTool(const QString& toolName);
-    void changeDefaultTool();
+ private:
+  QList<AbstractAction*> m_actions;
+  QMap<QString, AbstractTool*> m_tools;
+  AbstractTool* m_activeTool = nullptr;
+  Project* m_project = nullptr;
+  QGraphicsView* m_graphicsView = nullptr;
 
-private:
-    QList<AbstractAction*> m_actions;
-    QMap<QString, AbstractTool*>   m_tools;
-    AbstractTool* m_activeTool = nullptr;
-    Project* m_project            = nullptr;
-    QGraphicsView* m_graphicsView = nullptr;
-
-private:
-    Editor();
-    ~Editor();
+ private:
+  Editor();
+  ~Editor();
 };
 
-
-#endif // EDITOR_H
+#endif  // EDITOR_H

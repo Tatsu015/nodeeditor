@@ -1,60 +1,57 @@
 #ifndef ANALYZECURCUIT_H
 #define ANALYZECURCUIT_H
 
-#include "AbstractAction.h"
-#include <QList>
 #include <QDockWidget>
-#include "ErrorListWidget.h"
+#include <QList>
+#include "AbstractAction.h"
 #include "Common.h"
+#include "ErrorListWidget.h"
 
 class QAction;
 class AbstractNode;
 
-class AnalyzeCircuitAction : public AbstractAction
-{
-    Q_OBJECT
+class AnalyzeCircuitAction : public AbstractAction {
+  Q_OBJECT
 
-public:
-    AnalyzeCircuitAction(QObject *parent=nullptr);
-    virtual ~AnalyzeCircuitAction();
+ public:
+  AnalyzeCircuitAction(QObject* parent = nullptr);
+  virtual ~AnalyzeCircuitAction();
 
-    virtual QString name();
+  virtual QString name();
 
-    QAction* ExportScriptAction() const;
+  QAction* ExportScriptAction() const;
 
-    bool CheckAllPortFilled(const QList<AbstractNode*>& nodes);
+  bool CheckAllPortFilled(const QList<AbstractNode*>& nodes);
 
-    QDockWidget* DockWidget() const;
+  QDockWidget* DockWidget() const;
 
-signals:
-    void OccurError(AbstractNode* node, const QString& errorMessage, BugType type);
-    void ClearError();
+ signals:
+  void OccurError(AbstractNode* node, const QString& errorMessage, BugType type);
+  void ClearError();
 
+ private slots:
+  void execute();
 
-private slots:
-    void execute();
+ private:
+  struct ConnectedGraph {
+    QString m_name;
+    uint64_t m_id;
+    QString m_description;
+    QList<AbstractNode*> m_outNodes;
+  };
 
-private:
-    struct ConnectedGraph
-    {
-        QString m_name;
-        uint64_t m_id;
-        QString m_description;
-        QList<AbstractNode*> m_outNodes;
-    };
+ private:
+  QList<ConnectedGraph*> ConnectedGraphs(const QList<AbstractNode*>& nodes);
+  QList<AbstractNode*> ExecuteOrderSort(ConnectedGraph* fbd);
 
-private:
-    QList<ConnectedGraph*> ConnectedGraphs(const QList<AbstractNode*>& nodes);
-    QList<AbstractNode*> ExecuteOrderSort(ConnectedGraph* fbd);
+  QList<AbstractNode*> InNodes(const QList<AbstractNode*>& nodes);
+  QList<AbstractNode*> OutNodes(const QList<AbstractNode*>& nodes);
+  QList<AbstractNode*> HiddenNodes(const QList<AbstractNode*>& nodes);
 
-    QList<AbstractNode*> InNodes(const QList<AbstractNode*>& nodes);
-    QList<AbstractNode*> OutNodes(const QList<AbstractNode*>& nodes);
-    QList<AbstractNode*> HiddenNodes(const QList<AbstractNode*>& nodes);
-
-private:
-    QAction* m_action = nullptr;
-    QDockWidget* m_dockWidget = nullptr;
-    ErrorListWidget* m_listWidget = nullptr;
+ private:
+  QAction* m_action = nullptr;
+  QDockWidget* m_dockWidget = nullptr;
+  ErrorListWidget* m_listWidget = nullptr;
 };
 
-#endif // ANALYZECURCUIT_H
+#endif  // ANALYZECURCUIT_H

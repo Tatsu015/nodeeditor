@@ -5,16 +5,15 @@
 
 class QJsonObject;
 
-class SaveAction : public AbstractAction
-{
-public:
-    SaveAction(QObject *parent = nullptr);
-    virtual ~SaveAction();
+class SaveAction : public AbstractAction {
+ public:
+  SaveAction(QObject *parent = nullptr);
+  virtual ~SaveAction();
 
-    virtual QString name();
+  virtual QString name();
 
-public slots:
-    virtual void execute();
+ public slots:
+  virtual void execute();
 };
 
-#endif // SAVE_H
+#endif  // SAVE_H

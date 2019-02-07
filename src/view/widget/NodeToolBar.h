@@ -5,23 +5,22 @@
 
 class NodeCreateTool;
 
-class NodeToolBar : public QToolBar
-{
-    Q_OBJECT
+class NodeToolBar : public QToolBar {
+  Q_OBJECT
 
-public:
-    NodeToolBar(QWidget *parent = nullptr);
-    virtual ~NodeToolBar();
+ public:
+  NodeToolBar(QWidget *parent = nullptr);
+  virtual ~NodeToolBar();
 
-    void addToolBarAction(const QString &nodeType);
+  void addToolBarAction(const QString &nodeType);
 
-    void setNodeCreationTool(NodeCreateTool *nodeCreationTool);
+  void setNodeCreationTool(NodeCreateTool *nodeCreationTool);
 
-private slots:
-    void onChangeTool();
+ private slots:
+  void onChangeTool();
 
-private:
-    NodeCreateTool* m_nodeCreationTool = nullptr;
+ private:
+  NodeCreateTool *m_nodeCreationTool = nullptr;
 };
 
-#endif // NODETOOLBAR_H
+#endif  // NODETOOLBAR_H

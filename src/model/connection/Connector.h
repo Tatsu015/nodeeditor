@@ -3,13 +3,12 @@
 
 #include <QGraphicsPathItem>
 
-class Connector : public QGraphicsPathItem
-{
-public:
-    Connector(QGraphicsItem *parent = nullptr);
-    virtual ~Connector();
+class Connector : public QGraphicsPathItem {
+ public:
+  Connector(QGraphicsItem *parent = nullptr);
+  virtual ~Connector();
 
-    void setPos(const QPointF pos);
+  void setPos(const QPointF pos);
 };
 
-#endif // CONNECTOR_H
+#endif  // CONNECTOR_H

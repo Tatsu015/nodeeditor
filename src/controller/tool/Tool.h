@@ -4,27 +4,26 @@
 #include <QObject>
 #include <QStringList>
 
-class Tool : public QObject
-{
-    Q_OBJECT
+class Tool : public QObject {
+  Q_OBJECT
 
-public:
-    static Tool* getInstance();
+ public:
+  static Tool* getInstance();
 
-    void addTool(const QString& tool);
+  void addTool(const QString& tool);
 
-    QString activeTool() const;
+  QString activeTool() const;
 
-public slots:
-    void changeActiveTool(const QString& nodeToolName);
+ public slots:
+  void changeActiveTool(const QString& nodeToolName);
 
-private:
-    QString     m_activeToolName;
-    QStringList m_tools;
+ private:
+  QString m_activeToolName;
+  QStringList m_tools;
 
-private:
-    Tool(QObject *parent=nullptr);
-    ~Tool();
+ private:
+  Tool(QObject* parent = nullptr);
+  ~Tool();
 };
 
-#endif // TOOL_H
+#endif  // TOOL_H

@@ -5,29 +5,28 @@
 
 class Scene;
 
-class Project
-{
-public:
-    Project();
-    ~Project();
+class Project {
+ public:
+  Project();
+  ~Project();
 
-    void init();
+  void init();
 
-    bool open(const QString& filePath);
+  bool open(const QString& filePath);
 
-    bool save(const QString& filePath);
+  bool save(const QString& filePath);
 
-    QString filePath() const;
+  QString filePath() const;
 
-    Scene *scene() const;
+  Scene* scene() const;
 
-private:
-    QByteArray toJson();
-    void fromJson(const QByteArray &data);
+ private:
+  QByteArray toJson();
+  void fromJson(const QByteArray& data);
 
-private:
-    Scene*  m_scene = nullptr;
-    QString m_filePath;
+ private:
+  Scene* m_scene = nullptr;
+  QString m_filePath;
 };
 
-#endif // PROJECT_H
+#endif  // PROJECT_H

@@ -5,13 +5,12 @@
 
 const static QString OUT = "Out";
 
-class OutNode : public AbstractNode
-{
-public:
-    OutNode(QGraphicsItem *parent = nullptr);
-    virtual ~OutNode();
+class OutNode : public AbstractNode {
+ public:
+  OutNode(QGraphicsItem* parent = nullptr);
+  virtual ~OutNode();
 
-    virtual AbstractNode* create();
+  virtual AbstractNode* create();
 };
 
-#endif // OutNode_H
+#endif  // OutNode_H

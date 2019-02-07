@@ -9,27 +9,25 @@ class QAction;
 class QToolButton;
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+ public:
+  explicit MainWindow(QWidget* parent = nullptr);
+  ~MainWindow();
 
-private:
-    struct ToolBarAction
-    {
-        QAction* m_action     = nullptr;
-        QToolButton* m_button = nullptr;
-    };
+ private:
+  struct ToolBarAction {
+    QAction* m_action = nullptr;
+    QToolButton* m_button = nullptr;
+  };
 
-private:
-    Ui::MainWindow* m_ui    = nullptr;
-    QMap<QString, ToolBarAction*> m_toolBarActions;
+ private:
+  Ui::MainWindow* m_ui = nullptr;
+  QMap<QString, ToolBarAction*> m_toolBarActions;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

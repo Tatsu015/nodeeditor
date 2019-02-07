@@ -5,13 +5,12 @@
 
 const static QString HIDDEN = "Hidden";
 
-class HiddenNode : public AbstractNode
-{
-public:
-    HiddenNode(QGraphicsItem *parent = nullptr);
-    virtual ~HiddenNode();
+class HiddenNode : public AbstractNode {
+ public:
+  HiddenNode(QGraphicsItem* parent = nullptr);
+  virtual ~HiddenNode();
 
-    virtual AbstractNode* create();
+  virtual AbstractNode* create();
 };
 
-#endif // HiddenNode_H
+#endif  // HiddenNode_H

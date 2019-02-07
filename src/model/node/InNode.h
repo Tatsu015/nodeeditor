@@ -5,16 +5,15 @@
 
 class QGraphicsSimpleTextItem;
 
-class InNode : public AbstractNode
-{
-public:
-    InNode(QGraphicsItem *parent = nullptr);
-    virtual ~InNode();
+class InNode : public AbstractNode {
+ public:
+  InNode(QGraphicsItem* parent = nullptr);
+  virtual ~InNode();
 
-    virtual AbstractNode* create();
+  virtual AbstractNode* create();
 
-private:
-    QGraphicsSimpleTextItem* m_typeText = nullptr;
+ private:
+  QGraphicsSimpleTextItem* m_typeText = nullptr;
 };
 
-#endif // InNode_H
+#endif  // InNode_H
