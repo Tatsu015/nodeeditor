@@ -10,9 +10,10 @@ OrNode::OrNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_OR;
 
   QPainterPath path;
-  path.lineTo(0, HEIGHT);
-  path.lineTo(WIDTH*0.5, HEIGHT);
-  path.arcTo(0, 0, WIDTH, HEIGHT, 270, 180);
+  path.cubicTo(QPointF(WIDTH*0.1, HEIGHT*0.2), QPointF(WIDTH*0.1, HEIGHT*0.8), QPointF(0, HEIGHT));
+  path.lineTo(WIDTH*0.3, HEIGHT);
+  path.cubicTo(QPointF(WIDTH*0.7, HEIGHT*0.95), QPointF(WIDTH*0.85, HEIGHT*0.8), QPointF(WIDTH, HEIGHT*0.5));
+  path.cubicTo(QPointF(WIDTH*0.85, HEIGHT*0.2), QPointF(WIDTH*0.7, HEIGHT*0.05), QPointF(WIDTH*0.3, 0));
   path.closeSubpath();
   setPath(path);
 
