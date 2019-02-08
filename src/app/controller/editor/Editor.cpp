@@ -1,0 +1,93 @@
+#include "Editor.h"
+#include <QGraphicsView>
+#include "AndNode.h"
+#include "Connection.h"
+#include "ConnectionCreateTool.h"
+#include "ConnectionFactory.h"
+#include "Define.h"
+#include "InNode.h"
+#include "NodeEditTool.h"
+#include "NodeFactory.h"
+#include "OrNode.h"
+#include "OutNode.h"
+#include "Project.h"
+#include "Scene.h"
+
+Editor *Editor::getInstance() {
+  static Editor s;
+  return &s;
+}
+
+void Editor::init() {
+  initFactory();
+  intAction();
+  initTool();
+
+  resetProject();
+}
+
+void Editor::reset() {
+  resetProject();
+  m_graphicsView->setScene(m_project->scene());
+}
+
+// AbstractAction *Editor::action(const QString &name) {
+//  foreach (AbstractAction *action, m_actions) {
+//    if (name == action->name()) {
+//      return action;
+//    }
+//  }
+//  return nullptr;
+//}
+
+// void Editor::addAction(AbstractAction *action) { m_actions.append(action); }
+
+Project *Editor::project() const { return m_project; }
+
+void Editor::setGraphicsView(QGraphicsView *graphicsView) { m_graphicsView = graphicsView; }
+
+AbstractTool *Editor::tool(const QString &toolName) const { return m_tools[toolName]; }
+
+AbstractTool *Editor::activeTool() const { return m_activeTool; }
+
+void Editor::changeActiveTool(const QString &toolName) { m_activeTool = m_tools[toolName]; }
+
+void Editor::changeDefaultTool() { changeActiveTool(TOOL_NODE_CREATE); }
+
+void Editor::resetProject() {
+  delete project();
+  m_project = new Project();
+  m_project->init();
+}
+
+void Editor::addTool(AbstractTool *tool) {
+  QString name = tool->name();
+  m_tools[name] = tool;
+}
+
+void Editor::initFactory() {
+  NodeFactory::getInstance()->addNode(new InNode());
+  NodeFactory::getInstance()->addNode(new OutNode());
+  NodeFactory::getInstance()->addNode(new AndNode());
+  NodeFactory::getInstance()->addNode(new OrNode());
+
+  ConnectionFactory::getInstance()->addConnection(new Connection());
+}
+
+void Editor::intAction() {
+  //  Editor::getInstance()->addAction(new NewAction());
+  //  Editor::getInstance()->addAction(new OpenAction());
+  //  Editor::getInstance()->addAction(new SaveAction());
+}
+
+void Editor::initTool() {
+  addTool(new NodeEditTool());
+  addTool(new ConnectionCreateTool());
+
+  // set default tool
+  m_activeTool = m_tools[TOOL_NODE_CREATE];
+}
+
+Editor::Editor() : m_graphicsView() {}
+
+Editor::~Editor() {}
