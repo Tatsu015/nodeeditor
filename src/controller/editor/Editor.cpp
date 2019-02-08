@@ -25,22 +25,11 @@ Editor *Editor::getInstance() {
 }
 
 void Editor::init() {
-  NodeFactory::getInstance()->addNode(new InNode());
-  NodeFactory::getInstance()->addNode(new OutNode());
-  NodeFactory::getInstance()->addNode(new AndNode());
-  NodeFactory::getInstance()->addNode(new OrNode());
-
-  ConnectionFactory::getInstance()->addConnection(new Connection());
-
-  // setup action
-  Editor::getInstance()->addAction(new NewAction());
-  Editor::getInstance()->addAction(new OpenAction());
-  Editor::getInstance()->addAction(new SaveAction());
-  Editor::getInstance()->addAction(new AnalyzeCircuitAction());
+  initFactory();
+  intAction();
+  initTool();
 
   resetProject();
-
-  initTool();
 }
 
 void Editor::reset()
@@ -82,6 +71,24 @@ void Editor::resetProject()
 void Editor::addTool(AbstractTool *tool) {
   QString name = tool->name();
   m_tools[name] = tool;
+}
+
+void Editor::initFactory()
+{
+  NodeFactory::getInstance()->addNode(new InNode());
+  NodeFactory::getInstance()->addNode(new OutNode());
+  NodeFactory::getInstance()->addNode(new AndNode());
+  NodeFactory::getInstance()->addNode(new OrNode());
+
+  ConnectionFactory::getInstance()->addConnection(new Connection());
+}
+
+void Editor::intAction()
+{
+  Editor::getInstance()->addAction(new NewAction());
+  Editor::getInstance()->addAction(new OpenAction());
+  Editor::getInstance()->addAction(new SaveAction());
+  Editor::getInstance()->addAction(new AnalyzeCircuitAction());
 }
 
 void Editor::initTool() {

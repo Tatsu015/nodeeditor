@@ -27,9 +27,11 @@ class Editor {
   void changeDefaultTool();
 
  private:
+  void initFactory();
+  void intAction();
+  void initTool();
   void resetProject();
   void addTool(AbstractTool* tool);
-  void initTool();
 
  private:
   QList<AbstractAction*> m_actions;
