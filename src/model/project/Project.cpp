@@ -11,7 +11,9 @@
 
 Project::Project() {}
 
-Project::~Project() {}
+Project::~Project() {
+  delete m_scene;
+}
 
 void Project::init() { m_scene = new Scene(); }
 

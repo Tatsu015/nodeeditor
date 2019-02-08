@@ -24,26 +24,27 @@ Editor *Editor::getInstance() {
 }
 
 void Editor::init() {
-    NodeFactory::getInstance()->addNode(new InNode());
-    NodeFactory::getInstance()->addNode(new OutNode());
-    NodeFactory::getInstance()->addNode(new AndNode());
-    NodeFactory::getInstance()->addNode(new OrNode());
+  NodeFactory::getInstance()->addNode(new InNode());
+  NodeFactory::getInstance()->addNode(new OutNode());
+  NodeFactory::getInstance()->addNode(new AndNode());
+  NodeFactory::getInstance()->addNode(new OrNode());
 
-    ConnectionFactory::getInstance()->addConnection(new Connection());
+  ConnectionFactory::getInstance()->addConnection(new Connection());
 
-    // setup action
-    Editor::getInstance()->addAction(new OpenAction());
-    Editor::getInstance()->addAction(new SaveAction());
-    Editor::getInstance()->addAction(new AnalyzeCircuitAction());
+  // setup action
+  Editor::getInstance()->addAction(new OpenAction());
+  Editor::getInstance()->addAction(new SaveAction());
+  Editor::getInstance()->addAction(new AnalyzeCircuitAction());
 
-  m_project = new Project();
-  m_project->init();
-
-  Project *newProject = Editor::getInstance()->project();
-  Scene *newScene = newProject->scene();
-  m_graphicsView->setScene(newScene);
+  resetProject();
 
   initTool();
+}
+
+void Editor::reset()
+{
+  resetProject();
+  m_graphicsView->setScene(m_project->scene());
 }
 
 AbstractAction *Editor::action(const QString &name) {
@@ -68,6 +69,13 @@ AbstractTool *Editor::activeTool() const { return m_activeTool; }
 void Editor::changeActiveTool(const QString &toolName) { m_activeTool = m_tools[toolName]; }
 
 void Editor::changeDefaultTool() { changeActiveTool(TOOL_NODE_CREATE); }
+
+void Editor::resetProject()
+{
+  delete project();
+  m_project = new Project();
+  m_project->init();
+}
 
 void Editor::addTool(AbstractTool *tool) {
   QString name = tool->name();

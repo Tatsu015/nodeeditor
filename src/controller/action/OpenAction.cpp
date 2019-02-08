@@ -16,6 +16,7 @@ OpenAction::~OpenAction() {}
 QString OpenAction::name() { return ACTION_OPEN; }
 
 void OpenAction::execute() {
+  Editor::getInstance()->reset();
   Editor::getInstance()->project()->open("test.json");
   //    QFile file("test.json");
   //    if(!file.open(QIODevice::ReadOnly)){

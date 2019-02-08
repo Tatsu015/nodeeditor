@@ -20,6 +20,7 @@
 #include "OutNode.h"
 #include "Scene.h"
 #include "Tool.h"
+#include "Project.h"
 #include "ui_MainWindow.h"
 
 Builder *Builder::getInstance() {
@@ -39,6 +40,10 @@ void Builder::buildGraphicsView(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   ui->graphicsView->setBackgroundBrush(QBrush(QColor(75, 75, 75)));
   ui->graphicsView->setRenderHints(QPainter::Antialiasing);
+
+  ui->graphicsView->setScene(Editor::getInstance()->project()->scene());
+
+  Editor::getInstance()->setGraphicsView(ui->graphicsView);
 }
 
 void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {

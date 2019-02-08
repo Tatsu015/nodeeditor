@@ -13,6 +13,7 @@ class Editor {
   static Editor* getInstance();
 
   void init();
+  void reset();
   AbstractAction* action(const QString& name);
   void addAction(AbstractAction* action);
 
@@ -26,6 +27,7 @@ class Editor {
   void changeDefaultTool();
 
  private:
+  void resetProject();
   void addTool(AbstractTool* tool);
   void initTool();
 
