@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "NodeFactory.h"
 #include "OpenAction.h"
+#include "NewAction.h"
 #include "OutNode.h"
 #include "OrNode.h"
 #include "SaveAction.h"
@@ -32,6 +33,7 @@ void Editor::init() {
   ConnectionFactory::getInstance()->addConnection(new Connection());
 
   // setup action
+  Editor::getInstance()->addAction(new NewAction());
   Editor::getInstance()->addAction(new OpenAction());
   Editor::getInstance()->addAction(new SaveAction());
   Editor::getInstance()->addAction(new AnalyzeCircuitAction());

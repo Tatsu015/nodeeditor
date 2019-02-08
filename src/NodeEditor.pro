@@ -69,7 +69,8 @@ HEADERS += \
     view/widget/ErrorListWidget.h \
     view/widget/NodeToolBar.h \
     view/window/MainWindow.h \
-    model/figure/guideline/GuideLine.h
+    model/figure/guideline/GuideLine.h \
+    controller/action/NewAction.h
 
 SOURCES += \
     controller/action/AbstractAction.cpp \
@@ -101,7 +102,8 @@ SOURCES += \
     view/widget/NodeToolBar.cpp \
     view/window/MainWindow.cpp \
     main.cpp \
-    model/figure/guideline/GuideLine.cpp
+    model/figure/guideline/GuideLine.cpp \
+    controller/action/NewAction.cpp
 
 FORMS += \
     view/window/MainWindow.ui

@@ -3,6 +3,7 @@
 
 #include <QString>
 
+const static QString ACTION_NEW = "New";
 const static QString ACTION_OPEN = "Open";
 const static QString ACTION_SAVE = "Save";
 const static QString ACTION_ANALYZE_CIRCUIT = "AnalyzeCircuit";

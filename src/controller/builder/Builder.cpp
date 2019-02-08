@@ -6,6 +6,7 @@
 #include <QToolButton>
 #include "AbstractAction.h"
 #include "AbstractNode.h"
+#include "NewAction.h"
 #include "AnalyzeCircuitAction.h"
 #include "AndNode.h"
 #include "Connection.h"
@@ -51,6 +52,7 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   QMenu *fileMenu = new QMenu("File");
   ui->menuBar->addMenu(fileMenu);
+  fileMenu->addAction(Editor::getInstance()->action(ACTION_NEW)->action());
   fileMenu->addAction(Editor::getInstance()->action(ACTION_OPEN)->action());
   fileMenu->addAction(Editor::getInstance()->action(ACTION_SAVE)->action());
 
