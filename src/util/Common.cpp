@@ -13,3 +13,11 @@ bool stob(const QString& value) {
   }
   return true;
 }
+
+bool between(qreal value, qreal min, qreal max)
+{
+  if((min <= value) && (value <= max)){
+    return true;
+  }
+  return false;
+}

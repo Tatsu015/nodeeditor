@@ -12,11 +12,15 @@
 #include "Define.h"
 #include "Editor.h"
 #include "InNode.h"
+#include "GuideLine.h"
 #include "NodeEditTool.h"
 #include "NodeFactory.h"
 #include "OutNode.h"
 #include "Port.h"
 #include "Tool.h"
+#include "Common.h"
+
+const static qreal TORELANCE = 5;
 
 Scene::Scene(QObject* parent) : QGraphicsScene(-750, -1000, 2000, 2000, parent), m_isControlPressed(false) {
   addLine(-1000, 0, 1000, 0, QPen(Qt::gray));
@@ -257,6 +261,105 @@ void Scene::showConnector(QPointF scenePos) {
 
 QList<AbstractNode*> Scene::nodes() const { return m_nodes; }
 
+QList<AbstractNode*> Scene::nearTopNodes(const qreal top) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if(between(top, (node->top() - TORELANCE), (node->top() + TORELANCE))){
+      nearNodes.append(node);
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearTopNodes(const qreal top, const SelectedFilter filter) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, nearTopNodes(top)) {
+    if(filter == node->isSelected()){
+      nearNodes << node;
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearBottomNodes(const qreal bottom) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if(between(bottom, (node->bottom() - TORELANCE), (node->bottom() + TORELANCE))){
+      nearNodes.append(node);
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearBottomNodes(const qreal bottom, const Scene::SelectedFilter filter) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, nearBottomNodes(bottom)) {
+    if(filter == node->isSelected()){
+      nearNodes << node;
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearRightNodes(const qreal right) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if(between(right, (node->right() - TORELANCE), (node->right() + TORELANCE))){
+      nearNodes.append(node);
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearRightNodes(const qreal right, const Scene::SelectedFilter filter) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, nearRightNodes(right)) {
+    if(filter == node->isSelected()){
+      nearNodes << node;
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearLeftNodes(const qreal left) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if(between(left, (node->left() - TORELANCE), (node->left() + TORELANCE))){
+      nearNodes.append(node);
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::nearLeftNodes(const qreal left, const Scene::SelectedFilter filter) const
+{
+  QList<AbstractNode*> nearNodes;
+  foreach (AbstractNode* node, nearLeftNodes(left)) {
+    if(filter == node->isSelected()){
+      nearNodes << node;
+    }
+  }
+  return nearNodes;
+}
+
+QList<AbstractNode*> Scene::selectedNodes() const
+{
+  QList<AbstractNode*> selectNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if(node->isSelected()){
+      selectNodes << node;
+    }
+  }
+  return selectNodes;
+}
+
 void Scene::addNode(AbstractNode* node, QPointF scenePos) {
   node->setPos(scenePos);
   m_nodes << node;
@@ -331,4 +434,19 @@ void Scene::removeConnection(Connection* connection) {
   m_connections.removeOne(connection);
   delete connection;
   connection = nullptr;
+}
+
+void Scene::addGuideLine(GuideLine* guideLine)
+{
+  addItem(guideLine);
+  m_guideLines << guideLine;
+}
+
+void Scene::clearGuideLine()
+{
+  foreach (QGraphicsLineItem* guideLine, m_guideLines) {
+    removeItem(guideLine);
+  }
+  qDeleteAll(m_guideLines);
+  m_guideLines.clear();
 }

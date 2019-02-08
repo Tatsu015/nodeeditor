@@ -8,8 +8,15 @@ class InNode;
 class Connection;
 class Connector;
 class Port;
+class GuideLine;
 
 class Scene : public QGraphicsScene {
+ public:
+  enum SelectedFilter : bool {
+    OnlySelected = true,
+    OnlyUnselected = false,
+  };
+
  public:
   Scene(QObject* parent = nullptr);
   virtual ~Scene();
@@ -24,6 +31,15 @@ class Scene : public QGraphicsScene {
   virtual void keyReleaseEvent(QKeyEvent* event);
 
   QList<AbstractNode*> nodes() const;
+  QList<AbstractNode*> nearTopNodes(const qreal top) const;
+  QList<AbstractNode*> nearTopNodes(const qreal top, const SelectedFilter filter) const;
+  QList<AbstractNode*> nearBottomNodes(const qreal bottom) const;
+  QList<AbstractNode*> nearBottomNodes(const qreal bottom, const SelectedFilter filter) const;
+  QList<AbstractNode*> nearRightNodes(const qreal right) const;
+  QList<AbstractNode*> nearRightNodes(const qreal right, const SelectedFilter filter) const;
+  QList<AbstractNode*> nearLeftNodes(const qreal left) const;
+  QList<AbstractNode*> nearLeftNodes(const qreal left, const SelectedFilter filter) const;
+  QList<AbstractNode*> selectedNodes() const;
   void addNode(AbstractNode* node, QPointF scenePos);
   void removeNode(AbstractNode* node);
 
@@ -32,6 +48,9 @@ class Scene : public QGraphicsScene {
   void addConnection(Connection* connection, Port* startPort, Port* endPort);
   void addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName, int32_t endPortNumber);
   void removeConnection(Connection* connection);
+
+  void addGuideLine(GuideLine* guideLine);
+  void clearGuideLine();
 
   bool existNode(QPointF pos);
   bool existPort(QPointF scenePos);
@@ -57,6 +76,7 @@ class Scene : public QGraphicsScene {
   Connection* m_tmpConnection = nullptr;
   Connector* m_tmpConnector = nullptr;
   Port* m_startPort = nullptr;
+  QVector<GuideLine*> m_guideLines;
   bool m_isControlPressed;
 };
 

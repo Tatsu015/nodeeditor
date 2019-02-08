@@ -29,76 +29,79 @@ INCLUDEPATH += \
     controller/factory \
     controller/publisher \
     controller/tool \
-    model/connection \
-    model/node \
+    model/figure/connection \
+    model/figure/node \
+    model/figure/port \
+    model/figure/guideline \
     model/scene \
-    model/port \
     model/project \
     util \
     view/widget \
     view/window
 
 HEADERS += \
-    controller/editor/Editor.h \
     controller/action/AbstractAction.h \
-    controller/tool/Tool.h \
-    model/connection/Connection.h \
-    model/connection/Connector.h \
-    model/node/InNode.h \
-    model/node/OutNode.h \
-    model/port/Port.h \
-    model/scene/Scene.h \
-    util/Common.h \
-    view/widget/ErrorListWidget.h \
-    view/window/MainWindow.h \
-    model/project/Project.h \
-    controller/factory/NodeFactory.h \
-    model/node/AbstractNode.h \
-    util/Define.h \
-    controller/publisher/NamePublisher.h \
+    controller/action/AnalyzeCircuitAction.h \
     controller/action/OpenAction.h \
     controller/action/SaveAction.h \
-    controller/action/AnalyzeCircuitAction.h \
-    controller/factory/ConnectionFactory.h \
     controller/builder/Builder.h \
-    view/graphicsview/GraphicsView.h \
-    controller/tool/NodeEditTool.h \
+    controller/editor/Editor.h \
+    controller/factory/ConnectionFactory.h \
+    controller/factory/NodeFactory.h \
+    controller/publisher/NamePublisher.h \
     controller/tool/AbstractTool.h \
+    controller/tool/ConnectionCreateTool.h \
+    controller/tool/NodeEditTool.h \
+    controller/tool/Tool.h \
+    model/figure/connection/Connection.h \
+    model/figure/connection/Connector.h \
+    model/figure/node/AbstractNode.h \
+    model/figure/node/AndNode.h \
+    model/figure/node/InNode.h \
+    model/figure/node/OrNode.h \
+    model/figure/node/OutNode.h \
+    model/figure/port/Port.h \
+    model/project/Project.h \
+    model/scene/Scene.h \
+    util/Common.h \
+    util/Define.h \
+    view/graphicsview/GraphicsView.h \
+    view/widget/ErrorListWidget.h \
     view/widget/NodeToolBar.h \
-    model/node/AndNode.h \
-    model/node/OrNode.h \
-    controller/tool/ConnectionCreateTool.h
+    view/window/MainWindow.h \
+    model/figure/guideline/GuideLine.h
 
 SOURCES += \
-    controller/editor/Editor.cpp \
     controller/action/AbstractAction.cpp \
-    controller/tool/Tool.cpp \
-    model/connection/Connection.cpp \
-    model/connection/Connector.cpp \
-    model/node/InNode.cpp \
-    model/node/OutNode.cpp \
-    model/port/Port.cpp \
-    model/scene/Scene.cpp \
-    util/Common.cpp \
-    view/widget/ErrorListWidget.cpp \
-    view/window/MainWindow.cpp \
-    main.cpp \
-    model/project/Project.cpp \
-    controller/factory/NodeFactory.cpp \
-    model/node/AbstractNode.cpp \
-    controller/publisher/NamePublisher.cpp \
+    controller/action/AnalyzeCircuitAction.cpp \
     controller/action/OpenAction.cpp \
     controller/action/SaveAction.cpp \
-    controller/action/AnalyzeCircuitAction.cpp \
-    controller/factory/ConnectionFactory.cpp \
     controller/builder/Builder.cpp \
-    view/graphicsview/GraphicsView.cpp \
-    controller/tool/NodeEditTool.cpp \
+    controller/editor/Editor.cpp \
+    controller/factory/ConnectionFactory.cpp \
+    controller/factory/NodeFactory.cpp \
+    controller/publisher/NamePublisher.cpp \
     controller/tool/AbstractTool.cpp \
+    controller/tool/ConnectionCreateTool.cpp \
+    controller/tool/NodeEditTool.cpp \
+    controller/tool/Tool.cpp \
+    model/figure/connection/Connection.cpp \
+    model/figure/connection/Connector.cpp \
+    model/figure/node/AbstractNode.cpp \
+    model/figure/node/AndNode.cpp \
+    model/figure/node/InNode.cpp \
+    model/figure/node/OrNode.cpp \
+    model/figure/node/OutNode.cpp \
+    model/figure/port/Port.cpp \
+    model/project/Project.cpp \
+    model/scene/Scene.cpp \
+    util/Common.cpp \
+    view/graphicsview/GraphicsView.cpp \
+    view/widget/ErrorListWidget.cpp \
     view/widget/NodeToolBar.cpp \
-    model/node/AndNode.cpp \
-    model/node/OrNode.cpp \
-    controller/tool/ConnectionCreateTool.cpp
+    view/window/MainWindow.cpp \
+    main.cpp \
+    model/figure/guideline/GuideLine.cpp
 
 FORMS += \
     view/window/MainWindow.ui
@@ -107,3 +110,4 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+

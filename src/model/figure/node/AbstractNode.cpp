@@ -35,6 +35,26 @@ QString AbstractNode::name() const { return m_name; }
 
 void AbstractNode::setName(const QString& name) { m_name = name; }
 
+qreal AbstractNode::top() const
+{
+  return sceneBoundingRect().top();
+}
+
+qreal AbstractNode::bottom() const
+{
+  return sceneBoundingRect().bottom();
+}
+
+qreal AbstractNode::right() const
+{
+  return sceneBoundingRect().right();
+}
+
+qreal AbstractNode::left() const
+{
+  return sceneBoundingRect().left();
+}
+
 void AbstractNode::setupNameText() {
   m_nameText = new QGraphicsSimpleTextItem(m_name, this);
   m_nameText->setPos(0, -20);

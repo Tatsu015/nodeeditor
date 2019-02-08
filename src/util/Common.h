@@ -7,6 +7,7 @@
 
 extern QString btos(bool value);
 extern bool stob(const QString& value);
+extern bool between(qreal value, qreal min, qreal max);
 
 enum EPosition : int {
   Top,
