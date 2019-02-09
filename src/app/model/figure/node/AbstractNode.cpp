@@ -7,7 +7,6 @@
 
 const QColor AbstractNode::FILL_COLOR = QColor("#666666");
 const QColor AbstractNode::LINE_COLOR = QColor("#AAAAAA");
-const QColor AbstractNode::TEXT_COLOR = QColor("#333333");
 
 AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   setFlag(ItemIsSelectable);
