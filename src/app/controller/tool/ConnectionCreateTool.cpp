@@ -1,13 +1,16 @@
 #include "ConnectionCreateTool.h"
 #include <QGraphicsSceneMouseEvent>
 #include "Connection.h"
+#include "ConnectionAddCommand.h"
 #include "ConnectionFactory.h"
 #include "Define.h"
 #include "Editor.h"
 #include "Port.h"
 #include "Scene.h"
 
-ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {}
+ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
+  m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+}
 
 ConnectionCreateTool::~ConnectionCreateTool() {}
 
@@ -17,7 +20,6 @@ void ConnectionCreateTool::mousePressEvent(Scene *scene, QGraphicsSceneMouseEven
     return;
   }
 
-  m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
   addTmpConnection(scene, m_startPort);
 
   m_isUsing = true;
@@ -40,20 +42,18 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEv
   m_isUsing = false;
 
   Port *endPort = scene->findPort(event->scenePos());
+  removeTmpConnection(scene);
   if (!endPort) {
-    removeTmpConnection(scene);
     return;
   }
   if (m_startPort == endPort) {
-    removeTmpConnection(scene);
     return;
   }
   if (m_startPort->parentNode() == endPort->parentNode()) {
-    removeTmpConnection(scene);
     return;
   }
 
-  decideConnection(endPort);
+  decideConnection(scene, endPort);
 }
 
 void ConnectionCreateTool::mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
@@ -65,14 +65,11 @@ void ConnectionCreateTool::addTmpConnection(Scene *scene, Port *startPort) { sce
 
 void ConnectionCreateTool::redrawTmpConnection(QPointF nowScenePos) { m_tmpConnection->updatePath(m_startPort, nowScenePos); }
 
-void ConnectionCreateTool::decideConnection(Port *endPort) {
-  m_tmpConnection->setEndPort(endPort);
-  m_tmpConnection->setEndPos(endPort->centerScenePos());
-  endPort->addConnection(m_tmpConnection);
+void ConnectionCreateTool::decideConnection(Scene *scene, Port *endPort) {
+  Connection *connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+  ConnectionAddCommand *command = new ConnectionAddCommand(scene, connection, m_startPort, endPort);
+  Editor::getInstance()->addCommand(command);
 
-  m_tmpConnection->updatePath();
-
-  m_tmpConnection = nullptr;
   m_startPort = nullptr;
 }
 

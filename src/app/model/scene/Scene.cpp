@@ -354,6 +354,7 @@ void Scene::removeConnection(Connection* connection) {
   }
 
   m_connections.removeOne(connection);
+  removeItem(connection);
 }
 
 void Scene::deleteConnection(Connection* connection) {

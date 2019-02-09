@@ -20,7 +20,7 @@ class ConnectionCreateTool : public AbstractTool {
  private:
   void addTmpConnection(Scene* scene, Port* startPort);
   void redrawTmpConnection(QPointF nowScenePos);
-  void decideConnection(Port* endPort);
+  void decideConnection(Scene* scene, Port* endPort);
   void removeTmpConnection(Scene* scene);
 
  private:
