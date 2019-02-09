@@ -43,11 +43,17 @@ void Builder::buildGraphicsView(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   Editor::getInstance()->setGraphicsView(ui->graphicsView);
 }
-
+#include <QUndoStack>
 void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
   Q_UNUSED(mainWindow);
 
   foreach (QMenu *menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
+
+  QMenu *menu = MenuManager::getInstance()->menu("Edit");
+  QAction *undo = Editor::getInstance()->undoStack()->createUndoAction(mainWindow, "Undo");
+  QAction *redo = Editor::getInstance()->undoStack()->createRedoAction(mainWindow, "Redo");
+  menu->addAction(undo);
+  menu->addAction(redo);
 
   //  QMenu *fileMenu = new QMenu("File");
   //  ui->menuBar->addMenu(fileMenu);

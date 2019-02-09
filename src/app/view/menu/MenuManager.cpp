@@ -19,6 +19,9 @@ QMenu* MenuManager::menu(const QString& name) {
 
 QList<QMenu*> MenuManager::menus() const { return m_menus; }
 
-MenuManager::MenuManager() { addMenu(new QMenu("File")); }
+MenuManager::MenuManager() {
+  addMenu(new QMenu("File"));
+  addMenu(new QMenu("Edit"));
+}
 
 MenuManager::~MenuManager() {}

@@ -290,6 +290,10 @@ void Scene::removeNode(AbstractNode* node) {
   }
   m_nodes.removeOne(node);
   removeItem(node);
+}
+
+void Scene::deleteNode(AbstractNode* node) {
+  removeNode(node);
   delete node;
   node = nullptr;
 }
@@ -350,6 +354,10 @@ void Scene::removeConnection(Connection* connection) {
   }
 
   m_connections.removeOne(connection);
+}
+
+void Scene::deleteConnection(Connection* connection) {
+  removeConnection(connection);
   delete connection;
   connection = nullptr;
 }

@@ -40,12 +40,14 @@ class Scene : public QGraphicsScene {
   QList<AbstractNode*> selectedNodes() const;
   void addNode(AbstractNode* node, QPointF scenePos);
   void removeNode(AbstractNode* node);
+  void deleteNode(AbstractNode* node);
 
   QList<Connection*> connections() const;
   void addConnection(Connection* connection, Port* startPort);
   void addConnection(Connection* connection, Port* startPort, Port* endPort);
   void addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName, int32_t endPortNumber);
   void removeConnection(Connection* connection);
+  void deleteConnection(Connection* connection);
 
   void addGuideLine(GuideLine* guideLine);
   void clearGuideLine();

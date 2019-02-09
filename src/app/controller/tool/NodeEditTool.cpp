@@ -4,7 +4,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include "AbstractNode.h"
 #include "Define.h"
+#include "Editor.h"
 #include "GuideLine.h"
+#include "NodeAddCommand.h"
 #include "NodeFactory.h"
 #include "Scene.h"
 
@@ -39,7 +41,8 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   AbstractNode* node = NodeFactory::getInstance()->createNode(m_activeNodeType);
   QPointF ofs(node->boundingRect().center());
-  scene->addNode(node, QPointF(event->scenePos() - ofs));
+  QPointF addScenePos = event->scenePos() - ofs;
+  Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
 }
 
 QStringList NodeEditTool::nodeTypes() const { return m_nodeTypes; }

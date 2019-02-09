@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include <QGraphicsView>
+#include <QUndoStack>
 #include "AndNode.h"
 #include "Connection.h"
 #include "ConnectionCreateTool.h"
@@ -20,8 +21,8 @@ Editor *Editor::getInstance() {
 
 void Editor::init() {
   initFactory();
-  intAction();
   initTool();
+  initUndoStack();
 
   resetProject();
 }
@@ -30,17 +31,6 @@ void Editor::reset() {
   resetProject();
   m_graphicsView->setScene(m_project->scene());
 }
-
-// AbstractAction *Editor::action(const QString &name) {
-//  foreach (AbstractAction *action, m_actions) {
-//    if (name == action->name()) {
-//      return action;
-//    }
-//  }
-//  return nullptr;
-//}
-
-// void Editor::addAction(AbstractAction *action) { m_actions.append(action); }
 
 Project *Editor::project() const { return m_project; }
 
@@ -54,6 +44,8 @@ void Editor::changeActiveTool(const QString &toolName) { m_activeTool = m_tools[
 
 void Editor::changeDefaultTool() { changeActiveTool(TOOL_NODE_CREATE); }
 
+void Editor::addCommand(QUndoCommand *undoCommand) { m_undoStack->push(undoCommand); }
+
 void Editor::resetProject() {
   delete project();
   m_project = new Project();
@@ -65,6 +57,8 @@ void Editor::addTool(AbstractTool *tool) {
   m_tools[name] = tool;
 }
 
+QUndoStack *Editor::undoStack() const { return m_undoStack; }
+
 void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new InNode());
   NodeFactory::getInstance()->addNode(new OutNode());
@@ -74,12 +68,6 @@ void Editor::initFactory() {
   ConnectionFactory::getInstance()->addConnection(new Connection());
 }
 
-void Editor::intAction() {
-  //  Editor::getInstance()->addAction(new NewAction());
-  //  Editor::getInstance()->addAction(new OpenAction());
-  //  Editor::getInstance()->addAction(new SaveAction());
-}
-
 void Editor::initTool() {
   addTool(new NodeEditTool());
   addTool(new ConnectionCreateTool());
@@ -87,6 +75,8 @@ void Editor::initTool() {
   // set default tool
   m_activeTool = m_tools[TOOL_NODE_CREATE];
 }
+
+void Editor::initUndoStack() { m_undoStack = new QUndoStack(); }
 
 Editor::Editor() : m_graphicsView() {}
 

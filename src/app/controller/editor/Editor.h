@@ -7,6 +7,8 @@ class Project;
 class AbstractAction;
 class QGraphicsView;
 class AbstractTool;
+class QUndoStack;
+class QUndoCommand;
 
 class Editor {
  public:
@@ -14,8 +16,6 @@ class Editor {
 
   void init();
   void reset();
-  AbstractAction* action(const QString& name);
-  void addAction(AbstractAction* action);
 
   Project* project() const;
 
@@ -25,11 +25,14 @@ class Editor {
   AbstractTool* activeTool() const;
   void changeActiveTool(const QString& toolName);
   void changeDefaultTool();
+  void addCommand(QUndoCommand* undoCommand);
+
+  QUndoStack* undoStack() const;
 
  private:
   void initFactory();
-  void intAction();
   void initTool();
+  void initUndoStack();
   void resetProject();
   void addTool(AbstractTool* tool);
 
@@ -39,6 +42,7 @@ class Editor {
   AbstractTool* m_activeTool = nullptr;
   Project* m_project = nullptr;
   QGraphicsView* m_graphicsView = nullptr;
+  QUndoStack* m_undoStack = nullptr;
 
  private:
   Editor();

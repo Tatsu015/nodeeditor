@@ -24,6 +24,7 @@ CONFIG += c++11
 
 INCLUDEPATH += \
     app/controller/builder \
+    app/controller/command \
     app/controller/editor \
     app/controller/factory \
     app/controller/publisher \
@@ -71,7 +72,8 @@ HEADERS += \
     app/extend/PluginLoader.h \
     plugin/core/NewPlugin.h \
     plugin/core/OpenPlugin.h \
-    plugin/core/SavePlugin.h
+    plugin/core/SavePlugin.h \
+    app/controller/command/NodeAddCommand.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -103,7 +105,8 @@ SOURCES += \
     app/extend/PluginLoader.cpp \
     plugin/core/NewPlugin.cpp \
     plugin/core/OpenPlugin.cpp \
-    plugin/core/SavePlugin.cpp
+    plugin/core/SavePlugin.cpp \
+    app/controller/command/NodeAddCommand.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui
