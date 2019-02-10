@@ -40,10 +40,16 @@ INCLUDEPATH += \
     app/view/window \
     app/extend \
     app/view/menu \
-    plugin/core
+    plugin/core \
+    plugin/circuitanalizer/action \
+    plugin/circuitanalizer/widget \
+    plugin/core \
 
 HEADERS += \
     app/controller/builder/Builder.h \
+    app/controller/command/ConnectionAddCommand.h \
+    app/controller/command/NodeAddCommand.h \
+    app/controller/command/NodeRemoveCommand.h \
     app/controller/editor/Editor.h \
     app/controller/factory/ConnectionFactory.h \
     app/controller/factory/NodeFactory.h \
@@ -51,8 +57,11 @@ HEADERS += \
     app/controller/tool/AbstractTool.h \
     app/controller/tool/ConnectionCreateTool.h \
     app/controller/tool/NodeEditTool.h \
+    app/extend/AbstractPlugin.h \
+    app/extend/PluginLoader.h \
     app/model/figure/connection/Connection.h \
     app/model/figure/connection/Connector.h \
+    app/model/figure/guideline/GuideLine.h \
     app/model/figure/node/AbstractNode.h \
     app/model/figure/node/AndNode.h \
     app/model/figure/node/InNode.h \
@@ -64,20 +73,21 @@ HEADERS += \
     app/util/Common.h \
     app/util/Define.h \
     app/view/graphicsview/GraphicsView.h \
+    app/view/menu/MenuManager.h \
     app/view/widget/NodeToolBar.h \
     app/view/window/MainWindow.h \
-    app/model/figure/guideline/GuideLine.h \
-    app/extend/AbstractPlugin.h \
-    app/view/menu/MenuManager.h \
-    app/extend/PluginLoader.h \
+    plugin/circuitanalizer/action/AnalyzeCircuitAction.h \
+    plugin/circuitanalizer/widget/ErrorListWidget.h \
     plugin/core/NewPlugin.h \
     plugin/core/OpenPlugin.h \
     plugin/core/SavePlugin.h \
-    app/controller/command/NodeAddCommand.h \
-    app/controller/command/ConnectionAddCommand.h
+    app/controller/command/NodeMoveCommand.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
+    app/controller/command/ConnectionAddCommand.cpp \
+    app/controller/command/NodeAddCommand.cpp \
+    app/controller/command/NodeRemoveCommand.cpp \
     app/controller/editor/Editor.cpp \
     app/controller/factory/ConnectionFactory.cpp \
     app/controller/factory/NodeFactory.cpp \
@@ -85,8 +95,11 @@ SOURCES += \
     app/controller/tool/AbstractTool.cpp \
     app/controller/tool/ConnectionCreateTool.cpp \
     app/controller/tool/NodeEditTool.cpp \
+    app/extend/AbstractPlugin.cpp \
+    app/extend/PluginLoader.cpp \
     app/model/figure/connection/Connection.cpp \
     app/model/figure/connection/Connector.cpp \
+    app/model/figure/guideline/GuideLine.cpp \
     app/model/figure/node/AbstractNode.cpp \
     app/model/figure/node/AndNode.cpp \
     app/model/figure/node/InNode.cpp \
@@ -97,18 +110,16 @@ SOURCES += \
     app/model/scene/Scene.cpp \
     app/util/Common.cpp \
     app/view/graphicsview/GraphicsView.cpp \
+    app/view/menu/MenuManager.cpp \
     app/view/widget/NodeToolBar.cpp \
     app/view/window/MainWindow.cpp \
     app/main.cpp \
-    app/model/figure/guideline/GuideLine.cpp \
-    app/extend/AbstractPlugin.cpp \
-    app/view/menu/MenuManager.cpp \
-    app/extend/PluginLoader.cpp \
+    plugin/circuitanalizer/action/AnalyzeCircuitAction.cpp \
+    plugin/circuitanalizer/widget/ErrorListWidget.cpp \
     plugin/core/NewPlugin.cpp \
     plugin/core/OpenPlugin.cpp \
     plugin/core/SavePlugin.cpp \
-    app/controller/command/NodeAddCommand.cpp \
-    app/controller/command/ConnectionAddCommand.cpp
+    app/controller/command/NodeMoveCommand.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui
@@ -117,4 +128,3 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-

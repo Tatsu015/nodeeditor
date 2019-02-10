@@ -29,6 +29,8 @@ class Scene : public QGraphicsScene {
   virtual void keyReleaseEvent(QKeyEvent* event);
 
   QList<AbstractNode*> nodes() const;
+  QList<AbstractNode*> findNodes(QPointF scenePos);
+  AbstractNode* findNode(const QString& nodeName);
   QList<AbstractNode*> nearTopNodes(const qreal top) const;
   QList<AbstractNode*> nearTopNodes(const qreal top, const SelectedFilter filter) const;
   QList<AbstractNode*> nearBottomNodes(const qreal bottom) const;
@@ -61,8 +63,6 @@ class Scene : public QGraphicsScene {
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 
-  QList<AbstractNode*> findNodes(QPointF scenePos);
-  AbstractNode* findNode(const QString& nodeName);
 
   Connection* findConnection(QPointF scenePos);
 

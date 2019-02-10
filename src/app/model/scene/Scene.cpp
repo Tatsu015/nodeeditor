@@ -10,6 +10,7 @@
 #include "Connection.h"
 #include "ConnectionFactory.h"
 #include "Connector.h"
+#include "NodeRemoveCommand.h"
 #include "Define.h"
 #include "Editor.h"
 #include "GuideLine.h"
@@ -53,7 +54,10 @@ void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 
 void Scene::keyPressEvent(QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
-    foreach (QGraphicsItem* item, selectedItems()) { removeNode(dynamic_cast<AbstractNode*>(item)); }
+    foreach (QGraphicsItem* item, selectedItems()) {
+      AbstractNode* node = dynamic_cast<AbstractNode*>(item);
+      Editor::getInstance()->addCommand(new NodeRemoveCommand(this, node, node->scenePos()));
+    }
   } else if (Qt::Key_Control == event->key()) {
     m_isControlPressed = true;
   } else if (Qt::Key_A == event->key()) {

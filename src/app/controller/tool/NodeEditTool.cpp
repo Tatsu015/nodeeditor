@@ -8,6 +8,7 @@
 #include "GuideLine.h"
 #include "NodeAddCommand.h"
 #include "NodeFactory.h"
+#include "NodeMoveCommand.h"
 #include "Scene.h"
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
@@ -34,8 +35,17 @@ void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event)
 }
 
 void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
-  Q_UNUSED(event);
   scene->clearGuideLine();
+
+  if(isSelectedNodesPressed(event->scenePos(), scene)){
+    QPointF startScenePos = event->buttonDownScenePos(Qt::LeftButton);
+    QPointF endScenePos   = event->scenePos();
+    QPointF diffScenePos = endScenePos - startScenePos;
+    if(diffScenePos.manhattanLength() < 0.01){
+      return;
+    }
+    Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
+  }
 }
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
@@ -46,6 +56,16 @@ void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent*
 }
 
 QStringList NodeEditTool::nodeTypes() const { return m_nodeTypes; }
+
+bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene)
+{
+  foreach (AbstractNode* node, scene->findNodes(scenePos)) {
+    if(node->isSelected()){
+      return true;
+    }
+  }
+  return false;
+}
 
 void NodeEditTool::setActiveNodeType(const QString& activeNodeType) { m_activeNodeType = activeNodeType; }
 

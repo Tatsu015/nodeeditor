@@ -23,6 +23,7 @@ class NodeEditTool : public AbstractTool {
   QStringList nodeTypes() const;
 
  private:
+  bool isSelectedNodesPressed(QPointF scenePos, Scene* scene);
   void drawGuideLine(Scene *scene);
   void drawTopGuideLineFromNearNodes(Scene *scene, AbstractNode *movingNode);
   void drawBottomGuideLineFromNearNodes(Scene *scene, AbstractNode *movingNode);
@@ -32,6 +33,7 @@ class NodeEditTool : public AbstractTool {
  private:
   QStringList m_nodeTypes;
   QString m_activeNodeType = "";
+  QList<AbstractNode*> m_selectedNodes;
 };
 
 #endif  // NodeEditTool_H
