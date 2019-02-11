@@ -16,6 +16,8 @@ class ConnectionCreateTool : public AbstractTool {
   virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+  virtual void keyPressEvent(Scene* scene, QKeyEvent* event) ;
+  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event);
 
  private:
   void addTmpConnection(Scene* scene, Port* startPort);

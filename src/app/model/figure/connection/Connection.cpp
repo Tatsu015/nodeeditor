@@ -17,26 +17,25 @@ Connection* Connection::create() { return new Connection(); }
 
 void Connection::setStartPos(const QPointF& startPos) {
   m_startPos = startPos;
-  updatePath();
+  redraw();
 }
 
 void Connection::setEndPos(const QPointF& endPos) {
   m_endPos = endPos;
-  updatePath();
+  redraw();
 }
 
 void Connection::setStartPort(Port* startPort) {
   m_startPort = startPort;
-  updatePath();
+  redraw();
 }
 
 void Connection::setEndPort(Port* endPort) {
   m_endPort = endPort;
-  updatePath();
+  redraw();
 }
 
-#include <QDebug>
-void Connection::updatePath() {
+void Connection::redraw() {
   QPointF startPos = m_startPos;
   QPointF endPos = m_endPos;
   if (m_startPort) {
@@ -61,16 +60,16 @@ void Connection::updatePath() {
   setPath(path);
 }
 
-void Connection::updatePath(Port* startPort, Port* endPort) {
+void Connection::redraw(Port* startPort, Port* endPort) {
   m_startPort = startPort;
   m_endPort = endPort;
-  updatePath();
+  redraw();
 }
 
-void Connection::updatePath(Port* startPort, QPointF endScenePos) {
+void Connection::redraw(Port* startPort, QPointF endScenePos) {
   m_startPort = startPort;
   m_endPos = endScenePos;
-  updatePath();
+  redraw();
 }
 
 Port* Connection::startPort() const { return m_startPort; }

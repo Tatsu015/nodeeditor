@@ -24,7 +24,7 @@ AbstractNode::~AbstractNode() { qDeleteAll(m_ports); }
 QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value) {
   if (ItemPositionChange == change) {
     foreach (Port* port, m_ports) {
-      foreach (Connection* connection, port->connections()) { connection->updatePath(); }
+      foreach (Connection* connection, port->connections()) { connection->redraw(); }
     }
   }
   return QGraphicsPathItem::itemChange(change, value);
@@ -136,3 +136,10 @@ EPosition AbstractNode::portPosition(Port* port) {
 }
 
 QString AbstractNode::nodeType() const { return m_nodeType; }
+
+void AbstractNode::redraw()
+{
+  foreach (Port* port, m_ports) {
+    port->redraw();
+  }
+}

@@ -22,14 +22,14 @@ void NodeMoveCommand::redo()
 {
   foreach (NodeMoveInfo* nodeMoveInfo, m_nodeMovenfos) {
     nodeMoveInfo->m_node->setPos(nodeMoveInfo->m_endScenePos);
+    nodeMoveInfo->m_node->redraw();
   }
-//  m_node->setPos(m_endScenePos);
 }
 
 void NodeMoveCommand::undo()
 {
   foreach (NodeMoveInfo* nodeMoveInfo, m_nodeMovenfos) {
     nodeMoveInfo->m_node->setPos(nodeMoveInfo->m_startScenePos);
+    nodeMoveInfo->m_node->redraw();
   }
-//  m_node->setPos(m_startScenePos);
 }

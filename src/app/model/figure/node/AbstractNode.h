@@ -38,6 +38,8 @@ class AbstractNode : public QGraphicsPathItem {
 
   QString nodeType() const;
 
+  void redraw();
+
  protected:
   const static QColor FILL_COLOR;
   const static QColor LINE_COLOR;

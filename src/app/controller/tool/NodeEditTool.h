@@ -17,6 +17,8 @@ class NodeEditTool : public AbstractTool {
   virtual void mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
   virtual void mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
+  virtual void keyPressEvent(Scene* scene, QKeyEvent* event) ;
+  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event) ;
 
   void setActiveNodeType(const QString &activeNodeType);
 

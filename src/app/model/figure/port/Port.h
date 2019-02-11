@@ -29,6 +29,8 @@ class Port : public QGraphicsPathItem {
 
   AbstractNode* parentNode() const;
 
+  void redraw();
+
  protected:
   const static uint32_t WIDTH = 12;
   const static uint32_t HEIGHT = 3;

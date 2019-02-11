@@ -53,27 +53,22 @@ void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 void Scene::keyPressEvent(QKeyEvent* event) {
-  if (Qt::Key_Delete == event->key()) {
-    foreach (QGraphicsItem* item, selectedItems()) {
-      AbstractNode* node = dynamic_cast<AbstractNode*>(item);
-      Editor::getInstance()->addCommand(new NodeRemoveCommand(this, node, node->scenePos()));
-    }
-  } else if (Qt::Key_Control == event->key()) {
+  Editor::getInstance()->activeTool()->keyPressEvent(this, event);
+  if (Qt::Key_Control == event->key()) {
     m_isControlPressed = true;
   } else if (Qt::Key_A == event->key()) {
     if (m_isControlPressed) {
       foreach (AbstractNode* node, nodes()) { node->setSelected(true); }
     }
   }
-
   QGraphicsScene::keyPressEvent(event);
 }
 
 void Scene::keyReleaseEvent(QKeyEvent* event) {
+  Editor::getInstance()->activeTool()->keyReleaseEvent(this, event);
   if (Qt::Key_Control == event->key()) {
     m_isControlPressed = false;
   }
-
   QGraphicsScene::keyReleaseEvent(event);
 }
 
@@ -339,7 +334,7 @@ void Scene::addConnection(const QString& startNodeName, int32_t startPortNumber,
 
   addConnection(connection, startPort, endPort);
 
-  connection->updatePath();
+  connection->redraw();
 }
 
 void Scene::removeConnection(Connection* connection) {

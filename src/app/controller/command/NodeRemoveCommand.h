@@ -9,8 +9,14 @@ class AbstractNode;
 class Port;
 
 class NodeRemoveCommand : public QUndoCommand {
+private:
+  struct NodeRemoveInfo
+  {
+    NodeRemoveInfo() {}
+    AbstractNode* m_node = nullptr;
+  };
  public:
-  NodeRemoveCommand(Scene* scene, AbstractNode* node, QPointF addScenePos);
+  NodeRemoveCommand(Scene* scene, QList<AbstractNode*> nodes);
   virtual ~NodeRemoveCommand();
 
   virtual void redo();
@@ -19,7 +25,7 @@ class NodeRemoveCommand : public QUndoCommand {
  private:
   Scene* m_scene = nullptr;
   AbstractNode* m_node = nullptr;
-  QPointF m_addScenePos;
+  QList<NodeRemoveInfo*> m_nodeRemoveInfos;
 };
 
 #endif  // noderemoveCOMMAND_H

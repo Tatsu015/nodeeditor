@@ -33,3 +33,10 @@ IO Port::io() const { return m_io; }
 uint32_t Port::number() const { return m_number; }
 
 AbstractNode* Port::parentNode() const { return m_parentNode; }
+
+void Port::redraw()
+{
+  foreach (Connection* connection, m_connections) {
+    connection->redraw();
+  }
+}

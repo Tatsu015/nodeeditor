@@ -5,6 +5,7 @@
 
 class Scene;
 class QGraphicsSceneMouseEvent;
+class QKeyEvent;
 
 class AbstractTool {
  public:
@@ -15,6 +16,8 @@ class AbstractTool {
   virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
   virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
+  virtual void keyPressEvent(Scene* scene, QKeyEvent* event) = 0;
+  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event) = 0;
 
   QString name();
   bool isUsing();

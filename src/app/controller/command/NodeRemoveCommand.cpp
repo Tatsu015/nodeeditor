@@ -2,8 +2,14 @@
 #include "AbstractNode.h"
 #include "Scene.h"
 
-NodeRemoveCommand::NodeRemoveCommand(Scene* scene, AbstractNode* node, QPointF addScenePos)
- : QUndoCommand(), m_scene(scene), m_node(node), m_addScenePos(addScenePos) {}
+NodeRemoveCommand::NodeRemoveCommand(Scene* scene, QList<AbstractNode*> nodes)
+ : QUndoCommand(), m_scene(scene) {
+  foreach (AbstractNode* node, nodes) {
+    NodeRemoveInfo* nodeRemoveInfo = new NodeRemoveInfo();
+    nodeRemoveInfo->m_node = node;
+    m_nodeRemoveInfos << nodeRemoveInfo;
+  }
+}
 
 NodeRemoveCommand::~NodeRemoveCommand()
 {
@@ -11,10 +17,15 @@ NodeRemoveCommand::~NodeRemoveCommand()
 
 void NodeRemoveCommand::redo()
 {
-  m_scene->removeNode(m_node);
+  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
+    m_scene->removeNode(nodeRemoveInfo->m_node);
+  }
 }
 
 void NodeRemoveCommand::undo()
 {
-  m_scene->addNode(m_node, m_addScenePos);
+  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
+    m_scene->addNode(nodeRemoveInfo->m_node, nodeRemoveInfo->m_node->scenePos());
+    nodeRemoveInfo->m_node->redraw();
+  }
 }

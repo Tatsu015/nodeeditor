@@ -19,9 +19,9 @@ class Connection : public QGraphicsPathItem {
   void setStartPort(Port* startPort);
   void setEndPort(Port* endPort);
 
-  void updatePath();
-  void updatePath(Port* startPort, Port* endPort);
-  void updatePath(Port* startPort, QPointF endScenePos);
+  void redraw();
+  void redraw(Port* startPort, Port* endPort);
+  void redraw(Port* startPort, QPointF endScenePos);
 
   Port* startPort() const;
   Port* endPort() const;

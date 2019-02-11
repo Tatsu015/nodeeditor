@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include "AbstractNode.h"
+#include "NodeRemoveCommand.h"
 #include "Define.h"
 #include "Editor.h"
 #include "GuideLine.h"
@@ -53,6 +54,19 @@ void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent*
   QPointF ofs(node->boundingRect().center());
   QPointF addScenePos = event->scenePos() - ofs;
   Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
+}
+
+void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event)
+{
+  if (Qt::Key_Delete == event->key()) {
+    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
+  }
+}
+
+void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event)
+{
+  Q_UNUSED(scene);
+  Q_UNUSED(event);
 }
 
 QStringList NodeEditTool::nodeTypes() const { return m_nodeTypes; }
