@@ -3,13 +3,13 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include "AbstractNode.h"
-#include "NodeRemoveCommand.h"
 #include "Define.h"
 #include "Editor.h"
 #include "GuideLine.h"
 #include "NodeAddCommand.h"
 #include "NodeFactory.h"
 #include "NodeMoveCommand.h"
+#include "NodeRemoveCommand.h"
 #include "Scene.h"
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
@@ -38,11 +38,11 @@ void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event)
 void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   scene->clearGuideLine();
 
-  if(isSelectedNodesPressed(event->scenePos(), scene)){
+  if (isSelectedNodesPressed(event->scenePos(), scene)) {
     QPointF startScenePos = event->buttonDownScenePos(Qt::LeftButton);
-    QPointF endScenePos   = event->scenePos();
+    QPointF endScenePos = event->scenePos();
     QPointF diffScenePos = endScenePos - startScenePos;
-    if(diffScenePos.manhattanLength() < 0.01){
+    if (diffScenePos.manhattanLength() < 0.01) {
       return;
     }
     Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
@@ -56,25 +56,22 @@ void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent*
   Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
 }
 
-void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event)
-{
+void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
   }
 }
 
-void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event)
-{
+void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event) {
   Q_UNUSED(scene);
   Q_UNUSED(event);
 }
 
 QStringList NodeEditTool::nodeTypes() const { return m_nodeTypes; }
 
-bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene)
-{
+bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene) {
   foreach (AbstractNode* node, scene->findNodes(scenePos)) {
-    if(node->isSelected()){
+    if (node->isSelected()) {
       return true;
     }
   }

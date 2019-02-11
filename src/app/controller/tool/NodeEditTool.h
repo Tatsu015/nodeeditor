@@ -17,15 +17,15 @@ class NodeEditTool : public AbstractTool {
   virtual void mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
   virtual void mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
   virtual void mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMouseEvent *event);
-  virtual void keyPressEvent(Scene* scene, QKeyEvent* event) ;
-  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event) ;
+  virtual void keyPressEvent(Scene *scene, QKeyEvent *event);
+  virtual void keyReleaseEvent(Scene *scene, QKeyEvent *event);
 
   void setActiveNodeType(const QString &activeNodeType);
 
   QStringList nodeTypes() const;
 
  private:
-  bool isSelectedNodesPressed(QPointF scenePos, Scene* scene);
+  bool isSelectedNodesPressed(QPointF scenePos, Scene *scene);
   void drawGuideLine(Scene *scene);
   void drawTopGuideLineFromNearNodes(Scene *scene, AbstractNode *movingNode);
   void drawBottomGuideLineFromNearNodes(Scene *scene, AbstractNode *movingNode);
@@ -35,7 +35,7 @@ class NodeEditTool : public AbstractTool {
  private:
   QStringList m_nodeTypes;
   QString m_activeNodeType = "";
-  QList<AbstractNode*> m_selectedNodes;
+  QList<AbstractNode *> m_selectedNodes;
 };
 
 #endif  // NodeEditTool_H

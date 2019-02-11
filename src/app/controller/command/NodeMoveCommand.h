@@ -8,9 +8,8 @@ class Scene;
 class AbstractNode;
 
 class NodeMoveCommand : public QUndoCommand {
-private:
-  struct NodeMoveInfo
-  {
+ private:
+  struct NodeMoveInfo {
     NodeMoveInfo() {}
     AbstractNode* m_node = nullptr;
     QPointF m_startScenePos;

@@ -12,7 +12,7 @@
 //#include "Project.h"
 //#include "Scene.h"
 
-//AnalyzeCircuitAction::AnalyzeCircuitAction(QObject* parent) : AbstractPlugin(parent) {
+// AnalyzeCircuitAction::AnalyzeCircuitAction(QObject* parent) : AbstractPlugin(parent) {
 //  m_action = new QAction(ACTION_ANALYZE_CIRCUIT);
 //  m_action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
 
@@ -24,11 +24,11 @@
 //  QObject::connect(m_action, &QAction::triggered, this, &AnalyzeCircuitAction::execute);
 //}
 
-//AnalyzeCircuitAction::~AnalyzeCircuitAction() {}
+// AnalyzeCircuitAction::~AnalyzeCircuitAction() {}
 
-//QString AnalyzeCircuitAction::name() { return ACTION_ANALYZE_CIRCUIT; }
+// QString AnalyzeCircuitAction::name() { return ACTION_ANALYZE_CIRCUIT; }
 
-//void AnalyzeCircuitAction::execute() {
+// void AnalyzeCircuitAction::execute() {
 //  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
 //  if (!CheckAllPortFilled(nodes)) {
@@ -39,7 +39,7 @@
 //  foreach (ConnectedGraph* fbd, connectedGtaphs) { ExecuteOrderSort(fbd); }
 //}
 
-//QList<AnalyzeCircuitAction::ConnectedGraph*> AnalyzeCircuitAction::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
+// QList<AnalyzeCircuitAction::ConnectedGraph*> AnalyzeCircuitAction::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
 //  QList<ConnectedGraph*> fbds;
 //  QList<AbstractNode*> unusedNode = nodes;
 //  uint64_t id = 0;
@@ -70,7 +70,7 @@
 //  return fbds;
 //}
 
-//QList<AbstractNode*> AnalyzeCircuitAction::ExecuteOrderSort(AnalyzeCircuitAction::ConnectedGraph* fbd) {
+// QList<AbstractNode*> AnalyzeCircuitAction::ExecuteOrderSort(AnalyzeCircuitAction::ConnectedGraph* fbd) {
 //  QList<AbstractNode*> visitedNodes;
 //  QList<AbstractNode*> unvisitedNodes = fbd->m_outNodes;
 
@@ -92,7 +92,7 @@
 //  return visitedNodes;
 //}
 
-//QList<AbstractNode*> AnalyzeCircuitAction::InNodes(const QList<AbstractNode*>& nodes) {
+// QList<AbstractNode*> AnalyzeCircuitAction::InNodes(const QList<AbstractNode*>& nodes) {
 //  QList<AbstractNode*> inNodes;
 //  foreach (AbstractNode* node, nodes) {
 //    InNode* inNode = dynamic_cast<InNode*>(node);
@@ -103,7 +103,7 @@
 //  return inNodes;
 //}
 
-//QList<AbstractNode*> AnalyzeCircuitAction::OutNodes(const QList<AbstractNode*>& nodes) {
+// QList<AbstractNode*> AnalyzeCircuitAction::OutNodes(const QList<AbstractNode*>& nodes) {
 //  QList<AbstractNode*> outNodes;
 //  foreach (AbstractNode* node, nodes) {
 //    OutNode* outNode = dynamic_cast<OutNode*>(node);
@@ -114,7 +114,7 @@
 //  return outNodes;
 //}
 
-//QList<AbstractNode*> AnalyzeCircuitAction::HiddenNodes(const QList<AbstractNode*>& nodes) {
+// QList<AbstractNode*> AnalyzeCircuitAction::HiddenNodes(const QList<AbstractNode*>& nodes) {
 //  QList<AbstractNode*> hiddenNodes;
 //  foreach (AbstractNode* node, nodes) {
 //    AndNode* hiddenNode = dynamic_cast<AndNode*>(node);
@@ -125,11 +125,11 @@
 //  return hiddenNodes;
 //}
 
-//QDockWidget* AnalyzeCircuitAction::DockWidget() const { return m_dockWidget; }
+// QDockWidget* AnalyzeCircuitAction::DockWidget() const { return m_dockWidget; }
 
-//QAction* AnalyzeCircuitAction::ExportScriptAction() const { return m_action; }
+// QAction* AnalyzeCircuitAction::ExportScriptAction() const { return m_action; }
 
-//bool AnalyzeCircuitAction::CheckAllPortFilled(const QList<AbstractNode*>& nodes) {
+// bool AnalyzeCircuitAction::CheckAllPortFilled(const QList<AbstractNode*>& nodes) {
 //  ClearError();
 //  const QString BASE_MESSAGE = "not connected port : ";
 

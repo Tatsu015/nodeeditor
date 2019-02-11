@@ -1,12 +1,12 @@
 #include "ConnectionCreateTool.h"
 #include <QGraphicsSceneMouseEvent>
-#include "Connection.h"
-#include "NodeRemoveCommand.h"
 #include "AbstractNode.h"
+#include "Connection.h"
 #include "ConnectionAddCommand.h"
 #include "ConnectionFactory.h"
 #include "Define.h"
 #include "Editor.h"
+#include "NodeRemoveCommand.h"
 #include "Port.h"
 #include "Scene.h"
 
@@ -63,17 +63,15 @@ void ConnectionCreateTool::mouseDoubleClickEvent(Scene *scene, QGraphicsSceneMou
   Q_UNUSED(event);
 }
 
-void ConnectionCreateTool::keyPressEvent(Scene* scene, QKeyEvent* event)
-{
+void ConnectionCreateTool::keyPressEvent(Scene *scene, QKeyEvent *event) {
   if (Qt::Key_Delete == event->key()) {
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
   }
 }
 
-void ConnectionCreateTool::keyReleaseEvent(Scene* scene, QKeyEvent* event)
-{
+void ConnectionCreateTool::keyReleaseEvent(Scene *scene, QKeyEvent *event) {
   Q_UNUSED(scene);
-   Q_UNUSED(event);
+  Q_UNUSED(event);
 }
 
 void ConnectionCreateTool::addTmpConnection(Scene *scene, Port *startPort) { scene->addConnection(m_tmpConnection, startPort); }

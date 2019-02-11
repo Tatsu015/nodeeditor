@@ -7,10 +7,10 @@
 //#include "Common.h"
 //#include "ErrorListWidget.h"
 
-//class QAction;
-//class AbstractNode;
+// class QAction;
+// class AbstractNode;
 
-//class AnalyzeCircuitAction : public AbstractPlugin {
+// class AnalyzeCircuitAction : public AbstractPlugin {
 //  Q_OBJECT
 
 // public:

@@ -137,9 +137,6 @@ EPosition AbstractNode::portPosition(Port* port) {
 
 QString AbstractNode::nodeType() const { return m_nodeType; }
 
-void AbstractNode::redraw()
-{
-  foreach (Port* port, m_ports) {
-    port->redraw();
-  }
+void AbstractNode::redraw() {
+  foreach (Port* port, m_ports) { port->redraw(); }
 }

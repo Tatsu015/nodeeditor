@@ -63,7 +63,6 @@ class Scene : public QGraphicsScene {
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 
-
   Connection* findConnection(QPointF scenePos);
 
   bool existInNode(QPointF scenePos);
