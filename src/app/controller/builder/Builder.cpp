@@ -51,8 +51,11 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   QMenu *menu = MenuManager::getInstance()->menu("Edit");
   QAction *undo = Editor::getInstance()->undoStack()->createUndoAction(mainWindow, "Undo");
-  QAction *redo = Editor::getInstance()->undoStack()->createRedoAction(mainWindow, "Redo");
+  undo->setShortcut(QKeySequence::Undo);
   menu->addAction(undo);
+
+  QAction *redo = Editor::getInstance()->undoStack()->createRedoAction(mainWindow, "Redo");
+  redo->setShortcut(QKeySequence::Redo);
   menu->addAction(redo);
 
   //  QMenu *fileMenu = new QMenu("File");
