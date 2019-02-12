@@ -6,6 +6,7 @@
 
 class Port;
 class Connection;
+class TmpConnection;
 
 class ConnectionCreateTool : public AbstractTool {
  public:
@@ -24,10 +25,11 @@ class ConnectionCreateTool : public AbstractTool {
   void redrawTmpConnection(QPointF nowScenePos);
   void decideConnection(Scene* scene, Port* endPort);
   void removeTmpConnection(Scene* scene);
+  bool canConnect(Port* startPort, Port* endPort) const;
 
  private:
   Port* m_startPort = nullptr;
-  Connection* m_tmpConnection = nullptr;
+  TmpConnection* m_tmpConnection = nullptr;
 };
 
 #endif  // CONNECTIONCREATETOOL_H

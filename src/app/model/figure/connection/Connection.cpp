@@ -5,6 +5,7 @@
 #include "Port.h"
 
 const QColor Connection::LINE_COLOR = QColor("#AAAAAA");
+const uint32_t Connection::PEN_SIZE = 3;
 
 Connection::Connection(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   m_connectionType = CONNECTION;

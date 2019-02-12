@@ -11,7 +11,7 @@ class Connection : public QGraphicsPathItem {
   Connection(QGraphicsItem* parent = nullptr);
   virtual ~Connection();
 
-  Connection* create();
+  virtual Connection* create();
 
   void setStartPos(const QPointF& startPos);
   void setEndPos(const QPointF& endPos);
@@ -39,7 +39,7 @@ class Connection : public QGraphicsPathItem {
 
  protected:
   const static QColor LINE_COLOR;
-  const static uint32_t PEN_SIZE = 3;
+  const static uint32_t PEN_SIZE;
 
  private:
   QString m_name = "";

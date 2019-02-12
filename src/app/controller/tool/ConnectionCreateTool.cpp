@@ -9,10 +9,9 @@
 #include "NodeRemoveCommand.h"
 #include "Port.h"
 #include "Scene.h"
+#include "TmpConnection.h"
 
-ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
-  m_tmpConnection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
-}
+ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) { m_tmpConnection = new TmpConnection(); }
 
 ConnectionCreateTool::~ConnectionCreateTool() {}
 
@@ -34,6 +33,10 @@ void ConnectionCreateTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent
     return;
   }
 
+  Port *endPort = scene->findPort(event->scenePos());
+  bool connectable = canConnect(m_startPort, endPort);
+  m_tmpConnection->changePenStyle(connectable);
+
   redrawTmpConnection(event->scenePos());
 }
 
@@ -47,13 +50,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEv
 
   Port *endPort = scene->findPort(event->scenePos());
   removeTmpConnection(scene);
-  if (!endPort) {
-    return;
-  }
-  if (m_startPort == endPort) {
-    return;
-  }
-  if (m_startPort->parentNode() == endPort->parentNode()) {
+  if (!canConnect(m_startPort, endPort)) {
     return;
   }
 
@@ -89,3 +86,19 @@ void ConnectionCreateTool::decideConnection(Scene *scene, Port *endPort) {
 }
 
 void ConnectionCreateTool::removeTmpConnection(Scene *scene) { scene->removeConnection(m_tmpConnection); }
+
+bool ConnectionCreateTool::canConnect(Port *startPort, Port *endPort) const {
+  if (!endPort) {
+    return false;
+  }
+  if (startPort == endPort) {
+    return false;
+  }
+  if (startPort->parentNode() == endPort->parentNode()) {
+    return false;
+  }
+  if (startPort->io() == endPort->io()) {
+    return false;
+  }
+  return true;
+}

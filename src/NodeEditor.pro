@@ -81,7 +81,8 @@ HEADERS += \
     plugin/core/NewPlugin.h \
     plugin/core/OpenPlugin.h \
     plugin/core/SavePlugin.h \
-    app/controller/command/NodeMoveCommand.h
+    app/controller/command/NodeMoveCommand.h \
+    app/model/figure/connection/TmpConnection.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -119,7 +120,8 @@ SOURCES += \
     plugin/core/NewPlugin.cpp \
     plugin/core/OpenPlugin.cpp \
     plugin/core/SavePlugin.cpp \
-    app/controller/command/NodeMoveCommand.cpp
+    app/controller/command/NodeMoveCommand.cpp \
+    app/model/figure/connection/TmpConnection.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui

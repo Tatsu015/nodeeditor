@@ -33,7 +33,7 @@ class NodeEditTool : public AbstractTool {
   void drawLeftGuideLineFromNearNodes(Scene *scene, AbstractNode *movingNode);
 
  private:
-  bool m_isNodeSelected = false;
+  bool m_isNodeMoving = false;
   QStringList m_nodeTypes;
   QString m_activeNodeType = "";
   QList<AbstractNode *> m_selectedNodes;

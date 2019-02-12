@@ -26,10 +26,8 @@ NodeEditTool::NodeEditTool() : AbstractTool(TOOL_NODE_CREATE) {
 NodeEditTool::~NodeEditTool() {}
 
 void NodeEditTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
-  Q_UNUSED(scene);
-  Q_UNUSED(event);
   if (isSelectedNodesPressed(event->scenePos(), scene)) {
-    m_isNodeSelected = true;
+    m_isNodeMoving = true;
     m_isNodeSelectable = false;
   }
 }
@@ -42,16 +40,15 @@ void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event)
 void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   scene->clearGuideLine();
 
-  if (m_isNodeSelected) {
+  if (m_isNodeMoving) {
     QPointF startScenePos = event->buttonDownScenePos(Qt::LeftButton);
     QPointF endScenePos = event->scenePos();
     QPointF diffScenePos = endScenePos - startScenePos;
-    if (diffScenePos.manhattanLength() < 0.01) {
-      return;
+    if (diffScenePos.manhattanLength() > 0.01) {
+      Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
     }
-    Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
   }
-  m_isNodeSelected = false;
+  m_isNodeMoving = false;
   m_isNodeSelectable = true;
 }
 
@@ -89,19 +86,16 @@ void NodeEditTool::setActiveNodeType(const QString& activeNodeType) { m_activeNo
 void NodeEditTool::drawGuideLine(Scene* scene) {
   scene->clearGuideLine();
 
-  QList<AbstractNode*> selectedNodes = scene->selectedNodes();
-  if (0 == selectedNodes.count()) {
-    return;
-  }
-  AbstractNode* movingNode = dynamic_cast<AbstractNode*>(selectedNodes.first());
-  if (!movingNode) {
+  if (!m_isNodeMoving) {
     return;
   }
 
-  drawTopGuideLineFromNearNodes(scene, movingNode);
-  drawBottomGuideLineFromNearNodes(scene, movingNode);
-  drawRightGuideLineFromNearNodes(scene, movingNode);
-  drawLeftGuideLineFromNearNodes(scene, movingNode);
+  foreach (AbstractNode* movingNode, scene->selectedNodes()) {
+    drawTopGuideLineFromNearNodes(scene, movingNode);
+    drawBottomGuideLineFromNearNodes(scene, movingNode);
+    drawRightGuideLineFromNearNodes(scene, movingNode);
+    drawLeftGuideLineFromNearNodes(scene, movingNode);
+  }
 }
 
 void NodeEditTool::drawTopGuideLineFromNearNodes(Scene* scene, AbstractNode* movingNode) {
