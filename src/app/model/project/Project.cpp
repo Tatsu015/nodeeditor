@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFileInfo>
 #include "AbstractNode.h"
 #include "Connection.h"
 #include "Editor.h"
@@ -45,6 +46,12 @@ bool Project::save(const QString& filePath) {
 }
 
 QString Project::filePath() const { return m_filePath; }
+
+QString Project::fileBaseName() const
+{
+  QFileInfo info(m_filePath);
+  return info.baseName();
+}
 
 QByteArray Project::toJson() {
   Scene* scene = Editor::getInstance()->project()->scene();

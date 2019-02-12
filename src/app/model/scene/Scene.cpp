@@ -23,8 +23,8 @@
 const static qreal TORELANCE = 5;
 
 Scene::Scene(QObject* parent) : QGraphicsScene(-750, -1000, 2000, 2000, parent), m_isControlPressed(false) {
-  addLine(-1000, 0, 1000, 0, QPen(Qt::gray));
-  addLine(0, -1000, 0, 1000, QPen(Qt::gray));
+  addLine(-5, -5, 5, 5, QPen(Qt::gray));
+  addLine(-5, 5, 5, -5, QPen(Qt::gray));
 }
 
 Scene::~Scene() {}

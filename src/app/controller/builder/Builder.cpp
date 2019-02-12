@@ -2,6 +2,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QUndoStack>
 #include <QMenu>
 #include <QToolButton>
 #include "AbstractNode.h"
@@ -33,6 +34,7 @@ void Builder::build(MainWindow *mainWindow, Ui::MainWindow *ui) {
   buildGraphicsView(mainWindow, ui);
   buildMenu(mainWindow, ui);
   buildToolBar(mainWindow, ui);
+  buildWindowTitle(mainWindow, ui);
   //  buildDockWidget(mainWindow, ui);
 }
 
@@ -43,7 +45,7 @@ void Builder::buildGraphicsView(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   Editor::getInstance()->setGraphicsView(ui->graphicsView);
 }
-#include <QUndoStack>
+
 void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
   Q_UNUSED(mainWindow);
 
@@ -78,6 +80,11 @@ void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);
   foreach (QString nodeType, nodeEditTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
+}
+
+void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui)
+{
+  QObject::connect(Editor::getInstance(), &Editor::projectNameChanged, mainWindow, &MainWindow::setWindowTitle);
 }
 
 // void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui) {

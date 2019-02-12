@@ -17,6 +17,7 @@ class Project {
   bool save(const QString& filePath);
 
   QString filePath() const;
+  QString fileBaseName() const;
 
   Scene* scene() const;
 

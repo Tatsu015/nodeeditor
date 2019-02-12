@@ -10,11 +10,13 @@ PluginLoader* PluginLoader::getInstance() {
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
 #include "SavePlugin.h"
+#include "ExitPlugin.h"
 void PluginLoader::init() {
   // TODO this function will be dynamic lib plugin load
   addPlugin(new NewPlugin());
   addPlugin(new OpenPlugin());
   addPlugin(new SavePlugin());
+  addPlugin(new ExitPlugin());
 }
 
 void PluginLoader::load(Ui::MainWindow* ui) {

@@ -27,6 +27,7 @@ class Builder {
   void buildGraphicsView(MainWindow* mainWindow, Ui::MainWindow* ui);
   void buildMenu(MainWindow* mainWindow, Ui::MainWindow* ui);
   void buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui);
+  void buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui);
   //  void buildDockWidget(MainWindow* mainWindow, Ui::MainWindow* ui);
 
  private:
