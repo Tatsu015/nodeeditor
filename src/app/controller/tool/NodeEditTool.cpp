@@ -28,6 +28,10 @@ NodeEditTool::~NodeEditTool() {}
 void NodeEditTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   Q_UNUSED(scene);
   Q_UNUSED(event);
+  if (isSelectedNodesPressed(event->scenePos(), scene)) {
+    m_isNodeSelected = true;
+    m_isNodeSelectable = false;
+  }
 }
 
 void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
@@ -38,7 +42,7 @@ void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event)
 void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   scene->clearGuideLine();
 
-  if (isSelectedNodesPressed(event->scenePos(), scene)) {
+  if (m_isNodeSelected) {
     QPointF startScenePos = event->buttonDownScenePos(Qt::LeftButton);
     QPointF endScenePos = event->scenePos();
     QPointF diffScenePos = endScenePos - startScenePos;
@@ -47,6 +51,8 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
     }
     Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
   }
+  m_isNodeSelected = false;
+  m_isNodeSelectable = true;
 }
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {

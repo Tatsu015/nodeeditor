@@ -25,6 +25,7 @@ void ConnectionCreateTool::mousePressEvent(Scene *scene, QGraphicsSceneMouseEven
   addTmpConnection(scene, m_startPort);
 
   m_isUsing = true;
+  m_isNodeSelectable = false;
 }
 
 void ConnectionCreateTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent *event) {
@@ -42,6 +43,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEv
   }
 
   m_isUsing = false;
+  m_isNodeSelectable = true;
 
   Port *endPort = scene->findPort(event->scenePos());
   removeTmpConnection(scene);

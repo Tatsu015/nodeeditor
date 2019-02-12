@@ -11,7 +11,9 @@ class GraphicsView : public QGraphicsView {
   GraphicsView(QWidget* parent = Q_NULLPTR);
   virtual ~GraphicsView();
 
-  //    void mouseMoveEvent(QMouseEvent *event);
+  virtual void mousePressEvent(QMouseEvent* event);
+  virtual void mouseMoveEvent(QMouseEvent* event);
+  virtual void mouseReleaseEvent(QMouseEvent* event);
 
   virtual void wheelEvent(QWheelEvent* event);
 

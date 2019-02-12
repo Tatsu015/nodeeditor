@@ -19,11 +19,13 @@ class AbstractTool {
   virtual void keyPressEvent(Scene* scene, QKeyEvent* event) = 0;
   virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event) = 0;
 
-  QString name();
-  bool isUsing();
+  QString name() const;
+  bool isUsing() const;
+  bool isSelectable() const;
 
  protected:
   bool m_isUsing = false;
+  bool m_isNodeSelectable = true;
   QString m_name = "";
 };
 

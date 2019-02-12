@@ -3,17 +3,34 @@
 #include <QMouseEvent>
 #include <QTimeLine>
 #include <QWheelEvent>
+#include "AbstractTool.h"
+#include "Editor.h"
 
 GraphicsView::GraphicsView(QWidget* parent) : QGraphicsView(parent), m_isControlPressed(false), m_numScheduledScalings(0) {
   setRenderHint(QPainter::Antialiasing);
   setAlignment(Qt::AlignCenter);
   setMouseTracking(true);
+  setDragMode(RubberBandDrag);
   setBackgroundBrush(QBrush(QColor(75, 75, 75)));
   qreal initScale = 1;
   scale(initScale, initScale);
 }
 
 GraphicsView::~GraphicsView() {}
+
+void GraphicsView::mousePressEvent(QMouseEvent* event) { QGraphicsView::mousePressEvent(event); }
+
+void GraphicsView::mouseMoveEvent(QMouseEvent* event) {
+  if (!Editor::getInstance()->activeTool()->isSelectable()) {
+    setDragMode(NoDrag);
+  }
+  QGraphicsView::mouseMoveEvent(event);
+}
+
+void GraphicsView::mouseReleaseEvent(QMouseEvent* event) {
+  QGraphicsView::mouseReleaseEvent(event);
+  setDragMode(RubberBandDrag);
+}
 
 void GraphicsView::wheelEvent(QWheelEvent* event) {
   if (!m_isControlPressed) {
