@@ -17,4 +17,9 @@ void SavePlugin::doInit() {
   connect(saveAction, &QAction::triggered, this, &SavePlugin::onExecute);
 }
 
-void SavePlugin::onExecute() { Editor::getInstance()->project()->save("test.json"); }
+void SavePlugin::onExecute() {
+  Project* project = Editor::getInstance()->project();
+  QString fileName = project->filePath();
+  project->save(fileName);
+  Editor::getInstance()->projectNameChanged(project->fileBaseName());
+}

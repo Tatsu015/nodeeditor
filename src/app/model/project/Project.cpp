@@ -3,13 +3,16 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFileInfo>
+#include <QDir>
 #include "AbstractNode.h"
 #include "Connection.h"
 #include "Editor.h"
 #include "NodeFactory.h"
 #include "Port.h"
 #include "Scene.h"
+#include "Define.h"
 
+const static QString DEFAULT_FILE_NAME = "Undefined." + APP_EXTENSION;
 const static QString JSON_NODES = "nodeas";
 const static QString JSON_LINKS = "links";
 const static QString JSON_NAME = "name";
@@ -21,7 +24,10 @@ const static QString JSON_START_PORT_NUMBER = "startPortNumber";
 const static QString JSON_END_NODE_NAME =   "endNodeName";
 const static QString JSON_END_PORT_NUMBER = "endPortNumber";
 
-Project::Project() {}
+Project::Project(){
+  QDir dir;
+  m_filePath = dir.absolutePath() + "/" + DEFAULT_FILE_NAME;
+}
 
 Project::~Project() { delete m_scene; }
 

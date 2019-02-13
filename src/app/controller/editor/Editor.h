@@ -33,7 +33,7 @@ class Editor : public QObject{
   QUndoStack* undoStack() const;
 
 signals:
-  void projectNameChanged(QString& projectName);
+  void projectNameChanged(const QString& projectName);
 
  private:
   void initFactory();

@@ -19,5 +19,7 @@ void OpenPlugin::doInit() {
 
 void OpenPlugin::onExecute() {
   Editor::getInstance()->reset();
-  Editor::getInstance()->project()->open("test.json");
+  Project* project = Editor::getInstance()->project();
+  QString fileName = project->filePath();
+  project->open(fileName);
 }
