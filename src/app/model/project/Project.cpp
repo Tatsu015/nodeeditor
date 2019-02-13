@@ -10,6 +10,17 @@
 #include "Port.h"
 #include "Scene.h"
 
+const static QString JSON_NODES = "nodeas";
+const static QString JSON_LINKS = "links";
+const static QString JSON_NAME = "name";
+const static QString JSON_NODETYPE = "nodetype";
+const static QString JSON_X = "x";
+const static QString JSON_Y = "y";
+const static QString JSON_START_NODE_NAME = "startNodeName";
+const static QString JSON_START_PORT_NUMBER = "startPortNumber";
+const static QString JSON_END_NODE_NAME =   "endNodeName";
+const static QString JSON_END_PORT_NUMBER = "endPortNumber";
+
 Project::Project() {}
 
 Project::~Project() { delete m_scene; }
@@ -59,10 +70,10 @@ QByteArray Project::toJson() {
   QJsonArray nodeJsonArray;
   foreach (AbstractNode* node, scene->nodes()) {
     QJsonObject nodeJsonObj;
-    nodeJsonObj["name"] = node->name();
-    nodeJsonObj["nodetype"] = node->nodeType();
-    nodeJsonObj["x"] = node->pos().x();
-    nodeJsonObj["y"] = node->pos().y();
+    nodeJsonObj[JSON_NAME] = node->name();
+    nodeJsonObj[JSON_NODETYPE] = node->nodeType();
+    nodeJsonObj[JSON_X] = node->pos().x();
+    nodeJsonObj[JSON_Y] = node->pos().y();
 
     nodeJsonArray.append(nodeJsonObj);
   }
@@ -73,17 +84,17 @@ QByteArray Project::toJson() {
     Port* startPort = connection->startPort();
     Port* endPort = connection->endPort();
 
-    connectionJsonObj["startNodeName"] = startPort->parentNode()->name();
-    connectionJsonObj["startPortNumber"] = QString::number(startPort->number());
-    connectionJsonObj["endNodeName"] = endPort->parentNode()->name();
-    connectionJsonObj["endPortNumber"] = QString::number(endPort->number());
+    connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
+    connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
+    connectionJsonObj[JSON_END_NODE_NAME] = endPort->parentNode()->name();
+    connectionJsonObj[JSON_END_PORT_NUMBER] = QString::number(endPort->number());
 
     linkJsonArray.append(connectionJsonObj);
   }
 
   QJsonObject jsonObj;
-  jsonObj["nodes"] = nodeJsonArray;
-  jsonObj["link"] = linkJsonArray;
+  jsonObj[JSON_NODES] = nodeJsonArray;
+  jsonObj[JSON_LINKS] = linkJsonArray;
 
   QJsonDocument doc(jsonObj);
 
@@ -95,12 +106,12 @@ void Project::fromJson(const QByteArray& data) {
   QJsonObject rootObj(doc.object());
   Scene* scene = Editor::getInstance()->project()->scene();
 
-  QJsonArray nodeJsonObjs = rootObj["nodes"].toArray();
+  QJsonArray nodeJsonObjs = rootObj[JSON_NODES].toArray();
   foreach (QJsonValue nodeJsonVal, nodeJsonObjs) {
-    QString name = nodeJsonVal["name"].toString();
-    QString nodeType = nodeJsonVal["nodetype"].toString();
-    qreal x = nodeJsonVal["x"].toDouble();
-    qreal y = nodeJsonVal["y"].toDouble();
+    QString name = nodeJsonVal[JSON_NAME].toString();
+    QString nodeType = nodeJsonVal[JSON_NODETYPE].toString();
+    qreal x = nodeJsonVal[JSON_X].toDouble();
+    qreal y = nodeJsonVal[JSON_Y].toDouble();
 
     AbstractNode* node = NodeFactory::getInstance()->createNode(nodeType, name);
     node->setName(name);
@@ -108,12 +119,12 @@ void Project::fromJson(const QByteArray& data) {
     scene->addNode(node, QPointF(x, y));
   }
 
-  QJsonArray linkJsonObjs = rootObj["link"].toArray();
+  QJsonArray linkJsonObjs = rootObj[JSON_LINKS].toArray();
   foreach (QJsonValue linkJsonVal, linkJsonObjs) {
-    QString startNodeName = linkJsonVal["startNodeName"].toString();
-    uint32_t startPortNumber = linkJsonVal["startPortNumber"].toString().toInt();
-    QString endNodeName = linkJsonVal["endNodeName"].toString();
-    uint32_t endPortNumber = linkJsonVal["endPortNumber"].toString().toInt();
+    QString startNodeName = linkJsonVal[JSON_START_NODE_NAME].toString();
+    uint32_t startPortNumber = linkJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
+    QString endNodeName = linkJsonVal[JSON_END_NODE_NAME].toString();
+    uint32_t endPortNumber = linkJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
 
     scene->addConnection(startNodeName, startPortNumber, endNodeName, endPortNumber);
   }
