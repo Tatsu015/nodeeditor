@@ -47,7 +47,7 @@ void Editor::changeDefaultTool() { changeActiveTool(TOOL_NODE_CREATE); }
 void Editor::addCommand(QUndoCommand *undoCommand) {
   m_undoStack->push(undoCommand);
   QString projectNameWithEdited = m_project->fileBaseName();
-  if(0 != m_undoStack->count()){
+  if (0 != m_undoStack->count()) {
     projectNameWithEdited += "*";
   }
   projectNameChanged(projectNameWithEdited);
@@ -85,6 +85,6 @@ void Editor::initTool() {
 
 void Editor::initUndoStack() { m_undoStack = new QUndoStack(); }
 
-Editor::Editor(QObject *parent) : QObject(parent),m_graphicsView() {}
+Editor::Editor(QObject *parent) : QObject(parent), m_graphicsView() {}
 
 Editor::~Editor() {}

@@ -19,6 +19,7 @@
 #include "NodeRemoveCommand.h"
 #include "OutNode.h"
 #include "Port.h"
+#include "SceneObserver.h"
 
 const static qreal TORELANCE = 5;
 
@@ -85,6 +86,16 @@ Port* Scene::findPort(QPointF scenePos) {
     }
   }
   return nullptr;
+}
+
+void Scene::addSceneObserver(SceneObserver* sceneObserver) { m_sceneObservers << sceneObserver; }
+
+void Scene::notifyAdd(AbstractNode* node) {
+  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->addNode(node); }
+}
+
+void Scene::notifyRemove(AbstractNode* node) {
+  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->removeNode(node); }
 }
 
 void Scene::changeActiveTool(const QPointF nowScenePos) {
@@ -281,6 +292,7 @@ void Scene::addNode(AbstractNode* node, QPointF scenePos) {
   node->setPos(scenePos);
   m_nodes << node;
   addItem(node);
+  notifyAdd(node);
 }
 
 void Scene::removeNode(AbstractNode* node) {
@@ -289,6 +301,7 @@ void Scene::removeNode(AbstractNode* node) {
   }
   m_nodes.removeOne(node);
   removeItem(node);
+  notifyRemove(node);
 }
 
 void Scene::deleteNode(AbstractNode* node) {

@@ -2,9 +2,9 @@
 
 #include <QAction>
 #include <QDebug>
-#include <QUndoStack>
 #include <QMenu>
 #include <QToolButton>
+#include <QUndoStack>
 #include "AbstractNode.h"
 #include "AndNode.h"
 #include "Connection.h"
@@ -29,7 +29,7 @@ Builder *Builder::getInstance() {
 
 void Builder::build(MainWindow *mainWindow, Ui::MainWindow *ui) {
   PluginLoader::getInstance()->init();
-  PluginLoader::getInstance()->load(ui);
+  PluginLoader::getInstance()->load(mainWindow, ui);
 
   buildGraphicsView(mainWindow, ui);
   buildMenu(mainWindow, ui);
@@ -82,8 +82,7 @@ void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {
   foreach (QString nodeType, nodeEditTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
 }
 
-void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui)
-{
+void Builder::buildWindowTitle(MainWindow *mainWindow, Ui::MainWindow *ui) {
   QObject::connect(Editor::getInstance(), &Editor::projectNameChanged, mainWindow, &MainWindow::setWindowTitle);
 }
 

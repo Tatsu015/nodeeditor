@@ -6,9 +6,9 @@ AbstractPlugin::AbstractPlugin(QObject* parent) : QObject(parent) {}
 
 AbstractPlugin::~AbstractPlugin() {}
 
-void AbstractPlugin::init(Ui::MainWindow* ui) {
-  initView(ui);
+void AbstractPlugin::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
+  initView(mainWindow, ui);
   doInit();
 }
 
-void AbstractPlugin::initView(Ui::MainWindow* ui) { Q_UNUSED(ui); }
+void AbstractPlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) { Q_UNUSED(ui); }

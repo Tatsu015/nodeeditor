@@ -4,6 +4,7 @@
 #include <QList>
 
 class AbstractPlugin;
+class MainWindow;
 namespace Ui {
 class MainWindow;
 }
@@ -13,7 +14,7 @@ class PluginLoader {
   static PluginLoader* getInstance();
 
   void init();
-  void load(Ui::MainWindow* ui);
+  void load(MainWindow* mainWindow, Ui::MainWindow* ui);
 
  private:
   void addPlugin(AbstractPlugin* plugin);

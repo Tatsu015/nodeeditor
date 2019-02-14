@@ -34,6 +34,7 @@ INCLUDEPATH += \
     app/model/figure/port \
     app/model/figure/guideline \
     app/model/scene \
+    app/model/observer \
     app/model/project \
     app/util \
     app/view/widget \
@@ -41,8 +42,9 @@ INCLUDEPATH += \
     app/extend \
     app/view/menu \
     plugin/core \
-    plugin/circuitanalizer/action \
-    plugin/circuitanalizer/widget \
+    plugin/circuitcalculate \
+    plugin/circuitcalculate/action \
+    plugin/circuitcalculate/widget \
     plugin/core \
 
 HEADERS += \
@@ -76,14 +78,17 @@ HEADERS += \
     app/view/menu/MenuManager.h \
     app/view/widget/NodeToolBar.h \
     app/view/window/MainWindow.h \
-    plugin/circuitanalizer/action/AnalyzeCircuitAction.h \
-    plugin/circuitanalizer/widget/ErrorListWidget.h \
+    plugin/circuitcalculate/action/AnalyzeCircuitAction.h \
+    plugin/circuitcalculate/widget/ErrorListWidget.h \
     plugin/core/NewPlugin.h \
     plugin/core/OpenPlugin.h \
     plugin/core/SavePlugin.h \
     app/controller/command/NodeMoveCommand.h \
     app/model/figure/connection/TmpConnection.h \
-    plugin/core/ExitPlugin.h
+    plugin/core/ExitPlugin.h \
+    plugin/circuitcalculate/CircuitCalculatePlugin.h \
+    app/model/observer/SceneObserver.h \
+    plugin/circuitcalculate/widget/IOTableWidget.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -116,14 +121,17 @@ SOURCES += \
     app/view/widget/NodeToolBar.cpp \
     app/view/window/MainWindow.cpp \
     app/main.cpp \
-    plugin/circuitanalizer/action/AnalyzeCircuitAction.cpp \
-    plugin/circuitanalizer/widget/ErrorListWidget.cpp \
+    plugin/circuitcalculate/action/AnalyzeCircuitAction.cpp \
+    plugin/circuitcalculate/widget/ErrorListWidget.cpp \
     plugin/core/NewPlugin.cpp \
     plugin/core/OpenPlugin.cpp \
     plugin/core/SavePlugin.cpp \
     app/controller/command/NodeMoveCommand.cpp \
     app/model/figure/connection/TmpConnection.cpp \
-    plugin/core/ExitPlugin.cpp
+    plugin/core/ExitPlugin.cpp \
+    plugin/circuitcalculate/CircuitCalculatePlugin.cpp \
+    app/model/observer/SceneObserver.cpp \
+    plugin/circuitcalculate/widget/IOTableWidget.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui

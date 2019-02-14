@@ -1,16 +1,16 @@
 #include "Project.h"
+#include <QDir>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QFileInfo>
-#include <QDir>
 #include "AbstractNode.h"
 #include "Connection.h"
+#include "Define.h"
 #include "Editor.h"
 #include "NodeFactory.h"
 #include "Port.h"
 #include "Scene.h"
-#include "Define.h"
 
 const static QString DEFAULT_FILE_NAME = "Undefined." + APP_EXTENSION;
 const static QString JSON_NODES = "nodeas";
@@ -21,10 +21,10 @@ const static QString JSON_X = "x";
 const static QString JSON_Y = "y";
 const static QString JSON_START_NODE_NAME = "startNodeName";
 const static QString JSON_START_PORT_NUMBER = "startPortNumber";
-const static QString JSON_END_NODE_NAME =   "endNodeName";
+const static QString JSON_END_NODE_NAME = "endNodeName";
 const static QString JSON_END_PORT_NUMBER = "endPortNumber";
 
-Project::Project(){
+Project::Project() {
   QDir dir;
   m_filePath = dir.absolutePath() + "/" + DEFAULT_FILE_NAME;
 }
@@ -64,8 +64,7 @@ bool Project::save(const QString& filePath) {
 
 QString Project::filePath() const { return m_filePath; }
 
-QString Project::fileBaseName() const
-{
+QString Project::fileBaseName() const {
   QFileInfo info(m_filePath);
   return info.baseName();
 }

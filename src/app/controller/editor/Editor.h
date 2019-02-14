@@ -1,8 +1,8 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 
 class Project;
 class AbstractAction;
@@ -11,7 +11,7 @@ class AbstractTool;
 class QUndoStack;
 class QUndoCommand;
 
-class Editor : public QObject{
+class Editor : public QObject {
   Q_OBJECT
 
  public:
@@ -32,7 +32,7 @@ class Editor : public QObject{
 
   QUndoStack* undoStack() const;
 
-signals:
+ signals:
   void projectNameChanged(const QString& projectName);
 
  private:
@@ -51,7 +51,7 @@ signals:
   QUndoStack* m_undoStack = nullptr;
 
  private:
-  Editor(QObject *parent=nullptr);
+  Editor(QObject* parent = nullptr);
   ~Editor();
 };
 

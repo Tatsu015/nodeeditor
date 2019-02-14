@@ -9,6 +9,7 @@ class Connection;
 class Connector;
 class Port;
 class GuideLine;
+class SceneObserver;
 
 class Scene : public QGraphicsScene {
  public:
@@ -58,6 +59,10 @@ class Scene : public QGraphicsScene {
   bool existPort(QPointF scenePos);
   Port* findPort(QPointF scenePos);
 
+  void addSceneObserver(SceneObserver* sceneObserver);
+  void notifyAdd(AbstractNode* node);
+  void notifyRemove(AbstractNode* node);
+
  private:
   void changeActiveTool(const QPointF nowScenePos);
   Port* findStartPort(QPointF scenePos);
@@ -77,6 +82,7 @@ class Scene : public QGraphicsScene {
   Port* m_startPort = nullptr;
   QVector<GuideLine*> m_guideLines;
   bool m_isControlPressed;
+  QVector<SceneObserver*> m_sceneObservers;
 };
 
 #endif  // SCENE_H

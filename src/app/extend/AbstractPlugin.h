@@ -17,10 +17,10 @@ class AbstractPlugin : public QObject {
   AbstractPlugin(QObject* parent = nullptr);
   virtual ~AbstractPlugin();
 
-  void init(Ui::MainWindow* ui);
+  void init(MainWindow* mainWindow, Ui::MainWindow* ui);
 
  protected:
-  virtual void initView(Ui::MainWindow* ui);
+  virtual void initView(MainWindow* mainWindow, Ui::MainWindow* ui);
   virtual void doInit() = 0;
 };
 

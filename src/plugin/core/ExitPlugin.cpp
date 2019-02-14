@@ -1,6 +1,6 @@
 #include "ExitPlugin.h"
-#include <QMenu>
 #include <QApplication>
+#include <QMenu>
 #include "Editor.h"
 #include "MenuManager.h"
 
@@ -17,6 +17,4 @@ void ExitPlugin::doInit() {
   connect(exitAction, &QAction::triggered, this, &ExitPlugin::onExecute);
 }
 
-void ExitPlugin::onExecute() {
-  qApp->exit();
-}
+void ExitPlugin::onExecute() { qApp->exit(); }
