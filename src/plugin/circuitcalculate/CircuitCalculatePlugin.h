@@ -30,7 +30,8 @@ private:
   QList<AbstractNode*> ExecuteOrderSort(ConnectedGraph* connectedGraph);
 
  private slots:
-  void onExecute();
+  void onRun();
+  void onDebug();
 };
 
 #endif  // CircuitCalculatePLUGIN_H

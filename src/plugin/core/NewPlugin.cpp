@@ -11,6 +11,7 @@ void NewPlugin::doInit() {
   QMenu* fileMenu = MenuManager::getInstance()->menu("File");
 
   QAction* newAction = new QAction("New");
+  newAction->setShortcut(QKeySequence::New);
   fileMenu->addAction(newAction);
 
   connect(newAction, &QAction::triggered, this, &NewPlugin::onExecute);

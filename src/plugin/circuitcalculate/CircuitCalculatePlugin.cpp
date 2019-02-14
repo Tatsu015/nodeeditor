@@ -26,13 +26,19 @@ void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui
 }
 
 void CircuitCalculatePlugin::doInit() {
+  QMenu* buildMenu = new QMenu("Build");
+  QAction* runAction = new QAction("Run");
+  runAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+  buildMenu->addAction(runAction);
+  MenuManager::getInstance()->addMenu(buildMenu);
+  connect(runAction, &QAction::triggered, this, &CircuitCalculatePlugin::onRun);
+
   QMenu* debugMenu = new QMenu("Debug");
-
-  QAction* circuitCalculateAction = new QAction("CircuitCalculate");
-  debugMenu->addAction(circuitCalculateAction);
-
+  QAction* debugAction = new QAction("Start Debug");
+  debugAction->setShortcut(QKeySequence(Qt::Key_F5));
+  debugMenu->addAction(debugAction);
   MenuManager::getInstance()->addMenu(debugMenu);
-  connect(circuitCalculateAction, &QAction::triggered, this, &CircuitCalculatePlugin::onExecute);
+  connect(debugAction, &QAction::triggered, this, &CircuitCalculatePlugin::onDebug);
 }
 
 bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes)
@@ -110,7 +116,7 @@ QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePl
     return visitedNodes;
 }
 
-void CircuitCalculatePlugin::onExecute() {
+void CircuitCalculatePlugin::onRun() {
   QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
   if (!CheckError(nodes)) {
@@ -119,4 +125,9 @@ void CircuitCalculatePlugin::onExecute() {
   }
   QList<ConnectedGraph*> connectedGtaphs = ConnectedGraphs(nodes);
   foreach (ConnectedGraph* connectedGtaph, connectedGtaphs) { ExecuteOrderSort(connectedGtaph); }
+}
+
+void CircuitCalculatePlugin::onDebug()
+{
+  qDebug() << " FIXME Debug";
 }
