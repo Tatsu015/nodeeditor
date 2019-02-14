@@ -7,7 +7,10 @@ NodeFactory *NodeFactory::getInstance() {
   return &s;
 }
 
-void NodeFactory::addNode(AbstractNode *node) { m_nodeMap[node->nodeType()] = node; }
+void NodeFactory::addNode(AbstractNode *node) {
+  m_nodeMap[node->nodeType()] = node;
+  NamePublisher::getInstance()->addBaseName(node->nodeType());
+}
 
 AbstractNode *NodeFactory::createNode(const QString &type, QString name) {
   AbstractNode *node = m_nodeMap[type]->create();

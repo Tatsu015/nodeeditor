@@ -8,6 +8,7 @@ class NamePublisher {
  public:
   static NamePublisher* getInstance();
 
+  void addBaseName(const QString& baseName);
   QString createName(const QString& baseName);
   void updateLastNumber(QString name);
   void resetNumbers();
