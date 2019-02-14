@@ -9,7 +9,7 @@ PluginLoader* PluginLoader::getInstance() {
   return &s;
 }
 
-#include "ExitPlugin.h"
+#include "QuitPlugin.h"
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
 #include "SavePlugin.h"
@@ -18,7 +18,7 @@ void PluginLoader::init() {
   addPlugin(new NewPlugin());
   addPlugin(new OpenPlugin());
   addPlugin(new SavePlugin());
-  addPlugin(new ExitPlugin());
+  addPlugin(new QuitPlugin());
   addPlugin(new CircuitCalculatePlugin());
 }
 

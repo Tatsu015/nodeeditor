@@ -85,10 +85,10 @@ HEADERS += \
     plugin/core/SavePlugin.h \
     app/controller/command/NodeMoveCommand.h \
     app/model/figure/connection/TmpConnection.h \
-    plugin/core/ExitPlugin.h \
     plugin/circuitcalculate/CircuitCalculatePlugin.h \
     app/model/observer/SceneObserver.h \
-    plugin/circuitcalculate/widget/IOTableWidget.h
+    plugin/circuitcalculate/widget/IOTableWidget.h \
+    plugin/core/QuitPlugin.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -128,10 +128,10 @@ SOURCES += \
     plugin/core/SavePlugin.cpp \
     app/controller/command/NodeMoveCommand.cpp \
     app/model/figure/connection/TmpConnection.cpp \
-    plugin/core/ExitPlugin.cpp \
     plugin/circuitcalculate/CircuitCalculatePlugin.cpp \
     app/model/observer/SceneObserver.cpp \
-    plugin/circuitcalculate/widget/IOTableWidget.cpp
+    plugin/circuitcalculate/widget/IOTableWidget.cpp \
+    plugin/core/QuitPlugin.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui
