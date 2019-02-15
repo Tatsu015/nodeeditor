@@ -2,20 +2,19 @@
 #define PORT_H
 
 #include <QGraphicsPathItem>
+#include "Define.h"
 
 class Connection;
 class Port;
 class AbstractNode;
 
-enum IO : uint32_t {
-  Input,
-  Output,
-};
 
 class Port : public QGraphicsPathItem {
  public:
   Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr);
   virtual ~Port();
+
+  Port* create(IO io, uint32_t number, QGraphicsItem* parent);
 
   QPointF centerScenePos();
   void addConnection(Connection* connection);
@@ -31,7 +30,12 @@ class Port : public QGraphicsPathItem {
 
   void redraw();
 
- protected:
+  QString portType() const;
+
+  QString name() const;
+  void setName(const QString& name);
+
+protected:
   const static uint32_t WIDTH = 12;
   const static uint32_t HEIGHT = 3;
   const static QColor FILL_COLOR;
@@ -39,6 +43,8 @@ class Port : public QGraphicsPathItem {
   const static uint32_t PEN_SIZE = 0;
 
  private:
+  QString m_portType;
+  QString m_name;
   QList<Connection*> m_connections;
   AbstractNode* m_parentNode = nullptr;
   IO m_io;

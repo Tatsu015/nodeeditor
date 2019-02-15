@@ -9,6 +9,8 @@ class AndNode : public AbstractNode {
   virtual ~AndNode();
 
   virtual AbstractNode* create();
+
+  virtual bool execute(QList<bool> args);
 };
 
 #endif  // HiddenNode_H

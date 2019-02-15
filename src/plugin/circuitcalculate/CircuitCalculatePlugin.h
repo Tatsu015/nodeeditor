@@ -4,6 +4,7 @@
 #include "AbstractPlugin.h"
 
 class AbstractNode;
+class IOTableWidget;
 
 class CircuitCalculatePlugin : public AbstractPlugin {
 
@@ -29,9 +30,14 @@ private:
   QList<ConnectedGraph*> ConnectedGraphs(const QList<AbstractNode*>& nodes);
   QList<AbstractNode*> ExecuteOrderSort(ConnectedGraph* connectedGraph);
 
+  bool isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes);
+
  private slots:
   void onRun();
   void onDebug();
+
+private:
+  IOTableWidget* m_ioTableWidget = nullptr;
 };
 
 #endif  // CircuitCalculatePLUGIN_H

@@ -11,6 +11,8 @@ class IOTableWidget : public QTableWidget, public SceneObserver {
 
   virtual void addNode(AbstractNode* node);
   virtual void removeNode(AbstractNode* node);
+
+  void read();
 };
 
 #endif  // IOTABLEWIDGET_H

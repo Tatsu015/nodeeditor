@@ -9,6 +9,8 @@ class OutNode : public AbstractNode {
   virtual ~OutNode();
 
   virtual AbstractNode* create();
+
+  virtual bool execute(QList<bool> args);
 };
 
 #endif  // OutNode_H

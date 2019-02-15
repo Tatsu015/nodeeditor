@@ -140,3 +140,8 @@ QString AbstractNode::nodeType() const { return m_nodeType; }
 void AbstractNode::redraw() {
   foreach (Port* port, m_ports) { port->redraw(); }
 }
+
+IO AbstractNode::io() const
+{
+  return m_io;
+}

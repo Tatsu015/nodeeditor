@@ -19,9 +19,9 @@ CircuitCalculatePlugin::~CircuitCalculatePlugin() {}
 
 void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) {
   QDockWidget* ioSetDockWidget = new QDockWidget();
-  IOTableWidget* ioTableWidget = new IOTableWidget();
-  ioSetDockWidget->setWidget(ioTableWidget);
-  Editor::getInstance()->project()->scene()->addSceneObserver(ioTableWidget);
+  m_ioTableWidget = new IOTableWidget();
+  ioSetDockWidget->setWidget(m_ioTableWidget);
+  Editor::getInstance()->project()->scene()->addSceneObserver(m_ioTableWidget);
   mainWindow->addDockWidget(Qt::RightDockWidgetArea, ioSetDockWidget);
 }
 
@@ -95,27 +95,40 @@ QList<CircuitCalculatePlugin::ConnectedGraph*> CircuitCalculatePlugin::Connected
 
 QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePlugin::ConnectedGraph* connectedGraph)
 {
-    QList<AbstractNode*> visitedNodes;
-    QList<AbstractNode*> unvisitedNodes = connectedGraph->m_nodes;
-
-    while (unvisitedNodes.count()) {
-      AbstractNode* visitNode = unvisitedNodes.takeLast();
-      visitedNodes << visitNode;
-      foreach (AbstractNode* adjastInNode, visitNode->adjastInNodes()) {
-        if (!visitedNodes.contains(adjastInNode)) {
-          unvisitedNodes.append(adjastInNode);
-        } else {
-          visitedNodes.move(visitedNodes.indexOf(visitNode), visitedNodes.indexOf(adjastInNode));
-        }
-      }
+  QList<AbstractNode*> visitedNodes;
+  QList<AbstractNode*> unVisitedNodes;
+  foreach (AbstractNode* node, connectedGraph->m_nodes) {
+    if(Input == node->io()){
+      visitedNodes << node;
     }
+    else{
+      unVisitedNodes << node;
+    }
+  }
+  while (unVisitedNodes.count()) {
+    AbstractNode* checkNode = unVisitedNodes.last();
+    if(isAllAdjacentInNodeVisited(checkNode, visitedNodes)){
+      visitedNodes << checkNode;
+      unVisitedNodes.removeOne(checkNode);
+    }
+  }
 
-    std::reverse(visitedNodes.begin(), visitedNodes.end());
-    qDebug() << "======  " + connectedGraph->m_name + " ======";
-    foreach (AbstractNode* node, visitedNodes) { qDebug() << node->name(); }
-    return visitedNodes;
+  qDebug() << "--------------------------------";
+  foreach (AbstractNode* node, visitedNodes) { qDebug() << node->name(); }
+  return visitedNodes;
 }
 
+bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes)
+{
+  foreach (AbstractNode* inNode, checkNode->adjastInNodes()) {
+    if(!visitedNodes.contains(inNode)){
+      return false;
+    }
+  }
+  return true;
+}
+
+#include "DataBase.h"
 void CircuitCalculatePlugin::onRun() {
   QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
 
@@ -124,7 +137,22 @@ void CircuitCalculatePlugin::onRun() {
     return;
   }
   QList<ConnectedGraph*> connectedGtaphs = ConnectedGraphs(nodes);
-  foreach (ConnectedGraph* connectedGtaph, connectedGtaphs) { ExecuteOrderSort(connectedGtaph); }
+  foreach (ConnectedGraph* connectedGtaph, connectedGtaphs) {
+    QList<AbstractNode*> sortedNodes = ExecuteOrderSort(connectedGtaph);
+    foreach (AbstractNode* node, sortedNodes) {
+      QList<bool> args;
+      if(0 == node->adjastInNodes().count()){
+        args << DataBase::getInstance()->read(node->name());
+      }
+      else{
+        foreach (AbstractNode* inNode, node->adjastInNodes()) {
+          args << DataBase::getInstance()->read(inNode->name());
+        }
+      }
+      DataBase::getInstance()->write(node->name(), node->execute(args));
+    }
+  }
+  m_ioTableWidget->read();
 }
 
 void CircuitCalculatePlugin::onDebug()

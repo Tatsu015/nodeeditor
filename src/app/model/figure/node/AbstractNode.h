@@ -3,6 +3,7 @@
 
 #include <QGraphicsPathItem>
 #include "Common.h"
+#include "Define.h"
 
 class Port;
 class QGraphicsSimpleTextItem;
@@ -40,7 +41,11 @@ class AbstractNode : public QGraphicsPathItem {
 
   void redraw();
 
- protected:
+  IO io() const;
+
+  virtual bool execute(QList<bool> args) = 0;
+
+protected:
   const static QColor FILL_COLOR;
   const static QColor LINE_COLOR;
   const static uint32_t WIDTH = 50;
@@ -50,11 +55,10 @@ class AbstractNode : public QGraphicsPathItem {
   const static uint32_t PORT_POS_X_OFS = 2;
   const static uint32_t PORT_POS_Y_OFS = 5;
 
-  QGraphicsSimpleTextItem* m_typeText = nullptr;
-  QString m_activeType;
-
  protected:
+  QGraphicsSimpleTextItem* m_typeText = nullptr;
   QString m_nodeType;
+  IO m_io;
 
  private:
   QList<Port*> m_ports;

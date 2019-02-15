@@ -19,4 +19,11 @@ const static QString NODE_OR = "OR";
 
 const static QString CONNECTION = "CONNECTION";
 
+enum IO : uint32_t {
+  Input,
+  Output,
+  Hidden,
+};
+
+
 #endif  // DEFINE_H

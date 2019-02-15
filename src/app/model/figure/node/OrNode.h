@@ -9,6 +9,8 @@ class OrNode : public AbstractNode {
   virtual ~OrNode();
 
   virtual AbstractNode* create();
+
+  virtual bool execute(QList<bool> args);
 };
 
 #endif  // OrNode_H

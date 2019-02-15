@@ -1,8 +1,9 @@
 #include "IOTableWidget.h"
-#include <QComboBox>
+#include "DataSetComboBox.h"
 #include <QDebug>
 #include <QHeaderView>
 #include "AbstractNode.h"
+#include "DataBase.h"
 
 IOTableWidget::IOTableWidget(QWidget* parent) : QTableWidget(parent) {
   setRowCount(0);
@@ -21,10 +22,7 @@ void IOTableWidget::addNode(AbstractNode* node) {
   setRowCount(addRowIndex);
 
   setItem(addedRowCount, 0, new QTableWidgetItem(node->name()));
-
-  QComboBox* comboBox = new QComboBox();
-  comboBox->addItems(QStringList({"True", "False"}));
-  setCellWidget(addedRowCount, 1, comboBox);
+  setCellWidget(addedRowCount, 1, new DataSetComboBox(node->name()));
 }
 
 void IOTableWidget::removeNode(AbstractNode* node) {
@@ -33,5 +31,17 @@ void IOTableWidget::removeNode(AbstractNode* node) {
     if (node->name() == tableWidgetItem->text()) {
       removeRow(row);
     }
+  }
+}
+
+void IOTableWidget::read()
+{
+  for (int row = 0; row < rowCount(); ++row) {
+    QTableWidgetItem* nameWidgetItem = item(row, 0);
+    DataSetComboBox* comboItem = dynamic_cast<DataSetComboBox*>(cellWidget(row, 1));
+
+    QString nodeName = nameWidgetItem->text();
+    bool value = DataBase::getInstance()->read(nodeName);
+    comboItem->setCurrentText(btos(value));
   }
 }

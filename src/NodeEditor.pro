@@ -88,7 +88,10 @@ HEADERS += \
     plugin/circuitcalculate/CircuitCalculatePlugin.h \
     app/model/observer/SceneObserver.h \
     plugin/circuitcalculate/widget/IOTableWidget.h \
-    plugin/core/QuitPlugin.h
+    plugin/core/QuitPlugin.h \
+    plugin/circuitcalculate/DataBase.h \
+    plugin/circuitcalculate/widget/DataSetComboBox.h \
+    app/controller/factory/PortFactory.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -131,7 +134,10 @@ SOURCES += \
     plugin/circuitcalculate/CircuitCalculatePlugin.cpp \
     app/model/observer/SceneObserver.cpp \
     plugin/circuitcalculate/widget/IOTableWidget.cpp \
-    plugin/core/QuitPlugin.cpp
+    plugin/core/QuitPlugin.cpp \
+    plugin/circuitcalculate/DataBase.cpp \
+    plugin/circuitcalculate/widget/DataSetComboBox.cpp \
+    app/controller/factory/PortFactory.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui

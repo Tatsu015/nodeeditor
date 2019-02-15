@@ -11,6 +11,8 @@ class InNode : public AbstractNode {
   virtual ~InNode();
 
   virtual AbstractNode* create();
+
+  virtual bool execute(QList<bool> args);
 };
 
 #endif  // InNode_H

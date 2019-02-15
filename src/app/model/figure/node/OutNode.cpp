@@ -3,16 +3,17 @@
 #include <QPen>
 #include "Define.h"
 #include "NamePublisher.h"
-#include "Port.h"
+#include "PortFactory.h"
 
 OutNode::OutNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_OUT;
+  m_io = Output;
 
   QPainterPath path;
   path.addRoundedRect(0, 0, WIDTH, HEIGHT * 0.5, ROUND_RADIUS, ROUND_RADIUS);
   setPath(path);
 
-  Port* port1 = new Port(Input, 1, this);
+  Port* port1 = PortFactory::getInstance()->createPort("port", Input, 1, this);
   port1->setPos(-port1->boundingRect().width() + PORT_POS_X_OFS, boundingRect().center().y() - port1->boundingRect().height() * 0.5);
   addPort(port1);
 }
@@ -20,3 +21,8 @@ OutNode::OutNode(QGraphicsItem* parent) : AbstractNode(parent) {
 OutNode::~OutNode() {}
 
 AbstractNode* OutNode::create() { return new OutNode(); }
+
+bool OutNode::execute(QList<bool> args)
+{
+  return args.at(0);
+}
