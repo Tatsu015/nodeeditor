@@ -5,7 +5,7 @@
 
 class SavePlugin : public AbstractPlugin {
  public:
-  SavePlugin();
+  SavePlugin(QObject* parent = nullptr);
   virtual ~SavePlugin();
 
  protected:

@@ -11,34 +11,55 @@
 #include "Scene.h"
 #include "AbstractNode.h"
 #include "Port.h"
+#include "DataBase.h"
+#include "DebugControlDialog.h"
 #include "ui_MainWindow.h"
+#include "ui_DebugControlDialog.h"
 
-CircuitCalculatePlugin::CircuitCalculatePlugin() : AbstractPlugin() {}
+CircuitCalculatePlugin::CircuitCalculatePlugin(QObject* parent) : AbstractPlugin(parent) {}
 
 CircuitCalculatePlugin::~CircuitCalculatePlugin() {}
 
+void CircuitCalculatePlugin::reset()
+{
+  Editor::getInstance()->project()->scene()->addSceneObserver(m_ioTableWidget);
+}
+
 void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) {
+  Q_UNUSED(ui);
   QDockWidget* ioSetDockWidget = new QDockWidget();
   m_ioTableWidget = new IOTableWidget();
   ioSetDockWidget->setWidget(m_ioTableWidget);
   Editor::getInstance()->project()->scene()->addSceneObserver(m_ioTableWidget);
   mainWindow->addDockWidget(Qt::RightDockWidgetArea, ioSetDockWidget);
+
+  m_debugControlDialog = new DebugControlDialog();
+  connect(m_debugControlDialog->ui()->toolButton, &QToolButton::clicked,
+          this, &CircuitCalculatePlugin::onProgress);
+
 }
 
 void CircuitCalculatePlugin::doInit() {
   QMenu* buildMenu = new QMenu("Build");
+
+  QAction* compileAction = new QAction("Compile");
+  compileAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_B));
+  buildMenu->addAction(compileAction);
+  connect(compileAction, &QAction::triggered, this, &CircuitCalculatePlugin::onCompile);
+
   QAction* runAction = new QAction("Run");
   runAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
   buildMenu->addAction(runAction);
-  MenuManager::getInstance()->addMenu(buildMenu);
   connect(runAction, &QAction::triggered, this, &CircuitCalculatePlugin::onRun);
 
   QMenu* debugMenu = new QMenu("Debug");
   QAction* debugAction = new QAction("Start Debug");
   debugAction->setShortcut(QKeySequence(Qt::Key_F5));
   debugMenu->addAction(debugAction);
-  MenuManager::getInstance()->addMenu(debugMenu);
   connect(debugAction, &QAction::triggered, this, &CircuitCalculatePlugin::onDebug);
+
+  MenuManager::getInstance()->addMenu(buildMenu);
+  MenuManager::getInstance()->addMenu(debugMenu);
 }
 
 bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes)
@@ -128,34 +149,82 @@ bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode,
   return true;
 }
 
-#include "DataBase.h"
-void CircuitCalculatePlugin::onRun() {
-  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
-
+void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes)
+{
   if (!CheckError(nodes)) {
     qDebug() << "Do not connect finish!";
     return;
   }
-  QList<ConnectedGraph*> connectedGtaphs = ConnectedGraphs(nodes);
-  foreach (ConnectedGraph* connectedGtaph, connectedGtaphs) {
-    QList<AbstractNode*> sortedNodes = ExecuteOrderSort(connectedGtaph);
-    foreach (AbstractNode* node, sortedNodes) {
-      QList<bool> args;
-      if(0 == node->adjastInNodes().count()){
-        args << DataBase::getInstance()->read(node->name());
-      }
-      else{
-        foreach (AbstractNode* inNode, node->adjastInNodes()) {
-          args << DataBase::getInstance()->read(inNode->name());
-        }
-      }
-      DataBase::getInstance()->write(node->name(), node->execute(args));
+  m_connectedGraphs = ConnectedGraphs(nodes);
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
+    connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
+  }
+}
+
+void CircuitCalculatePlugin::run(QList<AbstractNode*>& nodes)
+{
+  foreach (AbstractNode* node, nodes) {
+    QList<bool> args = arguments(node);
+    bool result = node->execute(args);
+    node->setToolTip(btos(result));
+
+    DataBase::getInstance()->write(node->name(), result);
+  }
+}
+
+QList<bool> CircuitCalculatePlugin::arguments(AbstractNode* node)
+{
+  QList<bool> args;
+  if(0 == node->adjastInNodes().count()){
+    args << DataBase::getInstance()->read(node->name());
+  }
+  else{
+    foreach (AbstractNode* inNode, node->adjastInNodes()) {
+      args << DataBase::getInstance()->read(inNode->name());
     }
+  }
+  return args;
+}
+
+void CircuitCalculatePlugin::onCompile()
+{
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  compile(nodes);
+}
+
+void CircuitCalculatePlugin::onRun() {
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  compile(nodes);
+
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
+    run(connectedGraph->m_nodes);
   }
   m_ioTableWidget->read();
 }
 
 void CircuitCalculatePlugin::onDebug()
 {
-  qDebug() << " FIXME Debug";
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  compile(nodes);
+  m_executeNodeStack.clear();
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
+    m_executeNodeStack.append(connectedGraph->m_nodes);
+  }
+  m_debugControlDialog->show();
+}
+
+void CircuitCalculatePlugin::onProgress()
+{
+  if(0 == m_executeNodeStack.count()){
+    m_debugControlDialog->hide();
+    return;
+  }
+  AbstractNode* node = m_executeNodeStack.takeFirst();
+  node->setBrush(Qt::red);
+  QList<bool> args = arguments(node);
+  bool result = node->execute(args);
+  node->setToolTip(btos(result));
+
+  DataBase::getInstance()->write(node->name(), result);
+  m_ioTableWidget->read();
 }

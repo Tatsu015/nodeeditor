@@ -13,6 +13,10 @@ class AbstractNode : public QGraphicsPathItem {
   AbstractNode(QGraphicsItem* parent = nullptr);
   virtual ~AbstractNode();
 
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
   virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
   virtual AbstractNode* create() = 0;

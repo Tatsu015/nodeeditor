@@ -91,7 +91,8 @@ HEADERS += \
     plugin/core/QuitPlugin.h \
     plugin/circuitcalculate/DataBase.h \
     plugin/circuitcalculate/widget/DataSetComboBox.h \
-    app/controller/factory/PortFactory.h
+    app/controller/factory/PortFactory.h \
+    plugin/circuitcalculate/widget/DebugControlDialog.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -137,10 +138,12 @@ SOURCES += \
     plugin/core/QuitPlugin.cpp \
     plugin/circuitcalculate/DataBase.cpp \
     plugin/circuitcalculate/widget/DataSetComboBox.cpp \
-    app/controller/factory/PortFactory.cpp
+    app/controller/factory/PortFactory.cpp \
+    plugin/circuitcalculate/widget/DebugControlDialog.cpp
 
 FORMS += \
-    app/view/window/MainWindow.ui
+    app/view/window/MainWindow.ui \
+    plugin/circuitcalculate/widget/DebugControlDialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

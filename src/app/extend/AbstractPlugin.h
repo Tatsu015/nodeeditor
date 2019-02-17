@@ -18,6 +18,7 @@ class AbstractPlugin : public QObject {
   virtual ~AbstractPlugin();
 
   void init(MainWindow* mainWindow, Ui::MainWindow* ui);
+  virtual void reset();
 
  protected:
   virtual void initView(MainWindow* mainWindow, Ui::MainWindow* ui);

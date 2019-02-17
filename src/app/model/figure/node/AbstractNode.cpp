@@ -13,6 +13,8 @@ AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   setFlag(ItemIsMovable);
   setFlag(ItemSendsGeometryChanges);
 
+  setAcceptHoverEvents(true);
+
   const static QBrush BLUSH = QBrush(FILL_COLOR);
   const static QPen PEN = QPen(LINE_COLOR, PEN_SIZE);
   setBrush(BLUSH);
@@ -20,6 +22,21 @@ AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
 }
 
 AbstractNode::~AbstractNode() { qDeleteAll(m_ports); }
+
+void AbstractNode::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+  QGraphicsPathItem::hoverEnterEvent(event);
+}
+
+void AbstractNode::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
+{
+  QGraphicsPathItem::hoverMoveEvent(event);
+}
+
+void AbstractNode::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+  QGraphicsPathItem::hoverLeaveEvent(event);
+}
 
 QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value) {
   if (ItemPositionChange == change) {

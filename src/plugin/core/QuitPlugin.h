@@ -5,7 +5,7 @@
 
 class QuitPlugin : public AbstractPlugin {
  public:
-  QuitPlugin();
+  QuitPlugin(QObject* parent = nullptr);
   virtual ~QuitPlugin();
 
  protected:

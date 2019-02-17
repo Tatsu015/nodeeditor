@@ -43,7 +43,6 @@ class Editor : public QObject {
   void addTool(AbstractTool* tool);
 
  private:
-  //  QList<AbstractAction*> m_actions;
   QMap<QString, AbstractTool*> m_tools;
   AbstractTool* m_activeTool = nullptr;
   Project* m_project = nullptr;

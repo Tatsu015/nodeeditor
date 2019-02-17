@@ -4,7 +4,8 @@
 #include "Editor.h"
 #include "MenuManager.h"
 
-QuitPlugin::QuitPlugin() {}
+QuitPlugin::QuitPlugin(QObject* parent):
+AbstractPlugin(parent){}
 
 QuitPlugin::~QuitPlugin() {}
 

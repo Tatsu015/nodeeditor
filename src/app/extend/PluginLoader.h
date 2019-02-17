@@ -15,6 +15,7 @@ class PluginLoader {
 
   void init();
   void load(MainWindow* mainWindow, Ui::MainWindow* ui);
+  void reset();
 
  private:
   void addPlugin(AbstractPlugin* plugin);

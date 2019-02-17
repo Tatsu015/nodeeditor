@@ -13,6 +13,7 @@
 #include "OutNode.h"
 #include "Project.h"
 #include "Scene.h"
+#include "PluginLoader.h"
 
 Editor *Editor::getInstance() {
   static Editor s;
@@ -30,6 +31,7 @@ void Editor::init() {
 void Editor::reset() {
   resetProject();
   m_graphicsView->setScene(m_project->scene());
+  PluginLoader::getInstance()->reset();
 }
 
 Project *Editor::project() const { return m_project; }

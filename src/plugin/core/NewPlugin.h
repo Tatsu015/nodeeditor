@@ -5,7 +5,7 @@
 
 class NewPlugin : public AbstractPlugin {
  public:
-  NewPlugin();
+  NewPlugin(QObject* parent = nullptr);
   virtual ~NewPlugin();
 
  protected:
