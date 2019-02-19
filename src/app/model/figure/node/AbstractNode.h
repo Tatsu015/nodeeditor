@@ -47,6 +47,9 @@ class AbstractNode : public QGraphicsPathItem {
 
   IO io() const;
 
+  void changeColor(const QColor color);
+  void resetColor();
+
   virtual bool execute(QList<bool> args) = 0;
 
 protected:

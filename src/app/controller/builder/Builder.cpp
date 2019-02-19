@@ -53,25 +53,14 @@ void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
 
   QMenu *menu = MenuManager::getInstance()->menu("Edit");
   QAction *undo = Editor::getInstance()->undoStack()->createUndoAction(mainWindow, "Undo");
+  undo->setIcon(QIcon("../resource/undo.png"));
   undo->setShortcut(QKeySequence::Undo);
   menu->addAction(undo);
 
   QAction *redo = Editor::getInstance()->undoStack()->createRedoAction(mainWindow, "Redo");
   redo->setShortcut(QKeySequence::Redo);
+  redo->setIcon(QIcon("../resource/redo.png"));
   menu->addAction(redo);
-
-  //  QMenu *fileMenu = new QMenu("File");
-  //  ui->menuBar->addMenu(fileMenu);
-  //  fileMenu->addAction(Editor::getInstance()->action(ACTION_NEW)->action());
-  //  fileMenu->addAction(Editor::getInstance()->action(ACTION_OPEN)->action());
-  //  fileMenu->addAction(Editor::getInstance()->action(ACTION_SAVE)->action());
-
-  //  QMenu *viewMenu = new QMenu("View");
-  //  ui->menuBar->addMenu(viewMenu);
-  //  QMenu *dockMenu = new QMenu("Dock");
-  //  viewMenu->addMenu(dockMenu);
-  //  AnalyzeCircuitAction *ep = dynamic_cast<AnalyzeCircuitAction *>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
-  //  dockMenu->addAction(ep->DockWidget()->toggleViewAction());
 }
 
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {

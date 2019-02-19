@@ -92,7 +92,8 @@ HEADERS += \
     plugin/circuitcalculate/DataBase.h \
     plugin/circuitcalculate/widget/DataSetComboBox.h \
     app/controller/factory/PortFactory.h \
-    plugin/circuitcalculate/widget/DebugControlDialog.h
+    plugin/circuitcalculate/widget/DebugControlWidget.h \
+    plugin/circuitcalculate/CircuitCalculateExecutor.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
@@ -139,11 +140,12 @@ SOURCES += \
     plugin/circuitcalculate/DataBase.cpp \
     plugin/circuitcalculate/widget/DataSetComboBox.cpp \
     app/controller/factory/PortFactory.cpp \
-    plugin/circuitcalculate/widget/DebugControlDialog.cpp
+    plugin/circuitcalculate/widget/DebugControlWidget.cpp \
+    plugin/circuitcalculate/CircuitCalculateExecutor.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui \
-    plugin/circuitcalculate/widget/DebugControlDialog.ui
+    plugin/circuitcalculate/widget/DebugControlWidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

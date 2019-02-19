@@ -162,3 +162,13 @@ IO AbstractNode::io() const
 {
   return m_io;
 }
+
+void AbstractNode::changeColor(const QColor color)
+{
+  setBrush(QBrush(color));
+}
+
+void AbstractNode::resetColor()
+{
+  setBrush(QBrush(FILL_COLOR));
+}

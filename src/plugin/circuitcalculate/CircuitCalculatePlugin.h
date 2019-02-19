@@ -5,9 +5,10 @@
 
 class AbstractNode;
 class IOTableWidget;
-class DebugControlDialog;
+class DebugControlWidget;
 
 class CircuitCalculatePlugin : public AbstractPlugin {
+  Q_OBJECT
 
 private:
     struct ConnectedGraph {
@@ -21,6 +22,9 @@ private:
   CircuitCalculatePlugin(QObject* parent = nullptr);
   virtual ~CircuitCalculatePlugin();
   virtual void reset();
+
+signals:
+  void startDebug(const QString &text, int timeout = 0);
 
  protected:
   virtual void initView(MainWindow* mainWindow, Ui::MainWindow* ui);
@@ -36,21 +40,20 @@ private:
 
 private:
   void compile(QList<AbstractNode*>& nodes);
-  void run(QList<AbstractNode*>& nodes);
-
-  QList<bool> arguments(AbstractNode* node);
+  void tearDown();
 
  private slots:
   void onCompile();
   void onRun();
-  void onDebug();
-  void onProgress();
+  void onStartDebug();
+  void onStopDebug();
+
+  void onStepOver();
+  void onNext();
 
 private:
-  IOTableWidget* m_ioTableWidget = nullptr;
-  DebugControlDialog* m_debugControlDialog = nullptr;
+  DebugControlWidget* m_DebugControlWidget = nullptr;
   QList<ConnectedGraph*> m_connectedGraphs;
-  QList<AbstractNode*> m_executeNodeStack;
 };
 
 #endif  // CircuitCalculatePLUGIN_H

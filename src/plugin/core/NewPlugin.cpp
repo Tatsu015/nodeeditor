@@ -11,7 +11,7 @@ NewPlugin::~NewPlugin() {}
 void NewPlugin::doInit() {
   QMenu* fileMenu = MenuManager::getInstance()->menu("File");
 
-  QAction* newAction = new QAction("New");
+  QAction* newAction = new QAction(QIcon("../resource/new.png"), "New");
   newAction->setShortcut(QKeySequence::New);
   fileMenu->addAction(newAction);
 

@@ -12,7 +12,7 @@ OpenPlugin::~OpenPlugin() {}
 void OpenPlugin::doInit() {
   QMenu* fileMenu = MenuManager::getInstance()->menu("File");
 
-  QAction* openAction = new QAction("Open");
+  QAction* openAction = new QAction(QIcon("../resource/open.png"), "Open");
   openAction->setShortcut(QKeySequence::Open);
   fileMenu->addAction(openAction);
 

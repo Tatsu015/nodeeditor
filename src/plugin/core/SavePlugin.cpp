@@ -12,7 +12,7 @@ SavePlugin::~SavePlugin() {}
 void SavePlugin::doInit() {
   QMenu* fileMenu = MenuManager::getInstance()->menu("File");
 
-  QAction* saveAction = new QAction("Save");
+  QAction* saveAction = new QAction(QIcon("../resource/save.png"), "Save");
   saveAction->setShortcut(QKeySequence::Save);
   fileMenu->addAction(saveAction);
 
