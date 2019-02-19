@@ -7,10 +7,7 @@ NamePublisher* NamePublisher::getInstance() {
   return &s;
 }
 
-void NamePublisher::addBaseName(const QString& baseName)
-{
-  m_lastNumber[baseName] = 0;
-}
+void NamePublisher::addBaseName(const QString& baseName) { m_lastNumber[baseName] = 0; }
 
 QString NamePublisher::createName(const QString& baseName) {
   uint64_t lastNumber = m_lastNumber[baseName];

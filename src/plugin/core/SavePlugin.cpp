@@ -4,8 +4,7 @@
 #include "MenuManager.h"
 #include "Project.h"
 
-SavePlugin::SavePlugin(QObject* parent):
-AbstractPlugin(parent){}
+SavePlugin::SavePlugin(QObject* parent) : AbstractPlugin(parent) {}
 
 SavePlugin::~SavePlugin() {}
 

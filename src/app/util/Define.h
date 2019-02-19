@@ -25,5 +25,4 @@ enum IO : uint32_t {
   Hidden,
 };
 
-
 #endif  // DEFINE_H

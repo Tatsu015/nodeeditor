@@ -2,11 +2,11 @@
 #include "AbstractPlugin.h"
 #include "CircuitCalculatePlugin.h"
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
-#include "QuitPlugin.h"
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
+#include "QuitPlugin.h"
 #include "SavePlugin.h"
+#include "ui_MainWindow.h"
 
 PluginLoader* PluginLoader::getInstance() {
   static PluginLoader s;
@@ -26,8 +26,7 @@ void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {
   foreach (AbstractPlugin* plugin, m_plugins) { plugin->init(mainWindow, ui); }
 }
 
-void PluginLoader::reset()
-{
+void PluginLoader::reset() {
   foreach (AbstractPlugin* plugin, m_plugins) { plugin->reset(); }
 }
 

@@ -5,9 +5,8 @@
 
 class AbstractNode;
 
-class CircuitCalculateExecutor
-{
-public:
+class CircuitCalculateExecutor {
+ public:
   static CircuitCalculateExecutor* getInstance();
 
   void run();
@@ -17,16 +16,16 @@ public:
   void teardownStack();
   int32_t stackCount() const;
 
-private:
+ private:
   QList<bool> arguments(AbstractNode* node);
 
-private:
+ private:
   QList<AbstractNode*> m_executeNodeStack;
   QList<AbstractNode*> m_breakPointNodes;
 
-private:
+ private:
   CircuitCalculateExecutor();
   ~CircuitCalculateExecutor();
 };
 
-#endif // CIRCUITCALCULATEEXECUTOR_H
+#endif  // CIRCUITCALCULATEEXECUTOR_H

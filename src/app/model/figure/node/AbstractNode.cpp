@@ -23,20 +23,11 @@ AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
 
 AbstractNode::~AbstractNode() { qDeleteAll(m_ports); }
 
-void AbstractNode::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
-{
-  QGraphicsPathItem::hoverEnterEvent(event);
-}
+void AbstractNode::hoverEnterEvent(QGraphicsSceneHoverEvent* event) { QGraphicsPathItem::hoverEnterEvent(event); }
 
-void AbstractNode::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
-{
-  QGraphicsPathItem::hoverMoveEvent(event);
-}
+void AbstractNode::hoverMoveEvent(QGraphicsSceneHoverEvent* event) { QGraphicsPathItem::hoverMoveEvent(event); }
 
-void AbstractNode::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
-{
-  QGraphicsPathItem::hoverLeaveEvent(event);
-}
+void AbstractNode::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) { QGraphicsPathItem::hoverLeaveEvent(event); }
 
 QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value) {
   if (ItemPositionChange == change) {
@@ -158,17 +149,8 @@ void AbstractNode::redraw() {
   foreach (Port* port, m_ports) { port->redraw(); }
 }
 
-IO AbstractNode::io() const
-{
-  return m_io;
-}
+IO AbstractNode::io() const { return m_io; }
 
-void AbstractNode::changeColor(const QColor color)
-{
-  setBrush(QBrush(color));
-}
+void AbstractNode::changeColor(const QColor color) { setBrush(QBrush(color)); }
 
-void AbstractNode::resetColor()
-{
-  setBrush(QBrush(FILL_COLOR));
-}
+void AbstractNode::resetColor() { setBrush(QBrush(FILL_COLOR)); }

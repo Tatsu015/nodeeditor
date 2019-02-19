@@ -11,9 +11,9 @@
 #include "NodeFactory.h"
 #include "OrNode.h"
 #include "OutNode.h"
+#include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
-#include "PluginLoader.h"
 
 Editor *Editor::getInstance() {
   static Editor s;

@@ -34,7 +34,4 @@ AndNode::~AndNode() {}
 
 AbstractNode* AndNode::create() { return new AndNode(); }
 
-bool AndNode::execute(QList<bool> args)
-{
-  return args.at(0) & args.at(1);
-}
+bool AndNode::execute(QList<bool> args) { return args.at(0) & args.at(1); }

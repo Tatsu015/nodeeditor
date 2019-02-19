@@ -1,9 +1,9 @@
 #include "IOTableWidget.h"
-#include "DataSetComboBox.h"
 #include <QDebug>
 #include <QHeaderView>
 #include "AbstractNode.h"
 #include "DataBase.h"
+#include "DataSetComboBox.h"
 
 IOTableWidget::IOTableWidget(QWidget* parent) : QTableWidget(parent) {
   setRowCount(0);
@@ -34,8 +34,7 @@ void IOTableWidget::removeNode(AbstractNode* node) {
   }
 }
 
-void IOTableWidget::read()
-{
+void IOTableWidget::read() {
   for (int row = 0; row < rowCount(); ++row) {
     QTableWidgetItem* nameWidgetItem = item(row, 0);
     DataSetComboBox* comboItem = dynamic_cast<DataSetComboBox*>(cellWidget(row, 1));

@@ -3,8 +3,7 @@
 #include "Editor.h"
 #include "MenuManager.h"
 
-NewPlugin::NewPlugin(QObject* parent):
-AbstractPlugin(parent){}
+NewPlugin::NewPlugin(QObject* parent) : AbstractPlugin(parent) {}
 
 NewPlugin::~NewPlugin() {}
 

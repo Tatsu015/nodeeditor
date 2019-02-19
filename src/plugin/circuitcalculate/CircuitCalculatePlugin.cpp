@@ -1,31 +1,28 @@
 #include "CircuitCalculatePlugin.h"
 #include <QApplication>
+#include <QDebug>
 #include <QDockWidget>
 #include <QMenu>
-#include <QDebug>
 #include <QStatusBar>
+#include "AbstractNode.h"
+#include "CircuitCalculateExecutor.h"
+#include "DataBase.h"
+#include "DebugControlWidget.h"
 #include "Editor.h"
 #include "IOTableWidget.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "Port.h"
 #include "Project.h"
 #include "Scene.h"
-#include "AbstractNode.h"
-#include "Port.h"
-#include "DataBase.h"
-#include "DebugControlWidget.h"
-#include "ui_MainWindow.h"
 #include "ui_DebugControlWidget.h"
-#include "CircuitCalculateExecutor.h"
+#include "ui_MainWindow.h"
 
 CircuitCalculatePlugin::CircuitCalculatePlugin(QObject* parent) : AbstractPlugin(parent) {}
 
 CircuitCalculatePlugin::~CircuitCalculatePlugin() {}
 
-void CircuitCalculatePlugin::reset()
-{
-  Editor::getInstance()->project()->scene()->addSceneObserver(m_DebugControlWidget->ui()->tableWidget);
-}
+void CircuitCalculatePlugin::reset() { Editor::getInstance()->project()->scene()->addSceneObserver(m_DebugControlWidget->ui()->tableWidget); }
 
 void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Q_UNUSED(ui);
@@ -35,14 +32,10 @@ void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui
   Editor::getInstance()->project()->scene()->addSceneObserver(m_DebugControlWidget->ui()->tableWidget);
   mainWindow->addDockWidget(Qt::RightDockWidgetArea, ioSetDockWidget);
 
-  connect(m_DebugControlWidget->ui()->startDebugButton, &QToolButton::clicked,
-          this, &CircuitCalculatePlugin::onStartDebug);
-  connect(m_DebugControlWidget->ui()->stepOverButton, &QToolButton::clicked,
-          this, &CircuitCalculatePlugin::onStepOver);
-  connect(m_DebugControlWidget->ui()->stopDebugButton, &QToolButton::clicked,
-          this, &CircuitCalculatePlugin::onStopDebug);
-  connect(this, &CircuitCalculatePlugin::startDebug,
-          ui->statusBar, &QStatusBar::showMessage);
+  connect(m_DebugControlWidget->ui()->startDebugButton, &QToolButton::clicked, this, &CircuitCalculatePlugin::onStartDebug);
+  connect(m_DebugControlWidget->ui()->stepOverButton, &QToolButton::clicked, this, &CircuitCalculatePlugin::onStepOver);
+  connect(m_DebugControlWidget->ui()->stopDebugButton, &QToolButton::clicked, this, &CircuitCalculatePlugin::onStopDebug);
+  connect(this, &CircuitCalculatePlugin::startDebug, ui->statusBar, &QStatusBar::showMessage);
 }
 
 void CircuitCalculatePlugin::doInit() {
@@ -68,13 +61,9 @@ void CircuitCalculatePlugin::doInit() {
   MenuManager::getInstance()->addMenu(debugMenu);
 }
 
-bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes)
-{
-  return CheckAllPortFilled(nodes);
-}
+bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes) { return CheckAllPortFilled(nodes); }
 
-bool CircuitCalculatePlugin::CheckAllPortFilled(const QList<AbstractNode*>& nodes)
-{
+bool CircuitCalculatePlugin::CheckAllPortFilled(const QList<AbstractNode*>& nodes) {
   bool ret = true;
   foreach (AbstractNode* node, nodes) {
     foreach (Port* port, node->ports()) {
@@ -88,8 +77,7 @@ bool CircuitCalculatePlugin::CheckAllPortFilled(const QList<AbstractNode*>& node
   return ret;
 }
 
-QList<CircuitCalculatePlugin::ConnectedGraph*> CircuitCalculatePlugin::ConnectedGraphs(const QList<AbstractNode*>& nodes)
-{
+QList<CircuitCalculatePlugin::ConnectedGraph*> CircuitCalculatePlugin::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
   QList<ConnectedGraph*> connectedGraphs;
   QList<AbstractNode*> unusedNode = nodes;
   uint64_t id = 0;
@@ -120,21 +108,19 @@ QList<CircuitCalculatePlugin::ConnectedGraph*> CircuitCalculatePlugin::Connected
   return connectedGraphs;
 }
 
-QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePlugin::ConnectedGraph* connectedGraph)
-{
+QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
   QList<AbstractNode*> visitedNodes;
   QList<AbstractNode*> unVisitedNodes;
   foreach (AbstractNode* node, connectedGraph->m_nodes) {
-    if(Input == node->io()){
+    if (Input == node->io()) {
       visitedNodes << node;
-    }
-    else{
+    } else {
       unVisitedNodes << node;
     }
   }
   while (unVisitedNodes.count()) {
     AbstractNode* checkNode = unVisitedNodes.last();
-    if(isAllAdjacentInNodeVisited(checkNode, visitedNodes)){
+    if (isAllAdjacentInNodeVisited(checkNode, visitedNodes)) {
       visitedNodes << checkNode;
       unVisitedNodes.removeOne(checkNode);
     }
@@ -145,42 +131,34 @@ QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePl
   return visitedNodes;
 }
 
-bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes)
-{
+bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes) {
   foreach (AbstractNode* inNode, checkNode->adjastInNodes()) {
-    if(!visitedNodes.contains(inNode)){
+    if (!visitedNodes.contains(inNode)) {
       return false;
     }
   }
   return true;
 }
 
-void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes)
-{
+void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
   if (!CheckError(nodes)) {
     qDebug() << "Do not connect finish!";
     return;
   }
 
   m_connectedGraphs = ConnectedGraphs(nodes);
-  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
-  }
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) { connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph); }
 }
 
-void CircuitCalculatePlugin::tearDown()
-{
+void CircuitCalculatePlugin::tearDown() {
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    foreach (AbstractNode* node, connectedGraph->m_nodes) {
-      node->resetColor();
-    }
+    foreach (AbstractNode* node, connectedGraph->m_nodes) { node->resetColor(); }
   }
   startDebug("", 0);
   m_DebugControlWidget->tearDown();
 }
 
-void CircuitCalculatePlugin::onCompile()
-{
+void CircuitCalculatePlugin::onCompile() {
   QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
   compile(nodes);
 }
@@ -191,34 +169,28 @@ void CircuitCalculatePlugin::onRun() {
   compile(nodes);
 
   QList<AbstractNode*> nodeStack;
-  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    nodeStack.append(connectedGraph->m_nodes);
-  }
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) { nodeStack.append(connectedGraph->m_nodes); }
   CircuitCalculateExecutor::getInstance()->setupStack(nodeStack);
   CircuitCalculateExecutor::getInstance()->run();
   m_DebugControlWidget->ui()->tableWidget->read();
   tearDown();
 }
 
-void CircuitCalculatePlugin::onStartDebug()
-{
+void CircuitCalculatePlugin::onStartDebug() {
   QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
   compile(nodes);
   CircuitCalculateExecutor::getInstance()->teardownStack();
   m_DebugControlWidget->setup();
 
   QList<AbstractNode*> nodeStack;
-  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    nodeStack.append(connectedGraph->m_nodes);
-  }
+  foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) { nodeStack.append(connectedGraph->m_nodes); }
   CircuitCalculateExecutor::getInstance()->setupStack(nodeStack);
   m_DebugControlWidget->show();
   startDebug("Debug start", 1000);
 }
 
-void CircuitCalculatePlugin::onStepOver()
-{
-  if(0 == CircuitCalculateExecutor::getInstance()->stackCount()){
+void CircuitCalculatePlugin::onStepOver() {
+  if (0 == CircuitCalculateExecutor::getInstance()->stackCount()) {
     tearDown();
     return;
   }
@@ -226,9 +198,8 @@ void CircuitCalculatePlugin::onStepOver()
   m_DebugControlWidget->ui()->tableWidget->read();
 }
 
-void CircuitCalculatePlugin::onNext()
-{
-  if(0 == CircuitCalculateExecutor::getInstance()->stackCount()){
+void CircuitCalculatePlugin::onNext() {
+  if (0 == CircuitCalculateExecutor::getInstance()->stackCount()) {
     tearDown();
     return;
   }
@@ -236,7 +207,4 @@ void CircuitCalculatePlugin::onNext()
   m_DebugControlWidget->ui()->tableWidget->read();
 }
 
-void CircuitCalculatePlugin::onStopDebug()
-{
-  tearDown();
-}
+void CircuitCalculatePlugin::onStopDebug() { tearDown(); }

@@ -22,7 +22,4 @@ OutNode::~OutNode() {}
 
 AbstractNode* OutNode::create() { return new OutNode(); }
 
-bool OutNode::execute(QList<bool> args)
-{
-  return args.at(0);
-}
+bool OutNode::execute(QList<bool> args) { return args.at(0); }

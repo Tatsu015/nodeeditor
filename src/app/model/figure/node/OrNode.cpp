@@ -35,7 +35,4 @@ OrNode::~OrNode() {}
 
 AbstractNode* OrNode::create() { return new OrNode(); }
 
-bool OrNode::execute(QList<bool> args)
-{
-  return args.at(0) & args.at(1);
-}
+bool OrNode::execute(QList<bool> args) { return args.at(0) & args.at(1); }

@@ -13,9 +13,9 @@ class AbstractNode : public QGraphicsPathItem {
   AbstractNode(QGraphicsItem* parent = nullptr);
   virtual ~AbstractNode();
 
-  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
   virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
@@ -52,7 +52,7 @@ class AbstractNode : public QGraphicsPathItem {
 
   virtual bool execute(QList<bool> args) = 0;
 
-protected:
+ protected:
   const static QColor FILL_COLOR;
   const static QColor LINE_COLOR;
   const static uint32_t WIDTH = 50;

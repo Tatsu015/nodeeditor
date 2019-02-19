@@ -1,24 +1,23 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <QString>
 #include <QMap>
+#include <QString>
 
-class DataBase
-{
-public:
+class DataBase {
+ public:
   static DataBase* getInstance();
 
   void write(const QString& id, bool value);
   bool read(const QString& id);
   void clear();
 
-private:
+ private:
   QMap<QString, bool> m_db;
 
-private:
+ private:
   DataBase();
   ~DataBase();
 };
 
-#endif // DATABASE_H
+#endif  // DATABASE_H

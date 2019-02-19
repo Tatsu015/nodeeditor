@@ -8,7 +8,6 @@ class Connection;
 class Port;
 class AbstractNode;
 
-
 class Port : public QGraphicsPathItem {
  public:
   Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr);
@@ -35,7 +34,7 @@ class Port : public QGraphicsPathItem {
   QString name() const;
   void setName(const QString& name);
 
-protected:
+ protected:
   const static uint32_t WIDTH = 12;
   const static uint32_t HEIGHT = 3;
   const static QColor FILL_COLOR;

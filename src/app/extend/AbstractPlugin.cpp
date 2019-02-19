@@ -13,6 +13,4 @@ void AbstractPlugin::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
 
 void AbstractPlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) { Q_UNUSED(ui); }
 
-void AbstractPlugin::reset()
-{
-}
+void AbstractPlugin::reset() {}

@@ -7,21 +7,20 @@ namespace Ui {
 class DebugControlWidget;
 }
 
-class DebugControlWidget : public QWidget
-{
+class DebugControlWidget : public QWidget {
   Q_OBJECT
 
-public:
+ public:
   explicit DebugControlWidget(QWidget *parent = 0);
   virtual ~DebugControlWidget();
 
-  Ui::DebugControlWidget* ui() const;
+  Ui::DebugControlWidget *ui() const;
 
   void setup();
   void tearDown();
 
-private:
+ private:
   Ui::DebugControlWidget *m_ui;
 };
 
-#endif // FORDEBUGCONTROLWIDGET_H
+#endif  // FORDEBUGCONTROLWIDGET_H

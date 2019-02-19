@@ -24,7 +24,4 @@ InNode::~InNode() {}
 
 AbstractNode* InNode::create() { return new InNode(); }
 
-bool InNode::execute(QList<bool> args)
-{
-  return args.at(0);
-}
+bool InNode::execute(QList<bool> args) { return args.at(0); }
