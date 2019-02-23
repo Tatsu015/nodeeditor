@@ -78,7 +78,6 @@ HEADERS += \
     app/view/menu/MenuManager.h \
     app/view/widget/NodeToolBar.h \
     app/view/window/MainWindow.h \
-    plugin/circuitcalculate/action/AnalyzeCircuitAction.h \
     plugin/circuitcalculate/widget/ErrorListWidget.h \
     plugin/core/NewPlugin.h \
     plugin/core/OpenPlugin.h \
@@ -126,7 +125,6 @@ SOURCES += \
     app/view/widget/NodeToolBar.cpp \
     app/view/window/MainWindow.cpp \
     app/main.cpp \
-    plugin/circuitcalculate/action/AnalyzeCircuitAction.cpp \
     plugin/circuitcalculate/widget/ErrorListWidget.cpp \
     plugin/core/NewPlugin.cpp \
     plugin/core/OpenPlugin.cpp \

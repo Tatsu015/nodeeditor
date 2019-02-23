@@ -94,6 +94,11 @@ void Connection::addConnector(Connector* connector) {
   m_connectors << connector;
 }
 
+void Connection::removeConnector(Connector* connector)
+{
+  m_connectors.removeOne(connector);
+}
+
 QString Connection::name() const { return m_name; }
 
 void Connection::setName(const QString& name) { m_name = name; }

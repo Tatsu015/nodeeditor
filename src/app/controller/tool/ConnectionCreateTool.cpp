@@ -10,8 +10,12 @@
 #include "Port.h"
 #include "Scene.h"
 #include "TmpConnection.h"
+#include "Connector.h"
 
-ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) { m_tmpConnection = new TmpConnection(); }
+ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
+  m_tmpConnection = new TmpConnection();
+  m_tmpConnector = new Connector();
+}
 
 ConnectionCreateTool::~ConnectionCreateTool() {}
 
@@ -33,8 +37,7 @@ void ConnectionCreateTool::mouseMoveEvent(Scene *scene, QGraphicsSceneMouseEvent
     return;
   }
 
-  Port *endPort = scene->findPort(event->scenePos());
-  bool connectable = canConnect(m_startPort, endPort);
+  bool connectable = canConnect(scene, event);
   m_tmpConnection->changePenStyle(connectable);
 
   redrawTmpConnection(event->scenePos());
@@ -50,7 +53,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene *scene, QGraphicsSceneMouseEv
 
   Port *endPort = scene->findPort(event->scenePos());
   removeTmpConnection(scene);
-  if (!canConnect(m_startPort, endPort)) {
+  if (!canConnect(scene, event)) {
     return;
   }
 
@@ -87,17 +90,40 @@ void ConnectionCreateTool::decideConnection(Scene *scene, Port *endPort) {
 
 void ConnectionCreateTool::removeTmpConnection(Scene *scene) { scene->removeConnection(m_tmpConnection); }
 
-bool ConnectionCreateTool::canConnect(Port *startPort, Port *endPort) const {
+void ConnectionCreateTool::addTmpConnector(Scene* scene, Port* startPort)
+{
+
+}
+
+void ConnectionCreateTool::redrawTmpConnector(QPointF nowScenePos)
+{
+
+}
+
+void ConnectionCreateTool::decideConnector(Scene* scene, Port* endPort)
+{
+
+}
+
+void ConnectionCreateTool::removeTmpConnector(Scene* scene)
+{
+
+}
+
+bool ConnectionCreateTool::canConnect(Scene* scene, QGraphicsSceneMouseEvent* event) const
+{
+  Port *endPort = scene->findPort(event->scenePos());
+
   if (!endPort) {
     return false;
   }
-  if (startPort == endPort) {
+  if (m_startPort == endPort) {
     return false;
   }
-  if (startPort->parentNode() == endPort->parentNode()) {
+  if (m_startPort->parentNode() == endPort->parentNode()) {
     return false;
   }
-  if (startPort->io() == endPort->io()) {
+  if (m_startPort->io() == endPort->io()) {
     return false;
   }
   return true;

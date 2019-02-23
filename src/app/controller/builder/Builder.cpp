@@ -28,14 +28,14 @@ Builder *Builder::getInstance() {
 }
 
 void Builder::build(MainWindow *mainWindow, Ui::MainWindow *ui) {
-  PluginLoader::getInstance()->init();
-  PluginLoader::getInstance()->load(mainWindow, ui);
-
   buildGraphicsView(mainWindow, ui);
-  buildMenu(mainWindow, ui);
+  buildDefaultMenu(mainWindow, ui);
   buildToolBar(mainWindow, ui);
   buildWindowTitle(mainWindow, ui);
   //  buildDockWidget(mainWindow, ui);
+  PluginLoader::getInstance()->init();
+  PluginLoader::getInstance()->load(mainWindow, ui);
+
 }
 
 void Builder::buildGraphicsView(MainWindow *mainWindow, Ui::MainWindow *ui) {
@@ -46,21 +46,30 @@ void Builder::buildGraphicsView(MainWindow *mainWindow, Ui::MainWindow *ui) {
   Editor::getInstance()->setGraphicsView(ui->graphicsView);
 }
 
-void Builder::buildMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
+void Builder::buildDefaultMenu(MainWindow *mainWindow, Ui::MainWindow *ui) {
   Q_UNUSED(mainWindow);
 
-  foreach (QMenu *menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
+  QMenu* fileMenu = new QMenu(MenuManager::MENU_FILE);
+  MenuManager::getInstance()->addMenu(fileMenu);
 
-  QMenu *menu = MenuManager::getInstance()->menu("Edit");
+  QMenu* editMenu = new QMenu(MenuManager::MENU_EDIT);
+  MenuManager::getInstance()->addMenu(editMenu);
+
+  QMenu* viewMenu = new QMenu(MenuManager::MENU_VIEW);
+  MenuManager::getInstance()->addMenu(viewMenu);
+
+
   QAction *undo = Editor::getInstance()->undoStack()->createUndoAction(mainWindow, "Undo");
   undo->setIcon(QIcon("../resource/undo.png"));
   undo->setShortcut(QKeySequence::Undo);
-  menu->addAction(undo);
+  editMenu->addAction(undo);
 
   QAction *redo = Editor::getInstance()->undoStack()->createRedoAction(mainWindow, "Redo");
   redo->setShortcut(QKeySequence::Redo);
   redo->setIcon(QIcon("../resource/redo.png"));
-  menu->addAction(redo);
+  editMenu->addAction(redo);
+
+  foreach (QMenu *menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
 }
 
 void Builder::buildToolBar(MainWindow *mainWindow, Ui::MainWindow *ui) {

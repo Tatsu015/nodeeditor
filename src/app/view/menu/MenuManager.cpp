@@ -1,6 +1,11 @@
 #include "MenuManager.h"
 #include <QMenu>
 
+
+const QString MenuManager::MENU_FILE = "File";
+const QString MenuManager::MENU_EDIT = "Edit";
+const QString MenuManager::MENU_VIEW = "View";
+
 MenuManager* MenuManager::getInstance() {
   static MenuManager s;
   return &s;
@@ -20,8 +25,6 @@ QMenu* MenuManager::menu(const QString& name) {
 QList<QMenu*> MenuManager::menus() const { return m_menus; }
 
 MenuManager::MenuManager() {
-  addMenu(new QMenu("File"));
-  addMenu(new QMenu("Edit"));
 }
 
 MenuManager::~MenuManager() {}

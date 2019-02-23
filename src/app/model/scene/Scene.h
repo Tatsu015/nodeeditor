@@ -6,7 +6,6 @@
 class AbstractNode;
 class InNode;
 class Connection;
-class Connector;
 class Port;
 class GuideLine;
 class SceneObserver;
@@ -72,13 +71,9 @@ class Scene : public QGraphicsScene {
 
   bool existInNode(QPointF scenePos);
 
-  void showConnector(QPointF scenePos);
-
  private:
   QList<AbstractNode*> m_nodes;
   QList<Connection*> m_connections;
-  Connection* m_tmpConnection = nullptr;
-  Connector* m_tmpConnector = nullptr;
   Port* m_startPort = nullptr;
   QVector<GuideLine*> m_guideLines;
   bool m_isControlPressed;

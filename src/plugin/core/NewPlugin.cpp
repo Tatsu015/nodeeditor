@@ -8,7 +8,7 @@ NewPlugin::NewPlugin(QObject* parent) : AbstractPlugin(parent) {}
 NewPlugin::~NewPlugin() {}
 
 void NewPlugin::doInit() {
-  QMenu* fileMenu = MenuManager::getInstance()->menu("File");
+  QMenu* fileMenu = MenuManager::getInstance()->menu(MenuManager::MENU_FILE);
 
   QAction* newAction = new QAction(QIcon("../resource/new.png"), "New");
   newAction->setShortcut(QKeySequence::New);

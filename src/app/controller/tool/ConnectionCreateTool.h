@@ -7,6 +7,7 @@
 class Port;
 class Connection;
 class TmpConnection;
+class Connector;
 
 class ConnectionCreateTool : public AbstractTool {
  public:
@@ -25,11 +26,18 @@ class ConnectionCreateTool : public AbstractTool {
   void redrawTmpConnection(QPointF nowScenePos);
   void decideConnection(Scene* scene, Port* endPort);
   void removeTmpConnection(Scene* scene);
-  bool canConnect(Port* startPort, Port* endPort) const;
+
+  void addTmpConnector(Scene* scene, Port* startPort);
+  void redrawTmpConnector(QPointF nowScenePos);
+  void decideConnector(Scene* scene, Port* endPort);
+  void removeTmpConnector(Scene* scene);
+
+  bool canConnect(Scene *scene, QGraphicsSceneMouseEvent *event) const;
 
  private:
   Port* m_startPort = nullptr;
   TmpConnection* m_tmpConnection = nullptr;
+  Connector* m_tmpConnector = nullptr;
 };
 
 #endif  // CONNECTIONCREATETOOL_H

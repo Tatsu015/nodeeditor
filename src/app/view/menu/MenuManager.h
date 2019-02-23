@@ -6,6 +6,11 @@
 class QMenu;
 
 class MenuManager {
+public:
+  const static QString MENU_FILE;
+  const static QString MENU_EDIT;
+  const static QString MENU_VIEW;
+
  public:
   static MenuManager* getInstance();
   void addMenu(QMenu* menu);

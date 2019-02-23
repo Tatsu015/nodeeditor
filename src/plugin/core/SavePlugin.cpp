@@ -9,7 +9,7 @@ SavePlugin::SavePlugin(QObject* parent) : AbstractPlugin(parent) {}
 SavePlugin::~SavePlugin() {}
 
 void SavePlugin::doInit() {
-  QMenu* fileMenu = MenuManager::getInstance()->menu("File");
+  QMenu* fileMenu = MenuManager::getInstance()->menu(MenuManager::MENU_FILE);
 
   QAction* saveAction = new QAction(QIcon("../resource/save.png"), "Save");
   saveAction->setShortcut(QKeySequence::Save);

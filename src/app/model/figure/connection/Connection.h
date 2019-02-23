@@ -31,6 +31,7 @@ class Connection : public QGraphicsPathItem {
 
   Port* oppositeSidePort(Port* port);
   void addConnector(Connector* connector);
+  void removeConnector(Connector* connector);
 
   QString name() const;
   void setName(const QString& name);

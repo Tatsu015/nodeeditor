@@ -9,7 +9,7 @@ OpenPlugin::OpenPlugin(QObject* parent) : AbstractPlugin(parent) {}
 OpenPlugin::~OpenPlugin() {}
 
 void OpenPlugin::doInit() {
-  QMenu* fileMenu = MenuManager::getInstance()->menu("File");
+  QMenu* fileMenu = MenuManager::getInstance()->menu(MenuManager::MENU_FILE);
 
   QAction* openAction = new QAction(QIcon("../resource/open.png"), "Open");
   openAction->setShortcut(QKeySequence::Open);

@@ -16,3 +16,13 @@ Connector::Connector(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
 Connector::~Connector() {}
 
 void Connector::setPos(const QPointF pos) { setPos(pos + QPointF(CONNECTOR_RADIUS, CONNECTOR_RADIUS) * 0.5); }
+
+void Connector::setDstConnection(Connection* dstConnection)
+{
+  m_dstConnection = dstConnection;
+}
+
+void Connector::setSrcConnection(Connection* srcConnection)
+{
+  m_srcConnection = srcConnection;
+}

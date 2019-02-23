@@ -4,10 +4,6 @@
 #include <QString>
 
 const static QString APP_EXTENSION = "nd";
-const static QString ACTION_NEW = "New";
-const static QString ACTION_OPEN = "Open";
-const static QString ACTION_SAVE = "Save";
-const static QString ACTION_ANALYZE_CIRCUIT = "AnalyzeCircuit";
 
 const static QString TOOL_CONNECTION_CREATE = "ConnectionCreate";
 const static QString TOOL_NODE_CREATE = "NodeCreate";

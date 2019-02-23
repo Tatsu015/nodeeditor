@@ -146,7 +146,7 @@ Connection* Scene::findConnection(QPointF scenePos) {
   Connection* connection = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
     connection = dynamic_cast<Connection*>(item);
-    if (connection && (m_tmpConnection != connection)) {
+    if (connection) {
       return connection;
     }
   }
@@ -186,14 +186,6 @@ bool Scene::existPort(QPointF scenePos) {
     return true;
   }
   return false;
-}
-
-void Scene::showConnector(QPointF scenePos) {
-  if (!m_tmpConnector) {
-    m_tmpConnector = new Connector();
-    addItem(m_tmpConnector);
-  }
-  m_tmpConnector->setPos(scenePos);
 }
 
 QList<AbstractNode*> Scene::nodes() const { return m_nodes; }
