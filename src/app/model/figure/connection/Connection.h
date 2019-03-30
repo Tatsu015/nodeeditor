@@ -16,29 +16,32 @@ class Connection : public QGraphicsPathItem {
   void setStartPos(const QPointF& startPos);
   void setEndPos(const QPointF& endPos);
 
-  void setStartPort(Port* startPort);
-  void setEndPort(Port* endPort);
-
   void redraw();
   void redraw(Port* startPort, Port* endPort);
   void redraw(Port* startPort, QPointF endScenePos);
 
   Port* startPort() const;
-  Port* endPort() const;
-
+  void setStartPort(Port* startPort);
   void removeStartPort();
+  Port* endPort() const;
+  void setEndPort(Port* endPort);
   void removeEndPort();
-
   Port* oppositeSidePort(Port* port);
-  void addConnector(Connector* connector);
-  void removeConnector(Connector* connector);
+
+  void setStartConnector(Connector* startConnector);
+  void removeStartConnector();
+  void setEndConnector(Connector* endConnector);
+  void removeEndConnector();
+  void addBranchConnector(Connector* connector, QPointF scenePos);
+  void removeBranchConnector(Connector* connector);
 
   QString name() const;
   void setName(const QString& name);
 
   QString connectionType() const;
 
- protected:
+
+protected:
   const static QColor LINE_COLOR;
   const static uint32_t PEN_SIZE;
 
@@ -50,7 +53,10 @@ class Connection : public QGraphicsPathItem {
   Port* m_startPort = nullptr;
   Port* m_endPort = nullptr;
 
-  QList<Connector*> m_connectors;
+  Connector* m_startConnector = nullptr;
+  Connector* m_endConnector = nullptr;
+
+  QList<Connector*> m_branchConnectors;
 };
 
 #endif  // CONNECTION_H

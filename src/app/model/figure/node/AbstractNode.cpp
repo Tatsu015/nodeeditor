@@ -50,6 +50,12 @@ qreal AbstractNode::right() const { return sceneBoundingRect().right(); }
 
 qreal AbstractNode::left() const { return sceneBoundingRect().left(); }
 
+QPointF AbstractNode::centerOffset() const
+{
+  QPointF offset(boundingRect().center());
+  return offset;
+}
+
 void AbstractNode::setupNameText() {
   m_nameText = new QGraphicsSimpleTextItem(m_name, this);
   m_nameText->setPos(0, -20);

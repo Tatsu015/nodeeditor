@@ -1,6 +1,5 @@
 #include "ErrorListWidget.h"
 #include "AbstractNode.h"
-#include "AnalyzeCircuitAction.h"
 
 ErrorListWidget::ErrorListWidget(QWidget* parent) : QListWidget(parent) {}
 

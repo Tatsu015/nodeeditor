@@ -7,6 +7,7 @@ class AbstractNode;
 class InNode;
 class Connection;
 class Port;
+class Connector;
 class GuideLine;
 class SceneObserver;
 
@@ -45,8 +46,11 @@ class Scene : public QGraphicsScene {
   void deleteNode(AbstractNode* node);
 
   QList<Connection*> connections() const;
+  Connection* findConnection(const QPointF scenePos);
+  QList<Connection*> findConnections(const QPointF scenePos);
   void addConnection(Connection* connection, Port* startPort);
   void addConnection(Connection* connection, Port* startPort, Port* endPort);
+  void addConnection(Connection* connection, Port* startPort, Connector* endConnector);
   void addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName, int32_t endPortNumber);
   void removeConnection(Connection* connection);
   void deleteConnection(Connection* connection);
@@ -67,7 +71,6 @@ class Scene : public QGraphicsScene {
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 
-  Connection* findConnection(QPointF scenePos);
 
   bool existInNode(QPointF scenePos);
 

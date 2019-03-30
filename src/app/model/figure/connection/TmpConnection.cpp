@@ -13,10 +13,10 @@ TmpConnection::~TmpConnection() {}
 
 TmpConnection* TmpConnection::create() { return new TmpConnection(); }
 
-void TmpConnection::changePenStyle(const bool connectable) {
-  if (connectable) {
-    setPen(QPen(DECIDED_LINE_COLOR, PEN_SIZE, Qt::SolidLine));
-  } else {
+void TmpConnection::changePenStyle(const PenStyle style) {
+  if (Connecting == style) {
     setPen(QPen(CREATING_LINE_COLOR, PEN_SIZE, Qt::DotLine));
+  } else {
+      setPen(QPen(DECIDED_LINE_COLOR, PEN_SIZE, Qt::SolidLine));
   }
 }

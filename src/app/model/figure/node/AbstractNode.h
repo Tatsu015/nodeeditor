@@ -29,6 +29,8 @@ class AbstractNode : public QGraphicsPathItem {
   qreal right() const;
   qreal left() const;
 
+  QPointF centerOffset() const;
+
   void setupNameText();
 
   QList<Port*> ports() const;

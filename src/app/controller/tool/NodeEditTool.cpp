@@ -54,8 +54,7 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   AbstractNode* node = NodeFactory::getInstance()->createNode(m_activeNodeType);
-  QPointF ofs(node->boundingRect().center());
-  QPointF addScenePos = event->scenePos() - ofs;
+  QPointF addScenePos = event->scenePos() - node->centerOffset();
   Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
 }
 

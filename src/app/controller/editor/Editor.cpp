@@ -5,6 +5,8 @@
 #include "Connection.h"
 #include "ConnectionCreateTool.h"
 #include "ConnectionFactory.h"
+#include "ConnectorFactory.h"
+#include "Connector.h"
 #include "Define.h"
 #include "InNode.h"
 #include "NodeEditTool.h"
@@ -75,6 +77,8 @@ void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new OrNode());
 
   ConnectionFactory::getInstance()->addConnection(new Connection());
+
+  ConnectorFactory::getInstance()->addConnector(new Connector());
 }
 
 void Editor::initTool() {

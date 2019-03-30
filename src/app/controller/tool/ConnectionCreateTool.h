@@ -22,10 +22,8 @@ class ConnectionCreateTool : public AbstractTool {
   virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event);
 
  private:
-  void addTmpConnection(Scene* scene, Port* startPort);
-  void redrawTmpConnection(QPointF nowScenePos);
-  void decideConnection(Scene* scene, Port* endPort);
-  void removeTmpConnection(Scene* scene);
+  void decideConnectToPort(Scene* scene, Port* endPort);
+  void decideConnectToConnector(Scene* scene);
 
   void addTmpConnector(Scene* scene, Port* startPort);
   void redrawTmpConnector(QPointF nowScenePos);
@@ -33,6 +31,8 @@ class ConnectionCreateTool : public AbstractTool {
   void removeTmpConnector(Scene* scene);
 
   bool canConnect(Scene *scene, QGraphicsSceneMouseEvent *event) const;
+  bool canConnectToPort(Scene *scene, QGraphicsSceneMouseEvent *event) const;
+  bool canConnectToConnector(Scene *scene, QGraphicsSceneMouseEvent *event) const;
 
  private:
   Port* m_startPort = nullptr;

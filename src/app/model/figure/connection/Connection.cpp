@@ -89,14 +89,25 @@ Port* Connection::oppositeSidePort(Port* port) {
   }
 }
 
-void Connection::addConnector(Connector* connector) {
-  connector->setParentItem(this);
-  m_connectors << connector;
+void Connection::setStartConnector(Connector* startConnector)
+{
+    m_startConnector = startConnector;
 }
 
-void Connection::removeConnector(Connector* connector)
+void Connection::removeStartConnector()
 {
-  m_connectors.removeOne(connector);
+    m_startConnector = nullptr;
+}
+
+void Connection::addBranchConnector(Connector* connector, QPointF scenePos) {
+  connector->setParentItem(this);
+  connector->setPos(scenePos + connector->centerOffset());
+  m_branchConnectors << connector;
+}
+
+void Connection::removeBranchConnector(Connector* connector)
+{
+  m_branchConnectors.removeOne(connector);
 }
 
 QString Connection::name() const { return m_name; }
@@ -104,3 +115,13 @@ QString Connection::name() const { return m_name; }
 void Connection::setName(const QString& name) { m_name = name; }
 
 QString Connection::connectionType() const { return m_connectionType; }
+
+void Connection::setEndConnector(Connector* endConnector)
+{
+  m_endConnector = endConnector;
+}
+
+void Connection::removeEndConnector()
+{
+  m_endConnector = nullptr;
+}

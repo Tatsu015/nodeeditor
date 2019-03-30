@@ -8,7 +8,6 @@
 #include "AndNode.h"
 #include "Common.h"
 #include "Connection.h"
-#include "ConnectionFactory.h"
 #include "Connector.h"
 #include "Define.h"
 #include "Editor.h"
@@ -140,7 +139,7 @@ Port* Scene::findEndPort(QPointF scenePos) {
   return nullptr;
 }
 
-Connection* Scene::findConnection(QPointF scenePos) {
+Connection* Scene::findConnection(const QPointF scenePos) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
 
   Connection* connection = nullptr;
@@ -151,6 +150,19 @@ Connection* Scene::findConnection(QPointF scenePos) {
     }
   }
   return nullptr;
+}
+
+QList<Connection*> Scene::findConnections(const QPointF scenePos)
+{
+  QList<QGraphicsItem*> pressedItems = items(scenePos);
+  QList<Connection*> connections;
+  foreach (QGraphicsItem* item, pressedItems) {
+    Connection* connection = dynamic_cast<Connection*>(item);
+    if (connection) {
+      connections << connection;
+    }
+  }
+  return connections;
 }
 
 QList<AbstractNode*> Scene::findNodes(QPointF scenePos) {
@@ -323,6 +335,20 @@ void Scene::addConnection(Connection* connection, Port* startPort, Port* endPort
   connection->setEndPort(endPort);
   connection->setEndPos(endPort->centerScenePos());
   endPort->addConnection(connection);
+
+  m_connections.append(connection);
+  addItem(connection);
+}
+
+void Scene::addConnection(Connection* connection, Port* startPort, Connector* endConnector)
+{
+  connection->setStartPort(startPort);
+  connection->setStartPos(startPort->centerScenePos());
+  startPort->addConnection(connection);
+
+  connection->setEndConnector(endConnector);
+  connection->setEndPos(endConnector->centerScenePos());
+  endConnector->setDstConnection(connection);
 
   m_connections.append(connection);
   addItem(connection);

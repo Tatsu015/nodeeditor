@@ -8,7 +8,6 @@
 #include "AbstractNode.h"
 #include "AndNode.h"
 #include "Connection.h"
-#include "ConnectionFactory.h"
 #include "Define.h"
 #include "Editor.h"
 #include "InNode.h"

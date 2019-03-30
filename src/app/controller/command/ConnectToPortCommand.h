@@ -1,5 +1,5 @@
-#ifndef ConnectionAddCOMMAND_H
-#define ConnectionAddCOMMAND_H
+#ifndef ConnectToPortCommand_H
+#define ConnectToPortCommand_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -7,11 +7,12 @@
 class Scene;
 class Connection;
 class Port;
+class Connector;
 
-class ConnectionAddCommand : public QUndoCommand {
+class ConnectToPortCommand : public QUndoCommand {
  public:
-  ConnectionAddCommand(Scene* scene, Connection* connection, Port* addScenePos, Port* endPort);
-  virtual ~ConnectionAddCommand();
+  ConnectToPortCommand(Scene* scene, Connection* connection, Port* addScenePos, Port* endPort);
+  virtual ~ConnectToPortCommand();
 
   virtual void redo();
   virtual void undo();
@@ -23,4 +24,4 @@ class ConnectionAddCommand : public QUndoCommand {
   Port* m_endPort = nullptr;
 };
 
-#endif  // ConnectionAddCOMMAND_H
+#endif  // ConnectToPortCommand_H

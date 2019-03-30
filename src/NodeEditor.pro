@@ -49,7 +49,6 @@ INCLUDEPATH += \
 
 HEADERS += \
     app/controller/builder/Builder.h \
-    app/controller/command/ConnectionAddCommand.h \
     app/controller/command/NodeAddCommand.h \
     app/controller/command/NodeRemoveCommand.h \
     app/controller/editor/Editor.h \
@@ -92,11 +91,13 @@ HEADERS += \
     plugin/circuitcalculate/widget/DataSetComboBox.h \
     app/controller/factory/PortFactory.h \
     plugin/circuitcalculate/widget/DebugControlWidget.h \
-    plugin/circuitcalculate/CircuitCalculateExecutor.h
+    plugin/circuitcalculate/CircuitCalculateExecutor.h \
+    app/controller/factory/ConnectorFactory.h \
+    app/controller/command/ConnectToPortCommand.h \
+    app/controller/command/ConnectToConnectorCommand.h
 
 SOURCES += \
     app/controller/builder/Builder.cpp \
-    app/controller/command/ConnectionAddCommand.cpp \
     app/controller/command/NodeAddCommand.cpp \
     app/controller/command/NodeRemoveCommand.cpp \
     app/controller/editor/Editor.cpp \
@@ -139,7 +140,10 @@ SOURCES += \
     plugin/circuitcalculate/widget/DataSetComboBox.cpp \
     app/controller/factory/PortFactory.cpp \
     plugin/circuitcalculate/widget/DebugControlWidget.cpp \
-    plugin/circuitcalculate/CircuitCalculateExecutor.cpp
+    plugin/circuitcalculate/CircuitCalculateExecutor.cpp \
+    app/controller/factory/ConnectorFactory.cpp \
+    app/controller/command/ConnectToPortCommand.cpp \
+    app/controller/command/ConnectToConnectorCommand.cpp
 
 FORMS += \
     app/view/window/MainWindow.ui \

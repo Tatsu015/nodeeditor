@@ -7,13 +7,19 @@ class Port;
 class Connector;
 
 class TmpConnection : public Connection {
+public:
+    enum PenStyle : uint32_t{
+        Connected,
+        Connecting,
+    };
+
  public:
   TmpConnection(QGraphicsItem* parent = nullptr);
   virtual ~TmpConnection();
 
   virtual TmpConnection* create();
 
-  void changePenStyle(const bool connectable);
+  void changePenStyle(const PenStyle style);
 
  private:
   const static QColor CREATING_LINE_COLOR;

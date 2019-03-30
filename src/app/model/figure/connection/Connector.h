@@ -11,14 +11,27 @@ class Connector : public QGraphicsPathItem {
   Connector(QGraphicsItem *parent = nullptr);
   virtual ~Connector();
 
-  void setPos(const QPointF pos);
+  Connector* create(QGraphicsItem* parent);
+  QPointF centerScenePos();
+
+  QString connectorType() const;
 
   void setDstConnection(Connection* dstConnection);
   void setSrcConnection(Connection* srcConnection);
 
+  void removeDstConnection();
+  void removeSrcConnection();
+
+  QPointF centerOffset() const;
+
+
+  QString name() const;
+  void setName(const QString& name);
+
 private:
   Connection* m_dstConnection = nullptr;
   Connection* m_srcConnection = nullptr;
+  QString m_name;
 };
 
 #endif  // CONNECTOR_H
