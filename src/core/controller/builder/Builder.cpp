@@ -75,6 +75,7 @@ void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
 
   mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);
   foreach (QString nodeType, nodeEditTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
+  ui->nodeToolBar->changeDefaultTool();
 }
 
 void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui) {

@@ -15,9 +15,19 @@ void NodeToolBar::addToolBarAction(const QString& nodeType) {
 
 void NodeToolBar::onChangeTool() {
   QAction* action = dynamic_cast<QAction*>(sender());
-  m_NodeEditTool->setActiveNodeType(action->text());
+  changeTool(action);
 }
 
 void NodeToolBar::setNodeEditTool(NodeEditTool* NodeEditTool) {
   m_NodeEditTool = NodeEditTool;
+}
+
+void NodeToolBar::changeDefaultTool() {
+  changeTool(actions().first());
+}
+
+void NodeToolBar::changeTool(QAction* activeAction) {
+  m_NodeEditTool->setActiveNodeType(activeAction->text());
+  foreach (QAction* action, actions()) { action->setEnabled(true); }
+  activeAction->setEnabled(false);
 }

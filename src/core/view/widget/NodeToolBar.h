@@ -13,8 +13,11 @@ public:
   virtual ~NodeToolBar();
 
   void addToolBarAction(const QString& nodeType);
-
   void setNodeEditTool(NodeEditTool* NodeEditTool);
+  void changeDefaultTool();
+
+private:
+  void changeTool(QAction* activeAction);
 
 private slots:
   void onChangeTool();
