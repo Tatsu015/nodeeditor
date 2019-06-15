@@ -8,6 +8,7 @@
 IOTableWidget::IOTableWidget(QWidget* parent) : QTableWidget(parent) {
   setRowCount(0);
   verticalHeader()->hide();
+  horizontalHeader()->setStretchLastSection(true);
 
   QStringList headers = QStringList({"Name", "Value"});
   setColumnCount(headers.count());
