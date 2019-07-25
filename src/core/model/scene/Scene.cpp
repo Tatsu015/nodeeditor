@@ -346,14 +346,25 @@ void Scene::addConnection(Connection* connection, Port* startPort, Port* endPort
   addItem(connection);
 }
 
-void Scene::addConnection(Connection* connection, Port* startPort, Connector* endConnector) {
+void Scene::addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection) {
   connection->setStartPort(startPort);
   connection->setStartPos(startPort->centerScenePos());
   startPort->addConnection(connection);
 
   connection->setEndConnector(endConnector);
   connection->setEndPos(endConnector->centerScenePos());
-  endConnector->setDstConnection(connection);
+  endConnector->setDstConnection(dstConnection);
+  endConnector->setSrcConnection(connection);
+  dstConnection->addBranchConnector(endConnector);
+
+  QRectF br = dstConnection->sceneBoundingRect();
+  QPointF connectorPosDiff = endConnector->scenePos() - br.topLeft();
+  QPointF connectionPosDiff = br.bottomRight() - br.topLeft();
+
+  qreal xPosRate = connectorPosDiff.x() / connectionPosDiff.x();
+  qreal yPosRate = connectorPosDiff.y() / connectionPosDiff.y();
+  endConnector->setXPosRate(xPosRate);
+  endConnector->setYPosRate(yPosRate);
 
   m_connections.append(connection);
   addItem(connection);

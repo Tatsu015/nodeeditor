@@ -11,7 +11,8 @@ class Connector;
 
 class ConnectToConnectorCommand : public QUndoCommand {
 public:
-  ConnectToConnectorCommand(Scene* scene, Connection* connection, Port* addScenePos, Connector* endConnector);
+  ConnectToConnectorCommand(Scene* scene, Connection* connection, Port* addScenePos, Connector* endConnector,
+                            Connection* dstConnection);
   virtual ~ConnectToConnectorCommand();
 
   virtual void redo();
@@ -22,6 +23,7 @@ private:
   Connection* m_connection = nullptr;
   Port* m_startPort = nullptr;
   Connector* m_endConnector = nullptr;
+  Connection* m_dstConnection = nullptr;
 };
 
 #endif // ConnectToConnectorCommand_H

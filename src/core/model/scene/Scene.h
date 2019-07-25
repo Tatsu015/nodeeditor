@@ -50,7 +50,7 @@ public:
   QList<Connection*> findConnections(const QPointF scenePos);
   void addConnection(Connection* connection, Port* startPort);
   void addConnection(Connection* connection, Port* startPort, Port* endPort);
-  void addConnection(Connection* connection, Port* startPort, Connector* endConnector);
+  void addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection);
   void addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName,
                      int32_t endPortNumber);
   void removeConnection(Connection* connection);

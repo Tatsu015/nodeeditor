@@ -29,12 +29,21 @@ QString Connector::connectorType() const {
   return "Connector";
 }
 
-void Connector::setDstConnection(Connection* dstConnection) {
-  m_dstConnection = dstConnection;
+Connection* Connector::dstConnection() const {
+  return m_dstConnection;
+}
+
+void Connector::setDstConnection(Connection* fromConnection) {
+  m_dstConnection = fromConnection;
+}
+
+Connection* Connector::srcConnection() const {
+  return m_srcConnection;
 }
 
 void Connector::setSrcConnection(Connection* srcConnection) {
   m_srcConnection = srcConnection;
+  setParentItem(srcConnection);
 }
 
 void Connector::removeSrcConnection() {
@@ -58,4 +67,20 @@ QString Connector::name() const {
 
 void Connector::setName(const QString& name) {
   m_name = name;
+}
+
+qreal Connector::xPosRate() const {
+  return m_xPosRate;
+}
+
+void Connector::setXPosRate(const qreal& xPosRate) {
+  m_xPosRate = xPosRate;
+}
+
+qreal Connector::yPosRate() const {
+  return m_yPosRate;
+}
+
+void Connector::setYPosRate(const qreal& yPosRate) {
+  m_yPosRate = yPosRate;
 }

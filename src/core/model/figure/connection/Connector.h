@@ -16,7 +16,9 @@ public:
 
   QString connectorType() const;
 
-  void setDstConnection(Connection* dstConnection);
+  Connection* dstConnection() const;
+  void setDstConnection(Connection* fromConnection);
+  Connection* srcConnection() const;
   void setSrcConnection(Connection* srcConnection);
 
   void removeDstConnection();
@@ -27,10 +29,17 @@ public:
   QString name() const;
   void setName(const QString& name);
 
+  qreal xPosRate() const;
+  void setXPosRate(const qreal& xPosRate);
+  qreal yPosRate() const;
+  void setYPosRate(const qreal& yPosRate);
+
 private:
   Connection* m_dstConnection = nullptr;
   Connection* m_srcConnection = nullptr;
   QString m_name;
+  qreal m_xPosRate;
+  qreal m_yPosRate;
 };
 
 #endif // CONNECTOR_H

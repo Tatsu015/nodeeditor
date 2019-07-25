@@ -13,7 +13,9 @@ public:
 
   virtual Connection* create();
 
+  QPointF startPos() const;
   void setStartPos(const QPointF& startPos);
+  QPointF endPos() const;
   void setEndPos(const QPointF& endPos);
 
   void redraw();
@@ -32,7 +34,7 @@ public:
   void removeStartConnector();
   void setEndConnector(Connector* endConnector);
   void removeEndConnector();
-  void addBranchConnector(Connector* connector, QPointF scenePos);
+  void addBranchConnector(Connector* connector);
   void removeBranchConnector(Connector* connector);
 
   QString name() const;
@@ -52,7 +54,6 @@ private:
   Port* m_startPort = nullptr;
   Port* m_endPort = nullptr;
 
-  Connector* m_startConnector = nullptr;
   Connector* m_endConnector = nullptr;
 
   QList<Connector*> m_branchConnectors;

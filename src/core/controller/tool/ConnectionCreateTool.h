@@ -23,7 +23,7 @@ public:
 
 private:
   void decideConnectToPort(Scene* scene, Port* endPort);
-  void decideConnectToConnector(Scene* scene);
+  void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, Connection* dstConnection);
 
   void addTmpConnector(Scene* scene, Port* startPort);
   void redrawTmpConnector(QPointF nowScenePos);

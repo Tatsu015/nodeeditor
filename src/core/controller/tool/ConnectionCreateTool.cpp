@@ -73,7 +73,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
 
   if (canConnectToConnector(scene, event)) {
     Connection* dstConnection = scene->findConnection(event->scenePos());
-    decideConnectToConnector(scene);
+    decideConnectToConnector(scene, event->scenePos(), dstConnection);
     return;
   }
 }
@@ -102,10 +102,14 @@ void ConnectionCreateTool::decideConnectToPort(Scene* scene, Port* endPort) {
   m_startPort = nullptr;
 }
 
-void ConnectionCreateTool::decideConnectToConnector(Scene* scene) {
+void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos,
+                                                    Connection* dstConnection) {
   Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
   Connector* connector = ConnectorFactory::getInstance()->createConnector("Connector", connection);
-  ConnectToConnectorCommand* command = new ConnectToConnectorCommand(scene, connection, m_startPort, connector);
+  connector->setPos(mouseReleaseScenePos);
+  qDebug() << connector->pos() << " : " << connector->scenePos();
+  ConnectToConnectorCommand* command =
+      new ConnectToConnectorCommand(scene, connection, m_startPort, connector, dstConnection);
   Editor::getInstance()->addCommand(command);
 
   m_startPort = nullptr;

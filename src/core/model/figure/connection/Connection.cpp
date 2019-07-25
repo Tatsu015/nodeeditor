@@ -19,9 +19,17 @@ Connection* Connection::create() {
   return new Connection();
 }
 
+QPointF Connection::startPos() const {
+  return m_startPos;
+}
+
 void Connection::setStartPos(const QPointF& startPos) {
   m_startPos = startPos;
   redraw();
+}
+
+QPointF Connection::endPos() const {
+  return m_endPos;
 }
 
 void Connection::setEndPos(const QPointF& endPos) {
@@ -31,33 +39,46 @@ void Connection::setEndPos(const QPointF& endPos) {
 
 void Connection::setStartPort(Port* startPort) {
   m_startPort = startPort;
+  m_startPos = startPort->centerScenePos();
   redraw();
 }
 
 void Connection::setEndPort(Port* endPort) {
   m_endPort = endPort;
+  m_endPos = endPort->centerScenePos();
   redraw();
 }
 
 void Connection::redraw() {
-  QPointF startPos = m_startPos;
-  QPointF endPos = m_endPos;
+  // m_startPos and m_endPos need to change. Because port and connector position updated by QGraphicsItem::ItemMove, But
+  // m_startPos and m_endPos cannot update!
   if (m_startPort) {
-    startPos = m_startPort->centerScenePos();
+    m_startPos = m_startPort->centerScenePos();
   }
   if (m_endPort) {
-    endPos = m_endPort->centerScenePos();
+    m_endPos = m_endPort->centerScenePos();
+  }
+  if (m_endConnector) {
+    m_endPos = m_endConnector->centerScenePos();
   }
 
-  QPointF elbowPos = (startPos + endPos) * 0.5;
+  QPointF elbowPos = (m_startPos + m_endPos) * 0.5;
+
+  foreach (Connector* connector, m_branchConnectors) {
+    QPointF pos = m_endPos - m_startPos;
+    connector->setPos(m_startPos.x() + pos.x() * connector->xPosRate(),
+                      m_startPos.y() + pos.y() * connector->yPosRate());
+    // redraw connector connected connection
+    connector->srcConnection()->redraw();
+  }
 
   QPainterPath path;
-  QPointF elbow1(elbowPos.x(), startPos.y());
-  QPointF elbow2(elbowPos.x(), endPos.y());
-  path.moveTo(startPos);
+  QPointF elbow1(elbowPos.x(), m_startPos.y());
+  QPointF elbow2(elbowPos.x(), m_endPos.y());
+  path.moveTo(m_startPos);
   path.lineTo(elbow1);
   path.lineTo(elbow2);
-  path.lineTo(endPos);
+  path.lineTo(m_endPos);
   path.lineTo(elbow2);
   path.lineTo(elbow1);
   path.closeSubpath();
@@ -100,17 +121,10 @@ Port* Connection::oppositeSidePort(Port* port) {
   }
 }
 
-void Connection::setStartConnector(Connector* startConnector) {
-  m_startConnector = startConnector;
-}
-
-void Connection::removeStartConnector() {
-  m_startConnector = nullptr;
-}
-
-void Connection::addBranchConnector(Connector* connector, QPointF scenePos) {
+void Connection::addBranchConnector(Connector* connector) {
   connector->setParentItem(this);
-  connector->setPos(scenePos + connector->centerOffset());
+// TODO position
+  connector->setPos(connector->scenePos() + connector->centerOffset());
   m_branchConnectors << connector;
 }
 
@@ -132,6 +146,8 @@ QString Connection::connectionType() const {
 
 void Connection::setEndConnector(Connector* endConnector) {
   m_endConnector = endConnector;
+  m_endPos = endConnector->centerScenePos();
+  redraw();
 }
 
 void Connection::removeEndConnector() {

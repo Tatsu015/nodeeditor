@@ -10,7 +10,7 @@ public:
   static ConnectorFactory* getInstance();
 
   void addConnector(Connector* connector);
-  Connector* createConnector(const QString& type, QGraphicsItem* parent);
+  Connector* createConnector(const QString& type, QGraphicsItem* parent = nullptr);
 
 private:
   QMap<QString, Connector*> m_connectorMap;
