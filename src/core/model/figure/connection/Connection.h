@@ -29,6 +29,10 @@ public:
   void setEndPort(Port* endPort);
   void removeEndPort();
   Port* oppositeSidePort(Port* port);
+  QVector<QPointF> points() const;
+  int32_t areaIndex(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
+  QRectF areaR(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
+  QPointF closeCenter(QPointF pos, QSizeF searchSize = QSizeF(3, 3));
 
   void setStartConnector(Connector* startConnector);
   void removeStartConnector();

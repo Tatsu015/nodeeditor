@@ -14,15 +14,15 @@
 #include "OutNode.h"
 #include "Port.h"
 #include "SceneObserver.h"
+#include "TmpConnection.h"
 #include <QCursor>
-#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
 
 const static qreal TORELANCE = 5;
 
-Scene::Scene(QObject* parent) : QGraphicsScene(-750, -1000, 2000, 2000, parent), m_isControlPressed(false) {
+Scene::Scene(QObject* parent) : QGraphicsScene(-1000, -1000, 2000, 2000, parent), m_isControlPressed(false) {
   addLine(-5, -5, 5, 5, QPen(Qt::gray));
   addLine(-5, 5, 5, -5, QPen(Qt::gray));
 }
@@ -148,7 +148,8 @@ Connection* Scene::findConnection(const QPointF scenePos) {
   Connection* connection = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
     connection = dynamic_cast<Connection*>(item);
-    if (connection) {
+    // remove creating connection from target
+    if (!dynamic_cast<TmpConnection*>(connection)) {
       return connection;
     }
   }
@@ -160,7 +161,8 @@ QList<Connection*> Scene::findConnections(const QPointF scenePos) {
   QList<Connection*> connections;
   foreach (QGraphicsItem* item, pressedItems) {
     Connection* connection = dynamic_cast<Connection*>(item);
-    if (connection) {
+    // remove creating connection from target
+    if (!dynamic_cast<TmpConnection*>(connection)) {
       connections << connection;
     }
   }
@@ -357,17 +359,21 @@ void Scene::addConnection(Connection* connection, Port* startPort, Connector* en
   endConnector->setSrcConnection(connection);
   dstConnection->addBranchConnector(endConnector);
 
+  m_connections.append(connection);
+  addItem(connection);
+
   QRectF br = dstConnection->sceneBoundingRect();
   QPointF connectorPosDiff = endConnector->scenePos() - br.topLeft();
   QPointF connectionPosDiff = br.bottomRight() - br.topLeft();
-
   qreal xPosRate = connectorPosDiff.x() / connectionPosDiff.x();
   qreal yPosRate = connectorPosDiff.y() / connectionPosDiff.y();
   endConnector->setXPosRate(xPosRate);
   endConnector->setYPosRate(yPosRate);
 
-  m_connections.append(connection);
-  addItem(connection);
+  QPointF pos = dstConnection->endPos() - dstConnection->startPos();
+  QPointF connectorPos(dstConnection->startPos().x() + pos.x() * endConnector->xPosRate(),
+                       dstConnection->startPos().y() + pos.y() * endConnector->yPosRate());
+  connectorPos += endConnector->centerOffset();
 }
 
 void Scene::addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName,

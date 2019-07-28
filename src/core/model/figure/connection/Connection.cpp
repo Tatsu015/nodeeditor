@@ -66,8 +66,10 @@ void Connection::redraw() {
 
   foreach (Connector* connector, m_branchConnectors) {
     QPointF pos = m_endPos - m_startPos;
-    connector->setPos(m_startPos.x() + pos.x() * connector->xPosRate(),
-                      m_startPos.y() + pos.y() * connector->yPosRate());
+    QPointF connectorPos(m_startPos.x() + pos.x() * connector->xPosRate(),
+                         m_startPos.y() + pos.y() * connector->yPosRate());
+    connectorPos += connector->centerOffset();
+    connector->setPos(connectorPos);
     // redraw connector connected connection
     connector->srcConnection()->redraw();
   }
@@ -121,10 +123,76 @@ Port* Connection::oppositeSidePort(Port* port) {
   }
 }
 
+QVector<QPointF> Connection::points() const {
+  QVector<QPointF> elements;
+  int32_t elementCount = path().elementCount();
+  for (int i = 0; i < elementCount; ++i) {
+    QPainterPath::Element element = path().elementAt(i);
+    if (!elements.contains(element)) {
+      elements << element;
+    }
+  }
+  return elements;
+}
+
+int32_t Connection::areaIndex(QPointF pos, QSizeF searchSize) const {
+  QVector<QPointF> elements = points();
+  for (int i = 0; i < elements.count() - 1; ++i) {
+    QRectF r(elements[i], elements[i + 1]);
+    QRectF dmg;
+    if (0 == r.width()) {
+      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
+    } else {
+      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
+    }
+    if (dmg.contains(pos)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+QRectF Connection::areaR(QPointF pos, QSizeF searchSize) const {
+  QVector<QPointF> elements = points();
+  for (int i = 0; i < elements.count() - 1; ++i) {
+    QRectF r(elements[i], elements[i + 1]);
+    QRectF dmg;
+    if (0 == r.width()) {
+      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
+    } else {
+      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
+    }
+    if (dmg.contains(pos)) {
+      return r;
+    }
+  }
+  return QRectF();
+}
+
+QPointF Connection::closeCenter(QPointF pos, QSizeF searchSize) {
+  QVector<QPointF> elements = points();
+  for (int i = 0; i < elements.count() - 1; ++i) {
+    QRectF r(elements[i], elements[i + 1]);
+    QRectF dmg;
+    QPointF rrr;
+    if (0 == r.width()) {
+      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
+      rrr.setX(r.x());
+      rrr.setY(pos.y());
+    } else {
+      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
+      rrr.setX(pos.x());
+      rrr.setY(r.y());
+    }
+    if (dmg.contains(pos)) {
+      return rrr;
+    }
+  }
+  return QPointF();
+}
+
 void Connection::addBranchConnector(Connector* connector) {
   connector->setParentItem(this);
-// TODO position
-  connector->setPos(connector->scenePos() + connector->centerOffset());
   m_branchConnectors << connector;
 }
 
