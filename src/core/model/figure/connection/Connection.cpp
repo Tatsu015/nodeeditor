@@ -200,6 +200,10 @@ void Connection::removeBranchConnector(Connector* connector) {
   m_branchConnectors.removeOne(connector);
 }
 
+QList<Connector*> Connection::branchConnectors() const {
+  return m_branchConnectors;
+}
+
 QString Connection::name() const {
   return m_name;
 }
@@ -216,6 +220,10 @@ void Connection::setEndConnector(Connector* endConnector) {
   m_endConnector = endConnector;
   m_endPos = endConnector->centerScenePos();
   redraw();
+}
+
+Connector* Connection::endConnector() const {
+  return m_endConnector;
 }
 
 void Connection::removeEndConnector() {

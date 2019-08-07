@@ -190,13 +190,6 @@ AbstractNode* Scene::findNode(const QString& nodeName) {
   return nullptr;
 }
 
-bool Scene::existNode(QPointF scenePos) {
-  if (0 < findNodes(scenePos).count()) {
-    return true;
-  }
-  return false;
-}
-
 bool Scene::existPort(QPointF scenePos) {
   if (findPort(scenePos)) {
     return true;
@@ -376,17 +369,29 @@ void Scene::addConnection(Connection* connection, Port* startPort, Connector* en
   connectorPos += endConnector->centerOffset();
 }
 
-void Scene::addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName,
-                          int32_t endPortNumber) {
+void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
+                          const QString& endNodeName, int32_t endPortNumber) {
   AbstractNode* startNode = findNode(startNodeName);
   AbstractNode* endNode = findNode(endNodeName);
 
   Port* startPort = startNode->port(startPortNumber);
   Port* endPort = endNode->port(endPortNumber);
 
-  Connection* connection = new Connection();
-
   addConnection(connection, startPort, endPort);
+
+  connection->redraw();
+}
+
+void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
+                          Connector* endConnector, Connection* dstConnection) {
+  AbstractNode* startNode = findNode(startNodeName);
+
+  Port* startPort = startNode->port(startPortNumber);
+  connection->setStartPort(startPort);
+  connection->setStartPos(startPort->centerScenePos());
+  startPort->addConnection(connection);
+
+  addConnection(connection, startPort, endConnector, dstConnection);
 
   connection->redraw();
 }
@@ -404,6 +409,15 @@ void Scene::removeConnection(Connection* connection) {
   if (endPort) {
     endPort->removeConnection(connection);
     connection->removeEndPort();
+  }
+
+  Connector* endConnector = connection->endConnector();
+  if (endConnector) {
+    // TODO need to consider more...
+    connection->removeEndConnector();
+    endConnector->dstConnection()->removeBranchConnector(endConnector);
+    endConnector->setParentItem(nullptr);
+    removeItem(endConnector);
   }
 
   m_connections.removeOne(connection);

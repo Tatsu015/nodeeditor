@@ -36,10 +36,12 @@ public:
 
   void setStartConnector(Connector* startConnector);
   void removeStartConnector();
+  Connector* endConnector() const;
   void setEndConnector(Connector* endConnector);
   void removeEndConnector();
   void addBranchConnector(Connector* connector);
   void removeBranchConnector(Connector* connector);
+  QList<Connector*> branchConnectors() const;
 
   QString name() const;
   void setName(const QString& name);

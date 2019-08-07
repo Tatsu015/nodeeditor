@@ -1,6 +1,7 @@
 #include "Project.h"
 #include "AbstractNode.h"
 #include "Connection.h"
+#include "ConnectionFactory.h"
 #include "Define.h"
 #include "Editor.h"
 #include "NodeFactory.h"
@@ -137,7 +138,8 @@ void Project::fromJson(const QByteArray& data) {
     QString endNodeName = linkJsonVal[JSON_END_NODE_NAME].toString();
     uint32_t endPortNumber = linkJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
 
-    scene->addConnection(startNodeName, startPortNumber, endNodeName, endPortNumber);
+    Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+    scene->addConnection(connection, startNodeName, startPortNumber, endNodeName, endPortNumber);
   }
 }
 

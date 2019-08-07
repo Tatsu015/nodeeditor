@@ -51,15 +51,16 @@ public:
   void addConnection(Connection* connection, Port* startPort);
   void addConnection(Connection* connection, Port* startPort, Port* endPort);
   void addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection);
-  void addConnection(const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName,
+  void addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber, const QString& endNodeName,
                      int32_t endPortNumber);
+  void addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
+                     Connector* endConnector, Connection* dstConnection);
   void removeConnection(Connection* connection);
   void deleteConnection(Connection* connection);
 
   void addGuideLine(GuideLine* guideLine);
   void clearGuideLine();
 
-  bool existNode(QPointF pos);
   bool existPort(QPointF scenePos);
   Port* findPort(QPointF scenePos);
 
