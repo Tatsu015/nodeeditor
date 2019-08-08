@@ -355,9 +355,8 @@ void Scene::addConnection(Connection* connection, Port* startPort, Connector* en
   m_connections.append(connection);
   addItem(connection);
 
-  QRectF br = dstConnection->sceneBoundingRect();
-  QPointF connectorPosDiff = endConnector->scenePos() - br.topLeft();
-  QPointF connectionPosDiff = br.bottomRight() - br.topLeft();
+  QPointF connectorPosDiff = endConnector->centerScenePos() - dstConnection->startPos();
+  QPointF connectionPosDiff = dstConnection->endPos() - dstConnection->startPos();
   qreal xPosRate = connectorPosDiff.x() / connectionPosDiff.x();
   qreal yPosRate = connectorPosDiff.y() / connectionPosDiff.y();
   endConnector->setXPosRate(xPosRate);
