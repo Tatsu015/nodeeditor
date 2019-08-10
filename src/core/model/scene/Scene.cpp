@@ -100,6 +100,10 @@ void Scene::notifyRemove(AbstractNode* node) {
   foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->removeNode(node); }
 }
 
+void Scene::redraw() {
+  foreach (Connection* connection, connections()) { connection->redraw(); }
+}
+
 void Scene::changeActiveTool(const QPointF nowScenePos) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
     if (existPort(nowScenePos)) {

@@ -11,11 +11,11 @@ QuitPlugin::~QuitPlugin() {
 }
 
 void QuitPlugin::doInit() {
-  QMenu* fileMenu = MenuManager::getInstance()->menu(MenuManager::MENU_FILE);
+  QMenu* menu = MenuManager::getInstance()->menu(MenuManager::MENU_FILE);
 
   QAction* quitAction = new QAction(QIcon("../resource/quit.png"), "Quit");
   quitAction->setShortcut(QKeySequence::Quit);
-  fileMenu->addAction(quitAction);
+  menu->addAction(quitAction);
 
   connect(quitAction, &QAction::triggered, this, &QuitPlugin::onExecute);
 }

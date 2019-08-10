@@ -1,5 +1,6 @@
 #include "PluginLoader.h"
 #include "AbstractPlugin.h"
+#include "AlignPlugin.h"
 #include "CircuitCalculatePlugin.h"
 #include "MainWindow.h"
 #include "NewPlugin.h"
@@ -22,6 +23,7 @@ void PluginLoader::init() {
   addPlugin(new QuitPlugin());
   addPlugin(new CircuitCalculatePlugin());
   addPlugin(new ShowNameViewPlugin());
+  addPlugin(new AlignPlugin());
 }
 
 void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {

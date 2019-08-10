@@ -71,6 +71,8 @@ public:
   void notifyAdd(AbstractNode* node);
   void notifyRemove(AbstractNode* node);
 
+  void redraw();
+
 private:
   void changeActiveTool(const QPointF nowScenePos);
   Port* findStartPort(QPointF scenePos);

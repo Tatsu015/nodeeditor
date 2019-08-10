@@ -98,7 +98,8 @@ HEADERS += \
     core/view/menu/MenuManager.h \
     core/view/widget/NodeToolBar.h \
     core/view/window/MainWindow.h \
-    core/extend/ShowNodeNamePlugin.h
+    core/extend/ShowNodeNamePlugin.h \
+    core/extend/AlignPlugin.h
 
 
 SOURCES += \
@@ -149,7 +150,8 @@ SOURCES += \
     core/view/menu/MenuManager.cpp \
     core/view/widget/NodeToolBar.cpp \
     core/view/window/MainWindow.cpp \
-    core/extend/ShowNodeNamePlugin.cpp
+    core/extend/ShowNodeNamePlugin.cpp \
+    core/extend/AlignPlugin.cpp
 
 
 FORMS += \

@@ -13,12 +13,12 @@ ShowNameViewPlugin::~ShowNameViewPlugin() {
 }
 
 void ShowNameViewPlugin::doInit() {
-  QMenu* fileMenu = MenuManager::getInstance()->menu(MenuManager::MENU_VIEW);
+  QMenu* menu = MenuManager::getInstance()->menu(MenuManager::MENU_VIEW);
 
   m_action = new QAction("Show Node Name");
   m_action->setCheckable(true);
   m_action->setChecked(true);
-  fileMenu->addAction(m_action);
+  menu->addAction(m_action);
 
   connect(m_action, &QAction::triggered, this, &ShowNameViewPlugin::onExecute);
 }
