@@ -30,11 +30,12 @@ void CircuitCalculatePlugin::reset() {
 
 void CircuitCalculatePlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Q_UNUSED(ui);
-  QDockWidget* ioSetDockWidget = new QDockWidget();
+  m_ioSetDockWidget = new QDockWidget();
   m_DebugControlWidget = new DebugControlWidget();
-  ioSetDockWidget->setWidget(m_DebugControlWidget);
+  m_ioSetDockWidget->setWidget(m_DebugControlWidget);
   Editor::getInstance()->project()->scene()->addSceneObserver(m_DebugControlWidget->ui()->tableWidget);
-  mainWindow->addDockWidget(Qt::RightDockWidgetArea, ioSetDockWidget);
+  mainWindow->addDockWidget(Qt::RightDockWidgetArea, m_ioSetDockWidget);
+  m_ioSetDockWidget->hide();
 
   connect(m_DebugControlWidget->ui()->startDebugButton, &QToolButton::clicked, this,
           &CircuitCalculatePlugin::onStartDebug);
@@ -65,6 +66,12 @@ void CircuitCalculatePlugin::doInit() {
 
   MenuManager::getInstance()->addMenu(buildMenu);
   MenuManager::getInstance()->addMenu(debugMenu);
+
+  QMenu* viewMenu = MenuManager::getInstance()->menu(MenuManager::MENU_VIEW);
+  QAction* showDebugControlWidgetAction = m_ioSetDockWidget->toggleViewAction();
+  showDebugControlWidgetAction->setText("Show Debug Pain");
+  viewMenu->addAction(showDebugControlWidgetAction);
+  connect(showDebugControlWidgetAction, &QAction::triggered, this, &CircuitCalculatePlugin::onStartDebug);
 }
 
 bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes) {
@@ -197,8 +204,12 @@ void CircuitCalculatePlugin::onStartDebug() {
   QList<AbstractNode*> nodeStack;
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) { nodeStack.append(connectedGraph->m_nodes); }
   CircuitCalculateExecutor::getInstance()->setupStack(nodeStack);
-  m_DebugControlWidget->show();
+  m_ioSetDockWidget->show();
   startDebug("Debug start", 1000);
+}
+
+void CircuitCalculatePlugin::onStopDebug() {
+  tearDown();
 }
 
 void CircuitCalculatePlugin::onStepOver() {
@@ -217,8 +228,4 @@ void CircuitCalculatePlugin::onNext() {
   }
   CircuitCalculateExecutor::getInstance()->stepOver();
   m_DebugControlWidget->ui()->tableWidget->read();
-}
-
-void CircuitCalculatePlugin::onStopDebug() {
-  tearDown();
 }

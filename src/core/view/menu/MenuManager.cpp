@@ -36,6 +36,9 @@ QList<QAction*> MenuManager::contextMenuActions() const {
 }
 
 MenuManager::MenuManager() {
+  addMenu(new QMenu(MenuManager::MENU_FILE));
+  addMenu(new QMenu(MenuManager::MENU_EDIT));
+  addMenu(new QMenu(MenuManager::MENU_VIEW));
 }
 
 MenuManager::~MenuManager() {

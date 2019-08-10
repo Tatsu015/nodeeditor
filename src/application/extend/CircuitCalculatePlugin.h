@@ -6,6 +6,7 @@
 class AbstractNode;
 class IOTableWidget;
 class DebugControlWidget;
+class QDockWidget;
 
 class CircuitCalculatePlugin : public AbstractPlugin {
   Q_OBJECT
@@ -54,6 +55,7 @@ private slots:
 private:
   DebugControlWidget* m_DebugControlWidget = nullptr;
   QList<ConnectedGraph*> m_connectedGraphs;
+  QDockWidget* m_ioSetDockWidget = nullptr;
 };
 
 #endif // CircuitCalculatePLUGIN_H

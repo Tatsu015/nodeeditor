@@ -28,12 +28,10 @@ Builder* Builder::getInstance() {
 
 void Builder::build(MainWindow* mainWindow, Ui::MainWindow* ui) {
   buildGraphicsView(mainWindow, ui);
-  buildDefaultMenu(mainWindow, ui);
+  buildMenuBar(mainWindow, ui);
   buildToolBar(mainWindow, ui);
   buildWindowTitle(mainWindow, ui);
   //  buildDockWidget(mainWindow, ui);
-  PluginLoader::getInstance()->init();
-  PluginLoader::getInstance()->load(mainWindow, ui);
 }
 
 void Builder::buildGraphicsView(MainWindow* mainWindow, Ui::MainWindow* ui) {
@@ -44,17 +42,10 @@ void Builder::buildGraphicsView(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Editor::getInstance()->setGraphicsView(ui->graphicsView);
 }
 
-void Builder::buildDefaultMenu(MainWindow* mainWindow, Ui::MainWindow* ui) {
+void Builder::buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Q_UNUSED(mainWindow);
 
-  QMenu* fileMenu = new QMenu(MenuManager::MENU_FILE);
-  MenuManager::getInstance()->addMenu(fileMenu);
-
-  QMenu* editMenu = new QMenu(MenuManager::MENU_EDIT);
-  MenuManager::getInstance()->addMenu(editMenu);
-
-  QMenu* viewMenu = new QMenu(MenuManager::MENU_VIEW);
-  MenuManager::getInstance()->addMenu(viewMenu);
+  QMenu* editMenu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
 
   QAction* undo = Editor::getInstance()->undoStack()->createUndoAction(mainWindow, "Undo");
   undo->setIcon(QIcon("../resource/undo.png"));
@@ -66,7 +57,13 @@ void Builder::buildDefaultMenu(MainWindow* mainWindow, Ui::MainWindow* ui) {
   redo->setIcon(QIcon("../resource/redo.png"));
   editMenu->addAction(redo);
 
-  foreach (QMenu* menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
+  PluginLoader::getInstance()->init();
+  PluginLoader::getInstance()->load(mainWindow, ui);
+
+  foreach (QMenu* menu, MenuManager::getInstance()->menus()) {
+    ui->menuBar->addMenu(menu);
+    qDebug() << menu->title();
+  }
 }
 
 void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
