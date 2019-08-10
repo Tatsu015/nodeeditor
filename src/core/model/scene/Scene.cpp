@@ -156,6 +156,15 @@ Connection* Scene::findConnection(const QPointF scenePos) {
   return nullptr;
 }
 
+Connection* Scene::findConnection(const QString connectionName) {
+  foreach (Connection* connection, connections()) {
+    if (connectionName == connection->name()) {
+      return connection;
+    }
+  }
+  return nullptr;
+}
+
 QList<Connection*> Scene::findConnections(const QPointF scenePos) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
   QList<Connection*> connections;
@@ -389,6 +398,21 @@ void Scene::addConnection(Connection* connection, const QString& startNodeName, 
   connection->setStartPort(startPort);
   connection->setStartPos(startPort->centerScenePos());
   startPort->addConnection(connection);
+
+  addConnection(connection, startPort, endConnector, dstConnection);
+
+  connection->redraw();
+}
+
+void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
+                          Connector* endConnector, const QString& dstConnectionName) {
+  AbstractNode* startNode = findNode(startNodeName);
+
+  Port* startPort = startNode->port(startPortNumber);
+  connection->setStartPort(startPort);
+  connection->setStartPos(startPort->centerScenePos());
+  startPort->addConnection(connection);
+  Connection* dstConnection = findConnection(dstConnectionName);
 
   addConnection(connection, startPort, endConnector, dstConnection);
 

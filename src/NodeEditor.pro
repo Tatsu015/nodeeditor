@@ -97,7 +97,8 @@ HEADERS += \
     core/view/graphicsview/GraphicsView.h \
     core/view/menu/MenuManager.h \
     core/view/widget/NodeToolBar.h \
-    core/view/window/MainWindow.h
+    core/view/window/MainWindow.h \
+    core/extend/ShowNodeNamePlugin.h
 
 
 SOURCES += \
@@ -148,6 +149,7 @@ SOURCES += \
     core/view/menu/MenuManager.cpp \
     core/view/widget/NodeToolBar.cpp \
     core/view/window/MainWindow.cpp \
+    core/extend/ShowNodeNamePlugin.cpp
 
 
 FORMS += \

@@ -8,6 +8,9 @@ class Connector;
 
 class Connection : public QGraphicsPathItem {
 public:
+  enum Direction { Vertical, Horizon, Other };
+
+public:
   Connection(QGraphicsItem* parent = nullptr);
   virtual ~Connection();
 
@@ -31,8 +34,8 @@ public:
   Port* oppositeSidePort(Port* port);
   QVector<QPointF> points() const;
   int32_t areaIndex(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
-  QRectF areaR(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
   QPointF closeCenter(QPointF pos, QSizeF searchSize = QSizeF(3, 3));
+  Direction direction(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
 
   void setStartConnector(Connector* startConnector);
   void removeStartConnector();

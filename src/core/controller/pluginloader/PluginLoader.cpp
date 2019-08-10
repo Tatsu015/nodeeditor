@@ -6,6 +6,7 @@
 #include "OpenPlugin.h"
 #include "QuitPlugin.h"
 #include "SavePlugin.h"
+#include "ShowNodeNamePlugin.h"
 #include "ui_MainWindow.h"
 
 PluginLoader* PluginLoader::getInstance() {
@@ -20,6 +21,7 @@ void PluginLoader::init() {
   addPlugin(new SavePlugin());
   addPlugin(new QuitPlugin());
   addPlugin(new CircuitCalculatePlugin());
+  addPlugin(new ShowNameViewPlugin());
 }
 
 void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {

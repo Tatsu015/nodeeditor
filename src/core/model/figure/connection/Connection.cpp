@@ -152,23 +152,6 @@ int32_t Connection::areaIndex(QPointF pos, QSizeF searchSize) const {
   return -1;
 }
 
-QRectF Connection::areaR(QPointF pos, QSizeF searchSize) const {
-  QVector<QPointF> elements = points();
-  for (int i = 0; i < elements.count() - 1; ++i) {
-    QRectF r(elements[i], elements[i + 1]);
-    QRectF dmg;
-    if (0 == r.width()) {
-      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
-    } else {
-      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
-    }
-    if (dmg.contains(pos)) {
-      return r;
-    }
-  }
-  return QRectF();
-}
-
 QPointF Connection::closeCenter(QPointF pos, QSizeF searchSize) {
   QVector<QPointF> elements = points();
   for (int i = 0; i < elements.count() - 1; ++i) {
@@ -189,6 +172,26 @@ QPointF Connection::closeCenter(QPointF pos, QSizeF searchSize) {
     }
   }
   return QPointF();
+}
+
+Connection::Direction Connection::direction(QPointF pos, QSizeF searchSize) const {
+  QVector<QPointF> elements = points();
+  for (int i = 0; i < elements.count() - 1; ++i) {
+    QRectF r(elements[i], elements[i + 1]);
+    QRectF dmg;
+    Connection::Direction direction = Vertical;
+    if (0 == r.width()) {
+      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
+      direction = Vertical;
+    } else {
+      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
+      direction = Horizon;
+    }
+    if (dmg.contains(pos)) {
+      return direction;
+    }
+  }
+  return Other;
 }
 
 void Connection::addBranchConnector(Connector* connector) {

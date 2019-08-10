@@ -21,6 +21,9 @@ public:
 
   Scene* scene() const;
 
+  bool nodeNameVisible() const;
+  void setNodeNameVisible(bool nodeNameVisible);
+
 private:
   QByteArray toJson();
   void fromJson(const QByteArray& data);
@@ -28,6 +31,7 @@ private:
 private:
   Scene* m_scene = nullptr;
   QString m_filePath;
+  bool m_nodeNameVisible = true;
 };
 
 #endif // PROJECT_H

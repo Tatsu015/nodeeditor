@@ -2,6 +2,7 @@
 #include "AbstractNode.h"
 #include "Connection.h"
 #include "ConnectionFactory.h"
+#include "Connector.h"
 #include "Define.h"
 #include "Editor.h"
 #include "NodeFactory.h"
@@ -14,8 +15,11 @@
 #include <QJsonObject>
 
 const static QString DEFAULT_FILE_NAME = "Undefined." + APP_EXTENSION;
-const static QString JSON_NODES = "nodeas";
-const static QString JSON_LINKS = "links";
+const static QString JSON_NODE_NAME_VISIBLE = "nodeNameVisible";
+const static QString JSON_NODES = "nodes";
+const static QString JSON_CONNECTORS = "connectors";
+const static QString JSON_NODE_TO_NODE_CONNECTIONS = "nodeToNodeConnections";
+const static QString JSON_NODE_TO_CONNECTOR_CONNECTIONS = "nodeToConnectorConnections";
 const static QString JSON_NAME = "name";
 const static QString JSON_NODETYPE = "nodetype";
 const static QString JSON_X = "x";
@@ -24,6 +28,9 @@ const static QString JSON_START_NODE_NAME = "startNodeName";
 const static QString JSON_START_PORT_NUMBER = "startPortNumber";
 const static QString JSON_END_NODE_NAME = "endNodeName";
 const static QString JSON_END_PORT_NUMBER = "endPortNumber";
+const static QString JSON_CONNECTOR_POS_X = "connectorPosX";
+const static QString JSON_CONNECTOR_POS_Y = "connectorPosY";
+const static QString JSON_DST_CONNECTION_NAME = "dstConnectionName";
 
 Project::Project() {
   QDir dir;
@@ -90,33 +97,49 @@ QByteArray Project::toJson() {
     nodeJsonArray.append(nodeJsonObj);
   }
 
-  QJsonArray linkJsonArray;
+  QJsonArray nodeToNodeConnectionJsonArray;
+  QJsonArray nodeToConnectorConnectionJsonArray;
   foreach (Connection* connection, scene->connections()) {
     QJsonObject connectionJsonObj;
+    connectionJsonObj[JSON_NAME] = connection->name();
+
     Port* startPort = connection->startPort();
     Port* endPort = connection->endPort();
-
-    connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
-    connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
-    connectionJsonObj[JSON_END_NODE_NAME] = endPort->parentNode()->name();
-    connectionJsonObj[JSON_END_PORT_NUMBER] = QString::number(endPort->number());
-
-    linkJsonArray.append(connectionJsonObj);
+    Connector* endConnector = connection->endConnector();
+    if (endPort) {
+      connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
+      connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
+      connectionJsonObj[JSON_END_NODE_NAME] = endPort->parentNode()->name();
+      connectionJsonObj[JSON_END_PORT_NUMBER] = QString::number(endPort->number());
+      nodeToNodeConnectionJsonArray << connectionJsonObj;
+    } else if (endConnector) {
+      connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
+      connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
+      connectionJsonObj[JSON_CONNECTOR_POS_X] = QString::number(endConnector->scenePos().x());
+      connectionJsonObj[JSON_CONNECTOR_POS_Y] = QString::number(endConnector->scenePos().y());
+      connectionJsonObj[JSON_DST_CONNECTION_NAME] = endConnector->dstConnection()->name();
+      nodeToConnectorConnectionJsonArray << connectionJsonObj;
+    }
   }
 
   QJsonObject jsonObj;
+  jsonObj[JSON_NODE_NAME_VISIBLE] = m_nodeNameVisible;
   jsonObj[JSON_NODES] = nodeJsonArray;
-  jsonObj[JSON_LINKS] = linkJsonArray;
+  jsonObj[JSON_NODE_TO_NODE_CONNECTIONS] = nodeToNodeConnectionJsonArray;
+  jsonObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS] = nodeToConnectorConnectionJsonArray;
 
   QJsonDocument doc(jsonObj);
 
   return doc.toJson();
 }
-
+#include "ConnectorFactory.h"
 void Project::fromJson(const QByteArray& data) {
   QJsonDocument doc(QJsonDocument::fromJson(data));
   QJsonObject rootObj(doc.object());
   Scene* scene = Editor::getInstance()->project()->scene();
+
+  // this property need to read before create nodes
+  m_nodeNameVisible = rootObj[JSON_NODE_NAME_VISIBLE].toBool();
 
   QJsonArray nodeJsonObjs = rootObj[JSON_NODES].toArray();
   foreach (QJsonValue nodeJsonVal, nodeJsonObjs) {
@@ -126,21 +149,45 @@ void Project::fromJson(const QByteArray& data) {
     qreal y = nodeJsonVal[JSON_Y].toDouble();
 
     AbstractNode* node = NodeFactory::getInstance()->createNode(nodeType, name);
+    node->setNameTextVisible(m_nodeNameVisible);
     node->setName(name);
-
     scene->addNode(node, QPointF(x, y));
   }
 
-  QJsonArray linkJsonObjs = rootObj[JSON_LINKS].toArray();
-  foreach (QJsonValue linkJsonVal, linkJsonObjs) {
-    QString startNodeName = linkJsonVal[JSON_START_NODE_NAME].toString();
-    uint32_t startPortNumber = linkJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
-    QString endNodeName = linkJsonVal[JSON_END_NODE_NAME].toString();
-    uint32_t endPortNumber = linkJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
+  foreach (QJsonValue connectionJsonVal, rootObj[JSON_NODE_TO_NODE_CONNECTIONS].toArray()) {
+    QString name = connectionJsonVal[JSON_NAME].toString();
+    QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
+    uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
+    QString endNodeName = connectionJsonVal[JSON_END_NODE_NAME].toString();
+    uint32_t endPortNumber = connectionJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
 
     Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+    connection->setName(name);
     scene->addConnection(connection, startNodeName, startPortNumber, endNodeName, endPortNumber);
   }
+
+  foreach (QJsonValue connectionJsonVal, rootObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS].toArray()) {
+    QString name = connectionJsonVal[JSON_NAME].toString();
+    QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
+    uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
+    QString dstConnectionName = connectionJsonVal[JSON_DST_CONNECTION_NAME].toString();
+    qreal posX = connectionJsonVal[JSON_CONNECTOR_POS_X].toString().toDouble();
+    qreal posY = connectionJsonVal[JSON_CONNECTOR_POS_Y].toString().toDouble();
+
+    Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+    connection->setName(name);
+    Connector* endConnector = ConnectorFactory::getInstance()->createConnector(CONNECTOR);
+    endConnector->setPos(posX, posY);
+    scene->addConnection(connection, startNodeName, startPortNumber, endConnector, dstConnectionName);
+  }
+}
+
+bool Project::nodeNameVisible() const {
+  return m_nodeNameVisible;
+}
+
+void Project::setNodeNameVisible(bool nodeNameVisible) {
+  m_nodeNameVisible = nodeNameVisible;
 }
 
 Scene* Project::scene() const {

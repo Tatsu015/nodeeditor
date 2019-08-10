@@ -105,7 +105,7 @@ void ConnectionCreateTool::decideConnectToPort(Scene* scene, Port* endPort) {
 void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos,
                                                     Connection* dstConnection) {
   Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
-  Connector* connector = ConnectorFactory::getInstance()->createConnector("Connector", connection);
+  Connector* connector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, connection);
   connector->setPos(dstConnection->closeCenter(mouseReleaseScenePos) + connector->centerOffset());
   ConnectToConnectorCommand* command =
       new ConnectToConnectorCommand(scene, connection, m_startPort, connector, dstConnection);

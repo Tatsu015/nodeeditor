@@ -52,6 +52,8 @@ public:
   void changeColor(const QColor color);
   void resetColor();
 
+  void setNameTextVisible(const bool visible);
+
   virtual bool execute(QList<bool> args) = 0;
 
 protected:
@@ -65,7 +67,6 @@ protected:
   const static uint32_t PORT_POS_Y_OFS = 5;
 
 protected:
-  QGraphicsSimpleTextItem* m_typeText = nullptr;
   QString m_nodeType;
   IO m_io;
 

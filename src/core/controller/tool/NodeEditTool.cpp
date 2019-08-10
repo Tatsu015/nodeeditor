@@ -7,6 +7,7 @@
 #include "NodeFactory.h"
 #include "NodeMoveCommand.h"
 #include "NodeRemoveCommand.h"
+#include "Project.h"
 #include "Scene.h"
 #include <QAction>
 #include <QDebug>
@@ -55,6 +56,8 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   AbstractNode* node = NodeFactory::getInstance()->createNode(m_activeNodeType);
+  bool nodeNameVisible = Editor::getInstance()->project()->nodeNameVisible();
+  node->setNameTextVisible(nodeNameVisible);
   QPointF addScenePos = event->scenePos() - node->centerOffset();
   Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
 }

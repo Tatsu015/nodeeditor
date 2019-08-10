@@ -170,6 +170,7 @@ EPosition AbstractNode::portPosition(Port* port) {
   } else {
     return Right;
   }
+  return Top;
 }
 
 QString AbstractNode::nodeType() const {
@@ -190,4 +191,12 @@ void AbstractNode::changeColor(const QColor color) {
 
 void AbstractNode::resetColor() {
   setBrush(QBrush(FILL_COLOR));
+}
+
+void AbstractNode::setNameTextVisible(const bool visible) {
+  if (visible) {
+    m_nameText->show();
+  } else {
+    m_nameText->hide();
+  }
 }
