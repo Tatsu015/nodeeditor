@@ -2,6 +2,7 @@
 #include "AbstractPlugin.h"
 #include "AlignPlugin.h"
 #include "CircuitCalculatePlugin.h"
+#include "CutPlugin.h"
 #include "MainWindow.h"
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
@@ -23,6 +24,7 @@ void PluginLoader::init() {
   addPlugin(new QuitPlugin());
   addPlugin(new CircuitCalculatePlugin());
   addPlugin(new ShowNameViewPlugin());
+  addPlugin(new CutPlugin());
   addPlugin(new AlignPlugin());
 }
 

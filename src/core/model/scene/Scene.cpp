@@ -8,6 +8,7 @@
 #include "Editor.h"
 #include "GuideLine.h"
 #include "InNode.h"
+#include "MenuManager.h"
 #include "NodeEditTool.h"
 #include "NodeFactory.h"
 #include "NodeRemoveCommand.h"
@@ -15,10 +16,12 @@
 #include "Port.h"
 #include "SceneObserver.h"
 #include "TmpConnection.h"
+#include <QAction>
 #include <QCursor>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
+#include <QMenu>
 
 const static qreal TORELANCE = 5;
 
@@ -71,6 +74,12 @@ void Scene::keyReleaseEvent(QKeyEvent* event) {
     m_isControlPressed = false;
   }
   QGraphicsScene::keyReleaseEvent(event);
+}
+void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
+  QMenu menu;
+  // TODO...
+  menu.addActions(MenuManager::getInstance()->contextMenuActions());
+  menu.exec(event->screenPos());
 }
 
 Port* Scene::findPort(QPointF scenePos) {

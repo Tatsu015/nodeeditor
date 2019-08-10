@@ -27,6 +27,14 @@ QList<QMenu*> MenuManager::menus() const {
   return m_menus;
 }
 
+void MenuManager::addContextMenuAction(QAction* action) {
+  m_contectMenuActions << action;
+}
+
+QList<QAction*> MenuManager::contextMenuActions() const {
+  return m_contectMenuActions;
+}
+
 MenuManager::MenuManager() {
 }
 

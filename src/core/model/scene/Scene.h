@@ -28,6 +28,7 @@ public:
   virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event);
   virtual void keyPressEvent(QKeyEvent* event);
   virtual void keyReleaseEvent(QKeyEvent* event);
+  virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
   QList<AbstractNode*> nodes() const;
   QList<AbstractNode*> findNodes(QPointF scenePos);
