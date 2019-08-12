@@ -30,9 +30,9 @@ private:
   void decideConnector(Scene* scene, Port* endPort);
   void removeTmpConnector(Scene* scene);
 
-  bool canConnect(Scene* scene, QGraphicsSceneMouseEvent* event) const;
-  bool canConnectToPort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
-  bool canConnectToConnector(Scene* scene, QGraphicsSceneMouseEvent* event) const;
+  bool isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
+  bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
+  bool isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const;
 
 private:
   Port* m_startPort = nullptr;

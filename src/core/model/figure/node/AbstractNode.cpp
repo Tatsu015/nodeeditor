@@ -99,6 +99,20 @@ Port* AbstractNode::port(const uint64_t number) {
   return nullptr;
 }
 
+Port* AbstractNode::nearestPort(QPointF scenePos) {
+  qreal minLengthToPort = (m_ports.at(0)->pos() - scenePos).manhattanLength();
+  Port* nearestPort = m_ports.at(0);
+  foreach (Port* port, m_ports) {
+    QPointF diff = port->pos() - scenePos;
+    qreal length = diff.manhattanLength();
+    if (minLengthToPort > length) {
+      minLengthToPort = length;
+      nearestPort = port;
+    }
+  }
+  return nearestPort;
+}
+
 QList<AbstractNode*> AbstractNode::adjastOutNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {

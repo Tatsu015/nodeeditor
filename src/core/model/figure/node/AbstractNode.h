@@ -36,6 +36,7 @@ public:
   QList<Port*> ports() const;
   void addPort(Port* port);
   Port* port(const uint64_t number);
+  Port* nearestPort(QPointF scenePos);
 
   QList<AbstractNode*> adjastOutNodes();
   QList<AbstractNode*> adjastInNodes();

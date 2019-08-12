@@ -3,6 +3,7 @@
 #include "Connection.h"
 #include "ConnectionFactory.h"
 #include "Connector.h"
+#include "ConnectorFactory.h"
 #include "Define.h"
 #include "Editor.h"
 #include "NodeFactory.h"
@@ -17,11 +18,14 @@
 const static QString DEFAULT_FILE_NAME = "Undefined." + APP_EXTENSION;
 const static QString JSON_NODE_NAME_VISIBLE = "nodeNameVisible";
 const static QString JSON_NODES = "nodes";
+const static QString JSON_PORTS = "ports";
 const static QString JSON_CONNECTORS = "connectors";
 const static QString JSON_NODE_TO_NODE_CONNECTIONS = "nodeToNodeConnections";
 const static QString JSON_NODE_TO_CONNECTOR_CONNECTIONS = "nodeToConnectorConnections";
 const static QString JSON_NAME = "name";
 const static QString JSON_NODETYPE = "nodetype";
+const static QString JSON_PORT_NUMBER = "portNumber";
+const static QString JSON_PORT_INVERTED = "portInverted";
 const static QString JSON_X = "x";
 const static QString JSON_Y = "y";
 const static QString JSON_START_NODE_NAME = "startNodeName";
@@ -93,6 +97,14 @@ QByteArray Project::toJson() {
     nodeJsonObj[JSON_NODETYPE] = node->nodeType();
     nodeJsonObj[JSON_X] = node->pos().x();
     nodeJsonObj[JSON_Y] = node->pos().y();
+    QJsonArray portJsonArray;
+    foreach (Port* port, node->ports()) {
+      QJsonObject portJsonObj;
+      portJsonObj[JSON_PORT_NUMBER] = static_cast<int32_t>(port->number());
+      portJsonObj[JSON_PORT_INVERTED] = port->isInvert();
+      portJsonArray.append(portJsonObj);
+    }
+    nodeJsonObj[JSON_PORTS] = portJsonArray;
 
     nodeJsonArray.append(nodeJsonObj);
   }
@@ -132,7 +144,7 @@ QByteArray Project::toJson() {
 
   return doc.toJson();
 }
-#include "ConnectorFactory.h"
+
 void Project::fromJson(const QByteArray& data) {
   QJsonDocument doc(QJsonDocument::fromJson(data));
   QJsonObject rootObj(doc.object());
@@ -151,6 +163,15 @@ void Project::fromJson(const QByteArray& data) {
     AbstractNode* node = NodeFactory::getInstance()->createNode(nodeType, name);
     node->setNameTextVisible(m_nodeNameVisible);
     node->setName(name);
+
+    foreach (QJsonValue portJsonValue, nodeJsonVal[JSON_PORTS].toArray()) {
+      unsigned int portNum = portJsonValue[JSON_PORT_NUMBER].toInt();
+      Port* port = node->port(portNum);
+      if (portJsonValue[JSON_PORT_INVERTED].toBool()) {
+        port->invert();
+      }
+    }
+
     scene->addNode(node, QPointF(x, y));
   }
 

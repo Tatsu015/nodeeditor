@@ -100,7 +100,8 @@ HEADERS += \
     core/view/window/MainWindow.h \
     core/extend/ShowNodeNamePlugin.h \
     core/extend/AlignPlugin.h \
-    core/extend/CutPlugin.h
+    core/extend/CutPlugin.h \
+    core/extend/InvertPortPlugin.h
 
 
 SOURCES += \
@@ -153,7 +154,8 @@ SOURCES += \
     core/view/window/MainWindow.cpp \
     core/extend/ShowNodeNamePlugin.cpp \
     core/extend/AlignPlugin.cpp \
-    core/extend/CutPlugin.cpp
+    core/extend/CutPlugin.cpp \
+    core/extend/InvertPortPlugin.cpp
 
 
 FORMS += \

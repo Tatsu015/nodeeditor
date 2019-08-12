@@ -39,13 +39,13 @@ void Connection::setEndPos(const QPointF& endPos) {
 
 void Connection::setStartPort(Port* startPort) {
   m_startPort = startPort;
-  m_startPos = startPort->centerScenePos();
+  m_startPos = startPort->endOfPortPos();
   redraw();
 }
 
 void Connection::setEndPort(Port* endPort) {
   m_endPort = endPort;
-  m_endPos = endPort->centerScenePos();
+  m_endPos = endPort->endOfPortPos();
   redraw();
 }
 
@@ -53,10 +53,10 @@ void Connection::redraw() {
   // m_startPos and m_endPos need to change. Because port and connector position updated by QGraphicsItem::ItemMove, But
   // m_startPos and m_endPos cannot update!
   if (m_startPort) {
-    m_startPos = m_startPort->centerScenePos();
+    m_startPos = m_startPort->endOfPortPos();
   }
   if (m_endPort) {
-    m_endPos = m_endPort->centerScenePos();
+    m_endPos = m_endPort->endOfPortPos();
   }
   if (m_endConnector) {
     m_endPos = m_endConnector->centerScenePos();

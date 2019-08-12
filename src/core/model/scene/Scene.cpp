@@ -80,6 +80,7 @@ void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
   // TODO...
   menu.addActions(MenuManager::getInstance()->contextMenuActions());
   menu.exec(event->screenPos());
+  QGraphicsScene::contextMenuEvent(event);
 }
 
 Port* Scene::findPort(QPointF scenePos) {
@@ -183,8 +184,8 @@ QList<Connection*> Scene::findConnections(const QPointF scenePos) {
   QList<Connection*> connections;
   foreach (QGraphicsItem* item, pressedItems) {
     Connection* connection = dynamic_cast<Connection*>(item);
-    // remove creating connection from target
-    if (!dynamic_cast<TmpConnection*>(connection)) {
+    // remove except connection and tmp connection from target
+    if ((connection) && (!dynamic_cast<TmpConnection*>(connection))) {
       connections << connection;
     }
   }
@@ -341,10 +342,10 @@ QList<Connection*> Scene::connections() const {
 
 void Scene::addConnection(Connection* connection, Port* startPort) {
   connection->setStartPort(startPort);
-  connection->setStartPos(startPort->centerScenePos());
+  connection->setStartPos(startPort->endOfPortPos());
   startPort->addConnection(connection);
 
-  connection->setEndPos(startPort->centerScenePos());
+  connection->setEndPos(startPort->endOfPortPos());
 
   m_connections.append(connection);
   addItem(connection);
@@ -352,11 +353,11 @@ void Scene::addConnection(Connection* connection, Port* startPort) {
 
 void Scene::addConnection(Connection* connection, Port* startPort, Port* endPort) {
   connection->setStartPort(startPort);
-  connection->setStartPos(startPort->centerScenePos());
+  connection->setStartPos(startPort->endOfPortPos());
   startPort->addConnection(connection);
 
   connection->setEndPort(endPort);
-  connection->setEndPos(endPort->centerScenePos());
+  connection->setEndPos(endPort->endOfPortPos());
   endPort->addConnection(connection);
 
   m_connections.append(connection);
@@ -365,7 +366,7 @@ void Scene::addConnection(Connection* connection, Port* startPort, Port* endPort
 
 void Scene::addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection) {
   connection->setStartPort(startPort);
-  connection->setStartPos(startPort->centerScenePos());
+  connection->setStartPos(startPort->endOfPortPos());
   startPort->addConnection(connection);
 
   connection->setEndConnector(endConnector);
@@ -409,7 +410,7 @@ void Scene::addConnection(Connection* connection, const QString& startNodeName, 
 
   Port* startPort = startNode->port(startPortNumber);
   connection->setStartPort(startPort);
-  connection->setStartPos(startPort->centerScenePos());
+  connection->setStartPos(startPort->endOfPortPos());
   startPort->addConnection(connection);
 
   addConnection(connection, startPort, endConnector, dstConnection);
@@ -423,7 +424,7 @@ void Scene::addConnection(Connection* connection, const QString& startNodeName, 
 
   Port* startPort = startNode->port(startPortNumber);
   connection->setStartPort(startPort);
-  connection->setStartPos(startPort->centerScenePos());
+  connection->setStartPos(startPort->endOfPortPos());
   startPort->addConnection(connection);
   Connection* dstConnection = findConnection(dstConnectionName);
 
