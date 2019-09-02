@@ -14,8 +14,14 @@ TmpConnection::TmpConnection(QGraphicsItem* parent) : Connection(parent) {
 TmpConnection::~TmpConnection() {
 }
 
-TmpConnection* TmpConnection::create() {
-  return new TmpConnection();
+Connection* TmpConnection::create() {
+  return create("0");
+}
+
+Connection* TmpConnection::create(const QString& id) {
+  Q_UNUSED(id);
+  TmpConnection* connection = new TmpConnection();
+  return connection;
 }
 
 void TmpConnection::changePenStyle(const PenStyle style) {

@@ -17,7 +17,9 @@ public:
   TmpConnection(QGraphicsItem* parent = nullptr);
   virtual ~TmpConnection();
 
-  virtual TmpConnection* create();
+  // TODO do not need inherit ???
+  virtual Connection* create();
+  virtual Connection* create(const QString& id);
 
   void changePenStyle(const PenStyle style);
 

@@ -3,7 +3,7 @@
 #include "Editor.h"
 #include "MenuManager.h"
 #include "Project.h"
-#include "Scene.h"
+#include "Sheet.h"
 #include <QMenu>
 
 ShowNameViewPlugin::ShowNameViewPlugin(QObject* parent) : AbstractPlugin(parent) {
@@ -25,9 +25,10 @@ void ShowNameViewPlugin::doInit() {
 
 void ShowNameViewPlugin::onExecute() {
   Project* project = Editor::getInstance()->project();
-  Scene* scene = project->scene();
   bool nextState = m_action->isChecked();
   project->setNodeNameVisible(nextState);
-  foreach (AbstractNode* node, scene->nodes()) { node->setNameTextVisible(nextState); }
+  foreach (Sheet* sheet, project->sheets()) {
+    foreach (AbstractNode* node, sheet->nodes()) { node->setNameTextVisible(nextState); }
+  }
   m_action->setChecked(nextState);
 }

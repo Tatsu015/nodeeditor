@@ -1,6 +1,6 @@
 #include "NodeFactory.h"
 #include "AbstractNode.h"
-#include "NamePublisher.h"
+#include "FigureNamePublisher.h"
 
 NodeFactory* NodeFactory::getInstance() {
   static NodeFactory s;
@@ -9,17 +9,19 @@ NodeFactory* NodeFactory::getInstance() {
 
 void NodeFactory::addNode(AbstractNode* node) {
   m_nodeMap[node->nodeType()] = node;
-  NamePublisher::getInstance()->addBaseName(node->nodeType());
 }
 
-AbstractNode* NodeFactory::createNode(const QString& type, QString name) {
-  AbstractNode* node = m_nodeMap[type]->create();
+AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, const QString& name, const QString& id) {
+  AbstractNode* node;
+  if (id.isEmpty()) {
+    node = m_nodeMap[type]->create();
+  } else {
+    node = m_nodeMap[type]->create(id);
+  }
 
   QString newName = name;
   if (newName.isEmpty()) {
-    newName = NamePublisher::getInstance()->createName(node->nodeType());
-  } else {
-    NamePublisher::getInstance()->updateLastNumber(name);
+    newName = FigureNamePublisher::getInstance()->createName(sheet, node->nodeType());
   }
 
   node->setName(newName);

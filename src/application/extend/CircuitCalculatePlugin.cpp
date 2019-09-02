@@ -10,6 +10,7 @@
 #include "Port.h"
 #include "Project.h"
 #include "Scene.h"
+#include "Sheet.h"
 #include "ui_DebugControlWidget.h"
 #include "ui_MainWindow.h"
 #include <QApplication>
@@ -178,13 +179,13 @@ void CircuitCalculatePlugin::tearDown() {
 }
 
 void CircuitCalculatePlugin::onCompile() {
-  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->activeSheet()->nodes();
   compile(nodes);
 }
 
 void CircuitCalculatePlugin::onRun() {
   CircuitCalculateExecutor::getInstance()->teardownStack();
-  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->activeSheet()->nodes();
   compile(nodes);
 
   QList<AbstractNode*> nodeStack;
@@ -196,7 +197,7 @@ void CircuitCalculatePlugin::onRun() {
 }
 
 void CircuitCalculatePlugin::onStartDebug() {
-  QList<AbstractNode*> nodes = Editor::getInstance()->project()->scene()->nodes();
+  QList<AbstractNode*> nodes = Editor::getInstance()->project()->activeSheet()->nodes();
   compile(nodes);
   CircuitCalculateExecutor::getInstance()->teardownStack();
   m_DebugControlWidget->setup();

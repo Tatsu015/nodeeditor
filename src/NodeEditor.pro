@@ -21,7 +21,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++11
-QMAKE_CXX = ccache $$QMAKE_CXX
+#QMAKE_CXX = ccache $$QMAKE_CXX
 
 INCLUDEPATH += \
     core/controller/builder \
@@ -49,6 +49,7 @@ INCLUDEPATH += \
     application/extend \
     application/model \
     application/view/widget \
+    core/model/sheet \
 
 HEADERS += \
     application/controller/CircuitCalculateExecutor.h \
@@ -70,7 +71,6 @@ HEADERS += \
     core/controller/factory/NodeFactory.h \
     core/controller/factory/PortFactory.h \
     core/controller/pluginloader/PluginLoader.h \
-    core/controller/publisher/NamePublisher.h \
     core/controller/tool/AbstractTool.h \
     core/controller/tool/ConnectionCreateTool.h \
     core/controller/tool/NodeEditTool.h \
@@ -101,7 +101,12 @@ HEADERS += \
     core/extend/ShowNodeNamePlugin.h \
     core/extend/AlignPlugin.h \
     core/extend/CutPlugin.h \
-    core/extend/InvertPortPlugin.h
+    core/extend/InvertPortPlugin.h \
+    core/model/sheet/Sheet.h \
+    core/controller/factory/SheetFactory.h \
+    core/model/observer/ProjectObserver.h \
+    core/view/widget/SheetListWidget.h \
+    core/controller/publisher/FigureNamePublisher.h
 
 
 SOURCES += \
@@ -125,7 +130,6 @@ SOURCES += \
     core/controller/factory/NodeFactory.cpp \
     core/controller/factory/PortFactory.cpp \
     core/controller/pluginloader/PluginLoader.cpp \
-    core/controller/publisher/NamePublisher.cpp \
     core/controller/tool/AbstractTool.cpp \
     core/controller/tool/ConnectionCreateTool.cpp \
     core/controller/tool/NodeEditTool.cpp \
@@ -155,12 +159,18 @@ SOURCES += \
     core/extend/ShowNodeNamePlugin.cpp \
     core/extend/AlignPlugin.cpp \
     core/extend/CutPlugin.cpp \
-    core/extend/InvertPortPlugin.cpp
+    core/extend/InvertPortPlugin.cpp \
+    core/model/sheet/Sheet.cpp \
+    core/controller/factory/SheetFactory.cpp \
+    core/model/observer/ProjectObserver.cpp \
+    core/view/widget/SheetListWidget.cpp \
+    core/controller/publisher/FigureNamePublisher.cpp
 
 
 FORMS += \
     application/view/widget/DebugControlWidget.ui \
-    core/view/window/MainWindow.ui
+    core/view/window/MainWindow.ui \
+    core/view/widget/SheetListWidget.ui
 
 
 # Default rules for deployment.

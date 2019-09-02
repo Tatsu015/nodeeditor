@@ -61,14 +61,6 @@ QPointF Connector::centerOffset() const {
   return offset;
 }
 
-QString Connector::name() const {
-  return m_name;
-}
-
-void Connector::setName(const QString& name) {
-  m_name = name;
-}
-
 qreal Connector::xPosRate() const {
   return m_xPosRate;
 }

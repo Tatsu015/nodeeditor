@@ -5,6 +5,7 @@
 #include <QUndoCommand>
 
 class Scene;
+class Sheet;
 class AbstractNode;
 class Connection;
 class Port;
@@ -38,7 +39,7 @@ private:
   };
 
 public:
-  NodeRemoveCommand(Scene* scene, QList<AbstractNode*> nodes);
+  NodeRemoveCommand(Scene* scene, Sheet* sheet, QList<AbstractNode*> nodes);
   virtual ~NodeRemoveCommand();
 
   virtual void redo();
@@ -46,6 +47,7 @@ public:
 
 private:
   Scene* m_scene = nullptr;
+  Sheet* m_sheet = nullptr;
   AbstractNode* m_node = nullptr;
   QList<NodeRemoveInfo*> m_nodeRemoveInfos;
   QList<NodeConnectedInfo*> m_nodeConnectedInfos;

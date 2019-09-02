@@ -37,7 +37,6 @@ private:
 private:
   Port* m_startPort = nullptr;
   TmpConnection* m_tmpConnection = nullptr;
-  Connector* m_tmpConnector = nullptr;
 };
 
 #endif // CONNECTIONCREATETOOL_H

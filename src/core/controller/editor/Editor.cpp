@@ -30,6 +30,10 @@ void Editor::init() {
   resetProject();
 }
 
+void Editor::run() {
+  m_project->run();
+}
+
 void Editor::reset() {
   resetProject();
   m_graphicsView->setScene(m_project->scene());
@@ -70,9 +74,13 @@ void Editor::addCommand(QUndoCommand* undoCommand) {
 }
 
 void Editor::resetProject() {
-  delete project();
+  Project* lastProject = m_project;
   m_project = new Project();
-  m_project->init();
+  if (lastProject) {
+    m_project->takeOver(lastProject);
+    lastProject->reset();
+  }
+  delete lastProject;
 }
 
 void Editor::addTool(AbstractTool* tool) {

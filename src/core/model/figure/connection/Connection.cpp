@@ -3,12 +3,13 @@
 #include "Define.h"
 #include "Port.h"
 #include <QPen>
+#include <QUuid>
 
 const QColor Connection::LINE_COLOR = QColor("#AAAAAA");
 const uint32_t Connection::PEN_SIZE = 3;
 
-Connection::Connection(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
-  m_connectionType = CONNECTION;
+Connection::Connection(QGraphicsItem* parent)
+    : QGraphicsPathItem(parent), m_id(QUuid::createUuid().toString()), m_connectionType(CONNECTION) {
   setPen(QPen(LINE_COLOR, PEN_SIZE));
 }
 
@@ -16,7 +17,13 @@ Connection::~Connection() {
 }
 
 Connection* Connection::create() {
-  return new Connection();
+  return create(QUuid::createUuid().toString());
+}
+
+Connection* Connection::create(const QString& id) {
+  Connection* connection = new Connection();
+  connection->m_id = id;
+  return connection;
 }
 
 QPointF Connection::startPos() const {
@@ -217,6 +224,10 @@ void Connection::setName(const QString& name) {
 
 QString Connection::connectionType() const {
   return m_connectionType;
+}
+
+QString Connection::id() const {
+  return m_id;
 }
 
 void Connection::setEndConnector(Connector* endConnector) {

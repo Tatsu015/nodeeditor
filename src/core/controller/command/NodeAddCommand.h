@@ -5,11 +5,12 @@
 #include <QUndoCommand>
 
 class Scene;
+class Sheet;
 class AbstractNode;
 
 class NodeAddCommand : public QUndoCommand {
 public:
-  NodeAddCommand(Scene* scene, AbstractNode* node, QPointF addScenePos);
+  NodeAddCommand(Scene* scene, Sheet* sheet, AbstractNode* node, QPointF addScenePos);
   virtual ~NodeAddCommand();
 
   virtual void redo();
@@ -17,6 +18,7 @@ public:
 
 private:
   Scene* m_scene = nullptr;
+  Sheet* m_sheet = nullptr;
   AbstractNode* m_node = nullptr;
   QPointF m_addScenePos;
 };

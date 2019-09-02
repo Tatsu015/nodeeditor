@@ -4,8 +4,10 @@
 #include "Connector.h"
 #include "Port.h"
 #include "Scene.h"
+#include "Sheet.h"
 
-NodeRemoveCommand::NodeRemoveCommand(Scene* scene, QList<AbstractNode*> nodes) : QUndoCommand(), m_scene(scene) {
+NodeRemoveCommand::NodeRemoveCommand(Scene* scene, Sheet* sheet, QList<AbstractNode*> nodes)
+    : QUndoCommand(), m_scene(scene), m_sheet(sheet) {
   QList<Connection*> checkedConnections;
 
   foreach (AbstractNode* node, nodes) {
@@ -45,15 +47,20 @@ NodeRemoveCommand::~NodeRemoveCommand() {
 }
 
 void NodeRemoveCommand::redo() {
-  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) { m_scene->removeNode(nodeRemoveInfo->m_node); }
+  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
+    m_sheet->removeNode(nodeRemoveInfo->m_node);
+    m_scene->removeNode(nodeRemoveInfo->m_node);
+    foreach (ConnectionInfo* connectionInfo, nodeRemoveInfo->m_connectionInfos) {
+      m_sheet->removeConnection(connectionInfo->m_connection);
+      m_scene->removeConnection(connectionInfo->m_connection);
+    }
+  }
 }
 
 void NodeRemoveCommand::undo() {
   // when connect distination node do not exist, connection cannot create
   // so first loop create all nodes
-  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
-    m_scene->addNode(nodeRemoveInfo->m_node, nodeRemoveInfo->m_node->scenePos());
-  }
+  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) { m_scene->addNode(nodeRemoveInfo->m_node); }
 
   foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
     foreach (ConnectionInfo* connectionInfo, nodeRemoveInfo->m_connectionInfos) {
@@ -62,20 +69,5 @@ void NodeRemoveCommand::undo() {
             connectionInfo->m_endConnectorInfo.m_connector);
       }
     }
-  }
-  // second loop create connections
-  foreach (NodeRemoveInfo* nodeRemoveInfo, m_nodeRemoveInfos) {
-    foreach (ConnectionInfo* connectionInfo, nodeRemoveInfo->m_connectionInfos) {
-      if (connectionInfo->m_endConnectorInfo.m_connector) {
-        m_scene->addConnection(connectionInfo->m_connection, connectionInfo->m_startNodeName,
-                               connectionInfo->m_startPortNumber, connectionInfo->m_endConnectorInfo.m_connector,
-                               connectionInfo->m_endConnectorInfo.m_dstConnection);
-      } else {
-        m_scene->addConnection(connectionInfo->m_connection, connectionInfo->m_startNodeName,
-                               connectionInfo->m_startPortNumber, connectionInfo->m_endNodeName,
-                               connectionInfo->m_endPortNumber);
-      }
-    }
-    nodeRemoveInfo->m_node->redraw();
   }
 }

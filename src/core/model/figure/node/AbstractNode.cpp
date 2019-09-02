@@ -4,6 +4,7 @@
 #include <QBrush>
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
+#include <QUuid>
 
 const QColor AbstractNode::FILL_COLOR = QColor("#666666");
 const QColor AbstractNode::LINE_COLOR = QColor("#AAAAAA");
@@ -44,6 +45,10 @@ QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, cons
     }
   }
   return QGraphicsPathItem::itemChange(change, value);
+}
+
+AbstractNode* AbstractNode::create() {
+  return create(QUuid::createUuid().toString());
 }
 
 QString AbstractNode::name() const {
@@ -213,4 +218,8 @@ void AbstractNode::setNameTextVisible(const bool visible) {
   } else {
     m_nameText->hide();
   }
+}
+
+QString AbstractNode::id() const {
+  return m_id;
 }

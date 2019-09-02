@@ -1,5 +1,4 @@
 #include "Builder.h"
-
 #include "AbstractNode.h"
 #include "AndNode.h"
 #include "Connection.h"
@@ -14,10 +13,12 @@
 #include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
+#include "SheetListWidget.h"
 #include "ui_MainWindow.h"
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
+#include <QTabBar>
 #include <QToolButton>
 #include <QUndoStack>
 
@@ -31,7 +32,7 @@ void Builder::build(MainWindow* mainWindow, Ui::MainWindow* ui) {
   buildMenuBar(mainWindow, ui);
   buildToolBar(mainWindow, ui);
   buildWindowTitle(mainWindow, ui);
-  //  buildDockWidget(mainWindow, ui);
+  buildDockWidget(mainWindow, ui);
 }
 
 void Builder::buildGraphicsView(MainWindow* mainWindow, Ui::MainWindow* ui) {
@@ -60,10 +61,7 @@ void Builder::buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
   PluginLoader::getInstance()->init();
   PluginLoader::getInstance()->load(mainWindow, ui);
 
-  foreach (QMenu* menu, MenuManager::getInstance()->menus()) {
-    ui->menuBar->addMenu(menu);
-    qDebug() << menu->title();
-  }
+  foreach (QMenu* menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
 }
 
 void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
@@ -79,15 +77,18 @@ void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui) {
   QObject::connect(Editor::getInstance(), &Editor::projectNameChanged, mainWindow, &MainWindow::setWindowTitle);
 }
 
-// void Builder::buildDockWidget(MainWindow *mainWindow, Ui::MainWindow *ui) {
-//  AnalyzeCircuitAction *analyzeCircuitAction = dynamic_cast<AnalyzeCircuitAction
-//  *>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
-//  ui->menuBar->addAction(analyzeCircuitAction->ExportScriptAction());
+void Builder::buildDockWidget(MainWindow* mainWindow, Ui::MainWindow* ui) {
+  SheetListWidget* sheetListWidget = new SheetListWidget();
+  ui->sheetDockWidget->setWidget(sheetListWidget);
+  Editor::getInstance()->project()->addObserver(sheetListWidget);
+  //  AnalyzeCircuitAction *analyzeCircuitAction = dynamic_cast<AnalyzeCircuitAction
+  //  *>(Editor::getInstance()->action(ACTION_ANALYZE_CIRCUIT));
+  //  ui->menuBar->addAction(analyzeCircuitAction->ExportScriptAction());
 
-//  QDockWidget *errorDockWidget = analyzeCircuitAction->DockWidget();
-//  errorDockWidget->hide();
-//  mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), errorDockWidget);
-//}
+  //  QDockWidget *errorDockWidget = analyzeCircuitAction->DockWidget();
+  //  errorDockWidget->hide();
+  //  mainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), errorDockWidget);
+}
 
 Builder::Builder() {
 }

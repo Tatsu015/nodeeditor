@@ -10,7 +10,7 @@ public:
   InNode(QGraphicsItem* parent = nullptr);
   virtual ~InNode();
 
-  virtual AbstractNode* create();
+  virtual AbstractNode* create(const QString& id);
 
   virtual bool execute(QList<bool> args);
 };

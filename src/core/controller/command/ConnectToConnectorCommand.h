@@ -5,14 +5,15 @@
 #include <QUndoCommand>
 
 class Scene;
+class Sheet;
 class Connection;
 class Port;
 class Connector;
 
 class ConnectToConnectorCommand : public QUndoCommand {
 public:
-  ConnectToConnectorCommand(Scene* scene, Connection* connection, Port* addScenePos, Connector* endConnector,
-                            Connection* dstConnection);
+  ConnectToConnectorCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* addScenePos,
+                            Connector* endConnector, Connection* dstConnection);
   virtual ~ConnectToConnectorCommand();
 
   virtual void redo();
@@ -20,6 +21,7 @@ public:
 
 private:
   Scene* m_scene = nullptr;
+  Sheet* m_sheet = nullptr;
   Connection* m_connection = nullptr;
   Port* m_startPort = nullptr;
   Connector* m_endConnector = nullptr;

@@ -18,6 +18,7 @@ public:
   static Editor* getInstance();
 
   void init();
+  void run();
   void reset();
 
   Project* project() const;

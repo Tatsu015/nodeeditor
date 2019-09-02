@@ -30,9 +30,6 @@ public:
   void redraw();
   QString portType() const;
 
-  QString name() const;
-  void setName(const QString& name);
-
   bool canConnect() const;
 
   void invert();

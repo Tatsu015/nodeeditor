@@ -28,7 +28,7 @@ private:
   void buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui);
   void buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui);
   void buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui);
-  //  void buildDockWidget(MainWindow* mainWindow, Ui::MainWindow* ui);
+  void buildDockWidget(MainWindow* mainWindow, Ui::MainWindow* ui);
 
 private:
   QMap<QString, ToolBarAction*> m_toolBarActions;

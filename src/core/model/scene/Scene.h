@@ -10,6 +10,7 @@ class Port;
 class Connector;
 class GuideLine;
 class SceneObserver;
+class Sheet;
 
 class Scene : public QGraphicsScene {
 public:
@@ -30,7 +31,10 @@ public:
   virtual void keyReleaseEvent(QKeyEvent* event);
   virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
-  QList<AbstractNode*> nodes() const;
+  Sheet* sheet() const;
+  void setSheet(Sheet* sheet);
+  void changeSheet(Sheet* sheet);
+
   QList<AbstractNode*> findNodes(QPointF scenePos);
   AbstractNode* findNode(const QString& nodeName);
   QList<AbstractNode*> nearTopNodes(const qreal top) const;
@@ -42,25 +46,15 @@ public:
   QList<AbstractNode*> nearLeftNodes(const qreal left) const;
   QList<AbstractNode*> nearLeftNodes(const qreal left, const SelectedFilter filter) const;
   QList<AbstractNode*> selectedNodes() const;
-  void addNode(AbstractNode* node, QPointF scenePos);
-  void removeNode(AbstractNode* node);
-  void deleteNode(AbstractNode* node);
 
-  QList<Connection*> connections() const;
+  void addNode(AbstractNode* node);
+  void removeNode(AbstractNode* node);
+
   Connection* findConnection(const QPointF scenePos);
   Connection* findConnection(const QString connectionName);
   QList<Connection*> findConnections(const QPointF scenePos);
-  void addConnection(Connection* connection, Port* startPort);
-  void addConnection(Connection* connection, Port* startPort, Port* endPort);
-  void addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection);
-  void addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                     const QString& endNodeName, int32_t endPortNumber);
-  void addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                     Connector* endConnector, Connection* dstConnection);
-  void addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                     Connector* endConnector, const QString& dstConnectionName);
+  void addConnection(Connection* connection);
   void removeConnection(Connection* connection);
-  void deleteConnection(Connection* connection);
 
   void addGuideLine(GuideLine* guideLine);
   void clearGuideLine();
@@ -69,25 +63,25 @@ public:
   Port* findPort(QPointF scenePos);
 
   void addSceneObserver(SceneObserver* sceneObserver);
-  void notifyAdd(AbstractNode* node);
-  void notifyRemove(AbstractNode* node);
 
-  void redraw();
+  void takeOver(Scene* scene);
 
 private:
   void changeActiveTool(const QPointF nowScenePos);
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 
-  bool existInNode(QPointF scenePos);
+  void notifyAdd(AbstractNode* node);
+  void notifyRemove(AbstractNode* node);
+
+  void redraw();
 
 private:
-  QList<AbstractNode*> m_nodes;
-  QList<Connection*> m_connections;
   Port* m_startPort = nullptr;
   QVector<GuideLine*> m_guideLines;
   bool m_isControlPressed;
   QVector<SceneObserver*> m_sceneObservers;
+  Sheet* m_sheet = nullptr;
 };
 
 #endif // SCENE_H

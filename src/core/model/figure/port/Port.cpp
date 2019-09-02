@@ -83,14 +83,6 @@ QString Port::portType() const {
   return m_portType;
 }
 
-QString Port::name() const {
-  return m_name;
-}
-
-void Port::setName(const QString& name) {
-  m_name = name;
-}
-
 bool Port::canConnect() const {
   if (m_maxConnectableCount <= m_connections.count()) {
     return false;

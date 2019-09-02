@@ -1,7 +1,7 @@
 #include "InNode.h"
 #include "Common.h"
 #include "Define.h"
-#include "NamePublisher.h"
+#include "FigureNamePublisher.h"
 #include "PortFactory.h"
 #include <QBrush>
 #include <QGraphicsSimpleTextItem>
@@ -24,8 +24,10 @@ InNode::InNode(QGraphicsItem* parent) : AbstractNode(parent) {
 InNode::~InNode() {
 }
 
-AbstractNode* InNode::create() {
-  return new InNode();
+AbstractNode* InNode::create(const QString& id) {
+  InNode* node = new InNode();
+  node->m_id = id;
+  return node;
 }
 
 bool InNode::execute(QList<bool> args) {

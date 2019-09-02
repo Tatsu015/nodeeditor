@@ -9,6 +9,7 @@
 #include "NodeRemoveCommand.h"
 #include "Project.h"
 #include "Scene.h"
+#include "Sheet.h"
 #include <QAction>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
@@ -41,13 +42,13 @@ void NodeEditTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event)
 
 void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   scene->clearGuideLine();
-
   if (m_isNodeMoving) {
     QPointF startScenePos = event->buttonDownScenePos(Qt::LeftButton);
     QPointF endScenePos = event->scenePos();
     QPointF diffScenePos = endScenePos - startScenePos;
     if (diffScenePos.manhattanLength() > 0.01) {
-      Editor::getInstance()->addCommand(new NodeMoveCommand(scene, scene->selectedNodes(), diffScenePos));
+      Editor::getInstance()->addCommand(
+          new NodeMoveCommand(scene, scene->sheet(), scene->selectedNodes(), diffScenePos));
     }
   }
   m_isNodeMoving = false;
@@ -55,16 +56,18 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
 }
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
-  AbstractNode* node = NodeFactory::getInstance()->createNode(m_activeNodeType);
+  Sheet* activeSheet = scene->sheet();
+  AbstractNode* node = NodeFactory::getInstance()->createNode(activeSheet, m_activeNodeType);
   bool nodeNameVisible = Editor::getInstance()->project()->nodeNameVisible();
   node->setNameTextVisible(nodeNameVisible);
   QPointF addScenePos = event->scenePos() - node->centerOffset();
-  Editor::getInstance()->addCommand(new NodeAddCommand(scene, node, addScenePos));
+  Editor::getInstance()->addCommand(new NodeAddCommand(scene, activeSheet, node, addScenePos));
 }
 
 void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
-    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
+    Sheet* activeSheet = scene->sheet();
+    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
 }
 

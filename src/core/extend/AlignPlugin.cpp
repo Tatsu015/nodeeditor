@@ -56,7 +56,6 @@ void AlignPlugin::onExecuteAlignLeft() {
     qreal y = node->y();
     node->setPos(minX, y);
   }
-  scene->redraw();
 }
 
 void AlignPlugin::onExecuteAlignRight() {
@@ -77,7 +76,6 @@ void AlignPlugin::onExecuteAlignRight() {
     qreal y = node->y();
     node->setPos(maxX, y);
   }
-  scene->redraw();
 }
 
 void AlignPlugin::onExecuteAlignTop() {
@@ -98,7 +96,6 @@ void AlignPlugin::onExecuteAlignTop() {
     qreal x = node->x();
     node->setPos(x, maxY);
   }
-  scene->redraw();
 }
 
 void AlignPlugin::onExecuteAlignBottom() {
@@ -119,5 +116,4 @@ void AlignPlugin::onExecuteAlignBottom() {
     qreal x = node->x();
     node->setPos(x, minY);
   }
-  scene->redraw();
 }

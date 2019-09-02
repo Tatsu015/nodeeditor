@@ -19,7 +19,8 @@ public:
 
   virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
 
-  virtual AbstractNode* create() = 0;
+  AbstractNode* create();
+  virtual AbstractNode* create(const QString& id) = 0;
 
   QString name() const;
   void setName(const QString& name);
@@ -57,6 +58,8 @@ public:
 
   virtual bool execute(QList<bool> args) = 0;
 
+  QString id() const;
+
 protected:
   const static QColor FILL_COLOR;
   const static QColor LINE_COLOR;
@@ -70,10 +73,11 @@ protected:
 protected:
   QString m_nodeType;
   IO m_io;
+  QString m_id = "";
 
 private:
   QList<Port*> m_ports;
-  QString m_name;
+  QString m_name = "";
   QGraphicsSimpleTextItem* m_nameText = nullptr;
 };
 

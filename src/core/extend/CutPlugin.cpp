@@ -25,5 +25,6 @@ void CutPlugin::doInit() {
 
 void CutPlugin::onExecute() {
   Scene* scene = Editor::getInstance()->project()->scene();
-  Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
+  Sheet* activeSheet = scene->sheet();
+  Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
 }

@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QString>
 
+class Sheet;
 class AbstractNode;
 
 class NodeFactory {
@@ -11,7 +12,7 @@ public:
   static NodeFactory* getInstance();
 
   void addNode(AbstractNode* node);
-  AbstractNode* createNode(const QString& type, QString name = "");
+  AbstractNode* createNode(const Sheet* sheet, const QString& type, const QString& name = "", const QString& id = "");
 
 private:
   QMap<QString, AbstractNode*> m_nodeMap;

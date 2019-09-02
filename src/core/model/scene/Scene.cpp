@@ -14,10 +14,13 @@
 #include "NodeRemoveCommand.h"
 #include "OutNode.h"
 #include "Port.h"
+#include "Project.h"
 #include "SceneObserver.h"
+#include "Sheet.h"
 #include "TmpConnection.h"
 #include <QAction>
 #include <QCursor>
+#include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
@@ -62,7 +65,22 @@ void Scene::keyPressEvent(QKeyEvent* event) {
     m_isControlPressed = true;
   } else if (Qt::Key_A == event->key()) {
     if (m_isControlPressed) {
-      foreach (AbstractNode* node, nodes()) { node->setSelected(true); }
+      foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
+    }
+  } else if (Qt::Key_N == event->key()) {
+    if (m_isControlPressed) {
+      static int i;
+      i = i % 3;
+      ++i;
+      Project* p = Editor::getInstance()->project();
+      Sheet* s = p->sheet("sheet_" + QString::number(i));
+      changeSheet(s);
+    }
+  } else if (Qt::Key_P == event->key()) {
+    if (m_isControlPressed) {
+      foreach (AbstractNode* node, m_sheet->nodes()) { addItem(node); }
+      foreach (Connection* connection, m_sheet->connections()) { addItem(connection); }
+      redraw();
     }
   }
   QGraphicsScene::keyPressEvent(event);
@@ -75,12 +93,29 @@ void Scene::keyReleaseEvent(QKeyEvent* event) {
   }
   QGraphicsScene::keyReleaseEvent(event);
 }
+
 void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
   QMenu menu;
   // TODO...
   menu.addActions(MenuManager::getInstance()->contextMenuActions());
   menu.exec(event->screenPos());
   QGraphicsScene::contextMenuEvent(event);
+}
+
+Sheet* Scene::sheet() const {
+  return m_sheet;
+}
+
+void Scene::setSheet(Sheet* sheet) {
+  m_sheet = sheet;
+}
+
+void Scene::changeSheet(Sheet* sheet) {
+  foreach (AbstractNode* node, m_sheet->nodes()) { removeNode(node); }
+  foreach (Connection* connection, m_sheet->connections()) { removeConnection(connection); }
+  m_sheet = sheet;
+  foreach (AbstractNode* node, m_sheet->nodes()) { addNode(node); }
+  foreach (Connection* connection, m_sheet->connections()) { addConnection(connection); }
 }
 
 Port* Scene::findPort(QPointF scenePos) {
@@ -102,16 +137,8 @@ void Scene::addSceneObserver(SceneObserver* sceneObserver) {
   m_sceneObservers << sceneObserver;
 }
 
-void Scene::notifyAdd(AbstractNode* node) {
-  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->addNode(node); }
-}
-
-void Scene::notifyRemove(AbstractNode* node) {
-  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->removeNode(node); }
-}
-
-void Scene::redraw() {
-  foreach (Connection* connection, connections()) { connection->redraw(); }
+void Scene::takeOver(Scene* scene) {
+  m_sceneObservers = scene->m_sceneObservers;
 }
 
 void Scene::changeActiveTool(const QPointF nowScenePos) {
@@ -171,7 +198,7 @@ Connection* Scene::findConnection(const QPointF scenePos) {
 }
 
 Connection* Scene::findConnection(const QString connectionName) {
-  foreach (Connection* connection, connections()) {
+  foreach (Connection* connection, m_sheet->connections()) {
     if (connectionName == connection->name()) {
       return connection;
     }
@@ -205,7 +232,7 @@ QList<AbstractNode*> Scene::findNodes(QPointF scenePos) {
 }
 
 AbstractNode* Scene::findNode(const QString& nodeName) {
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (nodeName == node->name()) {
       return node;
     }
@@ -220,13 +247,14 @@ bool Scene::existPort(QPointF scenePos) {
   return false;
 }
 
-QList<AbstractNode*> Scene::nodes() const {
-  return m_nodes;
-}
+// TODO will delete
+// QList<AbstractNode*> Scene::nodes() const {
+//  return m_sheet->nodes();
+//}
 
 QList<AbstractNode*> Scene::nearTopNodes(const qreal top) const {
   QList<AbstractNode*> nearNodes;
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (between(top, (node->top() - TORELANCE), (node->top() + TORELANCE))) {
       nearNodes.append(node);
     }
@@ -246,7 +274,7 @@ QList<AbstractNode*> Scene::nearTopNodes(const qreal top, const SelectedFilter f
 
 QList<AbstractNode*> Scene::nearBottomNodes(const qreal bottom) const {
   QList<AbstractNode*> nearNodes;
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (between(bottom, (node->bottom() - TORELANCE), (node->bottom() + TORELANCE))) {
       nearNodes.append(node);
     }
@@ -266,7 +294,7 @@ QList<AbstractNode*> Scene::nearBottomNodes(const qreal bottom, const Scene::Sel
 
 QList<AbstractNode*> Scene::nearRightNodes(const qreal right) const {
   QList<AbstractNode*> nearNodes;
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (between(right, (node->right() - TORELANCE), (node->right() + TORELANCE))) {
       nearNodes.append(node);
     }
@@ -286,7 +314,7 @@ QList<AbstractNode*> Scene::nearRightNodes(const qreal right, const Scene::Selec
 
 QList<AbstractNode*> Scene::nearLeftNodes(const qreal left) const {
   QList<AbstractNode*> nearNodes;
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (between(left, (node->left() - TORELANCE), (node->left() + TORELANCE))) {
       nearNodes.append(node);
     }
@@ -306,7 +334,7 @@ QList<AbstractNode*> Scene::nearLeftNodes(const qreal left, const Scene::Selecte
 
 QList<AbstractNode*> Scene::selectedNodes() const {
   QList<AbstractNode*> selectNodes;
-  foreach (AbstractNode* node, m_nodes) {
+  foreach (AbstractNode* node, m_sheet->nodes()) {
     if (node->isSelected()) {
       selectNodes << node;
     }
@@ -314,157 +342,23 @@ QList<AbstractNode*> Scene::selectedNodes() const {
   return selectNodes;
 }
 
-void Scene::addNode(AbstractNode* node, QPointF scenePos) {
-  node->setPos(scenePos);
-  m_nodes << node;
+void Scene::addNode(AbstractNode* node) {
   addItem(node);
   notifyAdd(node);
 }
 
 void Scene::removeNode(AbstractNode* node) {
-  foreach (Port* removeNodePort, node->ports()) {
-    foreach (Connection* connection, removeNodePort->connections()) { removeConnection(connection); }
-  }
-  m_nodes.removeOne(node);
   removeItem(node);
   notifyRemove(node);
 }
 
-void Scene::deleteNode(AbstractNode* node) {
-  removeNode(node);
-  delete node;
-  node = nullptr;
-}
-
-QList<Connection*> Scene::connections() const {
-  return m_connections;
-}
-
-void Scene::addConnection(Connection* connection, Port* startPort) {
-  connection->setStartPort(startPort);
-  connection->setStartPos(startPort->endOfPortPos());
-  startPort->addConnection(connection);
-
-  connection->setEndPos(startPort->endOfPortPos());
-
-  m_connections.append(connection);
+void Scene::addConnection(Connection* connection) {
   addItem(connection);
-}
-
-void Scene::addConnection(Connection* connection, Port* startPort, Port* endPort) {
-  connection->setStartPort(startPort);
-  connection->setStartPos(startPort->endOfPortPos());
-  startPort->addConnection(connection);
-
-  connection->setEndPort(endPort);
-  connection->setEndPos(endPort->endOfPortPos());
-  endPort->addConnection(connection);
-
-  m_connections.append(connection);
-  addItem(connection);
-}
-
-void Scene::addConnection(Connection* connection, Port* startPort, Connector* endConnector, Connection* dstConnection) {
-  connection->setStartPort(startPort);
-  connection->setStartPos(startPort->endOfPortPos());
-  startPort->addConnection(connection);
-
-  connection->setEndConnector(endConnector);
-  connection->setEndPos(endConnector->centerScenePos());
-  endConnector->setDstConnection(dstConnection);
-  endConnector->setSrcConnection(connection);
-  dstConnection->addBranchConnector(endConnector);
-
-  m_connections.append(connection);
-  addItem(connection);
-
-  QPointF connectorPosDiff = endConnector->centerScenePos() - dstConnection->startPos();
-  QPointF connectionPosDiff = dstConnection->endPos() - dstConnection->startPos();
-  qreal xPosRate = connectorPosDiff.x() / connectionPosDiff.x();
-  qreal yPosRate = connectorPosDiff.y() / connectionPosDiff.y();
-  endConnector->setXPosRate(xPosRate);
-  endConnector->setYPosRate(yPosRate);
-
-  QPointF pos = dstConnection->endPos() - dstConnection->startPos();
-  QPointF connectorPos(dstConnection->startPos().x() + pos.x() * endConnector->xPosRate(),
-                       dstConnection->startPos().y() + pos.y() * endConnector->yPosRate());
-  connectorPos += endConnector->centerOffset();
-}
-
-void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                          const QString& endNodeName, int32_t endPortNumber) {
-  AbstractNode* startNode = findNode(startNodeName);
-  AbstractNode* endNode = findNode(endNodeName);
-
-  Port* startPort = startNode->port(startPortNumber);
-  Port* endPort = endNode->port(endPortNumber);
-
-  addConnection(connection, startPort, endPort);
-
-  connection->redraw();
-}
-
-void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                          Connector* endConnector, Connection* dstConnection) {
-  AbstractNode* startNode = findNode(startNodeName);
-
-  Port* startPort = startNode->port(startPortNumber);
-  connection->setStartPort(startPort);
-  connection->setStartPos(startPort->endOfPortPos());
-  startPort->addConnection(connection);
-
-  addConnection(connection, startPort, endConnector, dstConnection);
-
-  connection->redraw();
-}
-
-void Scene::addConnection(Connection* connection, const QString& startNodeName, int32_t startPortNumber,
-                          Connector* endConnector, const QString& dstConnectionName) {
-  AbstractNode* startNode = findNode(startNodeName);
-
-  Port* startPort = startNode->port(startPortNumber);
-  connection->setStartPort(startPort);
-  connection->setStartPos(startPort->endOfPortPos());
-  startPort->addConnection(connection);
-  Connection* dstConnection = findConnection(dstConnectionName);
-
-  addConnection(connection, startPort, endConnector, dstConnection);
-
-  connection->redraw();
+  redraw();
 }
 
 void Scene::removeConnection(Connection* connection) {
-  // when connection is tmp connection,
-  // start or end port maybe become null pointer
-  Port* startPort = connection->startPort();
-  if (startPort) {
-    startPort->removeConnection(connection);
-    connection->removeStartPort();
-  }
-
-  Port* endPort = connection->endPort();
-  if (endPort) {
-    endPort->removeConnection(connection);
-    connection->removeEndPort();
-  }
-
-  Connector* endConnector = connection->endConnector();
-  if (endConnector) {
-    // TODO need to consider more...
-    connection->removeEndConnector();
-    endConnector->dstConnection()->removeBranchConnector(endConnector);
-    endConnector->setParentItem(nullptr);
-    removeItem(endConnector);
-  }
-
-  m_connections.removeOne(connection);
   removeItem(connection);
-}
-
-void Scene::deleteConnection(Connection* connection) {
-  removeConnection(connection);
-  delete connection;
-  connection = nullptr;
 }
 
 void Scene::addGuideLine(GuideLine* guideLine) {
@@ -476,4 +370,16 @@ void Scene::clearGuideLine() {
   foreach (QGraphicsLineItem* guideLine, m_guideLines) { removeItem(guideLine); }
   qDeleteAll(m_guideLines);
   m_guideLines.clear();
+}
+
+void Scene::notifyAdd(AbstractNode* node) {
+  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->addNode(node); }
+}
+
+void Scene::notifyRemove(AbstractNode* node) {
+  foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->removeNode(node); }
+}
+
+void Scene::redraw() {
+  foreach (Connection* connection, m_sheet->connections()) { connection->redraw(); }
 }

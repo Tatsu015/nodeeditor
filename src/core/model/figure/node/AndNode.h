@@ -8,7 +8,7 @@ public:
   AndNode(QGraphicsItem* parent = nullptr);
   virtual ~AndNode();
 
-  virtual AbstractNode* create();
+  virtual AbstractNode* create(const QString& id);
 
   virtual bool execute(QList<bool> args);
 };

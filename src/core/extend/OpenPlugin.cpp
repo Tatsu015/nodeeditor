@@ -25,4 +25,5 @@ void OpenPlugin::onExecute() {
   Project* project = Editor::getInstance()->project();
   QString fileName = project->filePath();
   project->open(fileName);
+  project->changeActiveSheet(0);
 }

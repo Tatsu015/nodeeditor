@@ -26,9 +26,6 @@ public:
 
   QPointF centerOffset() const;
 
-  QString name() const;
-  void setName(const QString& name);
-
   qreal xPosRate() const;
   void setXPosRate(const qreal& xPosRate);
   qreal yPosRate() const;

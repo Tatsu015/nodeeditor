@@ -1,6 +1,6 @@
 #include "OutNode.h"
 #include "Define.h"
-#include "NamePublisher.h"
+#include "FigureNamePublisher.h"
 #include "PortFactory.h"
 #include <QBrush>
 #include <QPen>
@@ -22,8 +22,10 @@ OutNode::OutNode(QGraphicsItem* parent) : AbstractNode(parent) {
 OutNode::~OutNode() {
 }
 
-AbstractNode* OutNode::create() {
-  return new OutNode();
+AbstractNode* OutNode::create(const QString& id) {
+  OutNode* node = new OutNode();
+  node->m_id = id;
+  return node;
 }
 
 bool OutNode::execute(QList<bool> args) {

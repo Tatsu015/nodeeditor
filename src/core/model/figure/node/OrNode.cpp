@@ -1,6 +1,6 @@
 #include "OrNode.h"
 #include "Define.h"
-#include "NamePublisher.h"
+#include "FigureNamePublisher.h"
 #include "PortFactory.h"
 #include <QBrush>
 #include <QFont>
@@ -36,8 +36,10 @@ OrNode::OrNode(QGraphicsItem* parent) : AbstractNode(parent) {
 OrNode::~OrNode() {
 }
 
-AbstractNode* OrNode::create() {
-  return new OrNode();
+AbstractNode* OrNode::create(const QString& id) {
+  OrNode* node = new OrNode();
+  node->m_id = id;
+  return node;
 }
 
 bool OrNode::execute(QList<bool> args) {

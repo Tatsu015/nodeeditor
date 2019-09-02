@@ -11,13 +11,13 @@
 #include "NodeRemoveCommand.h"
 #include "Port.h"
 #include "Scene.h"
+#include "Sheet.h"
 #include "TmpConnection.h"
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 
 ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
   m_tmpConnection = new TmpConnection();
-  m_tmpConnector = new Connector();
 }
 
 ConnectionCreateTool::~ConnectionCreateTool() {
@@ -29,7 +29,11 @@ void ConnectionCreateTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEven
     return;
   }
 
-  scene->addConnection(m_tmpConnection, m_startPort);
+  m_tmpConnection->setStartPort(m_startPort);
+  m_tmpConnection->setStartPos(m_startPort->endOfPortPos());
+  m_tmpConnection->setEndPos(m_startPort->endOfPortPos());
+  m_startPort->addConnection(m_tmpConnection);
+  scene->addConnection(m_tmpConnection);
 
   m_isUsing = true;
   m_isNodeSelectable = false;
@@ -101,7 +105,8 @@ void ConnectionCreateTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMou
 
 void ConnectionCreateTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
-    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, scene->selectedNodes()));
+    Sheet* activeSheet = scene->sheet();
+    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
 }
 
@@ -111,8 +116,9 @@ void ConnectionCreateTool::keyReleaseEvent(Scene* scene, QKeyEvent* event) {
 }
 
 void ConnectionCreateTool::decideConnectToPort(Scene* scene, Port* endPort) {
-  Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
-  ConnectToPortCommand* command = new ConnectToPortCommand(scene, connection, m_startPort, endPort);
+  Sheet* activeSheet = scene->sheet();
+  Connection* connection = ConnectionFactory::getInstance()->createConnection(activeSheet, CONNECTION);
+  ConnectToPortCommand* command = new ConnectToPortCommand(scene, activeSheet, connection, m_startPort, endPort);
   Editor::getInstance()->addCommand(command);
 
   m_startPort = nullptr;
@@ -120,11 +126,20 @@ void ConnectionCreateTool::decideConnectToPort(Scene* scene, Port* endPort) {
 
 void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos,
                                                     Connection* dstConnection) {
-  Connection* connection = ConnectionFactory::getInstance()->createConnection(CONNECTION);
+  Sheet* activeSheet = scene->sheet();
+  Connection* connection = ConnectionFactory::getInstance()->createConnection(activeSheet, CONNECTION);
   Connector* connector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, connection);
   connector->setPos(dstConnection->closeCenter(mouseReleaseScenePos) + connector->centerOffset());
+
+  QPointF connectorPosDiff = connector->centerScenePos() - dstConnection->startPos();
+  QPointF connectionPosDiff = dstConnection->endPos() - dstConnection->startPos();
+  qreal xPosRate = connectorPosDiff.x() / connectionPosDiff.x();
+  qreal yPosRate = connectorPosDiff.y() / connectionPosDiff.y();
+  connector->setXPosRate(xPosRate);
+  connector->setYPosRate(yPosRate);
+
   ConnectToConnectorCommand* command =
-      new ConnectToConnectorCommand(scene, connection, m_startPort, connector, dstConnection);
+      new ConnectToConnectorCommand(scene, scene->sheet(), connection, m_startPort, connector, dstConnection);
   Editor::getInstance()->addCommand(command);
 
   m_startPort = nullptr;

@@ -5,6 +5,7 @@
 #include <QUndoCommand>
 
 class Scene;
+class Sheet;
 class AbstractNode;
 
 class NodeMoveCommand : public QUndoCommand {
@@ -18,7 +19,7 @@ private:
   };
 
 public:
-  NodeMoveCommand(Scene* scene, QList<AbstractNode*> nodes, QPointF diff);
+  NodeMoveCommand(Scene* scene, Sheet* sheet, QList<AbstractNode*> nodes, QPointF diff);
   virtual ~NodeMoveCommand();
 
   virtual void redo();
@@ -26,6 +27,7 @@ public:
 
 private:
   Scene* m_scene = nullptr;
+  Sheet* m_sheet = nullptr;
   QList<NodeMoveInfo*> m_nodeMovenfos;
   QPointF m_diff;
 };

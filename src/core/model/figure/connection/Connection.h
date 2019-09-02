@@ -15,6 +15,7 @@ public:
   virtual ~Connection();
 
   virtual Connection* create();
+  virtual Connection* create(const QString& id);
 
   QPointF startPos() const;
   void setStartPos(const QPointF& startPos);
@@ -51,11 +52,14 @@ public:
 
   QString connectionType() const;
 
+  QString id() const;
+
 protected:
   const static QColor LINE_COLOR;
   const static uint32_t PEN_SIZE;
 
 private:
+  QString m_id = "";
   QString m_name = "";
   QString m_connectionType = "";
   QPointF m_startPos;

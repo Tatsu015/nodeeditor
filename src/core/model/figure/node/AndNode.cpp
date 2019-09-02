@@ -1,10 +1,11 @@
 #include "AndNode.h"
 #include "Define.h"
-#include "NamePublisher.h"
+#include "FigureNamePublisher.h"
 #include "PortFactory.h"
 #include <QBrush>
 #include <QFont>
 #include <QPen>
+#include <QUuid>
 
 AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_AND;
@@ -35,8 +36,10 @@ AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
 AndNode::~AndNode() {
 }
 
-AbstractNode* AndNode::create() {
-  return new AndNode();
+AbstractNode* AndNode::create(const QString& id) {
+  AndNode* node = new AndNode();
+  node->m_id = id;
+  return node;
 }
 
 bool AndNode::execute(QList<bool> args) {
