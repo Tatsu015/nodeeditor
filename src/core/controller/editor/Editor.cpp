@@ -9,6 +9,7 @@
 #include "InNode.h"
 #include "NodeEditTool.h"
 #include "NodeFactory.h"
+#include "NotNode.h"
 #include "OrNode.h"
 #include "OutNode.h"
 #include "PluginLoader.h"
@@ -95,6 +96,7 @@ QUndoStack* Editor::undoStack() const {
 void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new InNode());
   NodeFactory::getInstance()->addNode(new OutNode());
+  NodeFactory::getInstance()->addNode(new NotNode());
   NodeFactory::getInstance()->addNode(new AndNode());
   NodeFactory::getInstance()->addNode(new OrNode());
 

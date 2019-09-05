@@ -67,7 +67,7 @@ protected:
   const static uint32_t HEIGHT = 50;
   const static uint32_t PEN_SIZE = 3;
   const static uint32_t ROUND_RADIUS = 3;
-  const static uint32_t PORT_POS_X_OFS = 2;
+  const static uint32_t PORT_POS_X_OFS = 3;
   const static uint32_t PORT_POS_Y_OFS = 5;
 
 protected:

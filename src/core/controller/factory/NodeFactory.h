@@ -13,9 +13,11 @@ public:
 
   void addNode(AbstractNode* node);
   AbstractNode* createNode(const Sheet* sheet, const QString& type, const QString& name = "", const QString& id = "");
+  QStringList nodeTypes() const;
 
 private:
   QMap<QString, AbstractNode*> m_nodeMap;
+  QStringList m_nodeTypes;
 
 private:
   NodeFactory();

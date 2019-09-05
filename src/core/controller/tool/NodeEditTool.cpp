@@ -5,6 +5,7 @@
 #include "GuideLine.h"
 #include "NodeAddCommand.h"
 #include "NodeFactory.h"
+#include "NodeFactory.h"
 #include "NodeMoveCommand.h"
 #include "NodeRemoveCommand.h"
 #include "Project.h"
@@ -17,11 +18,7 @@
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
 
 NodeEditTool::NodeEditTool() : AbstractTool(TOOL_NODE_CREATE) {
-  m_nodeTypes.append(NODE_IN);
-  m_nodeTypes.append(NODE_OUT);
-  m_nodeTypes.append(NODE_AND);
-  m_nodeTypes.append(NODE_OR);
-
+  m_nodeTypes = NodeFactory::getInstance()->nodeTypes();
   m_activeNodeType = m_nodeTypes.first();
 }
 

@@ -9,6 +9,7 @@ NodeFactory* NodeFactory::getInstance() {
 
 void NodeFactory::addNode(AbstractNode* node) {
   m_nodeMap[node->nodeType()] = node;
+  m_nodeTypes.append(node->nodeType());
 }
 
 AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, const QString& name, const QString& id) {
@@ -28,6 +29,10 @@ AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, c
   node->setupNameText();
 
   return node;
+}
+
+QStringList NodeFactory::nodeTypes() const {
+  return m_nodeTypes;
 }
 
 NodeFactory::NodeFactory() {

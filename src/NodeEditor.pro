@@ -88,6 +88,7 @@ HEADERS += \
     core/model/figure/node/InNode.h \
     core/model/figure/node/OrNode.h \
     core/model/figure/node/OutNode.h \
+    core/model/figure/node/NotNode.h \
     core/model/figure/port/Port.h \
     core/model/observer/SceneObserver.h \
     core/model/project/Project.h \
@@ -147,6 +148,7 @@ SOURCES += \
     core/model/figure/node/InNode.cpp \
     core/model/figure/node/OrNode.cpp \
     core/model/figure/node/OutNode.cpp \
+    core/model/figure/node/NotNode.cpp \
     core/model/figure/port/Port.cpp \
     core/model/observer/SceneObserver.cpp \
     core/model/project/Project.cpp \

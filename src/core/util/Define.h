@@ -12,6 +12,7 @@ const static QString NODE_IN = "IN";
 const static QString NODE_OUT = "OUT";
 const static QString NODE_AND = "AND";
 const static QString NODE_OR = "OR";
+const static QString NODE_NOT = "NOT";
 
 const static QString CONNECTION = "CONNECTION";
 const static QString CONNECTOR = "Connector";
