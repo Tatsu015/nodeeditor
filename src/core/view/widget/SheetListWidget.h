@@ -23,6 +23,7 @@ public:
 private slots:
   void onAddSheext();
   void onDeleteSheet();
+  void onChangeSheetName(QListWidgetItem* item);
   void onChangeActiveSheet(QListWidgetItem* item);
 
 private:

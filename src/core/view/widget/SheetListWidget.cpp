@@ -9,7 +9,8 @@ SheetListWidget::SheetListWidget(QWidget* parent) : QWidget(parent), ui(new Ui::
   ui->setupUi(this);
   connect(ui->addPushButton, &QPushButton::clicked, this, &SheetListWidget::onAddSheext);
   connect(ui->deletePushButton, &QPushButton::clicked, this, &SheetListWidget::onDeleteSheet);
-  connect(ui->sheetListWidget, &QListWidget::itemDoubleClicked, this, &SheetListWidget::onChangeActiveSheet);
+  connect(ui->sheetListWidget, &QListWidget::itemClicked, this, &SheetListWidget::onChangeActiveSheet);
+  connect(ui->sheetListWidget, &QListWidget::itemEntered, this, &SheetListWidget::onChangeSheetName);
 }
 
 SheetListWidget::~SheetListWidget() {
@@ -17,7 +18,9 @@ SheetListWidget::~SheetListWidget() {
 }
 
 void SheetListWidget::addSheet(Sheet* sheet) {
-  ui->sheetListWidget->addItem(sheet->name());
+  QListWidgetItem* item = new QListWidgetItem(sheet->name());
+  item->setFlags(item->flags() | Qt::ItemIsEditable);
+  ui->sheetListWidget->addItem(item);
 }
 
 void SheetListWidget::removeSheet(Sheet* sheet) {
@@ -44,6 +47,16 @@ void SheetListWidget::onDeleteSheet() {
   QString sheetName = ui->sheetListWidget->currentItem()->text();
   Project* project = Editor::getInstance()->project();
   project->removeSheet(sheetName);
+}
+
+void SheetListWidget::onChangeSheetName(QListWidgetItem* item) {
+  if (!item) {
+    return;
+  }
+  QString sheetName = ui->sheetListWidget->currentItem()->text();
+  Project* project = Editor::getInstance()->project();
+  Sheet* sheet = project->sheet(sheetName);
+  sheet->setName(sheetName);
 }
 
 void SheetListWidget::onChangeActiveSheet(QListWidgetItem* item) {
