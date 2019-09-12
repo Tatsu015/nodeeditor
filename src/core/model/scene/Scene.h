@@ -50,9 +50,9 @@ public:
   void addNode(AbstractNode* node);
   void removeNode(AbstractNode* node);
 
-  Connection* findConnection(const QPointF scenePos);
+  Connection* findConnection(const QPointF scenePos, Connection* tmponnection);
   Connection* findConnection(const QString connectionName);
-  QList<Connection*> findConnections(const QPointF scenePos);
+  QList<Connection*> findConnections(const QPointF scenePos, Connection* tmponnection);
   void addConnection(Connection* connection);
   void removeConnection(Connection* connection);
 

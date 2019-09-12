@@ -62,6 +62,7 @@ HEADERS += \
     core/controller/builder/Builder.h \
     core/controller/command/ConnectToConnectorCommand.h \
     core/controller/command/ConnectToPortCommand.h \
+    core/controller/command/ReconnectToPortCommand.h \
     core/controller/command/NodeAddCommand.h \
     core/controller/command/NodeMoveCommand.h \
     core/controller/command/NodeRemoveCommand.h \
@@ -81,7 +82,6 @@ HEADERS += \
     core/extend/SavePlugin.h \
     core/model/figure/connection/Connection.h \
     core/model/figure/connection/Connector.h \
-    core/model/figure/connection/TmpConnection.h \
     core/model/figure/guideline/GuideLine.h \
     core/model/figure/node/AbstractNode.h \
     core/model/figure/node/AndNode.h \
@@ -94,6 +94,7 @@ HEADERS += \
     core/model/project/Project.h \
     core/model/scene/Scene.h \
     core/util/Common.h \
+    core/util/SystemConfig.h \
     core/util/Define.h \
     core/view/graphicsview/GraphicsView.h \
     core/view/menu/MenuManager.h \
@@ -107,7 +108,8 @@ HEADERS += \
     core/controller/factory/SheetFactory.h \
     core/model/observer/ProjectObserver.h \
     core/view/widget/SheetListWidget.h \
-    core/controller/publisher/FigureNamePublisher.h
+    core/controller/publisher/FigureNamePublisher.h \
+    core/controller/tool/ConnectionReconnectTool.h
 
 
 SOURCES += \
@@ -122,6 +124,7 @@ SOURCES += \
     core/controller/builder/Builder.cpp \
     core/controller/command/ConnectToConnectorCommand.cpp \
     core/controller/command/ConnectToPortCommand.cpp \
+    core/controller/command/ReconnectToPortCommand.cpp \
     core/controller/command/NodeAddCommand.cpp \
     core/controller/command/NodeMoveCommand.cpp \
     core/controller/command/NodeRemoveCommand.cpp \
@@ -141,7 +144,6 @@ SOURCES += \
     core/extend/SavePlugin.cpp \
     core/model/figure/connection/Connection.cpp \
     core/model/figure/connection/Connector.cpp \
-    core/model/figure/connection/TmpConnection.cpp \
     core/model/figure/guideline/GuideLine.cpp \
     core/model/figure/node/AbstractNode.cpp \
     core/model/figure/node/AndNode.cpp \
@@ -154,6 +156,7 @@ SOURCES += \
     core/model/project/Project.cpp \
     core/model/scene/Scene.cpp \
     core/util/Common.cpp \
+    core/util/SystemConfig.cpp \
     core/view/graphicsview/GraphicsView.cpp \
     core/view/menu/MenuManager.cpp \
     core/view/widget/NodeToolBar.cpp \
@@ -166,7 +169,8 @@ SOURCES += \
     core/controller/factory/SheetFactory.cpp \
     core/model/observer/ProjectObserver.cpp \
     core/view/widget/SheetListWidget.cpp \
-    core/controller/publisher/FigureNamePublisher.cpp
+    core/controller/publisher/FigureNamePublisher.cpp \
+    core/controller/tool/ConnectionReconnectTool.cpp
 
 
 FORMS += \

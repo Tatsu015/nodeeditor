@@ -1,13 +1,14 @@
 #include "Connector.h"
 #include "Connection.h"
+#include "SystemConfig.h"
 #include <QBrush>
 #include <QPen>
 
 const static int CONNECTOR_RADIUS = 10;
 
 Connector::Connector(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
-  setPen(QPen(Qt::gray, 1));
-  setBrush(QBrush(Qt::gray));
+  setPen(QPen(systemConfig(SystemConfig::connectionColor).toString()));
+  setBrush(QBrush(QColor(systemConfig(SystemConfig::connectionColor).toString())));
 
   QPainterPath path;
   path.addEllipse(-CONNECTOR_RADIUS, -CONNECTOR_RADIUS, CONNECTOR_RADIUS, CONNECTOR_RADIUS);

@@ -1,28 +1,29 @@
 #include "Port.h"
 #include "AbstractNode.h"
 #include "Connection.h"
+#include "SystemConfig.h"
 #include "float.h"
 #include <QBrush>
+#include <QDebug>
 #include <QPen>
-
-const QColor Port::LINE_FILL_COLOR = QColor("#AAAAAA");
-const QColor Port::LINE_COLOR = QColor("#AAAAAA");
-const QColor Port::ELLIPSE_FILL_COLOR = QColor("#666666");
-const QColor Port::ELLIPSE_COLOR = QColor("#AAAAAA");
 
 Port::Port(IO io, uint32_t number, QGraphicsItem* parent)
     : QGraphicsPathItem(parent), m_portType("port"), m_parentNode(dynamic_cast<AbstractNode*>(parent)), m_io(io),
       m_number(number) {
-  const static QBrush BLUSH = QBrush(LINE_FILL_COLOR);
-  const static QPen PEN = QPen(LINE_COLOR, LINE_PEN_SIZE);
+  const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeLineColor).toString()));
+  const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), LINE_PEN_SIZE);
   setPen(PEN);
   setBrush(BLUSH);
   QPainterPath path;
-  path.addRect(0, 0, LINE_WIDTH, LINE_HEIGHT);
+  path.addRect(0, (HEIGHT - LINE_HEIGHT) * 0.5, LINE_WIDTH, LINE_HEIGHT);
   setPath(path);
 }
 
 Port::~Port() {
+}
+
+QRectF Port::boundingRect() const {
+  return QRectF(0, 0, WIDTH, HEIGHT);
 }
 
 Port* Port::create(IO io, uint32_t number, QGraphicsItem* parent) {
@@ -93,20 +94,20 @@ bool Port::canConnect() const {
 void Port::invert() {
   m_isInvert = !m_isInvert;
   if (m_isInvert) {
-    const static QBrush BLUSH = QBrush(ELLIPSE_FILL_COLOR);
-    const static QPen PEN = QPen(ELLIPSE_COLOR, ELLIPSE_PEN_SIZE);
+    const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeFillColor).toString()));
+    const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), ELLIPSE_PEN_SIZE);
     setPen(PEN);
     setBrush(BLUSH);
     QPainterPath path;
-    path.addEllipse(0, -0.5 * ELLIPSE_RADIUS, ELLIPSE_RADIUS, ELLIPSE_RADIUS);
+    path.addEllipse(0, (HEIGHT - ELLIPSE_RADIUS) * 0.5, ELLIPSE_RADIUS, ELLIPSE_RADIUS);
     setPath(path);
   } else {
-    const static QBrush BLUSH = QBrush(LINE_FILL_COLOR);
-    const static QPen PEN = QPen(LINE_COLOR, LINE_PEN_SIZE);
+    const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeLineColor).toString()));
+    const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), LINE_PEN_SIZE);
     setPen(PEN);
     setBrush(BLUSH);
     QPainterPath path;
-    path.addRect(0, 0, LINE_WIDTH, LINE_HEIGHT);
+    path.addRect(0, (HEIGHT - LINE_HEIGHT) * 0.5, LINE_WIDTH, LINE_HEIGHT);
     setPath(path);
   }
 }

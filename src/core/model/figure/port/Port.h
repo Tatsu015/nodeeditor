@@ -13,6 +13,8 @@ public:
   Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr);
   virtual ~Port();
 
+  QRectF boundingRect() const override;
+
   Port* create(IO io, uint32_t number, QGraphicsItem* parent);
 
   QPointF centerScenePos();
@@ -36,14 +38,12 @@ public:
   bool isInvert() const;
 
 protected:
+  const static uint32_t WIDTH = 13;
+  const static uint32_t HEIGHT = 13;
   const static uint32_t LINE_WIDTH = 12;
   const static uint32_t LINE_HEIGHT = 3;
-  const static QColor LINE_FILL_COLOR;
-  const static QColor LINE_COLOR;
   const static uint32_t LINE_PEN_SIZE = 0;
-  const static uint32_t ELLIPSE_RADIUS = 10;
-  const static QColor ELLIPSE_FILL_COLOR;
-  const static QColor ELLIPSE_COLOR;
+  const static uint32_t ELLIPSE_RADIUS = 11;
   const static uint32_t ELLIPSE_PEN_SIZE = 3;
 
 private:

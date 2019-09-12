@@ -12,7 +12,7 @@ class Connector;
 
 class ConnectToPortCommand : public QUndoCommand {
 public:
-  ConnectToPortCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* addScenePos, Port* endPort);
+  ConnectToPortCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* startPort, Port* endPort);
   virtual ~ConnectToPortCommand();
 
   virtual void redo();

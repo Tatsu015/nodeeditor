@@ -7,6 +7,7 @@ const static QString APP_EXTENSION = "nd";
 
 const static QString TOOL_CONNECTION_CREATE = "ConnectionCreate";
 const static QString TOOL_NODE_CREATE = "NodeCreate";
+const static QString TOOL_CONNECTION_RECONNECT = "ConnectionReconnect";
 
 const static QString NODE_IN = "IN";
 const static QString NODE_OUT = "OUT";

@@ -1,13 +1,11 @@
 #include "AbstractNode.h"
 #include "Connection.h"
 #include "Port.h"
+#include "SystemConfig.h"
 #include <QBrush>
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
 #include <QUuid>
-
-const QColor AbstractNode::FILL_COLOR = QColor("#666666");
-const QColor AbstractNode::LINE_COLOR = QColor("#AAAAAA");
 
 AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
   setFlag(ItemIsSelectable);
@@ -16,8 +14,8 @@ AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
 
   setAcceptHoverEvents(true);
 
-  const static QBrush BLUSH = QBrush(FILL_COLOR);
-  const static QPen PEN = QPen(LINE_COLOR, PEN_SIZE);
+  const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeFillColor).toString()));
+  const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), PEN_SIZE);
   setBrush(BLUSH);
   setPen(PEN);
 }
@@ -209,7 +207,7 @@ void AbstractNode::changeColor(const QColor color) {
 }
 
 void AbstractNode::resetColor() {
-  setBrush(QBrush(FILL_COLOR));
+  setBrush(QBrush(QColor(systemConfig(SystemConfig::nodeFillColor).toString())));
 }
 
 void AbstractNode::setNameTextVisible(const bool visible) {

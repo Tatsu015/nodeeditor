@@ -8,7 +8,8 @@ class Connector;
 
 class Connection : public QGraphicsPathItem {
 public:
-  enum Direction { Vertical, Horizon, Other };
+  enum Direction : uint32_t { Vertical, Horizon, Other };
+  enum ConnectionStyle : uint32_t { Connected, Connectable, Connecting };
 
 public:
   Connection(QGraphicsItem* parent = nullptr);
@@ -54,8 +55,9 @@ public:
 
   QString id() const;
 
+  void changeConnectionStyle(const ConnectionStyle style);
+
 protected:
-  const static QColor LINE_COLOR;
   const static uint32_t PEN_SIZE;
 
 private:

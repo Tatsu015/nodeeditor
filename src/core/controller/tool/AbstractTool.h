@@ -12,12 +12,12 @@ public:
   AbstractTool(const QString& name);
   virtual ~AbstractTool();
 
-  virtual void mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
-  virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
-  virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
-  virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
-  virtual void keyPressEvent(Scene* scene, QKeyEvent* event) = 0;
-  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event) = 0;
+  virtual void mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+  virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+  virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+  virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+  virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
+  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event);
 
   QString name() const;
   bool isUsing() const;

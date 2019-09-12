@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QTimeLine>
 #include <QWheelEvent>
+#include <SystemConfig.h>
 
 GraphicsView::GraphicsView(QWidget* parent)
     : QGraphicsView(parent), m_isControlPressed(false), m_numScheduledScalings(0) {
@@ -12,7 +13,7 @@ GraphicsView::GraphicsView(QWidget* parent)
   setAlignment(Qt::AlignCenter);
   setMouseTracking(true);
   setDragMode(RubberBandDrag);
-  setBackgroundBrush(QBrush(QColor(75, 75, 75)));
+  setBackgroundBrush(QBrush(QColor(systemConfig(SystemConfig::backgroundColor).toString())));
   qreal initScale = 1;
   scale(initScale, initScale);
 }
@@ -81,6 +82,7 @@ void GraphicsView::onScalingTime(qreal x) {
   Q_UNUSED(x);
 
   int scrollDirection = 1;
+  systemConfig(SystemConfig::mouseScrollDirection).toInt();
   qreal factor = 1.0 + qreal(scrollDirection * m_numScheduledScalings) / 300.0;
   scale(factor, factor);
 }

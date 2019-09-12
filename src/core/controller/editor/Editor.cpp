@@ -3,6 +3,7 @@
 #include "Connection.h"
 #include "ConnectionCreateTool.h"
 #include "ConnectionFactory.h"
+#include "ConnectionReconnectTool.h"
 #include "Connector.h"
 #include "ConnectorFactory.h"
 #include "Define.h"
@@ -15,6 +16,7 @@
 #include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
+#include "SystemConfig.h"
 #include <QGraphicsView>
 #include <QUndoStack>
 
@@ -24,6 +26,7 @@ Editor* Editor::getInstance() {
 }
 
 void Editor::init() {
+  loadSystemConfig("../config/system.conf");
   initFactory();
   initTool();
   initUndoStack();
@@ -108,6 +111,7 @@ void Editor::initFactory() {
 void Editor::initTool() {
   addTool(new NodeEditTool());
   addTool(new ConnectionCreateTool());
+  addTool(new ConnectionReconnectTool());
 
   // set default tool
   m_activeTool = m_tools[TOOL_NODE_CREATE];

@@ -3,6 +3,7 @@
 #include "AndNode.h"
 #include "Common.h"
 #include "Connection.h"
+#include "ConnectionReconnectTool.h"
 #include "Connector.h"
 #include "Define.h"
 #include "Editor.h"
@@ -17,7 +18,6 @@
 #include "Project.h"
 #include "SceneObserver.h"
 #include "Sheet.h"
-#include "TmpConnection.h"
 #include <QAction>
 #include <QCursor>
 #include <QDebug>
@@ -51,7 +51,7 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
   Editor::getInstance()->activeTool()->mouseReleaseEvent(this, event);
   Editor::getInstance()->changeDefaultTool();
-  QGraphicsScene::mousePressEvent(event);
+  QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
@@ -143,9 +143,15 @@ void Scene::takeOver(Scene* scene) {
 
 void Scene::changeActiveTool(const QPointF nowScenePos) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
-    if (existPort(nowScenePos)) {
-      Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
-      QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
+    Port* port = findPort(nowScenePos);
+    if (port) {
+      if (port->canConnect()) {
+        Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
+        QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
+      } else {
+        Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
+        QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
+      }
     } else {
       Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
       QGuiApplication::restoreOverrideCursor();
@@ -183,14 +189,14 @@ Port* Scene::findEndPort(QPointF scenePos) {
   return nullptr;
 }
 
-Connection* Scene::findConnection(const QPointF scenePos) {
+Connection* Scene::findConnection(const QPointF scenePos, Connection* tmponnection) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
 
   Connection* connection = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
     connection = dynamic_cast<Connection*>(item);
     // remove creating connection from target
-    if (!dynamic_cast<TmpConnection*>(connection)) {
+    if (connection != tmponnection) {
       return connection;
     }
   }
@@ -206,13 +212,13 @@ Connection* Scene::findConnection(const QString connectionName) {
   return nullptr;
 }
 
-QList<Connection*> Scene::findConnections(const QPointF scenePos) {
+QList<Connection*> Scene::findConnections(const QPointF scenePos, Connection* tmponnection) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
   QList<Connection*> connections;
   foreach (QGraphicsItem* item, pressedItems) {
     Connection* connection = dynamic_cast<Connection*>(item);
     // remove except connection and tmp connection from target
-    if ((connection) && (!dynamic_cast<TmpConnection*>(connection))) {
+    if ((connection) && (connection != tmponnection)) {
       connections << connection;
     }
   }

@@ -2,15 +2,15 @@
 #include "Connector.h"
 #include "Define.h"
 #include "Port.h"
+#include "SystemConfig.h"
 #include <QPen>
 #include <QUuid>
 
-const QColor Connection::LINE_COLOR = QColor("#AAAAAA");
 const uint32_t Connection::PEN_SIZE = 3;
 
 Connection::Connection(QGraphicsItem* parent)
     : QGraphicsPathItem(parent), m_id(QUuid::createUuid().toString()), m_connectionType(CONNECTION) {
-  setPen(QPen(LINE_COLOR, PEN_SIZE));
+  setPen(QPen(QColor(systemConfig(SystemConfig::connectionColor).toString()), PEN_SIZE));
 }
 
 Connection::~Connection() {
@@ -55,7 +55,7 @@ void Connection::setEndPort(Port* endPort) {
   m_endPos = endPort->endOfPortPos();
   redraw();
 }
-
+#include <QDebug>
 void Connection::redraw() {
   // m_startPos and m_endPos need to change. Because port and connector position updated by QGraphicsItem::ItemMove, But
   // m_startPos and m_endPos cannot update!
@@ -228,6 +228,19 @@ QString Connection::connectionType() const {
 
 QString Connection::id() const {
   return m_id;
+}
+
+void Connection::changeConnectionStyle(const Connection::ConnectionStyle style) {
+  const QColor CREATING_LINE_COLOR = QColor(systemConfig(SystemConfig::creatingConnectionColor).toString());
+  const QColor DECIDED_LINE_COLOR = QColor(systemConfig(SystemConfig::decidedConnectionColor).toString());
+
+  if (Connecting == style) {
+    setPen(QPen(CREATING_LINE_COLOR, PEN_SIZE, Qt::DotLine));
+  } else if (Connectable == style) {
+    setPen(QPen(DECIDED_LINE_COLOR, PEN_SIZE, Qt::SolidLine));
+  } else {
+    setPen(QPen(QColor(systemConfig(SystemConfig::connectionColor).toString()), PEN_SIZE, Qt::SolidLine));
+  }
 }
 
 void Connection::setEndConnector(Connector* endConnector) {

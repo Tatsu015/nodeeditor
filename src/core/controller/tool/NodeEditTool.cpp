@@ -68,11 +68,6 @@ void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   }
 }
 
-void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event) {
-  Q_UNUSED(scene);
-  Q_UNUSED(event);
-}
-
 QStringList NodeEditTool::nodeTypes() const {
   return m_nodeTypes;
 }

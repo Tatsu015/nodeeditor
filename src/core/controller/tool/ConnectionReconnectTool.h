@@ -1,39 +1,41 @@
-#ifndef CONNECTIONCREATETOOL_H
-#define CONNECTIONCREATETOOL_H
+#ifndef ConnectionReconnectTool_H
+#define ConnectionReconnectTool_H
 
 #include "AbstractTool.h"
 #include <QPointF>
+#include <QStringList>
 
-class Port;
+class QAction;
+class AbstractNode;
 class Connection;
-class Connector;
+class Port;
 
-class ConnectionCreateTool : public AbstractTool {
+class ConnectionReconnectTool : public AbstractTool {
 public:
-  ConnectionCreateTool();
-  virtual ~ConnectionCreateTool();
+  ConnectionReconnectTool();
+  virtual ~ConnectionReconnectTool();
 
   virtual void mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
-  virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
 
 private:
-  void decideConnectToPort(Scene* scene, Port* endPort);
+  void decideConnectToPort(Scene* scene, Port* lastEndPort, Port* targetEndPort);
   void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, Connection* dstConnection);
-
-  void addTmpConnector(Scene* scene, Port* startPort);
-  void redrawTmpConnector(QPointF nowScenePos);
-  void decideConnector(Scene* scene, Port* endPort);
-  void removeTmpConnector(Scene* scene);
 
   bool isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const;
 
+  void resetReconnect();
+
 private:
-  Port* m_startPort = nullptr;
-  Connection* m_tmpConnection = nullptr;
+  AbstractNode* m_disconnectedNode = nullptr;
+  Connection* m_connection = nullptr;
+  Port* m_fixedPort = nullptr;
+  Port* m_lastEndPort = nullptr;
+  bool m_isReconnecting = false;
+  bool m_isMoveStartPort = false;
 };
 
-#endif // CONNECTIONCREATETOOL_H
+#endif // ConnectionReconnectTool_H
