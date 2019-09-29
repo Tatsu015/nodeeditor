@@ -27,7 +27,8 @@ private:
   bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const;
 
-  void resetReconnect();
+  void cancel();
+  void reset();
 
 private:
   AbstractNode* m_disconnectedNode = nullptr;

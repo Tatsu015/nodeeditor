@@ -76,29 +76,31 @@ void ConnectionReconnectTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMous
     return;
   }
 
-  m_isUsing = false;
-  m_isNodeSelectable = true;
-  m_isReconnecting = false;
-
   m_connection->changeConnectionStyle(Connection::Connected);
 
   Port* endPort = scene->findPort(event->scenePos());
   if (m_lastEndPort == endPort) {
-    resetReconnect();
+    cancel();
+    reset();
     return;
   }
 
   if (isOnConnectablePort(scene, event)) {
     Port* endPort = scene->findPort(event->scenePos());
     decideConnectToPort(scene, m_lastEndPort, endPort);
+    reset();
     return;
   }
 
   if (isOnConnecttableConnection(scene, event)) {
     Connection* dstConnection = scene->findConnection(event->scenePos(), m_connection);
     decideConnectToConnector(scene, event->scenePos(), dstConnection);
+    reset();
     return;
   }
+
+  cancel();
+  reset();
 }
 
 void ConnectionReconnectTool::decideConnectToPort(Scene* scene, Port* lastEndPort, Port* targetEndPort) {
@@ -168,7 +170,7 @@ bool ConnectionReconnectTool::isOnConnecttableConnection(Scene* scene, QGraphics
   return true;
 }
 
-void ConnectionReconnectTool::resetReconnect() {
+void ConnectionReconnectTool::cancel() {
   if (m_isMoveStartPort) {
     m_connection->setStartPort(m_lastEndPort);
     m_lastEndPort->addConnection(m_connection);
@@ -176,6 +178,12 @@ void ConnectionReconnectTool::resetReconnect() {
     m_connection->setEndPort(m_lastEndPort);
     m_lastEndPort->addConnection(m_connection);
   }
+}
+
+void ConnectionReconnectTool::reset() {
+  m_isUsing = false;
+  m_isNodeSelectable = true;
+  m_isReconnecting = false;
 
   m_disconnectedNode = nullptr;
   m_connection = nullptr;

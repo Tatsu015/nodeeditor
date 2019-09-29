@@ -31,6 +31,9 @@ private:
   bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const;
 
+  void cancel();
+  void reset();
+
 private:
   Port* m_startPort = nullptr;
   Connection* m_tmpConnection = nullptr;

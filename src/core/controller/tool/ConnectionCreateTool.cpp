@@ -73,19 +73,18 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
     return;
   }
 
-  m_isUsing = false;
-  m_isNodeSelectable = true;
-
   scene->removeConnection(m_tmpConnection);
   if (isOnConnectablePort(scene, event)) {
     Port* endPort = scene->findPort(event->scenePos());
     decideConnectToPort(scene, endPort);
+    reset();
     return;
   }
 
   if (isOnConnecttableConnection(scene, event)) {
     Connection* dstConnection = scene->findConnection(event->scenePos(), m_tmpConnection);
     decideConnectToConnector(scene, event->scenePos(), dstConnection);
+    reset();
     return;
   }
 
@@ -95,6 +94,9 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
   //    Port* endPort = node->nearestPort(event->scenePos());
   //    decideConnectToPort(scene, endPort);
   //  }
+
+  cancel();
+  reset();
 }
 
 void ConnectionCreateTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
@@ -109,8 +111,6 @@ void ConnectionCreateTool::decideConnectToPort(Scene* scene, Port* endPort) {
   Connection* connection = ConnectionFactory::getInstance()->createConnection(activeSheet, CONNECTION);
   ConnectToPortCommand* command = new ConnectToPortCommand(scene, activeSheet, connection, m_startPort, endPort);
   Editor::getInstance()->addCommand(command);
-
-  m_startPort = nullptr;
 }
 
 void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos,
@@ -130,8 +130,6 @@ void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseR
   ConnectToConnectorCommand* command =
       new ConnectToConnectorCommand(scene, scene->sheet(), connection, m_startPort, connector, dstConnection);
   Editor::getInstance()->addCommand(command);
-
-  m_startPort = nullptr;
 }
 
 void ConnectionCreateTool::addTmpConnector(Scene* scene, Port* startPort) {
@@ -182,4 +180,15 @@ bool ConnectionCreateTool::isOnConnecttableConnection(Scene* scene, QGraphicsSce
     return false;
   }
   return true;
+}
+
+void ConnectionCreateTool::cancel() {
+  m_startPort->removeConnection(m_tmpConnection);
+}
+
+void ConnectionCreateTool::reset() {
+  m_isUsing = false;
+  m_isNodeSelectable = true;
+
+  m_startPort = nullptr;
 }
