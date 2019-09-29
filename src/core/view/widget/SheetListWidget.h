@@ -18,6 +18,7 @@ public:
   ~SheetListWidget();
 
   virtual void addSheet(Sheet* sheet);
+  virtual void changeSheet(Sheet* sheet);
   virtual void removeSheet(Sheet* sheet);
 
 private slots:

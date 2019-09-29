@@ -143,6 +143,7 @@ Sheet* Project::activeSheet() const {
 
 void Project::setActiveSheet(Sheet* activeSheet) {
   m_activeSheet = activeSheet;
+  foreach (ProjectObserver* projectObserver, m_projectObservers) { projectObserver->changeSheet(m_activeSheet); }
   m_scene->setSheet(m_activeSheet);
 }
 
@@ -163,6 +164,9 @@ void Project::changeActiveSheet(const int32_t index) {
 void Project::changeActiveSheet(const QString& sheetName) {
   m_activeSheet = sheet(sheetName);
   m_scene->changeSheet(m_activeSheet);
+  foreach (ProjectObserver* projectObserver, m_projectObservers) { projectObserver->changeSheet(m_activeSheet); }
+  // need to update because when after change sheet, graphics trash remain...
+  m_scene->update();
 }
 
 void Project::addObserver(ProjectObserver* projectObserver) {

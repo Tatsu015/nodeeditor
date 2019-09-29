@@ -9,6 +9,7 @@ public:
   virtual ~ProjectObserver();
 
   virtual void addSheet(Sheet* sheet) = 0;
+  virtual void changeSheet(Sheet* sheet) = 0;
   virtual void removeSheet(Sheet* sheet) = 0;
 };
 

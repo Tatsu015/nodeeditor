@@ -23,6 +23,15 @@ void SheetListWidget::addSheet(Sheet* sheet) {
   ui->sheetListWidget->addItem(item);
 }
 
+void SheetListWidget::changeSheet(Sheet* sheet) {
+  QList<QListWidgetItem*> items = ui->sheetListWidget->findItems(sheet->name(), Qt::MatchExactly);
+  if (0 >= items.count()) {
+    return;
+  }
+  QListWidgetItem* item = items.first();
+  ui->sheetListWidget->setCurrentItem(item);
+}
+
 void SheetListWidget::removeSheet(Sheet* sheet) {
   QList<QListWidgetItem*> items = ui->sheetListWidget->findItems(sheet->name(), Qt::MatchExactly);
   if (0 >= items.count()) {
