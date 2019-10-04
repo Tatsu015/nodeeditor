@@ -14,8 +14,12 @@ PortAddCommand::~PortAddCommand() {
 void PortAddCommand::redo() {
   m_scene->changeSheet(m_sheet);
   m_node->addInputPort(m_port);
+  m_port->setParentItem(m_node);
   m_node->redraw();
 }
 
 void PortAddCommand::undo() {
+  m_node->removePort(m_port);
+  m_scene->removeItem(m_port);
+  m_node->redraw();
 }

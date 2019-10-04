@@ -130,6 +130,20 @@ bool AbstractNode::canAddOutputPort() const {
   return true;
 }
 
+void AbstractNode::removePort(Port* port) {
+  foreach (Port* p, m_ports) {
+    if (p == port) {
+      m_ports.removeOne(p);
+      p->setParentItem(nullptr);
+    }
+  }
+  if (Input == port->io()) {
+    adjustInputPortPos();
+  } else {
+    adjustOutputPortPos();
+  }
+}
+
 Port* AbstractNode::port(const uint64_t number) {
   foreach (Port* port, m_ports) {
     if (number == port->number()) {

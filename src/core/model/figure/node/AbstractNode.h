@@ -41,6 +41,7 @@ public:
   void addOutputPort(Port* outputPort);
   bool canAddInputPort() const;
   bool canAddOutputPort() const;
+  void removePort(Port* port);
 
   Port* port(const uint64_t number);
   Port* nearestPort(QPointF scenePos);
