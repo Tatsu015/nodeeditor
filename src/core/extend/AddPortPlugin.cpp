@@ -37,11 +37,11 @@ void AddPortPlugin::onExecute() {
   Project* project = Editor::getInstance()->project();
   Scene* scene = project->scene();
   QList<AbstractNode*> nodes = scene->selectedNodes();
-  if (1 == nodes.count()) {
-    AbstractNode* node = nodes.first();
-    if (node->canAddInputPort()) {
-      Port* port = PortFactory::getInstance()->createPort("port", Input, node);
-      Editor::getInstance()->addCommand(new PortAddCommand(scene, scene->sheet(), node, port));
-    }
+  if (1 != nodes.count()) {
+    return;
   }
+
+  AbstractNode* targetNode = nodes.first();
+  Port* port = PortFactory::getInstance()->createPort("port", Input, targetNode);
+  Editor::getInstance()->addCommand(new PortAddCommand(scene, scene->sheet(), targetNode, port));
 }

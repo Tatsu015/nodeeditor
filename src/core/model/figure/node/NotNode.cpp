@@ -11,6 +11,8 @@ NotNode::NotNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_io = Hidden;
   m_maxInputPortCount = 1;
   m_maxOutputPortCount = 1;
+  m_minInputPortCount = 1;
+  m_minOutputPortCount = 1;
 
   QPainterPath path;
   path.lineTo(QPointF(0, HEIGHT));
@@ -18,8 +20,8 @@ NotNode::NotNode(QGraphicsItem* parent) : AbstractNode(parent) {
   path.closeSubpath();
   setPath(path);
 
-  addInputPort(new Port(Input, 1, this));
-  addOutputPort(new Port(Output, 2, this, true));
+  addInputPort(new Port(Input, 1, this, false, false));
+  addOutputPort(new Port(Output, 2, this, true, false));
 }
 
 NotNode::~NotNode() {

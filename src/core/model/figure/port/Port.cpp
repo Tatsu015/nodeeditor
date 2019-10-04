@@ -7,9 +7,9 @@
 #include <QDebug>
 #include <QPen>
 
-Port::Port(IO io, uint32_t number, QGraphicsItem* parent, bool isInvert)
+Port::Port(IO io, uint32_t number, QGraphicsItem* parent, bool isInvert, bool isRemovable)
     : QGraphicsPathItem(parent), m_portType("port"), m_parentNode(dynamic_cast<AbstractNode*>(parent)), m_io(io),
-      m_number(number), m_isInvert(isInvert) {
+      m_number(number), m_isInvert(isInvert), m_isRemovable(isRemovable) {
   const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeLineColor).toString()));
   const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), LINE_PEN_SIZE);
   setPen(PEN);
@@ -28,8 +28,8 @@ QRectF Port::boundingRect() const {
   return QRectF(0, 0, WIDTH, HEIGHT);
 }
 
-Port* Port::create(IO io, uint32_t number, QGraphicsItem* parent) {
-  return new Port(io, number, parent);
+Port* Port::create(IO io, uint32_t number, QGraphicsItem* parent, bool isInvert, bool isRemovable) {
+  return new Port(io, number, parent, isInvert, isRemovable);
 }
 
 QPointF Port::centerScenePos() {
@@ -116,4 +116,8 @@ void Port::invert(const bool isInvert) {
 
 bool Port::isInvert() const {
   return m_isInvert;
+}
+
+bool Port::isRemovable() const {
+  return m_isRemovable;
 }

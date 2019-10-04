@@ -42,6 +42,8 @@ public:
   bool canAddInputPort() const;
   bool canAddOutputPort() const;
   void removePort(Port* port);
+  bool canRemoveInputPort() const;
+  bool canRemoveOutputPort() const;
 
   Port* port(const uint64_t number);
   Port* nearestPort(QPointF scenePos);
@@ -89,6 +91,8 @@ protected:
   QString m_id = "";
   int32_t m_maxInputPortCount = 1;
   int32_t m_maxOutputPortCount = 1;
+  int32_t m_minInputPortCount = 1;
+  int32_t m_minOutputPortCount = 1;
 
 private:
   QList<Port*> m_ports;

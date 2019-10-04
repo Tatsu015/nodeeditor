@@ -10,6 +10,7 @@ class Connection : public QGraphicsPathItem {
 public:
   enum Direction : uint32_t { Vertical, Horizon, Other };
   enum ConnectionStyle : uint32_t { Connected, Connectable, Connecting };
+  enum Edge : uint32_t { Start, End, None };
 
 public:
   Connection(QGraphicsItem* parent = nullptr);
@@ -38,6 +39,7 @@ public:
   int32_t areaIndex(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
   QPointF closeCenter(QPointF pos, QSizeF searchSize = QSizeF(3, 3));
   Direction direction(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
+  Edge whichEdge(Port* port);
 
   void setStartConnector(Connector* startConnector);
   void removeStartConnector();

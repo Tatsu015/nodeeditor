@@ -29,15 +29,16 @@ void InvertPortPlugin::onExecute() {
   Project* project = Editor::getInstance()->project();
   Scene* scene = project->scene();
   QList<AbstractNode*> nodes = scene->selectedNodes();
-  if (1 == nodes.count()) {
-    QInputDialog selectPortDialog;
-    selectPortDialog.setOptions(QInputDialog::UseListViewForComboBoxItems);
-    QStringList portNames;
-    AbstractNode* targetNode = nodes.first();
-    foreach (Port* port, targetNode->ports()) { portNames << QString::number(port->number()); }
-    uint32_t targetPortNum = selectPortDialog.getItem(nullptr, "Select Invert Port", "a", portNames).toUInt();
-    Port* targetPort = targetNode->port(targetPortNum);
-
-    targetPort->invert(!targetPort->isInvert());
+  if (1 != nodes.count()) {
+    return;
   }
+  QInputDialog selectPortDialog;
+  selectPortDialog.setOptions(QInputDialog::UseListViewForComboBoxItems);
+  QStringList portNames;
+  AbstractNode* targetNode = nodes.first();
+  foreach (Port* port, targetNode->ports()) { portNames << QString::number(port->number()); }
+  uint32_t targetPortNum = selectPortDialog.getItem(nullptr, "Select Invert Port", "a", portNames).toUInt();
+  Port* targetPort = targetNode->port(targetPortNum);
+
+  targetPort->invert(!targetPort->isInvert());
 }

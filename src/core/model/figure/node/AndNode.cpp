@@ -12,6 +12,8 @@ AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_io = Hidden;
   m_maxInputPortCount = 4;
   m_maxOutputPortCount = 1;
+  m_minInputPortCount = 2;
+  m_minOutputPortCount = 1;
 
   QPainterPath path;
   path.lineTo(0, HEIGHT);
@@ -20,9 +22,9 @@ AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
   path.closeSubpath();
   setPath(path);
 
-  addInputPort(new Port(Input, 1, this));
-  addInputPort(new Port(Input, 2, this));
-  addOutputPort(new Port(Output, 3, this));
+  addInputPort(new Port(Input, 1, this, false, false));
+  addInputPort(new Port(Input, 2, this, false, false));
+  addOutputPort(new Port(Output, 3, this, false, false));
 }
 
 AndNode::~AndNode() {

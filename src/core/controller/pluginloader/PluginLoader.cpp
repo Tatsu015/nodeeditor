@@ -10,6 +10,7 @@
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
 #include "QuitPlugin.h"
+#include "RemovePortPlugin.h"
 #include "SavePlugin.h"
 #include "ShowNodeNamePlugin.h"
 #include "ui_MainWindow.h"
@@ -31,6 +32,7 @@ void PluginLoader::init() {
   addPlugin(new AlignPlugin());
   addPlugin(new InvertPortPlugin());
   addPlugin(new AddPortPlugin());
+  addPlugin(new RemovePortPlugin());
 }
 
 void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {

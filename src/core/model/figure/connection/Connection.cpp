@@ -201,6 +201,16 @@ Connection::Direction Connection::direction(QPointF pos, QSizeF searchSize) cons
   return Other;
 }
 
+Connection::Edge Connection::whichEdge(Port* port) {
+  if (m_startPort == port) {
+    return Start;
+  } else if (m_endPort == port) {
+    return End;
+  } else {
+    return None;
+  }
+}
+
 void Connection::addBranchConnector(Connector* connector) {
   connector->setParentItem(this);
   m_branchConnectors << connector;

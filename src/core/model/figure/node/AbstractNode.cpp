@@ -144,6 +144,20 @@ void AbstractNode::removePort(Port* port) {
   }
 }
 
+bool AbstractNode::canRemoveInputPort() const {
+  if (m_minInputPortCount >= inputPortCount()) {
+    return false;
+  }
+  return true;
+}
+
+bool AbstractNode::canRemoveOutputPort() const {
+  if (m_minOutputPortCount >= outputPortCount()) {
+    return false;
+  }
+  return true;
+}
+
 Port* AbstractNode::port(const uint64_t number) {
   foreach (Port* port, m_ports) {
     if (number == port->number()) {

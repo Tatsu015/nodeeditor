@@ -8,6 +8,7 @@
 #include "Editor.h"
 #include "NodeFactory.h"
 #include "Port.h"
+#include "PortFactory.h"
 #include "ProjectObserver.h"
 #include "Scene.h"
 #include "Sheet.h"
@@ -31,6 +32,7 @@ const static QString JSON_NODE_TO_CONNECTOR_CONNECTIONS = "nodeToConnectorConnec
 const static QString JSON_NAME = "name";
 const static QString JSON_NODETYPE = "nodetype";
 const static QString JSON_PORT_NUMBER = "portNumber";
+const static QString JSON_PORT_IO = "portIO";
 const static QString JSON_PORT_INVERTED = "portInverted";
 const static QString JSON_X = "x";
 const static QString JSON_Y = "y";
@@ -193,6 +195,7 @@ QByteArray Project::toJson() {
       foreach (Port* port, node->ports()) {
         QJsonObject portJsonObj;
         portJsonObj[JSON_PORT_NUMBER] = static_cast<int32_t>(port->number());
+        portJsonObj[JSON_PORT_IO] = static_cast<int32_t>(port->io());
         portJsonObj[JSON_PORT_INVERTED] = port->isInvert();
         portJsonArray.append(portJsonObj);
       }
@@ -251,7 +254,7 @@ void Project::fromJson(const QByteArray& data) {
   m_nodeNameVisible = rootObj[JSON_NODE_NAME_VISIBLE].toBool();
 
   foreach (QJsonValue sheetJsonVal, rootObj[JSON_SHEETS].toArray()) {
-    Sheet* sheet = SheetFactory::getInstance()->createSheet();
+    Sheet* sheet = SheetFactory::getInstance()->createSheet(sheetJsonVal[JSON_ID].toString());
     sheet->setName(sheetJsonVal[JSON_NAME].toString());
     addSheet(sheet);
 
@@ -270,7 +273,18 @@ void Project::fromJson(const QByteArray& data) {
       foreach (QJsonValue portJsonValue, nodeJsonVal[JSON_PORTS].toArray()) {
         unsigned int portNum = portJsonValue[JSON_PORT_NUMBER].toInt();
         Port* port = node->port(portNum);
-        port->invert(portJsonValue[JSON_PORT_INVERTED].toBool());
+        bool isInverted = portJsonValue[JSON_PORT_INVERTED].toBool();
+        if (port) {
+          port->invert(isInverted);
+        } else {
+          IO io = static_cast<IO>(portJsonValue[JSON_PORT_IO].toInt());
+          port = PortFactory::getInstance()->createPort("port", io, node, isInverted);
+          if (Input == io) {
+            node->addInputPort(port);
+          } else {
+            node->addOutputPort(port);
+          }
+        }
       }
 
       sheet->addNode(node);

@@ -11,6 +11,8 @@ public:
 
   void addPort(Port* port);
   Port* createPort(const QString& type, const IO io, AbstractNode* parent, const bool isInverted = false);
+  Port* createPort(const QString& type, const IO io, const int32_t number, AbstractNode* parent,
+                   const bool isInverted = false);
 
 private:
   QMap<QString, Port*> m_portMap;

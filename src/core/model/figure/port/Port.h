@@ -10,12 +10,12 @@ class AbstractNode;
 
 class Port : public QGraphicsPathItem {
 public:
-  Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr, bool isInvert = false);
+  Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr, bool isInvert = false, bool isRemovable = false);
   virtual ~Port();
 
   QRectF boundingRect() const override;
 
-  Port* create(IO io, uint32_t number, QGraphicsItem* parent);
+  Port* create(IO io, uint32_t number, QGraphicsItem* parent, bool isInvert, bool isRemovable);
 
   QPointF centerScenePos();
   QPointF endOfPortPos();
@@ -36,6 +36,7 @@ public:
 
   void invert(const bool isInvert);
   bool isInvert() const;
+  bool isRemovable() const;
 
 protected:
   const static uint32_t WIDTH = 13;
@@ -54,6 +55,7 @@ private:
   IO m_io;
   uint32_t m_number;
   bool m_isInvert = false;
+  bool m_isRemovable = false;
   int32_t m_maxConnectableCount = 1;
 };
 

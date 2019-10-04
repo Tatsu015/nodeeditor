@@ -12,12 +12,14 @@ InNode::InNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_io = Input;
   m_maxInputPortCount = 0;
   m_maxOutputPortCount = 1;
+  m_minInputPortCount = 0;
+  m_minOutputPortCount = 1;
 
   QPainterPath path;
   path.addRoundedRect(0, 0, WIDTH, HEIGHT * 0.5, ROUND_RADIUS, ROUND_RADIUS);
   setPath(path);
 
-  addOutputPort(new Port(Output, 1, this));
+  addOutputPort(new Port(Output, 1, this, false, false));
 }
 
 InNode::~InNode() {

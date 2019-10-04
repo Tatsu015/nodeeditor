@@ -11,6 +11,8 @@ OrNode::OrNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_io = Hidden;
   m_maxInputPortCount = 4;
   m_maxOutputPortCount = 1;
+  m_minInputPortCount = 2;
+  m_minOutputPortCount = 1;
 
   QPainterPath path;
   path.cubicTo(QPointF(WIDTH * 0.1, HEIGHT * 0.2), QPointF(WIDTH * 0.1, HEIGHT * 0.8), QPointF(0, HEIGHT));
@@ -20,9 +22,9 @@ OrNode::OrNode(QGraphicsItem* parent) : AbstractNode(parent) {
   path.closeSubpath();
   setPath(path);
 
-  addInputPort(new Port(Input, 1, this));
-  addInputPort(new Port(Input, 2, this));
-  addOutputPort(new Port(Output, 3, this));
+  addInputPort(new Port(Input, 1, this, false, false));
+  addInputPort(new Port(Input, 2, this, false, false));
+  addOutputPort(new Port(Output, 3, this, false, false));
 }
 
 OrNode::~OrNode() {
