@@ -35,7 +35,13 @@ public:
   void setupNameText();
 
   QList<Port*> ports() const;
+  int32_t portCount() const;
   void addPort(Port* port);
+  void addInputPort(Port* inputPort);
+  void addOutputPort(Port* outputPort);
+  bool canAddInputPort() const;
+  bool canAddOutputPort() const;
+
   Port* port(const uint64_t number);
   Port* nearestPort(QPointF scenePos);
 
@@ -60,6 +66,14 @@ public:
 
   QString id() const;
 
+private:
+  QList<Port*> inputPorts() const;
+  QList<Port*> outputPorts() const;
+  int32_t inputPortCount() const;
+  int32_t outputPortCount() const;
+  void adjustInputPortPos();
+  void adjustOutputPortPos();
+
 protected:
   const static uint32_t WIDTH = 50;
   const static uint32_t HEIGHT = 50;
@@ -72,6 +86,8 @@ protected:
   QString m_nodeType;
   IO m_io;
   QString m_id = "";
+  int32_t m_maxInputPortCount = 1;
+  int32_t m_maxOutputPortCount = 1;
 
 private:
   QList<Port*> m_ports;

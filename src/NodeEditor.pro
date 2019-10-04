@@ -64,6 +64,7 @@ HEADERS += \
     core/controller/command/ConnectToPortCommand.h \
     core/controller/command/ReconnectToPortCommand.h \
     core/controller/command/NodeAddCommand.h \
+    core/controller/command/PortAddCommand.h \
     core/controller/command/NodeMoveCommand.h \
     core/controller/command/NodeRemoveCommand.h \
     core/controller/editor/Editor.h \
@@ -98,12 +99,14 @@ HEADERS += \
     core/util/Define.h \
     core/view/graphicsview/GraphicsView.h \
     core/view/menu/MenuManager.h \
+    core/view/menu/ContextMenuManager.h \
     core/view/widget/NodeToolBar.h \
     core/view/window/MainWindow.h \
     core/extend/ShowNodeNamePlugin.h \
     core/extend/AlignPlugin.h \
     core/extend/CutPlugin.h \
     core/extend/InvertPortPlugin.h \
+    core/extend/AddPortPlugin.h \
     core/model/sheet/Sheet.h \
     core/controller/factory/SheetFactory.h \
     core/model/observer/ProjectObserver.h \
@@ -126,6 +129,7 @@ SOURCES += \
     core/controller/command/ConnectToPortCommand.cpp \
     core/controller/command/ReconnectToPortCommand.cpp \
     core/controller/command/NodeAddCommand.cpp \
+    core/controller/command/PortAddCommand.cpp \
     core/controller/command/NodeMoveCommand.cpp \
     core/controller/command/NodeRemoveCommand.cpp \
     core/controller/editor/Editor.cpp \
@@ -159,12 +163,14 @@ SOURCES += \
     core/util/SystemConfig.cpp \
     core/view/graphicsview/GraphicsView.cpp \
     core/view/menu/MenuManager.cpp \
+    core/view/menu/ContextMenuManager.cpp \
     core/view/widget/NodeToolBar.cpp \
     core/view/window/MainWindow.cpp \
     core/extend/ShowNodeNamePlugin.cpp \
     core/extend/AlignPlugin.cpp \
     core/extend/CutPlugin.cpp \
     core/extend/InvertPortPlugin.cpp \
+    core/extend/AddPortPlugin.cpp \
     core/model/sheet/Sheet.cpp \
     core/controller/factory/SheetFactory.cpp \
     core/model/observer/ProjectObserver.cpp \

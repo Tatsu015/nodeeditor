@@ -1,7 +1,9 @@
 #include "PluginLoader.h"
 #include "AbstractPlugin.h"
+#include "AddPortPlugin.h"
 #include "AlignPlugin.h"
 #include "CircuitCalculatePlugin.h"
+#include "ContextMenuManager.h"
 #include "CutPlugin.h"
 #include "InvertPortPlugin.h"
 #include "MainWindow.h"
@@ -28,6 +30,7 @@ void PluginLoader::init() {
   addPlugin(new CutPlugin());
   addPlugin(new AlignPlugin());
   addPlugin(new InvertPortPlugin());
+  addPlugin(new AddPortPlugin());
 }
 
 void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {
@@ -40,6 +43,9 @@ void PluginLoader::reset() {
 
 void PluginLoader::addPlugin(AbstractPlugin* plugin) {
   m_plugins << plugin;
+  if (plugin->isContextMenuUse()) {
+    ContextMenuManager::getInstance()->addPlugin(plugin);
+  }
 }
 
 PluginLoader::PluginLoader() {

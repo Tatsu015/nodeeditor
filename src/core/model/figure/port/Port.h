@@ -10,7 +10,7 @@ class AbstractNode;
 
 class Port : public QGraphicsPathItem {
 public:
-  Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr);
+  Port(IO io, uint32_t number, QGraphicsItem* parent = nullptr, bool isInvert = false);
   virtual ~Port();
 
   QRectF boundingRect() const override;
@@ -34,7 +34,7 @@ public:
 
   bool canConnect() const;
 
-  void invert();
+  void invert(const bool isInvert);
   bool isInvert() const;
 
 protected:

@@ -1,12 +1,12 @@
-#ifndef InvertPortPlugin_H
-#define InvertPortPlugin_H
+#ifndef AddPortPlugin_H
+#define AddPortPlugin_H
 
 #include "AbstractPlugin.h"
 
-class InvertPortPlugin : public AbstractPlugin {
+class AddPortPlugin : public AbstractPlugin {
 public:
-  InvertPortPlugin(QObject* parent = nullptr);
-  virtual ~InvertPortPlugin();
+  AddPortPlugin(QObject* parent = nullptr);
+  virtual ~AddPortPlugin();
 
   virtual QList<QAction*> contextMenuActions(QGraphicsSceneContextMenuEvent* event) const;
 
@@ -20,4 +20,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // InvertPortPlugin_H
+#endif // AddPortPlugin_H

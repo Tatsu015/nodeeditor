@@ -1,4 +1,5 @@
 #include "PortFactory.h"
+#include "AbstractNode.h"
 
 PortFactory* PortFactory::getInstance() {
   static PortFactory s;
@@ -9,12 +10,10 @@ void PortFactory::addPort(Port* port) {
   m_portMap[port->portType()] = port;
 }
 
-Port* PortFactory::createPort(const QString& type, const IO io, uint32_t number, QGraphicsItem* parent,
-                              const bool isInverted) {
+Port* PortFactory::createPort(const QString& type, const IO io, AbstractNode* parent, const bool isInverted) {
+  int32_t number = parent->portCount();
   Port* port = m_portMap[type]->create(io, number, parent);
-  if (isInverted) {
-    port->invert();
-  }
+  port->invert(isInverted);
   return port;
 }
 

@@ -8,19 +8,24 @@
 #include <QMenu>
 
 CutPlugin::CutPlugin(QObject* parent) : AbstractPlugin(parent) {
+  m_isContextMenuUse = true;
 }
 
 CutPlugin::~CutPlugin() {
 }
 
+QList<QAction*> CutPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* event) const {
+  Q_UNUSED(event);
+  return QList<QAction*>({m_action});
+}
+
 void CutPlugin::doInit() {
   QMenu* menu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
 
-  QAction* action = new QAction("Cut");
-  menu->addAction(action);
-  MenuManager::getInstance()->addContextMenuAction(action);
+  m_action = new QAction("Cut");
+  menu->addAction(m_action);
 
-  connect(action, &QAction::triggered, this, &CutPlugin::onExecute);
+  connect(m_action, &QAction::triggered, this, &CutPlugin::onExecute);
 }
 
 void CutPlugin::onExecute() {

@@ -5,13 +5,12 @@
 #include "Connection.h"
 #include "ConnectionReconnectTool.h"
 #include "Connector.h"
+#include "ContextMenuManager.h"
 #include "Define.h"
 #include "Editor.h"
 #include "GuideLine.h"
 #include "InNode.h"
-#include "MenuManager.h"
 #include "NodeEditTool.h"
-#include "NodeFactory.h"
 #include "NodeRemoveCommand.h"
 #include "OutNode.h"
 #include "Port.h"
@@ -96,8 +95,7 @@ void Scene::keyReleaseEvent(QKeyEvent* event) {
 
 void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
   QMenu menu;
-  // TODO...
-  menu.addActions(MenuManager::getInstance()->contextMenuActions());
+  menu.addActions(ContextMenuManager::getInstance()->actions(event));
   menu.exec(event->screenPos());
   QGraphicsScene::contextMenuEvent(event);
 }

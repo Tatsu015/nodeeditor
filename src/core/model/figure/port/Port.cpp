@@ -7,9 +7,9 @@
 #include <QDebug>
 #include <QPen>
 
-Port::Port(IO io, uint32_t number, QGraphicsItem* parent)
+Port::Port(IO io, uint32_t number, QGraphicsItem* parent, bool isInvert)
     : QGraphicsPathItem(parent), m_portType("port"), m_parentNode(dynamic_cast<AbstractNode*>(parent)), m_io(io),
-      m_number(number) {
+      m_number(number), m_isInvert(isInvert) {
   const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeLineColor).toString()));
   const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), LINE_PEN_SIZE);
   setPen(PEN);
@@ -17,6 +17,8 @@ Port::Port(IO io, uint32_t number, QGraphicsItem* parent)
   QPainterPath path;
   path.addRect(0, (HEIGHT - LINE_HEIGHT) * 0.5, LINE_WIDTH, LINE_HEIGHT);
   setPath(path);
+
+  invert(m_isInvert);
 }
 
 Port::~Port() {
@@ -91,8 +93,8 @@ bool Port::canConnect() const {
   return true;
 }
 
-void Port::invert() {
-  m_isInvert = !m_isInvert;
+void Port::invert(const bool isInvert) {
+  m_isInvert = isInvert;
   if (m_isInvert) {
     const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeFillColor).toString()));
     const static QPen PEN = QPen(QColor(systemConfig(SystemConfig::nodeLineColor).toString()), ELLIPSE_PEN_SIZE);

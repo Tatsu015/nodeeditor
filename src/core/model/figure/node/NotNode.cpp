@@ -1,7 +1,7 @@
 #include "NotNode.h"
 #include "Define.h"
 #include "FigureNamePublisher.h"
-#include "PortFactory.h"
+#include "Port.h"
 #include <QBrush>
 #include <QFont>
 #include <QPen>
@@ -9,6 +9,8 @@
 NotNode::NotNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_NOT;
   m_io = Hidden;
+  m_maxInputPortCount = 1;
+  m_maxOutputPortCount = 1;
 
   QPainterPath path;
   path.lineTo(QPointF(0, HEIGHT));
@@ -16,15 +18,8 @@ NotNode::NotNode(QGraphicsItem* parent) : AbstractNode(parent) {
   path.closeSubpath();
   setPath(path);
 
-  Port* port1 = PortFactory::getInstance()->createPort("port", Input, 1, this);
-  port1->setPos(-port1->boundingRect().width() + PORT_POS_X_OFS,
-                boundingRect().center().y() - port1->boundingRect().height() * 0.5);
-  addPort(port1);
-
-  Port* port2 = PortFactory::getInstance()->createPort("port", Output, 2, this, true);
-  port2->setPos(boundingRect().width() - PORT_POS_X_OFS,
-                boundingRect().center().y() - port2->boundingRect().height() * 0.5);
-  addPort(port2);
+  addInputPort(new Port(Input, 1, this));
+  addOutputPort(new Port(Output, 2, this, true));
 }
 
 NotNode::~NotNode() {

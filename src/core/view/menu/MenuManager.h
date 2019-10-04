@@ -17,7 +17,6 @@ public:
   QMenu* menu(const QString& name);
   QList<QMenu*> menus() const;
 
-  void addContextMenuAction(QAction* action);
   QList<QAction*> contextMenuActions() const;
 
 private:

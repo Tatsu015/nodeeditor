@@ -270,9 +270,7 @@ void Project::fromJson(const QByteArray& data) {
       foreach (QJsonValue portJsonValue, nodeJsonVal[JSON_PORTS].toArray()) {
         unsigned int portNum = portJsonValue[JSON_PORT_NUMBER].toInt();
         Port* port = node->port(portNum);
-        if (portJsonValue[JSON_PORT_INVERTED].toBool()) {
-          port->invert();
-        }
+        port->invert(portJsonValue[JSON_PORT_INVERTED].toBool());
       }
 
       sheet->addNode(node);

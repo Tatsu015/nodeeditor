@@ -10,8 +10,7 @@ public:
   static PortFactory* getInstance();
 
   void addPort(Port* port);
-  Port* createPort(const QString& type, const IO io, uint32_t number, QGraphicsItem* parent,
-                   const bool isInverted = false);
+  Port* createPort(const QString& type, const IO io, AbstractNode* parent, const bool isInverted = false);
 
 private:
   QMap<QString, Port*> m_portMap;

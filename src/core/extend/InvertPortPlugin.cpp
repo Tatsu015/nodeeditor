@@ -9,15 +9,19 @@
 #include <QMenu>
 
 InvertPortPlugin::InvertPortPlugin(QObject* parent) : AbstractPlugin(parent) {
+  m_isContextMenuUse = true;
 }
 
 InvertPortPlugin::~InvertPortPlugin() {
 }
 
+QList<QAction*> InvertPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* event) const {
+  Q_UNUSED(event);
+  return QList<QAction*>({m_action});
+}
+
 void InvertPortPlugin::doInit() {
   m_action = new QAction("Invert Port");
-  MenuManager::getInstance()->addContextMenuAction(m_action);
-
   connect(m_action, &QAction::triggered, this, &InvertPortPlugin::onExecute);
 }
 
@@ -33,6 +37,7 @@ void InvertPortPlugin::onExecute() {
     foreach (Port* port, targetNode->ports()) { portNames << QString::number(port->number()); }
     uint32_t targetPortNum = selectPortDialog.getItem(nullptr, "Select Invert Port", "a", portNames).toUInt();
     Port* targetPort = targetNode->port(targetPortNum);
-    targetPort->invert();
+
+    targetPort->invert(!targetPort->isInvert());
   }
 }

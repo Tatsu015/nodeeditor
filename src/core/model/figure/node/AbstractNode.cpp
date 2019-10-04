@@ -3,6 +3,7 @@
 #include "Port.h"
 #include "SystemConfig.h"
 #include <QBrush>
+#include <QDebug>
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
 #include <QUuid>
@@ -89,8 +90,44 @@ QList<Port*> AbstractNode::ports() const {
   return m_ports;
 }
 
+int32_t AbstractNode::portCount() const {
+  return ports().count();
+}
+
 void AbstractNode::addPort(Port* port) {
   m_ports << port;
+}
+
+void AbstractNode::addInputPort(Port* inputPort) {
+  if (m_maxInputPortCount < inputPortCount()) {
+    qDebug() << "Too many input port exist!";
+    return;
+  }
+  m_ports << inputPort;
+  adjustInputPortPos();
+}
+
+void AbstractNode::addOutputPort(Port* outputPort) {
+  if (m_maxOutputPortCount < outputPortCount()) {
+    qDebug() << "Too many output port exist!";
+    return;
+  }
+  m_ports << outputPort;
+  adjustOutputPortPos();
+}
+
+bool AbstractNode::canAddInputPort() const {
+  if (m_maxInputPortCount <= inputPortCount()) {
+    return false;
+  }
+  return true;
+}
+
+bool AbstractNode::canAddOutputPort() const {
+  if (m_maxOutputPortCount <= outputPortCount()) {
+    return false;
+  }
+  return true;
 }
 
 Port* AbstractNode::port(const uint64_t number) {
@@ -220,4 +257,82 @@ void AbstractNode::setNameTextVisible(const bool visible) {
 
 QString AbstractNode::id() const {
   return m_id;
+}
+
+QList<Port*> AbstractNode::inputPorts() const {
+  QList<Port*> ports;
+  foreach (Port* port, m_ports) {
+    if (Input == port->io()) {
+      ports << port;
+    }
+  }
+  return ports;
+}
+
+QList<Port*> AbstractNode::outputPorts() const {
+  QList<Port*> ports;
+  foreach (Port* port, m_ports) {
+    if (Output == port->io()) {
+      ports << port;
+    }
+  }
+  return ports;
+}
+
+int32_t AbstractNode::inputPortCount() const {
+  return inputPorts().count();
+}
+
+int32_t AbstractNode::outputPortCount() const {
+  return outputPorts().count();
+}
+
+void AbstractNode::adjustInputPortPos() {
+  int32_t portCount = inputPortCount();
+
+  if (portCount < 1) {
+    return;
+  }
+
+  QList<Port*> ports = inputPorts();
+  if (portCount < 2) {
+    Port* port = ports.first();
+    port->setPos(-port->boundingRect().width() + PORT_POS_X_OFS,
+                 boundingRect().center().y() - port->boundingRect().height() * 0.5);
+    return;
+  }
+
+  qreal span = (boundingRect().height() - PORT_POS_Y_OFS * 2 - ports.first()->boundingRect().height() * portCount) /
+               (portCount - 1);
+
+  qreal y = PORT_POS_Y_OFS;
+  foreach (Port* port, ports) {
+    port->setPos(-port->boundingRect().width() + PORT_POS_X_OFS, y);
+    y += (port->boundingRect().height() + span);
+  }
+}
+
+void AbstractNode::adjustOutputPortPos() {
+  int32_t portCount = outputPortCount();
+
+  if (portCount < 1) {
+    return;
+  }
+
+  QList<Port*> ports = outputPorts();
+  if (portCount < 2) {
+    Port* port = ports.first();
+    port->setPos(boundingRect().width() - PORT_POS_X_OFS,
+                 boundingRect().center().y() - port->boundingRect().height() * 0.5);
+    return;
+  }
+
+  qreal span = (boundingRect().height() - PORT_POS_Y_OFS * 2 - ports.first()->boundingRect().height() * portCount) /
+               (portCount - 1);
+
+  qreal y = PORT_POS_Y_OFS;
+  foreach (Port* port, ports) {
+    port->setPos(boundingRect().width() - PORT_POS_X_OFS, y);
+    y += (port->boundingRect().height() + span);
+  }
 }
