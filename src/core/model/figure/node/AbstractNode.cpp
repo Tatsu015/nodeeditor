@@ -287,6 +287,22 @@ QString AbstractNode::id() const {
   return m_id;
 }
 
+QJsonObject AbstractNode::toJsonObject() {
+  QJsonObject jsonObj;
+  jsonObj[JSON_ID] = m_id;
+  jsonObj[JSON_NAME] = m_name;
+  jsonObj[JSON_NODETYPE] = m_nodeType;
+  jsonObj[JSON_X] = pos().x();
+  jsonObj[JSON_Y] = pos().y();
+
+  QJsonArray portJsonArray;
+  foreach (Port* port, m_ports) { portJsonArray.append(port->toJsonObj()); }
+
+  jsonObj[JSON_PORTS] = portJsonArray;
+
+  return jsonObj;
+}
+
 QList<Port*> AbstractNode::inputPorts() const {
   QList<Port*> ports;
   foreach (Port* port, m_ports) {

@@ -21,28 +21,6 @@
 #include <QJsonObject>
 
 const static QString DEFAULT_FILE_NAME = "Undefined." + APP_EXTENSION;
-const static QString JSON_NODE_NAME_VISIBLE = "nodeNameVisible";
-const static QString JSON_ID = "id";
-const static QString JSON_SHEETS = "sheets";
-const static QString JSON_NODES = "nodes";
-const static QString JSON_PORTS = "ports";
-const static QString JSON_CONNECTORS = "connectors";
-const static QString JSON_NODE_TO_NODE_CONNECTIONS = "nodeToNodeConnections";
-const static QString JSON_NODE_TO_CONNECTOR_CONNECTIONS = "nodeToConnectorConnections";
-const static QString JSON_NAME = "name";
-const static QString JSON_NODETYPE = "nodetype";
-const static QString JSON_PORT_NUMBER = "portNumber";
-const static QString JSON_PORT_IO = "portIO";
-const static QString JSON_PORT_INVERTED = "portInverted";
-const static QString JSON_X = "x";
-const static QString JSON_Y = "y";
-const static QString JSON_START_NODE_NAME = "startNodeName";
-const static QString JSON_START_PORT_NUMBER = "startPortNumber";
-const static QString JSON_END_NODE_NAME = "endNodeName";
-const static QString JSON_END_PORT_NUMBER = "endPortNumber";
-const static QString JSON_CONNECTOR_POS_X = "connectorPosX";
-const static QString JSON_CONNECTOR_POS_Y = "connectorPosY";
-const static QString JSON_DST_CONNECTION_NAME = "dstConnectionName";
 
 Project::Project() {
   QDir dir;
@@ -167,7 +145,9 @@ void Project::changeActiveSheet(const QString& sheetName) {
   m_activeSheet = sheet(sheetName);
   m_scene->changeSheet(m_activeSheet);
   foreach (ProjectObserver* projectObserver, m_projectObservers) { projectObserver->changeSheet(m_activeSheet); }
-  // need to update because when after change sheet, graphics trash remain...
+  // need to update because when after
+  // change sheet, graphics trash
+  // remain...
   m_scene->update();
 }
 
@@ -178,63 +158,7 @@ void Project::addObserver(ProjectObserver* projectObserver) {
 QByteArray Project::toJson() {
   QJsonArray sheetJsonArray;
 
-  foreach (Sheet* sheet, m_sheets) {
-    QJsonObject sheetJsonObj;
-    sheetJsonObj[JSON_NAME] = sheet->name();
-    sheetJsonObj[JSON_ID] = sheet->id();
-
-    QJsonArray nodeJsonArray;
-    foreach (AbstractNode* node, sheet->nodes()) {
-      QJsonObject nodeJsonObj;
-      nodeJsonObj[JSON_ID] = node->id();
-      nodeJsonObj[JSON_NAME] = node->name();
-      nodeJsonObj[JSON_NODETYPE] = node->nodeType();
-      nodeJsonObj[JSON_X] = node->pos().x();
-      nodeJsonObj[JSON_Y] = node->pos().y();
-      QJsonArray portJsonArray;
-      foreach (Port* port, node->ports()) {
-        QJsonObject portJsonObj;
-        portJsonObj[JSON_PORT_NUMBER] = static_cast<int32_t>(port->number());
-        portJsonObj[JSON_PORT_IO] = static_cast<int32_t>(port->io());
-        portJsonObj[JSON_PORT_INVERTED] = port->isInvert();
-        portJsonArray.append(portJsonObj);
-      }
-      nodeJsonObj[JSON_PORTS] = portJsonArray;
-      nodeJsonArray.append(nodeJsonObj);
-    }
-
-    QJsonArray nodeToNodeConnectionJsonArray;
-    QJsonArray nodeToConnectorConnectionJsonArray;
-    foreach (Connection* connection, sheet->connections()) {
-      QJsonObject connectionJsonObj;
-      connectionJsonObj[JSON_ID] = connection->id();
-      connectionJsonObj[JSON_NAME] = connection->name();
-
-      Port* startPort = connection->startPort();
-      Port* endPort = connection->endPort();
-      Connector* endConnector = connection->endConnector();
-      if (endPort) {
-        connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
-        connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
-        connectionJsonObj[JSON_END_NODE_NAME] = endPort->parentNode()->name();
-        connectionJsonObj[JSON_END_PORT_NUMBER] = QString::number(endPort->number());
-        nodeToNodeConnectionJsonArray << connectionJsonObj;
-      } else if (endConnector) {
-        connectionJsonObj[JSON_START_NODE_NAME] = startPort->parentNode()->name();
-        connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(startPort->number());
-        connectionJsonObj[JSON_CONNECTOR_POS_X] = QString::number(endConnector->scenePos().x());
-        connectionJsonObj[JSON_CONNECTOR_POS_Y] = QString::number(endConnector->scenePos().y());
-        connectionJsonObj[JSON_DST_CONNECTION_NAME] = endConnector->dstConnection()->name();
-        nodeToConnectorConnectionJsonArray << connectionJsonObj;
-      }
-    }
-
-    sheetJsonObj[JSON_NODES] = nodeJsonArray;
-    sheetJsonObj[JSON_NODE_TO_NODE_CONNECTIONS] = nodeToNodeConnectionJsonArray;
-    sheetJsonObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS] = nodeToConnectorConnectionJsonArray;
-
-    sheetJsonArray.append(sheetJsonObj);
-  }
+  foreach (Sheet* sheet, m_sheets) { sheetJsonArray.append(sheet->toJsonObj()); }
 
   QJsonObject jsonObj;
   jsonObj[JSON_NODE_NAME_VISIBLE] = m_nodeNameVisible;
@@ -248,101 +172,111 @@ QByteArray Project::toJson() {
 void Project::fromJson(const QByteArray& data) {
   QJsonDocument doc(QJsonDocument::fromJson(data));
   QJsonObject rootObj(doc.object());
-  Scene* scene = Editor::getInstance()->project()->scene();
 
-  // this property need to read before create nodes
+  // this property need to read before
+  // create nodes
   m_nodeNameVisible = rootObj[JSON_NODE_NAME_VISIBLE].toBool();
+  foreach (QJsonValue sheetJsonVal, rootObj[JSON_SHEETS].toArray()) { parseSheet(sheetJsonVal); }
+  setActiveSheet(m_sheets.first()->name());
+}
 
-  foreach (QJsonValue sheetJsonVal, rootObj[JSON_SHEETS].toArray()) {
-    Sheet* sheet = SheetFactory::getInstance()->createSheet(sheetJsonVal[JSON_ID].toString());
-    sheet->setName(sheetJsonVal[JSON_NAME].toString());
-    addSheet(sheet);
+void Project::parseSheet(QJsonValue sheetJsonVal) {
+  Sheet* sheet = SheetFactory::getInstance()->createSheet(sheetJsonVal[JSON_ID].toString());
+  sheet->setName(sheetJsonVal[JSON_NAME].toString());
+  addSheet(sheet);
 
-    foreach (QJsonValue nodeJsonVal, sheetJsonVal[JSON_NODES].toArray()) {
-      QString name = nodeJsonVal[JSON_NAME].toString();
-      QString id = nodeJsonVal[JSON_ID].toString();
-      QString nodeType = nodeJsonVal[JSON_NODETYPE].toString();
-      qreal x = nodeJsonVal[JSON_X].toDouble();
-      qreal y = nodeJsonVal[JSON_Y].toDouble();
+  foreach (QJsonValue nodeJsonVal, sheetJsonVal[JSON_NODES].toArray()) { parseNode(sheet, nodeJsonVal); }
+  foreach (QJsonValue connectionJsonVal, sheetJsonVal[JSON_NODE_TO_NODE_CONNECTIONS].toArray()) {
+    parseNodeToNodeConnection(sheet, connectionJsonVal);
+  }
+  foreach (QJsonValue connectionJsonVal, sheetJsonVal[JSON_NODE_TO_CONNECTOR_CONNECTIONS].toArray()) {
+    parseNodeToConnectorConnection(sheet, connectionJsonVal);
+  }
+}
 
-      AbstractNode* node = NodeFactory::getInstance()->createNode(sheet, nodeType, name, id);
-      node->setNameTextVisible(m_nodeNameVisible);
-      node->setName(name);
-      node->setPos(x, y);
+void Project::parseNode(Sheet* sheet, QJsonValue nodeJsonVal) {
+  QString name = nodeJsonVal[JSON_NAME].toString();
+  QString id = nodeJsonVal[JSON_ID].toString();
+  QString nodeType = nodeJsonVal[JSON_NODETYPE].toString();
+  qreal x = nodeJsonVal[JSON_X].toDouble();
+  qreal y = nodeJsonVal[JSON_Y].toDouble();
 
-      foreach (QJsonValue portJsonValue, nodeJsonVal[JSON_PORTS].toArray()) {
-        unsigned int portNum = portJsonValue[JSON_PORT_NUMBER].toInt();
-        Port* port = node->port(portNum);
-        bool isInverted = portJsonValue[JSON_PORT_INVERTED].toBool();
-        if (port) {
-          port->invert(isInverted);
-        } else {
-          IO io = static_cast<IO>(portJsonValue[JSON_PORT_IO].toInt());
-          port = PortFactory::getInstance()->createPort("port", io, node, isInverted);
-          if (Input == io) {
-            node->addInputPort(port);
-          } else {
-            node->addOutputPort(port);
-          }
-        }
-      }
+  AbstractNode* node = NodeFactory::getInstance()->createNode(sheet, nodeType, name, id);
+  node->setNameTextVisible(m_nodeNameVisible);
+  node->setName(name);
+  node->setPos(x, y);
 
-      sheet->addNode(node);
-    }
+  foreach (QJsonValue portJsonValue, nodeJsonVal[JSON_PORTS].toArray()) { parsePort(node, portJsonValue); }
 
-    foreach (QJsonValue connectionJsonVal, sheetJsonVal[JSON_NODE_TO_NODE_CONNECTIONS].toArray()) {
-      QString name = connectionJsonVal[JSON_NAME].toString();
-      QString id = connectionJsonVal[JSON_ID].toString();
-      QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
-      uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
-      QString endNodeName = connectionJsonVal[JSON_END_NODE_NAME].toString();
-      uint32_t endPortNumber = connectionJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
+  sheet->addNode(node);
+}
 
-      Connection* connection = ConnectionFactory::getInstance()->createConnection(sheet, CONNECTION, name, id);
-      AbstractNode* startNode = sheet->node(startNodeName);
-      Port* startPort = startNode->port(startPortNumber);
-      AbstractNode* endNode = sheet->node(endNodeName);
-      Port* endPort = endNode->port(endPortNumber);
+void Project::parseNodeToNodeConnection(Sheet* sheet, QJsonValue connectionJsonVal) {
+  QString name = connectionJsonVal[JSON_NAME].toString();
+  QString id = connectionJsonVal[JSON_ID].toString();
+  QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
+  uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
+  QString endNodeName = connectionJsonVal[JSON_END_NODE_NAME].toString();
+  uint32_t endPortNumber = connectionJsonVal[JSON_END_PORT_NUMBER].toString().toInt();
 
-      connection->setName(name);
-      connection->setStartPort(startPort);
-      startPort->addConnection(connection);
-      connection->setEndPort(endPort);
-      endPort->addConnection(connection);
+  Connection* connection = ConnectionFactory::getInstance()->createConnection(sheet, CONNECTION, name, id);
+  AbstractNode* startNode = sheet->node(startNodeName);
+  Port* startPort = startNode->port(startPortNumber);
+  AbstractNode* endNode = sheet->node(endNodeName);
+  Port* endPort = endNode->port(endPortNumber);
 
-      sheet->addConnection(connection);
-    }
+  connection->setName(name);
+  connection->setStartPort(startPort);
+  startPort->addConnection(connection);
+  connection->setEndPort(endPort);
+  endPort->addConnection(connection);
 
-    foreach (QJsonValue connectionJsonVal, sheetJsonVal[JSON_NODE_TO_CONNECTOR_CONNECTIONS].toArray()) {
-      QString name = connectionJsonVal[JSON_NAME].toString();
-      QString id = connectionJsonVal[JSON_ID].toString();
-      QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
-      uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
-      QString dstConnectionName = connectionJsonVal[JSON_DST_CONNECTION_NAME].toString();
-      qreal connectorPosX = connectionJsonVal[JSON_CONNECTOR_POS_X].toString().toDouble();
-      qreal connectorPosY = connectionJsonVal[JSON_CONNECTOR_POS_Y].toString().toDouble();
+  sheet->addConnection(connection);
+}
 
-      Connection* connection = ConnectionFactory::getInstance()->createConnection(sheet, CONNECTION, name, id);
-      Connector* endConnector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, connection);
-      endConnector->setPos(connectorPosX, connectorPosY);
-      scene->addRect(connectorPosX, connectorPosY, 10, 10);
-      AbstractNode* startNode = sheet->node(startNodeName);
-      Port* startPort = startNode->port(startPortNumber);
-      Connection* dstConnection = sheet->connection(dstConnectionName);
+void Project::parseNodeToConnectorConnection(Sheet* sheet, QJsonValue connectionJsonVal) {
+  QString name = connectionJsonVal[JSON_NAME].toString();
+  QString id = connectionJsonVal[JSON_ID].toString();
+  QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
+  uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
+  QString dstConnectionName = connectionJsonVal[JSON_DST_CONNECTION_NAME].toString();
+  qreal connectorPosX = connectionJsonVal[JSON_CONNECTOR_POS_X].toString().toDouble();
+  qreal connectorPosY = connectionJsonVal[JSON_CONNECTOR_POS_Y].toString().toDouble();
 
-      connection->setName(name);
-      connection->setStartPort(startPort);
-      startPort->addConnection(connection);
+  Connection* connection = ConnectionFactory::getInstance()->createConnection(sheet, CONNECTION, name, id);
+  Connector* endConnector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, connection);
+  endConnector->setPos(connectorPosX, connectorPosY);
+  AbstractNode* startNode = sheet->node(startNodeName);
+  Port* startPort = startNode->port(startPortNumber);
+  Connection* dstConnection = sheet->connection(dstConnectionName);
 
-      connection->setEndConnector(endConnector);
-      endConnector->setDstConnection(dstConnection);
-      endConnector->setSrcConnection(connection);
-      dstConnection->addBranchConnector(endConnector);
+  connection->setName(name);
+  connection->setStartPort(startPort);
+  startPort->addConnection(connection);
 
-      sheet->addConnection(connection);
+  connection->setEndConnector(endConnector);
+  endConnector->setDstConnection(dstConnection);
+  endConnector->setSrcConnection(connection);
+  dstConnection->addBranchConnector(endConnector);
+
+  sheet->addConnection(connection);
+}
+
+void Project::parsePort(AbstractNode* node, QJsonValue portJsonVal) {
+  unsigned int portNum = portJsonVal[JSON_PORT_NUMBER].toInt();
+  Port* port = node->port(portNum);
+  bool isInverted = portJsonVal[JSON_PORT_INVERTED].toBool();
+  if (port) {
+    port->invert(isInverted);
+  } else {
+    IO io = static_cast<IO>(portJsonVal[JSON_PORT_IO].toInt());
+    port = PortFactory::getInstance()->createPort("port", io, node, isInverted);
+    if (Input == io) {
+      node->addInputPort(port);
+    } else {
+      node->addOutputPort(port);
     }
   }
-  setActiveSheet(m_sheets.first()->name());
 }
 
 bool Project::nodeNameVisible() const {

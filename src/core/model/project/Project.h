@@ -7,6 +7,7 @@
 class Scene;
 class Sheet;
 class ProjectObserver;
+class AbstractNode;
 
 class Project {
 public:
@@ -43,9 +44,15 @@ public:
   void takeOver(Project* project);
 
 private:
-  QByteArray toJson();
-  void fromJson(const QByteArray& data);
   void notify();
+  QByteArray toJson();
+
+  void fromJson(const QByteArray& data);
+  void parseSheet(QJsonValue sheetJsonVal);
+  void parseNode(Sheet* sheet, QJsonValue nodeJsonVal);
+  void parseNodeToNodeConnection(Sheet* sheet, QJsonValue connectionJsonVal);
+  void parseNodeToConnectorConnection(Sheet* sheet, QJsonValue connectionJsonVal);
+  void parsePort(AbstractNode* node, QJsonValue portJsonVal);
 
 private:
   Scene* m_scene = nullptr;

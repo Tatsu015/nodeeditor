@@ -1,6 +1,7 @@
 #ifndef SHEET_H
 #define SHEET_H
 
+#include <QJsonObject>
 #include <QList>
 #include <QString>
 
@@ -31,6 +32,8 @@ public:
   void setName(const QString& name);
 
   bool contain(const QString& figureName) const;
+
+  QJsonObject toJsonObj();
 
 private:
   QString m_id = "";

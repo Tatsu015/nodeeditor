@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "Define.h"
 #include <QGraphicsPathItem>
+#include <QJsonArray>
 
 class Port;
 class QGraphicsSimpleTextItem;
@@ -68,6 +69,8 @@ public:
   virtual bool execute(QList<bool> args) = 0;
 
   QString id() const;
+
+  QJsonObject toJsonObject();
 
 private:
   QList<Port*> inputPorts() const;

@@ -86,3 +86,28 @@ bool Sheet::contain(const QString& figureName) const {
   }
   return false;
 }
+
+QJsonObject Sheet::toJsonObj() {
+  QJsonObject jsonObj;
+  jsonObj[JSON_NAME] = m_name;
+  jsonObj[JSON_ID] = m_id;
+
+  QJsonArray nodeJsonArray;
+  foreach (AbstractNode* node, m_nodes) { nodeJsonArray.append(node->toJsonObject()); }
+
+  QJsonArray nodeToNodeConnectionJsonArray;
+  QJsonArray nodeToConnectorConnectionJsonArray;
+  foreach (Connection* connection, m_connections) {
+    if (connection) {
+      nodeToNodeConnectionJsonArray << connection->toJsonObj();
+    } else {
+      nodeToConnectorConnectionJsonArray << connection->toJsonObj();
+    }
+  }
+
+  jsonObj[JSON_NODES] = nodeJsonArray;
+  jsonObj[JSON_NODE_TO_NODE_CONNECTIONS] = nodeToNodeConnectionJsonArray;
+  jsonObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS] = nodeToConnectorConnectionJsonArray;
+
+  return jsonObj;
+}

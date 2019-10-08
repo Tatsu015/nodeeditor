@@ -3,6 +3,7 @@
 
 #include "Define.h"
 #include <QGraphicsPathItem>
+#include <QJsonObject>
 
 class Connection;
 class Port;
@@ -37,6 +38,8 @@ public:
   void invert(const bool isInvert);
   bool isInvert() const;
   bool isRemovable() const;
+
+  QJsonObject toJsonObj();
 
 protected:
   const static uint32_t WIDTH = 13;

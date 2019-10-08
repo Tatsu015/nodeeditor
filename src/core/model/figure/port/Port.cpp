@@ -121,3 +121,12 @@ bool Port::isInvert() const {
 bool Port::isRemovable() const {
   return m_isRemovable;
 }
+
+QJsonObject Port::toJsonObj() {
+  QJsonObject jsonObj;
+  jsonObj[JSON_PORT_NUMBER] = static_cast<int32_t>(m_number);
+  jsonObj[JSON_PORT_IO] = static_cast<int32_t>(m_io);
+  jsonObj[JSON_PORT_INVERTED] = m_isInvert;
+
+  return jsonObj;
+}

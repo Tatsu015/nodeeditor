@@ -59,6 +59,8 @@ public:
 
   void changeConnectionStyle(const ConnectionStyle style);
 
+  QJsonObject toJsonObj();
+
 protected:
   const static uint32_t PEN_SIZE;
 

@@ -253,6 +253,29 @@ void Connection::changeConnectionStyle(const Connection::ConnectionStyle style) 
   }
 }
 
+// todo node dependency want to remove
+// node will change to port.
+#include "AbstractNode.h"
+QJsonObject Connection::toJsonObj() {
+  QJsonObject connectionJsonObj;
+  connectionJsonObj[JSON_ID] = m_id;
+  connectionJsonObj[JSON_NAME] = m_name;
+
+  if (m_endPort) {
+    connectionJsonObj[JSON_START_NODE_NAME] = m_startPort->parentNode()->name();
+    connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(m_startPort->number());
+    connectionJsonObj[JSON_END_NODE_NAME] = m_endPort->parentNode()->name();
+    connectionJsonObj[JSON_END_PORT_NUMBER] = QString::number(m_endPort->number());
+  } else if (m_endConnector) {
+    connectionJsonObj[JSON_START_NODE_NAME] = m_startPort->parentNode()->name();
+    connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(m_startPort->number());
+    connectionJsonObj[JSON_CONNECTOR_POS_X] = QString::number(m_endConnector->scenePos().x());
+    connectionJsonObj[JSON_CONNECTOR_POS_Y] = QString::number(m_endConnector->scenePos().y());
+    connectionJsonObj[JSON_DST_CONNECTION_NAME] = m_endConnector->dstConnection()->name();
+  }
+  return connectionJsonObj;
+}
+
 void Connection::setEndConnector(Connector* endConnector) {
   m_endConnector = endConnector;
   m_endPos = endConnector->centerScenePos();
