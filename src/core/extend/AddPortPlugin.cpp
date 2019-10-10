@@ -21,6 +21,10 @@ QList<QAction*> AddPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent
   Project* project = Editor::getInstance()->project();
   Scene* scene = project->scene();
   QList<AbstractNode*> nodes = scene->findNodes(event->scenePos());
+  if (0 >= nodes.count()) {
+    return QList<QAction*>();
+  }
+
   AbstractNode* node = nodes.first();
   if (node->canAddInputPort()) {
     return QList<QAction*>({m_action});

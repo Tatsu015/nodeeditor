@@ -5,6 +5,7 @@
 #include "Port.h"
 #include "Project.h"
 #include "Scene.h"
+#include <QGraphicsSceneContextMenuEvent>
 #include <QInputDialog>
 #include <QMenu>
 
@@ -16,7 +17,13 @@ InvertPortPlugin::~InvertPortPlugin() {
 }
 
 QList<QAction*> InvertPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* event) const {
-  Q_UNUSED(event);
+  Project* project = Editor::getInstance()->project();
+  Scene* scene = project->scene();
+  QList<AbstractNode*> nodes = scene->findNodes(event->scenePos());
+  if (0 >= nodes.count()) {
+    return QList<QAction*>();
+  }
+
   return QList<QAction*>({m_action});
 }
 

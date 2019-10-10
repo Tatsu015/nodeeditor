@@ -5,6 +5,7 @@
 #include "NodeRemoveCommand.h"
 #include "Project.h"
 #include "Scene.h"
+#include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
 
 CutPlugin::CutPlugin(QObject* parent) : AbstractPlugin(parent) {
@@ -15,7 +16,13 @@ CutPlugin::~CutPlugin() {
 }
 
 QList<QAction*> CutPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* event) const {
-  Q_UNUSED(event);
+  Project* project = Editor::getInstance()->project();
+  Scene* scene = project->scene();
+  QList<AbstractNode*> nodes = scene->findNodes(event->scenePos());
+  if (0 >= nodes.count()) {
+    return QList<QAction*>();
+  }
+
   return QList<QAction*>({m_action});
 }
 
