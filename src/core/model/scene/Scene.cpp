@@ -94,9 +94,8 @@ void Scene::keyReleaseEvent(QKeyEvent* event) {
 }
 
 void Scene::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
-  QMenu menu;
-  menu.addActions(ContextMenuManager::getInstance()->actions(event));
-  menu.exec(event->screenPos());
+  QMenu* menu = ContextMenuManager::getInstance()->contextMenu(event);
+  menu->exec(event->screenPos());
   QGraphicsScene::contextMenuEvent(event);
 }
 

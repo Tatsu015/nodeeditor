@@ -8,7 +8,7 @@ public:
   AlignPlugin(QObject* parent = nullptr);
   virtual ~AlignPlugin();
 
-  virtual QList<QAction*> contextMenuActions(QGraphicsSceneContextMenuEvent* event) const;
+  virtual QMenu* contextSubMenu(QGraphicsSceneContextMenuEvent* event) const;
 
 protected:
   void doInit();
@@ -20,6 +20,7 @@ private slots:
   void onExecuteAlignBottom();
 
 private:
+  QMenu* m_alignMenu = nullptr;
   QAction* m_alignLeftAction = nullptr;
   QAction* m_alignRightAction = nullptr;
   QAction* m_alignTopAction = nullptr;

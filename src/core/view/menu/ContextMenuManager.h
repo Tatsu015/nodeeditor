@@ -13,10 +13,12 @@ class ContextMenuManager {
 public:
   static ContextMenuManager* getInstance();
   void addPlugin(AbstractPlugin* plugin);
+  QMenu* contextMenu(QGraphicsSceneContextMenuEvent* event) const;
   QList<QAction*> actions(QGraphicsSceneContextMenuEvent* event) const;
 
 private:
   QList<AbstractPlugin*> m_plugins;
+  QMenu* m_menu = nullptr;
 
 private:
   ContextMenuManager();

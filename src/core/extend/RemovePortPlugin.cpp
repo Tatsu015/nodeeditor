@@ -12,7 +12,6 @@
 #include <QInputDialog>
 
 RemovePortPlugin::RemovePortPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 RemovePortPlugin::~RemovePortPlugin() {
@@ -34,6 +33,8 @@ QList<QAction*> RemovePortPlugin::contextMenuActions(QGraphicsSceneContextMenuEv
 }
 
 void RemovePortPlugin::doInit() {
+  useContextMenu(true);
+
   m_action = new QAction("Remove Port");
   connect(m_action, &QAction::triggered, this, &RemovePortPlugin::onExecute);
 }

@@ -11,7 +11,6 @@
 #include <QGraphicsSceneContextMenuEvent>
 
 AddPortPlugin::AddPortPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 AddPortPlugin::~AddPortPlugin() {
@@ -33,6 +32,8 @@ QList<QAction*> AddPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent
 }
 
 void AddPortPlugin::doInit() {
+  useContextMenu(true);
+
   m_action = new QAction("Add Port");
   connect(m_action, &QAction::triggered, this, &AddPortPlugin::onExecute);
 }

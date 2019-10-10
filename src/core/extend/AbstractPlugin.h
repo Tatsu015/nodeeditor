@@ -22,6 +22,7 @@ public:
   virtual void reset();
 
   bool isContextMenuUse() const;
+  virtual QMenu* contextSubMenu(QGraphicsSceneContextMenuEvent* event) const;
   virtual QList<QAction*> contextMenuActions(QGraphicsSceneContextMenuEvent* event) const;
 
 protected:
@@ -29,6 +30,9 @@ protected:
   virtual void doInit() = 0;
 
 protected:
+  void useContextMenu(const bool isUse);
+
+private:
   bool m_isContextMenuUse = false;
 };
 

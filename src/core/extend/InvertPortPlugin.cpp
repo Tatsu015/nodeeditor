@@ -10,7 +10,6 @@
 #include <QMenu>
 
 InvertPortPlugin::InvertPortPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 InvertPortPlugin::~InvertPortPlugin() {
@@ -28,6 +27,8 @@ QList<QAction*> InvertPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEv
 }
 
 void InvertPortPlugin::doInit() {
+  useContextMenu(true);
+
   m_action = new QAction("Invert Port");
   connect(m_action, &QAction::triggered, this, &InvertPortPlugin::onExecute);
 }
