@@ -22,6 +22,11 @@ bool AbstractPlugin::isContextMenuUse() const {
   return m_isContextMenuUse;
 }
 
+QMenu* AbstractPlugin::contextSubMenu(QGraphicsSceneContextMenuEvent* event) const {
+  Q_UNUSED(event);
+  return nullptr;
+}
+
 void AbstractPlugin::reset() {
 }
 

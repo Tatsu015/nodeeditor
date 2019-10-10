@@ -13,38 +13,38 @@ AlignPlugin::AlignPlugin(QObject* parent) : AbstractPlugin(parent) {
 AlignPlugin::~AlignPlugin() {
 }
 
-QList<QAction*> AlignPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* event) const {
+QMenu* AlignPlugin::contextSubMenu(QGraphicsSceneContextMenuEvent* event) const {
   Project* project = Editor::getInstance()->project();
   Scene* scene = project->scene();
   QList<AbstractNode*> selectedNodes = scene->selectedNodes();
   if (1 >= selectedNodes.count()) {
-    return QList<QAction*>();
+    return nullptr;
   }
-  return QList<QAction*>({m_alignTopAction, m_alignBottomAction, m_alignLeftAction, m_alignRightAction});
+  return m_alignMenu;
 }
 
 void AlignPlugin::doInit() {
   QMenu* editMenu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
-  QMenu* alignMenu = new QMenu("Align");
-  editMenu->addMenu(alignMenu);
+  m_alignMenu = new QMenu("Align");
+  editMenu->addMenu(m_alignMenu);
 
   m_alignLeftAction = new QAction("Align Left");
-  alignMenu->addAction(m_alignLeftAction);
+  m_alignMenu->addAction(m_alignLeftAction);
 
   connect(m_alignLeftAction, &QAction::triggered, this, &AlignPlugin::onExecuteAlignLeft);
 
   m_alignRightAction = new QAction("Align Right");
-  alignMenu->addAction(m_alignRightAction);
+  m_alignMenu->addAction(m_alignRightAction);
 
   connect(m_alignRightAction, &QAction::triggered, this, &AlignPlugin::onExecuteAlignRight);
 
   m_alignTopAction = new QAction("Align Top");
-  alignMenu->addAction(m_alignTopAction);
+  m_alignMenu->addAction(m_alignTopAction);
 
   connect(m_alignTopAction, &QAction::triggered, this, &AlignPlugin::onExecuteAlignTop);
 
   m_alignBottomAction = new QAction("Align Bottom");
-  alignMenu->addAction(m_alignBottomAction);
+  m_alignMenu->addAction(m_alignBottomAction);
 
   connect(m_alignBottomAction, &QAction::triggered, this, &AlignPlugin::onExecuteAlignBottom);
 }
