@@ -58,8 +58,7 @@ void Builder::buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
   redo->setIcon(QIcon("../resource/redo.png"));
   editMenu->addAction(redo);
 
-  PluginLoader::getInstance()->init();
-  PluginLoader::getInstance()->load(mainWindow, ui);
+  PluginLoader::getInstance()->init(mainWindow, ui);
 
   foreach (QMenu* menu, MenuManager::getInstance()->menus()) { ui->menuBar->addMenu(menu); }
 }
