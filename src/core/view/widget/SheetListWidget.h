@@ -24,11 +24,16 @@ public:
 private slots:
   void onAddSheext();
   void onDeleteSheet();
-  void onChangeSheetName(QListWidgetItem* item);
+  void onChangeSheetName();
+  //  void onChangeSheetName(QListWidgetItem* item);
   void onChangeActiveSheet(QListWidgetItem* item);
+  void onExecContextMenu(const QPoint& pos);
 
 private:
   Ui::SheetListWidget* ui = nullptr;
+  QAction* m_addSheetNameAction = nullptr;
+  QAction* m_deleteSheetNameAction = nullptr;
+  QAction* m_renameSheetAction = nullptr;
 };
 
 #endif // SHEETLISTWIDGET_H

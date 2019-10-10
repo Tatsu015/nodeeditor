@@ -4,13 +4,30 @@
 #include "Sheet.h"
 #include "SheetFactory.h"
 #include "ui_SheetListWidget.h"
+#include <QDebug>
+#include <QDir>
+#include <QInputDialog>
+#include <QMenu>
 
 SheetListWidget::SheetListWidget(QWidget* parent) : QWidget(parent), ui(new Ui::SheetListWidget) {
   ui->setupUi(this);
+
+  ui->findLineEdit->setDisabled(true);
+
+  ui->sheetListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+
+  m_addSheetNameAction = new QAction("Add");
+  connect(m_addSheetNameAction, &QAction::triggered, this, &SheetListWidget::onAddSheext);
+  m_deleteSheetNameAction = new QAction("Delete");
+  connect(m_deleteSheetNameAction, &QAction::triggered, this, &SheetListWidget::onDeleteSheet);
+  m_renameSheetAction = new QAction("Rename");
+  connect(m_renameSheetAction, &QAction::triggered, this, &SheetListWidget::onChangeSheetName);
+
   connect(ui->addPushButton, &QPushButton::clicked, this, &SheetListWidget::onAddSheext);
   connect(ui->deletePushButton, &QPushButton::clicked, this, &SheetListWidget::onDeleteSheet);
-  connect(ui->sheetListWidget, &QListWidget::itemClicked, this, &SheetListWidget::onChangeActiveSheet);
-  connect(ui->sheetListWidget, &QListWidget::itemEntered, this, &SheetListWidget::onChangeSheetName);
+  connect(ui->sheetListWidget, &QListWidget::itemDoubleClicked, this, &SheetListWidget::onChangeActiveSheet);
+
+  connect(ui->sheetListWidget, &QListWidget::customContextMenuRequested, this, &SheetListWidget::onExecContextMenu);
 }
 
 SheetListWidget::~SheetListWidget() {
@@ -19,7 +36,6 @@ SheetListWidget::~SheetListWidget() {
 
 void SheetListWidget::addSheet(Sheet* sheet) {
   QListWidgetItem* item = new QListWidgetItem(sheet->name());
-  item->setFlags(item->flags() | Qt::ItemIsEditable);
   ui->sheetListWidget->addItem(item);
 }
 
@@ -58,17 +74,41 @@ void SheetListWidget::onDeleteSheet() {
   project->removeSheet(sheetName);
 }
 
-void SheetListWidget::onChangeSheetName(QListWidgetItem* item) {
+void SheetListWidget::onChangeSheetName() {
+  QListWidgetItem* item = ui->sheetListWidget->currentItem();
   if (!item) {
     return;
   }
-  QString sheetName = ui->sheetListWidget->currentItem()->text();
+
   Project* project = Editor::getInstance()->project();
-  Sheet* sheet = project->sheet(sheetName);
-  sheet->setName(sheetName);
+  bool ok;
+  QString newSheetName =
+      QInputDialog::getText(this, tr("Rename"), tr("New sheet name"), QLineEdit::Normal, item->text(), &ok);
+
+  if (ok && !newSheetName.isEmpty()) {
+    Sheet* sheet = project->sheet(item->text());
+    sheet->setName(newSheetName);
+    item->setText(newSheetName);
+  }
 }
 
 void SheetListWidget::onChangeActiveSheet(QListWidgetItem* item) {
   Project* project = Editor::getInstance()->project();
   project->changeActiveSheet(item->text());
+}
+
+void SheetListWidget::onExecContextMenu(const QPoint& pos) {
+  QListWidgetItem* item = ui->sheetListWidget->itemAt(pos);
+  QPoint globalPos = ui->sheetListWidget->mapToGlobal(pos);
+
+  QMenu contextMenu;
+  if (item) {
+    contextMenu.addAction(m_addSheetNameAction);
+    contextMenu.addAction(m_deleteSheetNameAction);
+    contextMenu.addAction(m_renameSheetAction);
+    contextMenu.exec(globalPos);
+  } else {
+    contextMenu.addAction(m_addSheetNameAction);
+    contextMenu.exec(globalPos);
+  }
 }
