@@ -132,18 +132,6 @@ void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseR
   Editor::getInstance()->addCommand(command);
 }
 
-void ConnectionCreateTool::addTmpConnector(Scene* scene, Port* startPort) {
-}
-
-void ConnectionCreateTool::redrawTmpConnector(QPointF nowScenePos) {
-}
-
-void ConnectionCreateTool::decideConnector(Scene* scene, Port* endPort) {
-}
-
-void ConnectionCreateTool::removeTmpConnector(Scene* scene) {
-}
-
 bool ConnectionCreateTool::isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const {
   Port* endPort = scene->findPort(event->scenePos());
 
