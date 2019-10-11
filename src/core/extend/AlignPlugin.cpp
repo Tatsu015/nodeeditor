@@ -7,13 +7,13 @@
 #include <QMenu>
 
 AlignPlugin::AlignPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 AlignPlugin::~AlignPlugin() {
 }
 
 QMenu* AlignPlugin::contextSubMenu(QGraphicsSceneContextMenuEvent* event) const {
+  Q_UNUSED(event);
   Project* project = Editor::getInstance()->project();
   Scene* scene = project->scene();
   QList<AbstractNode*> selectedNodes = scene->selectedNodes();
@@ -24,6 +24,8 @@ QMenu* AlignPlugin::contextSubMenu(QGraphicsSceneContextMenuEvent* event) const 
 }
 
 void AlignPlugin::doInit() {
+  useContextMenu(true);
+
   QMenu* editMenu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
   m_alignMenu = new QMenu("Align");
   editMenu->addMenu(m_alignMenu);

@@ -18,6 +18,10 @@ void AbstractPlugin::initView(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Q_UNUSED(ui);
 }
 
+void AbstractPlugin::useContextMenu(const bool isUse) {
+  m_isContextMenuUse = isUse;
+}
+
 bool AbstractPlugin::isContextMenuUse() const {
   return m_isContextMenuUse;
 }

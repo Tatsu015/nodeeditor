@@ -1,6 +1,7 @@
 #include "InvertPortPlugin.h"
 #include "AbstractNode.h"
 #include "Editor.h"
+#include "InvertPortDialog.h"
 #include "MenuManager.h"
 #include "Port.h"
 #include "Project.h"
@@ -10,7 +11,6 @@
 #include <QMenu>
 
 InvertPortPlugin::InvertPortPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 InvertPortPlugin::~InvertPortPlugin() {
@@ -28,6 +28,8 @@ QList<QAction*> InvertPortPlugin::contextMenuActions(QGraphicsSceneContextMenuEv
 }
 
 void InvertPortPlugin::doInit() {
+  useContextMenu(true);
+
   m_action = new QAction("Invert Port");
   connect(m_action, &QAction::triggered, this, &InvertPortPlugin::onExecute);
 }
@@ -39,13 +41,19 @@ void InvertPortPlugin::onExecute() {
   if (1 != nodes.count()) {
     return;
   }
-  QInputDialog selectPortDialog;
-  selectPortDialog.setOptions(QInputDialog::UseListViewForComboBoxItems);
-  QStringList portNames;
-  AbstractNode* targetNode = nodes.first();
-  foreach (Port* port, targetNode->ports()) { portNames << QString::number(port->number()); }
-  uint32_t targetPortNum = selectPortDialog.getItem(nullptr, "Select Invert Port", "a", portNames).toUInt();
-  Port* targetPort = targetNode->port(targetPortNum);
 
-  targetPort->invert(!targetPort->isInvert());
+  AbstractNode* targetNode = nodes.first();
+  InvertPortDialog dialog;
+  dialog.setupDialog(targetNode);
+  int answer = dialog.exec();
+  if (answer) {
+    QList<Port*> invertPorts = dialog.invertPorts();
+    foreach (Port* port, targetNode->ports()) {
+      if (invertPorts.contains(port)) {
+        port->invert(true);
+      } else {
+        port->invert(false);
+      }
+    }
+  }
 }

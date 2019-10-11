@@ -13,12 +13,11 @@ class PluginLoader {
 public:
   static PluginLoader* getInstance();
 
-  void init();
-  void load(MainWindow* mainWindow, Ui::MainWindow* ui);
+  void init(MainWindow* mainWindow, Ui::MainWindow* ui);
   void reset();
 
 private:
-  void addPlugin(AbstractPlugin* plugin);
+  void addPlugin(MainWindow* mainWindow, Ui::MainWindow* ui, AbstractPlugin* plugin);
 
 private:
   QList<AbstractPlugin*> m_plugins;

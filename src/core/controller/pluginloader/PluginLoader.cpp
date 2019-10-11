@@ -20,30 +20,27 @@ PluginLoader* PluginLoader::getInstance() {
   return &s;
 }
 
-void PluginLoader::init() {
+void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   // TODO this function will be dynamic lib plugin load
-  addPlugin(new NewPlugin());
-  addPlugin(new OpenPlugin());
-  addPlugin(new SavePlugin());
-  addPlugin(new QuitPlugin());
-  addPlugin(new CircuitCalculatePlugin());
-  addPlugin(new ShowNameViewPlugin());
-  addPlugin(new CutPlugin());
-  addPlugin(new AlignPlugin());
-  addPlugin(new InvertPortPlugin());
-  addPlugin(new AddPortPlugin());
-  addPlugin(new RemovePortPlugin());
-}
-
-void PluginLoader::load(MainWindow* mainWindow, Ui::MainWindow* ui) {
-  foreach (AbstractPlugin* plugin, m_plugins) { plugin->init(mainWindow, ui); }
+  addPlugin(mainWindow, ui, new NewPlugin());
+  addPlugin(mainWindow, ui, new OpenPlugin());
+  addPlugin(mainWindow, ui, new SavePlugin());
+  addPlugin(mainWindow, ui, new QuitPlugin());
+  addPlugin(mainWindow, ui, new CircuitCalculatePlugin());
+  addPlugin(mainWindow, ui, new ShowNameViewPlugin());
+  addPlugin(mainWindow, ui, new CutPlugin());
+  addPlugin(mainWindow, ui, new AlignPlugin());
+  addPlugin(mainWindow, ui, new InvertPortPlugin());
+  addPlugin(mainWindow, ui, new AddPortPlugin());
+  addPlugin(mainWindow, ui, new RemovePortPlugin());
 }
 
 void PluginLoader::reset() {
   foreach (AbstractPlugin* plugin, m_plugins) { plugin->reset(); }
 }
 
-void PluginLoader::addPlugin(AbstractPlugin* plugin) {
+void PluginLoader::addPlugin(MainWindow* mainWindow, Ui::MainWindow* ui, AbstractPlugin* plugin) {
+  plugin->init(mainWindow, ui);
   m_plugins << plugin;
   if (plugin->isContextMenuUse()) {
     ContextMenuManager::getInstance()->addPlugin(plugin);

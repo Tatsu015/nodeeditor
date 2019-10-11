@@ -50,6 +50,7 @@ INCLUDEPATH += \
     application/model \
     application/view/widget \
     core/model/sheet \
+    core/view/dialog
 
 HEADERS += \
     application/controller/CircuitCalculateExecutor.h \
@@ -114,7 +115,8 @@ HEADERS += \
     core/model/observer/ProjectObserver.h \
     core/view/widget/SheetListWidget.h \
     core/controller/publisher/FigureNamePublisher.h \
-    core/controller/tool/ConnectionReconnectTool.h
+    core/controller/tool/ConnectionReconnectTool.h \
+    core/view/dialog/InvertPortDialog.h
 
 
 SOURCES += \
@@ -180,13 +182,15 @@ SOURCES += \
     core/model/observer/ProjectObserver.cpp \
     core/view/widget/SheetListWidget.cpp \
     core/controller/publisher/FigureNamePublisher.cpp \
-    core/controller/tool/ConnectionReconnectTool.cpp
+    core/controller/tool/ConnectionReconnectTool.cpp \
+    core/view/dialog/InvertPortDialog.cpp
 
 
 FORMS += \
     application/view/widget/DebugControlWidget.ui \
     core/view/window/MainWindow.ui \
-    core/view/widget/SheetListWidget.ui
+    core/view/widget/SheetListWidget.ui \
+    core/view/dialog/InvertPortDialog.ui
 
 
 # Default rules for deployment.

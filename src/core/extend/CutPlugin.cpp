@@ -9,7 +9,6 @@
 #include <QMenu>
 
 CutPlugin::CutPlugin(QObject* parent) : AbstractPlugin(parent) {
-  m_isContextMenuUse = true;
 }
 
 CutPlugin::~CutPlugin() {
@@ -27,8 +26,9 @@ QList<QAction*> CutPlugin::contextMenuActions(QGraphicsSceneContextMenuEvent* ev
 }
 
 void CutPlugin::doInit() {
-  QMenu* menu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
+  useContextMenu(true);
 
+  QMenu* menu = MenuManager::getInstance()->menu(MenuManager::MENU_EDIT);
   m_action = new QAction("Cut");
   menu->addAction(m_action);
 

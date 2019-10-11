@@ -30,6 +30,9 @@ protected:
   virtual void doInit() = 0;
 
 protected:
+  void useContextMenu(const bool isUse);
+
+private:
   bool m_isContextMenuUse = false;
 };
 
