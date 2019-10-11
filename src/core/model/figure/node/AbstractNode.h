@@ -49,6 +49,11 @@ public:
   Port* port(const uint64_t number);
   Port* nearestPort(QPointF scenePos);
 
+  QList<Port*> inputPorts() const;
+  QList<Port*> outputPorts() const;
+  int32_t inputPortCount() const;
+  int32_t outputPortCount() const;
+
   QList<AbstractNode*> adjastOutNodes();
   QList<AbstractNode*> adjastInNodes();
   QList<AbstractNode*> adjastNodes();
@@ -73,10 +78,6 @@ public:
   QJsonObject toJsonObject();
 
 private:
-  QList<Port*> inputPorts() const;
-  QList<Port*> outputPorts() const;
-  int32_t inputPortCount() const;
-  int32_t outputPortCount() const;
   void adjustInputPortPos();
   void adjustOutputPortPos();
 

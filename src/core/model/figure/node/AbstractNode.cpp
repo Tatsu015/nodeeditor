@@ -180,6 +180,33 @@ Port* AbstractNode::nearestPort(QPointF scenePos) {
   }
   return nearestPort;
 }
+QList<Port*> AbstractNode::inputPorts() const {
+  QList<Port*> ports;
+  foreach (Port* port, m_ports) {
+    if (Input == port->io()) {
+      ports << port;
+    }
+  }
+  return ports;
+}
+
+QList<Port*> AbstractNode::outputPorts() const {
+  QList<Port*> ports;
+  foreach (Port* port, m_ports) {
+    if (Output == port->io()) {
+      ports << port;
+    }
+  }
+  return ports;
+}
+
+int32_t AbstractNode::inputPortCount() const {
+  return inputPorts().count();
+}
+
+int32_t AbstractNode::outputPortCount() const {
+  return outputPorts().count();
+}
 
 QList<AbstractNode*> AbstractNode::adjastOutNodes() {
   QList<AbstractNode*> nodes;
@@ -301,34 +328,6 @@ QJsonObject AbstractNode::toJsonObject() {
   jsonObj[JSON_PORTS] = portJsonArray;
 
   return jsonObj;
-}
-
-QList<Port*> AbstractNode::inputPorts() const {
-  QList<Port*> ports;
-  foreach (Port* port, m_ports) {
-    if (Input == port->io()) {
-      ports << port;
-    }
-  }
-  return ports;
-}
-
-QList<Port*> AbstractNode::outputPorts() const {
-  QList<Port*> ports;
-  foreach (Port* port, m_ports) {
-    if (Output == port->io()) {
-      ports << port;
-    }
-  }
-  return ports;
-}
-
-int32_t AbstractNode::inputPortCount() const {
-  return inputPorts().count();
-}
-
-int32_t AbstractNode::outputPortCount() const {
-  return outputPorts().count();
 }
 
 void AbstractNode::adjustInputPortPos() {
