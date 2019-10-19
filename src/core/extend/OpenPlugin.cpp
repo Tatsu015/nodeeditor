@@ -1,7 +1,10 @@
 #include "OpenPlugin.h"
 #include "Editor.h"
 #include "MenuManager.h"
+#include "PluginLoader.h"
 #include "Project.h"
+#include "ProjectParser.h"
+#include <QJsonDocument>
 #include <QMenu>
 
 OpenPlugin::OpenPlugin(QObject* parent) : AbstractPlugin(parent) {
@@ -21,9 +24,26 @@ void OpenPlugin::doInit() {
 }
 
 void OpenPlugin::onExecute() {
-  Editor::getInstance()->reset();
-  Project* project = Editor::getInstance()->project();
-  QString fileName = project->filePath();
-  project->open(fileName);
-  project->changeActiveSheet(0);
+  Project* oldProject = Editor::getInstance()->project();
+
+  // TODO this process will change to opendialog
+  QString filePath = oldProject->filePath();
+
+  QFile f(filePath);
+  if (!f.open(QIODevice::ReadOnly)) {
+    return;
+  }
+
+  ProjectParser parser;
+  QByteArray data = f.readAll();
+  Project* newProject = parser.parse(data);
+
+  newProject->takeOver(oldProject);
+  delete oldProject;
+  oldProject->setFilePath(filePath);
+  Editor::getInstance()->changeProject(newProject);
+  PluginLoader::getInstance()->reset();
+
+  newProject->setActiveSheet(newProject->sheets().first());
+  newProject->changeActiveSheet(0);
 }

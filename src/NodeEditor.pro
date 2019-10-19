@@ -30,6 +30,7 @@ INCLUDEPATH += \
     core/controller/factory \
     core/controller/publisher \
     core/controller/tool \
+    core/controller/parser \
     core/controller/pluginloader \
     core/model/figure/connection \
     core/model/figure/node \
@@ -116,7 +117,8 @@ HEADERS += \
     core/view/widget/SheetListWidget.h \
     core/controller/publisher/FigureNamePublisher.h \
     core/controller/tool/ConnectionReconnectTool.h \
-    core/view/dialog/InvertPortDialog.h
+    core/view/dialog/InvertPortDialog.h \
+    core/controller/parser/ProjectParser.h
 
 
 SOURCES += \
@@ -183,7 +185,8 @@ SOURCES += \
     core/view/widget/SheetListWidget.cpp \
     core/controller/publisher/FigureNamePublisher.cpp \
     core/controller/tool/ConnectionReconnectTool.cpp \
-    core/view/dialog/InvertPortDialog.cpp
+    core/view/dialog/InvertPortDialog.cpp \
+    core/controller/parser/ProjectParser.cpp
 
 
 FORMS += \

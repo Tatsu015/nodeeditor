@@ -14,6 +14,7 @@ public:
   void addConnection(Connection* connection);
   Connection* createConnection(const Sheet* sheet, const QString& type, const QString& name = "",
                                const QString& id = "");
+  Connection* createConnection(const QString& type, const QString& name, const QString& id);
 
 private:
   QMap<QString, Connection*> m_connectionMap;

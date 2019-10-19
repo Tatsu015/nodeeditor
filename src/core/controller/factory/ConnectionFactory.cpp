@@ -13,7 +13,7 @@ void ConnectionFactory::addConnection(Connection* connection) {
 
 Connection* ConnectionFactory::createConnection(const Sheet* sheet, const QString& type, const QString& name,
                                                 const QString& id) {
-  Connection* connection;
+  Connection* connection = nullptr;
   if (id.isEmpty()) {
     connection = m_connectionMap[type]->create();
   } else {
@@ -26,6 +26,14 @@ Connection* ConnectionFactory::createConnection(const Sheet* sheet, const QStrin
   }
 
   connection->setName(newName);
+
+  return connection;
+}
+
+Connection* ConnectionFactory::createConnection(const QString& type, const QString& name, const QString& id) {
+  Connection* connection = nullptr;
+  connection = m_connectionMap[type]->create(id);
+  connection->setName(name);
 
   return connection;
 }

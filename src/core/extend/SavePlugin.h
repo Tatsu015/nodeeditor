@@ -11,8 +11,12 @@ public:
 protected:
   void doInit();
 
+private:
+  void save(const QString& filePath);
+
 private slots:
-  void onExecute();
+  void onExecuteSave();
+  void onExecuteSaveAs();
 };
 
 #endif // SavePLUGIN_H

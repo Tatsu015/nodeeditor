@@ -31,21 +31,20 @@ void Editor::init() {
   initTool();
   initUndoStack();
 
-  resetProject();
+  m_project = new Project();
 }
 
 void Editor::run() {
-  m_project->run();
-}
-
-void Editor::reset() {
-  resetProject();
-  m_graphicsView->setScene(m_project->scene());
-  PluginLoader::getInstance()->reset();
+  m_project->createInitialSheet();
 }
 
 Project* Editor::project() const {
   return m_project;
+}
+
+void Editor::changeProject(Project* project) {
+  m_project = project;
+  m_graphicsView->setScene(project->scene());
 }
 
 void Editor::setGraphicsView(QGraphicsView* graphicsView) {
@@ -75,16 +74,6 @@ void Editor::addCommand(QUndoCommand* undoCommand) {
     projectNameWithEdited += "*";
   }
   projectNameChanged(projectNameWithEdited);
-}
-
-void Editor::resetProject() {
-  Project* lastProject = m_project;
-  m_project = new Project();
-  if (lastProject) {
-    m_project->takeOver(lastProject);
-    lastProject->reset();
-  }
-  delete lastProject;
 }
 
 void Editor::addTool(AbstractTool* tool) {

@@ -31,6 +31,14 @@ AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, c
   return node;
 }
 
+AbstractNode* NodeFactory::createNode(const QString& type, const QString& name, const QString& id) {
+  AbstractNode* node = m_nodeMap[type]->create(id);
+  node->setName(name);
+  node->setupNameText();
+
+  return node;
+}
+
 QStringList NodeFactory::nodeTypes() const {
   return m_nodeTypes;
 }

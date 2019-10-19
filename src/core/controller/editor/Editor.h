@@ -19,9 +19,9 @@ public:
 
   void init();
   void run();
-  void reset();
 
   Project* project() const;
+  void changeProject(Project* project);
 
   void setGraphicsView(QGraphicsView* graphicsView);
 
@@ -40,7 +40,6 @@ private:
   void initFactory();
   void initTool();
   void initUndoStack();
-  void resetProject();
   void addTool(AbstractTool* tool);
 
 private:

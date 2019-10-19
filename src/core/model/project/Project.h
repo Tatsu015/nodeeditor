@@ -1,6 +1,7 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
+#include <QJsonObject>
 #include <QList>
 #include <QString>
 
@@ -14,13 +15,13 @@ public:
   Project();
   ~Project();
 
-  void run();
   void reset();
+  void createInitialSheet();
 
-  bool open(const QString& filePath);
-  bool save(const QString& filePath);
+  QJsonObject toJson();
 
   QString filePath() const;
+  void setFilePath(const QString& filePath);
   QString fileBaseName() const;
 
   QList<Sheet*> sheets() const;
@@ -41,18 +42,10 @@ public:
 
   bool nodeNameVisible() const;
   void setNodeNameVisible(bool nodeNameVisible);
-  void takeOver(Project* project);
+  void takeOver(Project* src);
 
 private:
   void notify();
-  QByteArray toJson();
-
-  void fromJson(const QByteArray& data);
-  void parseSheet(QJsonValue sheetJsonVal);
-  void parseNode(Sheet* sheet, QJsonValue nodeJsonVal);
-  void parseNodeToNodeConnection(Sheet* sheet, QJsonValue connectionJsonVal);
-  void parseNodeToConnectorConnection(Sheet* sheet, QJsonValue connectionJsonVal);
-  void parsePort(AbstractNode* node, QJsonValue portJsonVal);
 
 private:
   Scene* m_scene = nullptr;

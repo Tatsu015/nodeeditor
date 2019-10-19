@@ -13,6 +13,7 @@ public:
 
   void addNode(AbstractNode* node);
   AbstractNode* createNode(const Sheet* sheet, const QString& type, const QString& name = "", const QString& id = "");
+  AbstractNode* createNode(const QString& type, const QString& name, const QString& id);
   QStringList nodeTypes() const;
 
 private:

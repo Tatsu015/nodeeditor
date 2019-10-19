@@ -1,6 +1,8 @@
 #include "NewPlugin.h"
 #include "Editor.h"
 #include "MenuManager.h"
+#include "PluginLoader.h"
+#include "Project.h"
 #include <QMenu>
 
 NewPlugin::NewPlugin(QObject* parent) : AbstractPlugin(parent) {
@@ -20,5 +22,14 @@ void NewPlugin::doInit() {
 }
 
 void NewPlugin::onExecute() {
-  Editor::getInstance()->reset();
+  Project* newProject = new Project();
+  Project* oldProject = Editor::getInstance()->project();
+
+  newProject->takeOver(oldProject);
+  delete oldProject;
+  Editor::getInstance()->changeProject(newProject);
+  Editor::getInstance()->run();
+  PluginLoader::getInstance()->reset();
+
+  newProject->changeActiveSheet(0);
 }
