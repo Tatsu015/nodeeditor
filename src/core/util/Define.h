@@ -37,8 +37,8 @@ const static QString JSON_START_NODE_NAME = "startNodeName";
 const static QString JSON_START_PORT_NUMBER = "startPortNumber";
 const static QString JSON_END_NODE_NAME = "endNodeName";
 const static QString JSON_END_PORT_NUMBER = "endPortNumber";
-const static QString JSON_CONNECTOR_POS_X = "connectorPosX";
-const static QString JSON_CONNECTOR_POS_Y = "connectorPosY";
+const static QString JSON_CONNECTOR_POS_X_RATE = "connectorPosX";
+const static QString JSON_CONNECTOR_POS_Y_RATE = "connectorPosY";
 const static QString JSON_DST_CONNECTION_NAME = "dstConnectionName";
 
 enum IO : uint32_t {

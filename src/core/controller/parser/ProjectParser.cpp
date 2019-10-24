@@ -113,15 +113,17 @@ Connection* ProjectParser::parseNodeToConnectorConnection(const Sheet* sheet, QJ
   QString startNodeName = connectionJsonVal[JSON_START_NODE_NAME].toString();
   uint32_t startPortNumber = connectionJsonVal[JSON_START_PORT_NUMBER].toString().toInt();
   QString dstConnectionName = connectionJsonVal[JSON_DST_CONNECTION_NAME].toString();
-  qreal connectorPosX = connectionJsonVal[JSON_CONNECTOR_POS_X].toString().toDouble();
-  qreal connectorPosY = connectionJsonVal[JSON_CONNECTOR_POS_Y].toString().toDouble();
+  qreal posXRate = connectionJsonVal[JSON_CONNECTOR_POS_X_RATE].toString().toDouble();
+  qreal posYRate = connectionJsonVal[JSON_CONNECTOR_POS_Y_RATE].toString().toDouble();
 
   Connection* connection = ConnectionFactory::getInstance()->createConnection(sheet, CONNECTION, name, id);
-  Connector* endConnector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, connection);
-  endConnector->setPos(connectorPosX, connectorPosY);
   AbstractNode* startNode = sheet->node(startNodeName);
   Port* startPort = startNode->port(startPortNumber);
   Connection* dstConnection = sheet->connection(dstConnectionName);
+  Connector* endConnector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, dstConnection);
+
+  endConnector->setXPosRate(posXRate);
+  endConnector->setYPosRate(posYRate);
 
   connection->setName(name);
   connection->setStartPort(startPort);

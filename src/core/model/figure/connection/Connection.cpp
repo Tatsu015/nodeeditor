@@ -211,6 +211,38 @@ Connection::Edge Connection::whichEdge(Port* port) {
   }
 }
 
+Connector* Connection::startConnector() const {
+  return m_startConnector;
+}
+
+bool Connection::hasStartConnector() const {
+  if (m_startConnector) {
+    return true;
+  }
+  return false;
+}
+
+Connector* Connection::endConnector() const {
+  return m_endConnector;
+}
+
+void Connection::setEndConnector(Connector* endConnector) {
+  m_endConnector = endConnector;
+  m_endPos = endConnector->centerScenePos();
+  redraw();
+}
+
+void Connection::removeEndConnector() {
+  m_endConnector = nullptr;
+}
+
+bool Connection::hasEndConnector() const {
+  if (m_endConnector) {
+    return true;
+  }
+  return false;
+}
+
 void Connection::addBranchConnector(Connector* connector) {
   connector->setParentItem(this);
   m_branchConnectors << connector;
@@ -269,23 +301,9 @@ QJsonObject Connection::toJsonObj() {
   } else if (m_endConnector) {
     connectionJsonObj[JSON_START_NODE_NAME] = m_startPort->parentNode()->name();
     connectionJsonObj[JSON_START_PORT_NUMBER] = QString::number(m_startPort->number());
-    connectionJsonObj[JSON_CONNECTOR_POS_X] = QString::number(m_endConnector->scenePos().x());
-    connectionJsonObj[JSON_CONNECTOR_POS_Y] = QString::number(m_endConnector->scenePos().y());
+    connectionJsonObj[JSON_CONNECTOR_POS_X_RATE] = QString::number(m_endConnector->xPosRate());
+    connectionJsonObj[JSON_CONNECTOR_POS_Y_RATE] = QString::number(m_endConnector->yPosRate());
     connectionJsonObj[JSON_DST_CONNECTION_NAME] = m_endConnector->dstConnection()->name();
   }
   return connectionJsonObj;
-}
-
-void Connection::setEndConnector(Connector* endConnector) {
-  m_endConnector = endConnector;
-  m_endPos = endConnector->centerScenePos();
-  redraw();
-}
-
-Connector* Connection::endConnector() const {
-  return m_endConnector;
-}
-
-void Connection::removeEndConnector() {
-  m_endConnector = nullptr;
 }

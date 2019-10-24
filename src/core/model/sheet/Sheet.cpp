@@ -98,10 +98,10 @@ QJsonObject Sheet::toJsonObj() {
   QJsonArray nodeToNodeConnectionJsonArray;
   QJsonArray nodeToConnectorConnectionJsonArray;
   foreach (Connection* connection, m_connections) {
-    if (connection) {
-      nodeToNodeConnectionJsonArray << connection->toJsonObj();
-    } else {
+    if (connection->hasStartConnector() || (connection->hasEndConnector())) {
       nodeToConnectorConnectionJsonArray << connection->toJsonObj();
+    } else {
+      nodeToNodeConnectionJsonArray << connection->toJsonObj();
     }
   }
 

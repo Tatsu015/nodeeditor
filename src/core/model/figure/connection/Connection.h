@@ -41,11 +41,16 @@ public:
   Direction direction(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
   Edge whichEdge(Port* port);
 
+  Connector* startConnector() const;
   void setStartConnector(Connector* startConnector);
   void removeStartConnector();
+  bool hasStartConnector() const;
+
   Connector* endConnector() const;
   void setEndConnector(Connector* endConnector);
   void removeEndConnector();
+  bool hasEndConnector() const;
+
   void addBranchConnector(Connector* connector);
   void removeBranchConnector(Connector* connector);
   QList<Connector*> branchConnectors() const;
@@ -73,6 +78,7 @@ private:
   Port* m_startPort = nullptr;
   Port* m_endPort = nullptr;
 
+  Connector* m_startConnector = nullptr;
   Connector* m_endConnector = nullptr;
 
   QList<Connector*> m_branchConnectors;
