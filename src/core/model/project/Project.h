@@ -16,7 +16,6 @@ public:
   ~Project();
 
   void reset();
-  void createInitialSheet();
 
   QJsonObject toJson();
 
@@ -29,6 +28,7 @@ public:
   void addSheet(Sheet* sheet);
   void removeSheet(Sheet* sheet);
   void removeSheet(const QString& sheetName);
+  int32_t sheetCount() const;
 
   Sheet* activeSheet() const;
   void setActiveSheet(Sheet* activeSheet);

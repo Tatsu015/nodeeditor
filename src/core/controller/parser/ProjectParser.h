@@ -14,7 +14,7 @@ public:
   ProjectParser();
   ~ProjectParser();
 
-  Project* parse(const QByteArray& data);
+  Project* parse(const QByteArray& data, Project* lastProject);
 
 private:
   Sheet* parseSheet(QJsonValue sheetJsonVal);

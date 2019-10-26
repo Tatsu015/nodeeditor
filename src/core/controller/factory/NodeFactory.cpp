@@ -1,6 +1,9 @@
 #include "NodeFactory.h"
 #include "AbstractNode.h"
 #include "FigureNamePublisher.h"
+#include <QGraphicsScene>
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 NodeFactory* NodeFactory::getInstance() {
   static NodeFactory s;
@@ -26,7 +29,7 @@ AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, c
   }
 
   node->setName(newName);
-  node->setupNameText();
+  node->setup();
 
   return node;
 }
@@ -34,9 +37,21 @@ AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, c
 AbstractNode* NodeFactory::createNode(const QString& type, const QString& name, const QString& id) {
   AbstractNode* node = m_nodeMap[type]->create(id);
   node->setName(name);
-  node->setupNameText();
+  node->setup();
 
   return node;
+}
+
+QIcon NodeFactory::createIcon(const QString& type) const {
+  AbstractNode* node = m_nodeMap[type];
+  QPixmap pixmap(node->boundingRect().size().toSize() + QSize(10, 10));
+  pixmap.fill(Qt::transparent);
+  QPainter painter(&pixmap);
+  painter.setRenderHint(QPainter::Antialiasing);
+  QStyleOptionGraphicsItem opt;
+  node->paint(&painter, &opt);
+
+  return QIcon(pixmap);
 }
 
 QStringList NodeFactory::nodeTypes() const {

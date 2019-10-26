@@ -1,6 +1,7 @@
 #ifndef NODEFACTORY_H
 #define NODEFACTORY_H
 
+#include <QIcon>
 #include <QMap>
 #include <QString>
 
@@ -14,6 +15,7 @@ public:
   void addNode(AbstractNode* node);
   AbstractNode* createNode(const Sheet* sheet, const QString& type, const QString& name = "", const QString& id = "");
   AbstractNode* createNode(const QString& type, const QString& name, const QString& id);
+  QIcon createIcon(const QString& type) const;
   QStringList nodeTypes() const;
 
 private:

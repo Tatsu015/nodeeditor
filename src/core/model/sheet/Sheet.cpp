@@ -44,6 +44,34 @@ void Sheet::removeNode(AbstractNode* node) {
   m_nodes.removeOne(node);
 }
 
+QList<AbstractNode*> Sheet::inNodes() const {
+  QList<AbstractNode*> nodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if (Input == node->io()) {
+      nodes << node;
+    }
+  }
+  return nodes;
+}
+
+int32_t Sheet::inNodeCount() const {
+  return inNodes().count();
+}
+
+QList<AbstractNode*> Sheet::outNodes() const {
+  QList<AbstractNode*> nodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if (Output == node->io()) {
+      nodes << node;
+    }
+  }
+  return nodes;
+}
+
+int32_t Sheet::outNodeCount() const {
+  return outNodes().count();
+}
+
 Connection* Sheet::connection(const QString& connectionName) const {
   foreach (Connection* connection, m_connections) {
     if (connectionName == connection->name()) {

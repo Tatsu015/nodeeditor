@@ -64,12 +64,19 @@ void Builder::buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
 }
 
 void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
+  Q_UNUSED(mainWindow);
+
   NodeEditTool* nodeEditTool = dynamic_cast<NodeEditTool*>(Editor::getInstance()->tool(TOOL_NODE_CREATE));
   ui->nodeToolBar->setNodeEditTool(nodeEditTool);
 
-  mainWindow->addToolBar(Qt::LeftToolBarArea, ui->nodeToolBar);
-  foreach (QString nodeType, nodeEditTool->nodeTypes()) { ui->nodeToolBar->addToolBarAction(nodeType); }
+  foreach (QString nodeType, nodeEditTool->nodeTypes()) {
+    QAction* action = new QAction(nodeType);
+    QIcon icon = NodeFactory::getInstance()->createIcon(nodeType);
+    action->setIcon(icon);
+    ui->nodeToolBar->addToolBarAction(action);
+  }
   ui->nodeToolBar->changeDefaultTool();
+  Editor::getInstance()->project()->addObserver(ui->nodeToolBar);
 }
 
 void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui) {

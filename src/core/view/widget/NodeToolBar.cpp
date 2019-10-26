@@ -1,5 +1,6 @@
 #include "NodeToolBar.h"
 #include "NodeEditTool.h"
+#include "Sheet.h"
 
 NodeToolBar::NodeToolBar(QWidget* parent) : QToolBar(parent) {
 }
@@ -7,10 +8,14 @@ NodeToolBar::NodeToolBar(QWidget* parent) : QToolBar(parent) {
 NodeToolBar::~NodeToolBar() {
 }
 
-void NodeToolBar::addToolBarAction(const QString& nodeType) {
-  QAction* action = new QAction(nodeType);
+void NodeToolBar::addToolBarAction(QAction* action) {
   addAction(action);
   connect(action, &QAction::triggered, this, &NodeToolBar::onChangeTool);
+}
+
+void NodeToolBar::removeToolBarAction(QAction* action) {
+  removeAction(action);
+  disconnect(action, &QAction::triggered, this, &NodeToolBar::onChangeTool);
 }
 
 void NodeToolBar::onChangeTool() {
@@ -24,6 +29,17 @@ void NodeToolBar::setNodeEditTool(NodeEditTool* NodeEditTool) {
 
 void NodeToolBar::changeDefaultTool() {
   changeTool(actions().first());
+}
+
+void NodeToolBar::addSheet(Sheet* sheet) {
+  addToolBarAction(new QAction(sheet->name()));
+}
+
+void NodeToolBar::changeSheet(Sheet* sheet) {
+}
+
+void NodeToolBar::removeSheet(Sheet* sheet) {
+  removeToolBarAction(new QAction(sheet->name()));
 }
 
 void NodeToolBar::changeTool(QAction* activeAction) {

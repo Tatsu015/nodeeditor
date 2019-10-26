@@ -20,17 +20,16 @@ ProjectParser::ProjectParser() {
 ProjectParser::~ProjectParser() {
 }
 
-Project* ProjectParser::parse(const QByteArray& data) {
+Project* ProjectParser::parse(const QByteArray& data, Project* lastProject) {
   QJsonDocument doc(QJsonDocument::fromJson(data));
   QJsonObject rootObj(doc.object());
 
   Project* project = new Project();
+  project->takeOver(lastProject);
   foreach (QJsonValue sheetJsonValue, rootObj[JSON_SHEETS].toArray()) {
     Sheet* sheet = parseSheet(sheetJsonValue);
     project->addSheet(sheet);
   }
-  //  project->fromJson(rootObj);
-  //  project->changeActiveSheet(0);
 
   return project;
 }

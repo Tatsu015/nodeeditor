@@ -22,8 +22,8 @@ void NewPlugin::doInit() {
 }
 
 void NewPlugin::onExecute() {
-  Project* newProject = new Project();
   Project* oldProject = Editor::getInstance()->project();
+  Project* newProject = new Project();
 
   newProject->takeOver(oldProject);
   delete oldProject;

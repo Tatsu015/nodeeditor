@@ -24,10 +24,10 @@ void OpenPlugin::doInit() {
 }
 
 void OpenPlugin::onExecute() {
-  Project* oldProject = Editor::getInstance()->project();
+  Project* lastProject = Editor::getInstance()->project();
 
   // TODO this process will change to opendialog
-  QString filePath = oldProject->filePath();
+  QString filePath = lastProject->filePath();
 
   QFile f(filePath);
   if (!f.open(QIODevice::ReadOnly)) {
@@ -36,11 +36,10 @@ void OpenPlugin::onExecute() {
 
   ProjectParser parser;
   QByteArray data = f.readAll();
-  Project* newProject = parser.parse(data);
+  Project* newProject = parser.parse(data, lastProject);
 
-  newProject->takeOver(oldProject);
-  delete oldProject;
-  oldProject->setFilePath(filePath);
+  delete lastProject;
+  lastProject->setFilePath(filePath);
   Editor::getInstance()->changeProject(newProject);
   PluginLoader::getInstance()->reset();
 

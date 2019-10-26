@@ -4,7 +4,9 @@
 #include "SystemConfig.h"
 #include <QBrush>
 #include <QDebug>
+#include <QGraphicsScene>
 #include <QGraphicsSimpleTextItem>
+#include <QPainter>
 #include <QPen>
 #include <QUuid>
 
@@ -79,11 +81,19 @@ QPointF AbstractNode::centerOffset() const {
   return offset;
 }
 
+void AbstractNode::setup() {
+  setupNameText();
+  doSetup();
+}
+
 void AbstractNode::setupNameText() {
   m_nameText = new QGraphicsSimpleTextItem(m_name, this);
   m_nameText->setPos(0, -20);
   m_nameText->setPen(QPen(Qt::white));
   m_nameText->setBrush(QBrush(Qt::white));
+}
+
+void AbstractNode::doSetup() {
 }
 
 QList<Port*> AbstractNode::ports() const {
@@ -284,6 +294,10 @@ EPosition AbstractNode::portPosition(Port* port) {
 
 QString AbstractNode::nodeType() const {
   return m_nodeType;
+}
+
+void AbstractNode::setNodeType(const QString& nodeType) {
+  m_nodeType = nodeType;
 }
 
 void AbstractNode::redraw() {

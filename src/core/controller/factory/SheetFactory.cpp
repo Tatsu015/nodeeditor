@@ -1,4 +1,6 @@
 #include "SheetFactory.h"
+#include "FunctionBlockNode.h"
+#include "NodeFactory.h"
 #include "Sheet.h"
 
 SheetFactory* SheetFactory::getInstance() {
@@ -18,7 +20,11 @@ Sheet* SheetFactory::createSheet(const QString& id) {
     sheet = m_sheet->create(id);
   }
   static uint32_t index;
-  sheet->setName("Sheet_" + QString::number(++index));
+  QString name = "Sheet_" + QString::number(++index);
+  sheet->setName(name);
+
+  FunctionBlockNode* functionBlockNode = new FunctionBlockNode(sheet);
+  NodeFactory::getInstance()->addNode(functionBlockNode);
 
   return sheet;
 }

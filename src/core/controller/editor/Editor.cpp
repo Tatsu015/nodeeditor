@@ -7,6 +7,7 @@
 #include "Connector.h"
 #include "ConnectorFactory.h"
 #include "Define.h"
+#include "FunctionBlockNode.h"
 #include "InNode.h"
 #include "NodeEditTool.h"
 #include "NodeFactory.h"
@@ -16,6 +17,7 @@
 #include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
+#include "SheetFactory.h"
 #include "SystemConfig.h"
 #include <QGraphicsView>
 #include <QUndoStack>
@@ -35,7 +37,8 @@ void Editor::init() {
 }
 
 void Editor::run() {
-  m_project->createInitialSheet();
+  //  Sheet* firstSheet = SheetFactory::getInstance()->createSheet();
+  //  m_project->setActiveSheet(firstSheet);
 }
 
 Project* Editor::project() const {

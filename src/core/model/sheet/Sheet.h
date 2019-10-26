@@ -23,6 +23,11 @@ public:
   void addNode(AbstractNode* node);
   void removeNode(AbstractNode* node);
 
+  QList<AbstractNode*> inNodes() const;
+  int32_t inNodeCount() const;
+  QList<AbstractNode*> outNodes() const;
+  int32_t outNodeCount() const;
+
   Connection* connection(const QString& connectionName) const;
   QList<Connection*> connections() const;
   void addConnection(Connection* connection);

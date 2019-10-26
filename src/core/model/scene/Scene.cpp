@@ -108,8 +108,11 @@ void Scene::setSheet(Sheet* sheet) {
 }
 
 void Scene::changeSheet(Sheet* sheet) {
-  foreach (AbstractNode* node, m_sheet->nodes()) { removeNode(node); }
-  foreach (Connection* connection, m_sheet->connections()) { removeConnection(connection); }
+  // when first call this method, m_sheet is nullptr.
+  if (m_sheet) {
+    foreach (AbstractNode* node, m_sheet->nodes()) { removeNode(node); }
+    foreach (Connection* connection, m_sheet->connections()) { removeConnection(connection); }
+  }
   m_sheet = sheet;
   foreach (AbstractNode* node, m_sheet->nodes()) { addNode(node); }
   foreach (Connection* connection, m_sheet->connections()) { addConnection(connection); }

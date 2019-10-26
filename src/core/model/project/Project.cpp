@@ -1,18 +1,14 @@
 #include "Project.h"
 #include "AbstractNode.h"
 #include "Connection.h"
-#include "ConnectionFactory.h"
 #include "Connector.h"
-#include "ConnectorFactory.h"
 #include "Define.h"
 #include "Editor.h"
-#include "NodeFactory.h"
 #include "Port.h"
 #include "PortFactory.h"
 #include "ProjectObserver.h"
 #include "Scene.h"
 #include "Sheet.h"
-#include "SheetFactory.h"
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
@@ -36,13 +32,6 @@ Project::~Project() {
 void Project::reset() {
   foreach (Sheet* sheet, m_sheets) { removeSheet(sheet); }
   m_activeSheet = nullptr;
-}
-
-void Project::createInitialSheet() {
-  Sheet* firstSheet = SheetFactory::getInstance()->createSheet();
-  m_activeSheet = firstSheet;
-  addSheet(firstSheet);
-  m_scene->setSheet(firstSheet);
 }
 
 QJsonObject Project::toJson() {
@@ -85,7 +74,6 @@ Sheet* Project::sheet(const QString& sheetName) const {
 
 void Project::addSheet(Sheet* sheet) {
   m_sheets << sheet;
-  m_activeSheet = sheet;
   foreach (ProjectObserver* projectObserver, m_projectObservers) { projectObserver->addSheet(sheet); }
 }
 
@@ -99,6 +87,10 @@ void Project::removeSheet(const QString& sheetName) {
   if (willRemoveSheet) {
     removeSheet(willRemoveSheet);
   }
+}
+
+int32_t Project::sheetCount() const {
+  return m_sheets.count();
 }
 
 Sheet* Project::activeSheet() const {

@@ -33,7 +33,7 @@ public:
 
   QPointF centerOffset() const;
 
-  void setupNameText();
+  void setup();
 
   QList<Port*> ports() const;
   int32_t portCount() const;
@@ -61,6 +61,7 @@ public:
   EPosition portPosition(Port* port);
 
   QString nodeType() const;
+  void setNodeType(const QString& nodeType);
 
   void redraw();
 
@@ -80,6 +81,8 @@ public:
 private:
   void adjustInputPortPos();
   void adjustOutputPortPos();
+  void setupNameText();
+  virtual void doSetup();
 
 protected:
   const static uint32_t WIDTH = 50;

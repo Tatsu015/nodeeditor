@@ -62,6 +62,10 @@ void SheetListWidget::onAddSheext() {
   Project* project = Editor::getInstance()->project();
   Sheet* sheet = SheetFactory::getInstance()->createSheet();
   project->addSheet(sheet);
+  // when first sheet added, change active sheet.
+  if (1 == project->sheetCount()) {
+    project->setActiveSheet(sheet);
+  }
 }
 
 void SheetListWidget::onDeleteSheet() {

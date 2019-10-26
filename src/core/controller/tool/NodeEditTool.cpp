@@ -54,6 +54,9 @@ void NodeEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
 
 void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
   Sheet* activeSheet = scene->sheet();
+  if (!activeSheet) {
+    return;
+  }
   AbstractNode* node = NodeFactory::getInstance()->createNode(activeSheet, m_activeNodeType);
   bool nodeNameVisible = Editor::getInstance()->project()->nodeNameVisible();
   node->setNameTextVisible(nodeNameVisible);
@@ -64,6 +67,9 @@ void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent*
 void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
     Sheet* activeSheet = scene->sheet();
+    if (!activeSheet) {
+      return;
+    }
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
 }
