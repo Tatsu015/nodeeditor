@@ -14,7 +14,9 @@ namespace SystemConfig {
 #define DefineConfig(name) constexpr const char* name = #name
 
 DefineConfig(nodeFillColor);
+DefineConfig(nodeFillHighLightColor);
 DefineConfig(nodeLineColor);
+DefineConfig(nodeLineHighLightColor);
 DefineConfig(connectionColor);
 DefineConfig(creatingConnectionColor);
 DefineConfig(decidedConnectionColor);

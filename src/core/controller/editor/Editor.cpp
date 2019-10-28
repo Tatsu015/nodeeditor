@@ -37,8 +37,6 @@ void Editor::init() {
 }
 
 void Editor::run() {
-  //  Sheet* firstSheet = SheetFactory::getInstance()->createSheet();
-  //  m_project->setActiveSheet(firstSheet);
 }
 
 Project* Editor::project() const {

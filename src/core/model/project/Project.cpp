@@ -78,8 +78,25 @@ void Project::addSheet(Sheet* sheet) {
 }
 
 void Project::removeSheet(Sheet* sheet) {
+  int32_t index = m_sheets.indexOf(sheet);
   m_sheets.removeOne(sheet);
+  m_scene->removeSheet();
   foreach (ProjectObserver* projectObserver, m_projectObservers) { projectObserver->removeSheet(sheet); }
+
+  if (0 == sheetCount()) {
+    return;
+  }
+
+  // set next sheet index
+  int32_t nextIndex = index;
+  if (0 >= index) {
+    nextIndex = 0;
+  } else if (index < sheetCount()) {
+    nextIndex = index;
+  } else {
+    nextIndex = index - 1;
+  }
+  changeActiveSheet(nextIndex);
 }
 
 void Project::removeSheet(const QString& sheetName) {

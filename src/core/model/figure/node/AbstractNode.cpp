@@ -28,14 +28,12 @@ AbstractNode::~AbstractNode() {
 }
 
 void AbstractNode::hoverEnterEvent(QGraphicsSceneHoverEvent* event) {
+  changeHighlightColor();
   QGraphicsPathItem::hoverEnterEvent(event);
 }
 
-void AbstractNode::hoverMoveEvent(QGraphicsSceneHoverEvent* event) {
-  QGraphicsPathItem::hoverMoveEvent(event);
-}
-
 void AbstractNode::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
+  resetColor();
   QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
@@ -94,6 +92,10 @@ void AbstractNode::setupNameText() {
 }
 
 void AbstractNode::doSetup() {
+}
+
+void AbstractNode::changeHighlightColor() {
+  setBrush(QBrush(QColor(systemConfig(SystemConfig::nodeFillHighLightColor).toString())));
 }
 
 QList<Port*> AbstractNode::ports() const {

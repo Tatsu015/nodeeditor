@@ -30,6 +30,7 @@ private slots:
 
 private:
   NodeEditTool* m_NodeEditTool = nullptr;
+  QMap<QString, QAction*> m_actions;
 };
 
 #endif // NODETOOLBAR_H

@@ -26,10 +26,18 @@
 #include <QMenu>
 
 const static qreal TORELANCE = 5;
+const static QRectF SCENE_RECT(0, 0, 300, 400);
 
-Scene::Scene(QObject* parent) : QGraphicsScene(-1000, -1000, 2000, 2000, parent), m_isControlPressed(false) {
-  addLine(-5, -5, 5, 5, QPen(Qt::gray));
-  addLine(-5, 5, 5, -5, QPen(Qt::gray));
+Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent), m_isControlPressed(false) {
+  const static QString DEFAULT_TEXT = "    How to Open Project\n"
+                                      "---------------------------\n"
+                                      "    ・ File -> Open\n"
+                                      "    ・ File -> New\n"
+                                      "    ・ Drag and Drop *." +
+                                      APP_EXTENSION + " file";
+  m_defaultText = new QGraphicsTextItem(DEFAULT_TEXT);
+  m_defaultText->setDefaultTextColor(QColor(Qt::gray));
+  showDefaultText();
 }
 
 Scene::~Scene() {
@@ -66,21 +74,6 @@ void Scene::keyPressEvent(QKeyEvent* event) {
     if (m_isControlPressed) {
       foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
     }
-  } else if (Qt::Key_N == event->key()) {
-    if (m_isControlPressed) {
-      static int i;
-      i = i % 3;
-      ++i;
-      Project* p = Editor::getInstance()->project();
-      Sheet* s = p->sheet("sheet_" + QString::number(i));
-      changeSheet(s);
-    }
-  } else if (Qt::Key_P == event->key()) {
-    if (m_isControlPressed) {
-      foreach (AbstractNode* node, m_sheet->nodes()) { addItem(node); }
-      foreach (Connection* connection, m_sheet->connections()) { addItem(connection); }
-      redraw();
-    }
   }
   QGraphicsScene::keyPressEvent(event);
 }
@@ -104,18 +97,25 @@ Sheet* Scene::sheet() const {
 }
 
 void Scene::setSheet(Sheet* sheet) {
+  hideDefaultText();
   m_sheet = sheet;
 }
 
 void Scene::changeSheet(Sheet* sheet) {
+  removeSheet();
+  hideDefaultText();
+  m_sheet = sheet;
+  foreach (AbstractNode* node, m_sheet->nodes()) { addNode(node); }
+  foreach (Connection* connection, m_sheet->connections()) { addConnection(connection); }
+}
+
+void Scene::removeSheet() {
   // when first call this method, m_sheet is nullptr.
   if (m_sheet) {
     foreach (AbstractNode* node, m_sheet->nodes()) { removeNode(node); }
     foreach (Connection* connection, m_sheet->connections()) { removeConnection(connection); }
   }
-  m_sheet = sheet;
-  foreach (AbstractNode* node, m_sheet->nodes()) { addNode(node); }
-  foreach (Connection* connection, m_sheet->connections()) { addConnection(connection); }
+  showDefaultText();
 }
 
 Port* Scene::findPort(QPointF scenePos) {
@@ -253,11 +253,6 @@ bool Scene::existPort(QPointF scenePos) {
   return false;
 }
 
-// TODO will delete
-// QList<AbstractNode*> Scene::nodes() const {
-//  return m_sheet->nodes();
-//}
-
 QList<AbstractNode*> Scene::nearTopNodes(const qreal top) const {
   QList<AbstractNode*> nearNodes;
   foreach (AbstractNode* node, m_sheet->nodes()) {
@@ -384,6 +379,15 @@ void Scene::notifyAdd(AbstractNode* node) {
 
 void Scene::notifyRemove(AbstractNode* node) {
   foreach (SceneObserver* sceneObserver, m_sceneObservers) { sceneObserver->removeNode(node); }
+}
+
+void Scene::showDefaultText() {
+  m_defaultText->setPos(sceneRect().center() - m_defaultText->boundingRect().center());
+  addItem(m_defaultText);
+}
+
+void Scene::hideDefaultText() {
+  removeItem(m_defaultText);
 }
 
 void Scene::redraw() {

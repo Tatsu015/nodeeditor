@@ -15,7 +15,6 @@ public:
   virtual ~AbstractNode();
 
   virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
   virtual QVariant itemChange(GraphicsItemChange change, const QVariant& value);
@@ -83,6 +82,8 @@ private:
   void adjustOutputPortPos();
   void setupNameText();
   virtual void doSetup();
+
+  void changeHighlightColor();
 
 protected:
   const static uint32_t WIDTH = 50;

@@ -34,6 +34,7 @@ public:
   Sheet* sheet() const;
   void setSheet(Sheet* sheet);
   void changeSheet(Sheet* sheet);
+  void removeSheet();
 
   QList<AbstractNode*> findNodes(QPointF scenePos);
   AbstractNode* findNode(const QString& nodeName);
@@ -74,6 +75,9 @@ private:
   void notifyAdd(AbstractNode* node);
   void notifyRemove(AbstractNode* node);
 
+  void showDefaultText();
+  void hideDefaultText();
+
   void redraw();
 
 private:
@@ -82,6 +86,7 @@ private:
   bool m_isControlPressed;
   QVector<SceneObserver*> m_sceneObservers;
   Sheet* m_sheet = nullptr;
+  QGraphicsTextItem* m_defaultText = nullptr;
 };
 
 #endif // SCENE_H

@@ -32,14 +32,17 @@ void NodeToolBar::changeDefaultTool() {
 }
 
 void NodeToolBar::addSheet(Sheet* sheet) {
-  addToolBarAction(new QAction(sheet->name()));
+  QAction* action = new QAction(sheet->name());
+  m_actions[sheet->name()] = action;
+  addToolBarAction(action);
 }
 
 void NodeToolBar::changeSheet(Sheet* sheet) {
 }
 
 void NodeToolBar::removeSheet(Sheet* sheet) {
-  removeToolBarAction(new QAction(sheet->name()));
+  QAction* action = m_actions[sheet->name()];
+  removeToolBarAction(action);
 }
 
 void NodeToolBar::changeTool(QAction* activeAction) {
