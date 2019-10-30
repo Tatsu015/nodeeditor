@@ -25,8 +25,9 @@ Project::Project() {
 }
 
 Project::~Project() {
-  delete m_scene;
+  foreach (Sheet* sheet, m_sheets) { removeSheet(sheet); }
   qDeleteAll(m_sheets);
+  delete m_scene;
 }
 
 void Project::reset() {

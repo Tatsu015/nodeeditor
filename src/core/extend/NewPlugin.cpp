@@ -30,6 +30,4 @@ void NewPlugin::onExecute() {
   Editor::getInstance()->changeProject(newProject);
   Editor::getInstance()->run();
   PluginLoader::getInstance()->reset();
-
-  newProject->changeActiveSheet(0);
 }
