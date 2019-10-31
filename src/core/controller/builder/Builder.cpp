@@ -4,6 +4,7 @@
 #include "Connection.h"
 #include "Define.h"
 #include "Editor.h"
+#include "FunctionBlockToolButton.h"
 #include "InNode.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
@@ -75,8 +76,11 @@ void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
     action->setIcon(icon);
     ui->nodeToolBar->addToolBarAction(action);
   }
+  ui->nodeToolBar->addSeparator();
+  FunctionBlockToolButton* toolButton = new FunctionBlockToolButton();
+  ui->nodeToolBar->addToolButton(toolButton);
   ui->nodeToolBar->changeDefaultTool();
-  Editor::getInstance()->project()->addObserver(ui->nodeToolBar);
+  Editor::getInstance()->project()->addObserver(toolButton);
 }
 
 void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui) {

@@ -119,7 +119,8 @@ HEADERS += \
     core/controller/publisher/FigureNamePublisher.h \
     core/controller/tool/ConnectionReconnectTool.h \
     core/view/dialog/InvertPortDialog.h \
-    core/controller/parser/ProjectParser.h
+    core/controller/parser/ProjectParser.h \
+    core/view/widget/FunctionBlockToolButton.h
 
 
 SOURCES += \
@@ -188,7 +189,8 @@ SOURCES += \
     core/controller/publisher/FigureNamePublisher.cpp \
     core/controller/tool/ConnectionReconnectTool.cpp \
     core/view/dialog/InvertPortDialog.cpp \
-    core/controller/parser/ProjectParser.cpp
+    core/controller/parser/ProjectParser.cpp \
+    core/view/widget/FunctionBlockToolButton.cpp
 
 
 FORMS += \

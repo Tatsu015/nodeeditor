@@ -1,12 +1,12 @@
 #ifndef NODETOOLBAR_H
 #define NODETOOLBAR_H
 
-#include "ProjectObserver.h"
 #include <QToolBar>
 
+class FunctionBlockToolButton;
 class NodeEditTool;
 
-class NodeToolBar : public QToolBar, public ProjectObserver {
+class NodeToolBar : public QToolBar {
   Q_OBJECT
 
 public:
@@ -14,16 +14,14 @@ public:
   virtual ~NodeToolBar();
 
   void addToolBarAction(QAction* action);
+  void addToolButton(FunctionBlockToolButton* toolButton);
   void removeToolBarAction(QAction* action);
   void setNodeEditTool(NodeEditTool* NodeEditTool);
   void changeDefaultTool();
 
-  virtual void addSheet(Sheet* sheet);
-  virtual void changeSheet(Sheet* sheet);
-  virtual void removeSheet(Sheet* sheet);
-
 private:
   void changeTool(QAction* activeAction);
+  void changeTool(FunctionBlockToolButton* toolButton);
 
 private slots:
   void onChangeTool();
@@ -31,6 +29,7 @@ private slots:
 private:
   NodeEditTool* m_NodeEditTool = nullptr;
   QMap<QString, QAction*> m_actions;
+  FunctionBlockToolButton* m_functionBlockToolButton = nullptr;
 };
 
 #endif // NODETOOLBAR_H
