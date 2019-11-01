@@ -74,6 +74,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
   }
 
   scene->removeConnection(m_tmpConnection);
+  m_startPort->removeConnection(m_tmpConnection);
   if (isOnConnectablePort(scene, event)) {
     Port* endPort = scene->findPort(event->scenePos());
     decideConnectToPort(scene, endPort);

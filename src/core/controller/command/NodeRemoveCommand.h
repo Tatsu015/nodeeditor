@@ -13,29 +13,17 @@ class Connector;
 
 class NodeRemoveCommand : public QUndoCommand {
 private:
-  struct NodeConnectedInfo {
+  class ConnectionInfo {
+  public:
+    ConnectionInfo(Connection* connection, Port* startPort, Port* endPort);
+    ~ConnectionInfo();
+
+    void reconnect();
+
+  private:
     Connection* m_connection = nullptr;
-    QString m_startNodeName;
-    uint32_t m_startPortNumber;
-    QString m_endNodeName;
-    uint32_t m_endPortNumber;
-  };
-  struct ConnectorInfo {
-    Connector* m_connector = nullptr;
-    Connection* m_parentConnection = nullptr;
-    Connection* m_dstConnection = nullptr;
-  };
-  struct ConnectionInfo {
-    Connection* m_connection = nullptr;
-    QString m_startNodeName;
-    uint32_t m_startPortNumber;
-    QString m_endNodeName;
-    uint32_t m_endPortNumber;
-    ConnectorInfo m_endConnectorInfo;
-  };
-  struct NodeRemoveInfo {
-    AbstractNode* m_node = nullptr;
-    QList<ConnectionInfo*> m_connectionInfos;
+    Port* m_startPort = nullptr;
+    Port* m_endPort = nullptr;
   };
 
 public:
@@ -46,11 +34,17 @@ public:
   virtual void undo();
 
 private:
+  bool isStartNodeRemoved(const Connection* connection) const;
+  bool isEndNodeRemoved(const Connection* connection) const;
+
+private:
   Scene* m_scene = nullptr;
   Sheet* m_sheet = nullptr;
-  AbstractNode* m_node = nullptr;
-  QList<NodeRemoveInfo*> m_nodeRemoveInfos;
-  QList<NodeConnectedInfo*> m_nodeConnectedInfos;
+  QList<AbstractNode*> m_nodes;
+  QList<Connection*> m_connections;
+  QList<ConnectionInfo*> m_connectionInfos;
+  //  QList<NodeRemoveInfo*> m_nodeRemoveInfos;
+  //  QList<NodeConnectedInfo*> m_nodeConnectedInfos;
 };
 
 #endif // noderemoveCOMMAND_H
