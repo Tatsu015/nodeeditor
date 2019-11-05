@@ -3,6 +3,7 @@
 #include "AddPortPlugin.h"
 #include "AlignPlugin.h"
 #include "CircuitCalculatePlugin.h"
+#include "ClosePlugin.h"
 #include "ContextMenuManager.h"
 #include "CutPlugin.h"
 #include "InvertPortPlugin.h"
@@ -25,6 +26,7 @@ void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   addPlugin(mainWindow, ui, new NewPlugin());
   addPlugin(mainWindow, ui, new OpenPlugin());
   addPlugin(mainWindow, ui, new SavePlugin());
+  addPlugin(mainWindow, ui, new ClosePlugin());
   addPlugin(mainWindow, ui, new QuitPlugin());
   addPlugin(mainWindow, ui, new CircuitCalculatePlugin());
   addPlugin(mainWindow, ui, new ShowNameViewPlugin());

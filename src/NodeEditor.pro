@@ -81,6 +81,7 @@ HEADERS += \
     core/controller/tool/NodeEditTool.h \
     core/extend/AbstractPlugin.h \
     core/extend/NewPlugin.h \
+    core/extend/ClosePlugin.h \
     core/extend/OpenPlugin.h \
     core/extend/QuitPlugin.h \
     core/extend/SavePlugin.h \
@@ -152,6 +153,7 @@ SOURCES += \
     core/controller/tool/NodeEditTool.cpp \
     core/extend/AbstractPlugin.cpp \
     core/extend/NewPlugin.cpp \
+    core/extend/ClosePlugin.cpp \
     core/extend/OpenPlugin.cpp \
     core/extend/QuitPlugin.cpp \
     core/extend/SavePlugin.cpp \

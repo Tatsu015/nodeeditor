@@ -3,6 +3,7 @@
 #include "MenuManager.h"
 #include "PluginLoader.h"
 #include "Project.h"
+#include <QFileDialog>
 #include <QMenu>
 
 NewPlugin::NewPlugin(QObject* parent) : AbstractPlugin(parent) {
@@ -22,11 +23,16 @@ void NewPlugin::doInit() {
 }
 
 void NewPlugin::onExecute() {
+  QString filePath = QFileDialog::getSaveFileName(nullptr);
+  if (filePath.isEmpty()) {
+    return;
+  }
   Project* oldProject = Editor::getInstance()->project();
   Project* newProject = new Project();
 
   newProject->takeOver(oldProject);
   delete oldProject;
+  newProject->setFilePath(filePath);
   Editor::getInstance()->changeProject(newProject);
   Editor::getInstance()->run();
   PluginLoader::getInstance()->reset();
