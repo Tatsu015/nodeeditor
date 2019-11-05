@@ -1,11 +1,17 @@
 #include "GraphicsView.h"
 #include "AbstractTool.h"
+#include "Define.h"
 #include "Editor.h"
+#include "PluginLoader.h"
+#include "Project.h"
+#include "ProjectParser.h"
+#include "SystemConfig.h"
+#include <QFileInfo>
 #include <QKeyEvent>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QTimeLine>
 #include <QWheelEvent>
-#include <SystemConfig.h>
 
 GraphicsView::GraphicsView(QWidget* parent)
     : QGraphicsView(parent), m_isControlPressed(false), m_numScheduledScalings(0) {
@@ -16,6 +22,7 @@ GraphicsView::GraphicsView(QWidget* parent)
   setBackgroundBrush(QBrush(QColor(systemConfig(SystemConfig::backgroundColor).toString())));
   qreal initScale = 1;
   scale(initScale, initScale);
+  setAcceptDrops(true);
 }
 
 GraphicsView::~GraphicsView() {
@@ -76,6 +83,48 @@ void GraphicsView::keyReleaseEvent(QKeyEvent* event) {
   }
 
   QGraphicsView::keyReleaseEvent(event);
+}
+
+void GraphicsView::dragEnterEvent(QDragEnterEvent* event) {
+  // accept only APP_EXTENSION extension file drag enter.
+  // and GraphicsScene::dragEnterEvent not need to call.
+  // so do not call QGraphicsView::dragEnterEvent function.
+  if (event->mimeData()->hasFormat("text/uri-list")) {
+    QFileInfo info(event->mimeData()->urls().first().toLocalFile());
+    if (APP_EXTENSION == info.suffix()) {
+      event->acceptProposedAction();
+    }
+  }
+}
+
+void GraphicsView::dragMoveEvent(QDragMoveEvent* event) {
+  // GraphicsScene::dragMoveEvent not need to call.
+  // so do not call QGraphicsView::dragMoveEvent function.
+  Q_UNUSED(event);
+}
+
+void GraphicsView::dropEvent(QDropEvent* event) {
+  // GraphicsScene::dropEvent not need to call.
+  // so do not call QGraphicsView::dropEvent function.
+  Project* lastProject = Editor::getInstance()->project();
+
+  QString filePath = event->mimeData()->urls().first().toLocalFile();
+  QFile f(filePath);
+  if (!f.open(QIODevice::ReadOnly)) {
+    return;
+  }
+
+  ProjectParser parser;
+  QByteArray data = f.readAll();
+  Project* newProject = parser.parse(data, lastProject);
+
+  delete lastProject;
+  lastProject->setFilePath(filePath);
+  Editor::getInstance()->changeProject(newProject);
+  PluginLoader::getInstance()->reset();
+
+  newProject->setActiveSheet(newProject->sheets().first());
+  newProject->changeActiveSheet(0);
 }
 
 void GraphicsView::onScalingTime(qreal x) {
