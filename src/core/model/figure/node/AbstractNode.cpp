@@ -180,10 +180,44 @@ Port* AbstractNode::port(const uint64_t number) {
 }
 
 Port* AbstractNode::nearestPort(QPointF scenePos) {
-  qreal minLengthToPort = (m_ports.at(0)->pos() - scenePos).manhattanLength();
   Port* nearestPort = m_ports.at(0);
+  qreal minLengthToPort = (nearestPort->scenePos() - scenePos).manhattanLength();
   foreach (Port* port, m_ports) {
-    QPointF diff = port->pos() - scenePos;
+    QPointF diff = port->scenePos() - scenePos;
+    qreal length = diff.manhattanLength();
+    if (minLengthToPort > length) {
+      minLengthToPort = length;
+      nearestPort = port;
+    }
+  }
+  return nearestPort;
+}
+
+Port* AbstractNode::nearestInputPort(QPointF scenePos) {
+  Port* nearestPort = m_ports.at(0);
+  qreal minLengthToPort = (nearestPort->scenePos() - scenePos).manhattanLength();
+  foreach (Port* port, m_ports) {
+    if (Output == port->io()) {
+      continue;
+    }
+    QPointF diff = port->scenePos() - scenePos;
+    qreal length = diff.manhattanLength();
+    if (minLengthToPort > length) {
+      minLengthToPort = length;
+      nearestPort = port;
+    }
+  }
+  return nearestPort;
+}
+
+Port* AbstractNode::nearestOutputPort(QPointF scenePos) {
+  Port* nearestPort = m_ports.at(0);
+  qreal minLengthToPort = (nearestPort->scenePos() - scenePos).manhattanLength();
+  foreach (Port* port, m_ports) {
+    if (Input == port->io()) {
+      continue;
+    }
+    QPointF diff = port->scenePos() - scenePos;
     qreal length = diff.manhattanLength();
     if (minLengthToPort > length) {
       minLengthToPort = length;

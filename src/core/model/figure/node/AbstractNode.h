@@ -47,6 +47,8 @@ public:
 
   Port* port(const uint64_t number);
   Port* nearestPort(QPointF scenePos);
+  Port* nearestInputPort(QPointF scenePos);
+  Port* nearestOutputPort(QPointF scenePos);
 
   QList<Port*> inputPorts() const;
   QList<Port*> outputPorts() const;

@@ -56,14 +56,11 @@ void ConnectionCreateTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent
     return;
   }
 
-  // TODO
-  //  if (isOnNode(scene, event)) {
-  //    AbstractNode* node = scene->findNodes(event->scenePos()).at(0);
-  //    Port* endPort = node->nearestPort(event->scenePos());
-  //    m_tmpConnection->changePenStyle(TmpConnection::Connectable);
-  //    m_tmpConnection->redraw(m_startPort, event->scenePos());
-  //    return;
-  //  }
+  if (isOnNode(scene, event)) {
+    m_tmpConnection->changeConnectionStyle(Connection::Connectable);
+    m_tmpConnection->redraw(m_startPort, event->scenePos());
+    return;
+  }
   m_tmpConnection->changeConnectionStyle(Connection::Connecting);
   m_tmpConnection->redraw(m_startPort, event->scenePos());
 }
@@ -89,12 +86,17 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
     return;
   }
 
-  // TODO
-  //  if (isOnNode(scene, event)) {
-  //    AbstractNode* node = scene->findNodes(event->scenePos()).at(0);
-  //    Port* endPort = node->nearestPort(event->scenePos());
-  //    decideConnectToPort(scene, endPort);
-  //  }
+  if (isOnNode(scene, event)) {
+    AbstractNode* node = scene->findNodes(event->scenePos()).at(0);
+    Port* endPort;
+    IO io = m_startPort->io();
+    if (Input == io) {
+      endPort = node->nearestOutputPort(event->scenePos());
+    } else {
+      endPort = node->nearestInputPort(event->scenePos());
+    }
+    decideConnectToPort(scene, endPort);
+  }
 
   cancel();
   reset();
