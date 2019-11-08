@@ -111,6 +111,12 @@ int32_t Project::sheetCount() const {
   return m_sheets.count();
 }
 
+QStringList Project::sheetNames() const {
+  QStringList names;
+  foreach (Sheet* sheet, m_sheets) { names << sheet->name(); }
+  return names;
+}
+
 Sheet* Project::activeSheet() const {
   return m_activeSheet;
 }

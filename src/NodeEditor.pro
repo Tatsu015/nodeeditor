@@ -113,11 +113,12 @@ HEADERS += \
     core/extend/InvertPortPlugin.h \
     core/extend/AddPortPlugin.h \
     core/extend/RemovePortPlugin.h \
+    core/extend/JumpSheetPlugin.h \
     core/model/sheet/Sheet.h \
     core/controller/factory/SheetFactory.h \
     core/model/observer/ProjectObserver.h \
     core/view/widget/SheetListWidget.h \
-    core/controller/publisher/FigureNamePublisher.h \
+    core/controller/publisher/SerialNumberNamePublisher.h \
     core/controller/tool/ConnectionReconnectTool.h \
     core/view/dialog/InvertPortDialog.h \
     core/controller/parser/ProjectParser.h \
@@ -184,11 +185,12 @@ SOURCES += \
     core/extend/InvertPortPlugin.cpp \
     core/extend/AddPortPlugin.cpp \
     core/extend/RemovePortPlugin.cpp \
+    core/extend/JumpSheetPlugin.cpp \
     core/model/sheet/Sheet.cpp \
     core/controller/factory/SheetFactory.cpp \
     core/model/observer/ProjectObserver.cpp \
     core/view/widget/SheetListWidget.cpp \
-    core/controller/publisher/FigureNamePublisher.cpp \
+    core/controller/publisher/SerialNumberNamePublisher.cpp \
     core/controller/tool/ConnectionReconnectTool.cpp \
     core/view/dialog/InvertPortDialog.cpp \
     core/controller/parser/ProjectParser.cpp \

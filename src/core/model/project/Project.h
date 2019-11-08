@@ -29,6 +29,7 @@ public:
   void removeSheet(Sheet* sheet);
   void removeSheet(const QString& sheetName);
   int32_t sheetCount() const;
+  QStringList sheetNames() const;
 
   Sheet* activeSheet() const;
   void setActiveSheet(Sheet* activeSheet);

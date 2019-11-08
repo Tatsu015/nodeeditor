@@ -35,8 +35,9 @@ Project* ProjectParser::parse(const QByteArray& data, Project* lastProject) {
 }
 
 Sheet* ProjectParser::parseSheet(QJsonValue sheetJsonVal) {
-  Sheet* sheet = SheetFactory::getInstance()->createSheet(sheetJsonVal[JSON_ID].toString());
-  sheet->setName(sheetJsonVal[JSON_NAME].toString());
+  QString id = sheetJsonVal[JSON_ID].toString();
+  QString name = sheetJsonVal[JSON_NAME].toString();
+  Sheet* sheet = SheetFactory::getInstance()->createSheet(name, id);
 
   foreach (QJsonValue nodeJsonVal, sheetJsonVal[JSON_NODES].toArray()) {
     AbstractNode* node = parseNode(nodeJsonVal);

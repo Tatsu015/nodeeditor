@@ -1,6 +1,7 @@
 #include "ConnectionFactory.h"
 #include "Connection.h"
-#include "FigureNamePublisher.h"
+#include "SerialNumberNamePublisher.h"
+#include "Sheet.h"
 
 ConnectionFactory* ConnectionFactory::getInstance() {
   static ConnectionFactory s;
@@ -22,7 +23,8 @@ Connection* ConnectionFactory::createConnection(const Sheet* sheet, const QStrin
 
   QString newName = name;
   if (newName.isEmpty()) {
-    newName = FigureNamePublisher::getInstance()->createName(sheet, connection->connectionType());
+    newName =
+        SerialNumberNamePublisher::getInstance()->createName(sheet->connectionNames(), connection->connectionType());
   }
 
   connection->setName(newName);

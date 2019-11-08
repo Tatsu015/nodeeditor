@@ -44,6 +44,12 @@ void Sheet::removeNode(AbstractNode* node) {
   m_nodes.removeOne(node);
 }
 
+QStringList Sheet::nodeNames() const {
+  QStringList names;
+  foreach (AbstractNode* node, m_nodes) { names << node->name(); }
+  return names;
+}
+
 QList<AbstractNode*> Sheet::inNodes() const {
   QList<AbstractNode*> nodes;
   foreach (AbstractNode* node, m_nodes) {
@@ -91,6 +97,12 @@ void Sheet::addConnection(Connection* connection) {
 
 void Sheet::removeConnection(Connection* connection) {
   m_connections.removeOne(connection);
+}
+
+QStringList Sheet::connectionNames() const {
+  QStringList names;
+  foreach (Connection* connection, m_connections) { names << connection->name(); }
+  return names;
 }
 
 QString Sheet::name() const {

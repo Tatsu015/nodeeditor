@@ -1,6 +1,7 @@
 #include "NodeFactory.h"
 #include "AbstractNode.h"
-#include "FigureNamePublisher.h"
+#include "SerialNumberNamePublisher.h"
+#include "Sheet.h"
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -25,7 +26,7 @@ AbstractNode* NodeFactory::createNode(const Sheet* sheet, const QString& type, c
 
   QString newName = name;
   if (newName.isEmpty()) {
-    newName = FigureNamePublisher::getInstance()->createName(sheet, node->nodeType());
+    newName = SerialNumberNamePublisher::getInstance()->createName(sheet->nodeNames(), node->nodeType());
   }
 
   node->setName(newName);

@@ -7,6 +7,7 @@
 #include "ContextMenuManager.h"
 #include "CutPlugin.h"
 #include "InvertPortPlugin.h"
+#include "JumpSheetPlugin.h"
 #include "MainWindow.h"
 #include "NewPlugin.h"
 #include "OpenPlugin.h"
@@ -35,6 +36,7 @@ void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   addPlugin(mainWindow, ui, new InvertPortPlugin());
   addPlugin(mainWindow, ui, new AddPortPlugin());
   addPlugin(mainWindow, ui, new RemovePortPlugin());
+  addPlugin(mainWindow, ui, new JumpSheetPlugin());
 }
 
 void PluginLoader::reset() {
