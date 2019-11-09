@@ -19,6 +19,10 @@ public:
   explicit MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
 
+protected:
+  virtual void keyPressEvent(QKeyEvent* event);
+  virtual void keyReleaseEvent(QKeyEvent* event);
+
 private:
   struct ToolBarAction {
     QAction* m_action = nullptr;

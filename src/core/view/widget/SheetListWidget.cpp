@@ -2,6 +2,7 @@
 #include "Editor.h"
 #include "Project.h"
 #include "Sheet.h"
+#include "SheetChangeHistoryStack.h"
 #include "SheetFactory.h"
 #include "ui_SheetListWidget.h"
 #include <QDebug>
@@ -62,10 +63,8 @@ void SheetListWidget::onAddSheext() {
   Project* project = Editor::getInstance()->project();
   Sheet* sheet = SheetFactory::getInstance()->createSheet(project->sheetNames());
   project->addSheet(sheet);
-  // when first sheet added, change active sheet.
-  if (1 == project->sheetCount()) {
-    project->setActiveSheet(sheet);
-  }
+  project->setActiveSheet(sheet);
+  SheetChangeHistoryController::getInstance()->add(sheet->name());
 }
 
 void SheetListWidget::onDeleteSheet() {
@@ -98,7 +97,9 @@ void SheetListWidget::onChangeSheetName() {
 
 void SheetListWidget::onChangeActiveSheet(QListWidgetItem* item) {
   Project* project = Editor::getInstance()->project();
-  project->changeActiveSheet(item->text());
+  QString name = item->text();
+  project->changeActiveSheet(name);
+  SheetChangeHistoryController::getInstance()->add(name);
 }
 
 void SheetListWidget::onExecContextMenu(const QPoint& pos) {

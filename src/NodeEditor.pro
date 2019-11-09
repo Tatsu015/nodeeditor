@@ -51,7 +51,8 @@ INCLUDEPATH += \
     application/model \
     application/view/widget \
     core/model/sheet \
-    core/view/dialog
+    core/view/dialog \
+    core/controller/history
 
 HEADERS += \
     application/controller/CircuitCalculateExecutor.h \
@@ -122,7 +123,8 @@ HEADERS += \
     core/controller/tool/ConnectionReconnectTool.h \
     core/view/dialog/InvertPortDialog.h \
     core/controller/parser/ProjectParser.h \
-    core/view/widget/FunctionBlockToolButton.h
+    core/view/widget/FunctionBlockToolButton.h \
+    core/controller/history/SheetChangeHistoryStack.h
 
 
 SOURCES += \
@@ -194,7 +196,8 @@ SOURCES += \
     core/controller/tool/ConnectionReconnectTool.cpp \
     core/view/dialog/InvertPortDialog.cpp \
     core/controller/parser/ProjectParser.cpp \
-    core/view/widget/FunctionBlockToolButton.cpp
+    core/view/widget/FunctionBlockToolButton.cpp \
+    core/controller/history/SheetChangeHistoryStack.cpp
 
 
 FORMS += \
