@@ -1,6 +1,5 @@
 #include "FunctionBlockNode.h"
 #include "Define.h"
-#include "FigureNamePublisher.h"
 #include "Port.h"
 #include "Sheet.h"
 #include <QBrush>

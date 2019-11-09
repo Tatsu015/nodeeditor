@@ -1,6 +1,5 @@
 #include "OutNode.h"
 #include "Define.h"
-#include "FigureNamePublisher.h"
 #include "Port.h"
 #include <QBrush>
 #include <QPen>
