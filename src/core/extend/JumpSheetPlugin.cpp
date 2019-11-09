@@ -6,6 +6,7 @@
 #include "Project.h"
 #include "Scene.h"
 #include "Sheet.h"
+#include "SheetChangeHistoryController.h"
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
 
@@ -38,5 +39,7 @@ void JumpSheetPlugin::doInit() {
 
 void JumpSheetPlugin::onExecute() {
   Project* project = Editor::getInstance()->project();
-  project->changeActiveSheet(m_targetFunctionBlockNode->nodeType());
+  QString sheetName = m_targetFunctionBlockNode->nodeType();
+  project->changeActiveSheet(sheetName);
+  SheetChangeHistoryController::getInstance()->add(sheetName);
 }

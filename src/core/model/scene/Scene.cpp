@@ -8,6 +8,7 @@
 #include "ContextMenuManager.h"
 #include "Define.h"
 #include "Editor.h"
+#include "FunctionBlockNode.h"
 #include "GuideLine.h"
 #include "InNode.h"
 #include "NodeEditTool.h"
@@ -21,6 +22,7 @@
 #include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QMenu>
@@ -28,7 +30,7 @@
 const static qreal TORELANCE = 5;
 const static QRectF SCENE_RECT(0, 0, 300, 400);
 
-Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent), m_isControlPressed(false) {
+Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent) {
   const static QString DEFAULT_TEXT = "    How to Open Project\n"
                                       "---------------------------\n"
                                       "    ・ File -> Open\n"
@@ -44,13 +46,13 @@ Scene::~Scene() {
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
-  changeActiveTool(event->scenePos());
+  changeActiveTool(event);
   Editor::getInstance()->activeTool()->mousePressEvent(this, event);
   QGraphicsScene::mousePressEvent(event);
 }
 
 void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
-  changeActiveTool(event->scenePos());
+  changeActiveTool(event);
   Editor::getInstance()->activeTool()->mouseMoveEvent(this, event);
   QGraphicsScene::mouseMoveEvent(event);
 }
@@ -68,21 +70,22 @@ void Scene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 
 void Scene::keyPressEvent(QKeyEvent* event) {
   Editor::getInstance()->activeTool()->keyPressEvent(this, event);
+  if ((Qt::Key_A == event->key()) && Qt::ControlModifier == event->modifiers()) {
+    foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
+  }
   if (Qt::Key_Control == event->key()) {
-    m_isControlPressed = true;
-  } else if (Qt::Key_A == event->key()) {
-    if (m_isControlPressed) {
-      foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
-    }
+    // TODO
+    //    FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(mousepo));
+    //    if (functionBlockNode && (Qt::ControlModifier == event->modifiers())) {
+    //      Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
+    //      QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
+    //    }
   }
   QGraphicsScene::keyPressEvent(event);
 }
 
 void Scene::keyReleaseEvent(QKeyEvent* event) {
   Editor::getInstance()->activeTool()->keyReleaseEvent(this, event);
-  if (Qt::Key_Control == event->key()) {
-    m_isControlPressed = false;
-  }
   QGraphicsScene::keyReleaseEvent(event);
 }
 
@@ -141,16 +144,25 @@ void Scene::takeOver(Scene* scene) {
   m_sceneObservers = scene->m_sceneObservers;
 }
 
-void Scene::changeActiveTool(const QPointF nowScenePos) {
+void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
-    Port* port = findPort(nowScenePos);
+    Port* port = findPort(event->scenePos());
+    FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(event->scenePos()));
     if (port) {
       if (port->canConnect()) {
         Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
         QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
       } else {
         Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
+        QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
+      }
+    } else if (functionBlockNode) {
+      if (Qt::ControlModifier == event->modifiers()) {
+        Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
         QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
+      } else {
+        Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+        QGuiApplication::restoreOverrideCursor();
       }
     } else {
       Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
@@ -244,6 +256,14 @@ AbstractNode* Scene::findNode(const QString& nodeName) {
     }
   }
   return nullptr;
+}
+
+AbstractNode* Scene::findNode(QPointF scenePos) {
+  QList<AbstractNode*> nodes = findNodes(scenePos);
+  if (0 >= nodes.count()) {
+    return nullptr;
+  }
+  return nodes.first();
 }
 
 bool Scene::existPort(QPointF scenePos) {

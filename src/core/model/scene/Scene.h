@@ -38,6 +38,7 @@ public:
 
   QList<AbstractNode*> findNodes(QPointF scenePos);
   AbstractNode* findNode(const QString& nodeName);
+  AbstractNode* findNode(QPointF scenePos);
   QList<AbstractNode*> nearTopNodes(const qreal top) const;
   QList<AbstractNode*> nearTopNodes(const qreal top, const SelectedFilter filter) const;
   QList<AbstractNode*> nearBottomNodes(const qreal bottom) const;
@@ -68,7 +69,7 @@ public:
   void takeOver(Scene* scene);
 
 private:
-  void changeActiveTool(const QPointF nowScenePos);
+  void changeActiveTool(QGraphicsSceneMouseEvent* event);
   Port* findStartPort(QPointF scenePos);
   Port* findEndPort(QPointF scenePos);
 
@@ -83,7 +84,6 @@ private:
 private:
   Port* m_startPort = nullptr;
   QVector<GuideLine*> m_guideLines;
-  bool m_isControlPressed;
   QVector<SceneObserver*> m_sceneObservers;
   Sheet* m_sheet = nullptr;
   QGraphicsTextItem* m_defaultText = nullptr;

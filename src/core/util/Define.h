@@ -8,6 +8,7 @@ const static QString APP_EXTENSION = "nd";
 const static QString TOOL_CONNECTION_CREATE = "ConnectionCreate";
 const static QString TOOL_NODE_CREATE = "NodeCreate";
 const static QString TOOL_CONNECTION_RECONNECT = "ConnectionReconnect";
+const static QString TOOL_SHEET_JUMP = "SheetJump";
 
 const static QString NODE_IN = "In";
 const static QString NODE_OUT = "Out";

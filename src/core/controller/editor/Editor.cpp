@@ -18,6 +18,7 @@
 #include "Project.h"
 #include "Scene.h"
 #include "SheetFactory.h"
+#include "SheetJumpTool.h"
 #include "SystemConfig.h"
 #include <QGraphicsView>
 #include <QUndoStack>
@@ -102,6 +103,7 @@ void Editor::initTool() {
   addTool(new NodeEditTool());
   addTool(new ConnectionCreateTool());
   addTool(new ConnectionReconnectTool());
+  addTool(new SheetJumpTool());
 
   // set default tool
   m_activeTool = m_tools[TOOL_NODE_CREATE];

@@ -2,7 +2,7 @@
 #include "Editor.h"
 #include "Project.h"
 #include "Sheet.h"
-#include "SheetChangeHistoryStack.h"
+#include "SheetChangeHistoryController.h"
 #include "SheetFactory.h"
 #include "ui_SheetListWidget.h"
 #include <QDebug>

@@ -80,6 +80,7 @@ HEADERS += \
     core/controller/tool/AbstractTool.h \
     core/controller/tool/ConnectionCreateTool.h \
     core/controller/tool/NodeEditTool.h \
+    core/controller/tool/SheetJumpTool.h \
     core/extend/AbstractPlugin.h \
     core/extend/NewPlugin.h \
     core/extend/ClosePlugin.h \
@@ -124,7 +125,7 @@ HEADERS += \
     core/view/dialog/InvertPortDialog.h \
     core/controller/parser/ProjectParser.h \
     core/view/widget/FunctionBlockToolButton.h \
-    core/controller/history/SheetChangeHistoryStack.h
+    core/controller/history/SheetChangeHistoryController.h
 
 
 SOURCES += \
@@ -154,6 +155,7 @@ SOURCES += \
     core/controller/tool/AbstractTool.cpp \
     core/controller/tool/ConnectionCreateTool.cpp \
     core/controller/tool/NodeEditTool.cpp \
+    core/controller/tool/SheetJumpTool.cpp \
     core/extend/AbstractPlugin.cpp \
     core/extend/NewPlugin.cpp \
     core/extend/ClosePlugin.cpp \
@@ -197,7 +199,7 @@ SOURCES += \
     core/view/dialog/InvertPortDialog.cpp \
     core/controller/parser/ProjectParser.cpp \
     core/view/widget/FunctionBlockToolButton.cpp \
-    core/controller/history/SheetChangeHistoryStack.cpp
+    core/controller/history/SheetChangeHistoryController.cpp
 
 
 FORMS += \

@@ -1,4 +1,4 @@
-#include "SheetChangeHistoryStack.h"
+#include "SheetChangeHistoryController.h"
 #include "Project.h"
 
 SheetChangeHistoryController* SheetChangeHistoryController::getInstance() {
