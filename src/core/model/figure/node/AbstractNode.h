@@ -68,6 +68,8 @@ public:
 
   IO io() const;
 
+  bool isReplaceable(AbstractNode* target) const;
+
   void changeColor(const QColor color);
   void resetColor();
 
@@ -84,6 +86,9 @@ private:
   void adjustOutputPortPos();
   void setupNameText();
   virtual void doSetup();
+
+  bool isInputPortEditable() const;
+  bool isOutputPortEditable() const;
 
   void changeHighlightColor();
 

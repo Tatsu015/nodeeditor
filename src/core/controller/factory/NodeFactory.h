@@ -17,6 +17,7 @@ public:
   AbstractNode* createNode(const QString& type, const QString& name, const QString& id);
   QIcon createIcon(const QString& type) const;
   QStringList nodeTypes() const;
+  QList<AbstractNode*> nodes() const;
 
 private:
   QMap<QString, AbstractNode*> m_nodeMap;

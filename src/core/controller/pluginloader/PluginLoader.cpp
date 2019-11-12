@@ -13,6 +13,7 @@
 #include "OpenPlugin.h"
 #include "QuitPlugin.h"
 #include "RemovePortPlugin.h"
+#include "ReplaceNodePlugin.h"
 #include "SavePlugin.h"
 #include "ShowNodeNamePlugin.h"
 #include "ui_MainWindow.h"
@@ -37,6 +38,7 @@ void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   addPlugin(mainWindow, ui, new AddPortPlugin());
   addPlugin(mainWindow, ui, new RemovePortPlugin());
   addPlugin(mainWindow, ui, new JumpSheetPlugin());
+  addPlugin(mainWindow, ui, new ReplaceNodePlugin());
 }
 
 void PluginLoader::reset() {

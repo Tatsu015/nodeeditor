@@ -71,6 +71,7 @@ HEADERS += \
     core/controller/command/PortRemoveCommand.h \
     core/controller/command/NodeMoveCommand.h \
     core/controller/command/NodeRemoveCommand.h \
+    core/controller/command/NodeReplaceCommand.h \
     core/controller/editor/Editor.h \
     core/controller/factory/ConnectionFactory.h \
     core/controller/factory/ConnectorFactory.h \
@@ -116,6 +117,7 @@ HEADERS += \
     core/extend/AddPortPlugin.h \
     core/extend/RemovePortPlugin.h \
     core/extend/JumpSheetPlugin.h \
+    core/extend/ReplaceNodePlugin.h \
     core/model/sheet/Sheet.h \
     core/controller/factory/SheetFactory.h \
     core/model/observer/ProjectObserver.h \
@@ -146,6 +148,7 @@ SOURCES += \
     core/controller/command/PortRemoveCommand.cpp \
     core/controller/command/NodeMoveCommand.cpp \
     core/controller/command/NodeRemoveCommand.cpp \
+    core/controller/command/NodeReplaceCommand.cpp \
     core/controller/editor/Editor.cpp \
     core/controller/factory/ConnectionFactory.cpp \
     core/controller/factory/ConnectorFactory.cpp \
@@ -190,6 +193,7 @@ SOURCES += \
     core/extend/AddPortPlugin.cpp \
     core/extend/RemovePortPlugin.cpp \
     core/extend/JumpSheetPlugin.cpp \
+    core/extend/ReplaceNodePlugin.cpp \
     core/model/sheet/Sheet.cpp \
     core/controller/factory/SheetFactory.cpp \
     core/model/observer/ProjectObserver.cpp \

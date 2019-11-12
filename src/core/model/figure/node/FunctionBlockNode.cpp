@@ -10,10 +10,6 @@ FunctionBlockNode::FunctionBlockNode(Sheet* sheet, QGraphicsItem* parent) : Abst
   m_nodeType = sheet->name();
 
   m_io = Undefined;
-  m_maxInputPortCount = 99;
-  m_maxOutputPortCount = 99;
-  m_minInputPortCount = 0;
-  m_minOutputPortCount = 0;
 
   QPainterPath path;
   path.addRoundedRect(0, 0, WIDTH, HEIGHT, ROUND_RADIUS, ROUND_RADIUS);

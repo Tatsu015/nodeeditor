@@ -48,7 +48,6 @@ void RemovePortPlugin::onExecute() {
   }
 
   QInputDialog selectPortDialog;
-  selectPortDialog.setOptions(QInputDialog::UseListViewForComboBoxItems);
   QStringList portNames;
   AbstractNode* targetNode = nodes.first();
   foreach (Port* port, targetNode->ports()) {

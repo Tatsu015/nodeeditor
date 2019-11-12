@@ -59,6 +59,10 @@ QStringList NodeFactory::nodeTypes() const {
   return m_nodeTypes;
 }
 
+QList<AbstractNode*> NodeFactory::nodes() const {
+  return m_nodeMap.values();
+}
+
 NodeFactory::NodeFactory() {
 }
 

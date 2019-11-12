@@ -94,6 +94,20 @@ void AbstractNode::setupNameText() {
 void AbstractNode::doSetup() {
 }
 
+bool AbstractNode::isInputPortEditable() const {
+  if (m_maxInputPortCount == m_minInputPortCount) {
+    return false;
+  }
+  return true;
+}
+
+bool AbstractNode::isOutputPortEditable() const {
+  if (m_maxOutputPortCount == m_minOutputPortCount) {
+    return false;
+  }
+  return true;
+}
+
 void AbstractNode::changeHighlightColor() {
   setBrush(QBrush(QColor(systemConfig(SystemConfig::nodeFillHighLightColor).toString())));
 }
@@ -342,6 +356,32 @@ void AbstractNode::redraw() {
 
 IO AbstractNode::io() const {
   return m_io;
+}
+
+bool AbstractNode::isReplaceable(AbstractNode* target) const {
+  if (!isInputPortEditable()) {
+    if (inputPortCount() != target->inputPortCount()) {
+      return false;
+    }
+  }
+  if (!isOutputPortEditable()) {
+    if (outputPortCount() != target->outputPortCount()) {
+      return false;
+    }
+  }
+  if (inputPortCount() > target->m_maxInputPortCount) {
+    return false;
+  }
+  if (outputPortCount() > target->m_maxOutputPortCount) {
+    return false;
+  }
+  if (inputPortCount() < target->m_minInputPortCount) {
+    return false;
+  }
+  if (outputPortCount() < target->m_minOutputPortCount) {
+    return false;
+  }
+  return true;
 }
 
 void AbstractNode::changeColor(const QColor color) {
