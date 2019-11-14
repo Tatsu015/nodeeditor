@@ -18,6 +18,7 @@
 #include "Project.h"
 #include "SceneObserver.h"
 #include "Sheet.h"
+#include "SystemConfig.h"
 #include <QAction>
 #include <QCursor>
 #include <QDebug>
@@ -40,6 +41,8 @@ Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent) {
   m_defaultText = new QGraphicsTextItem(DEFAULT_TEXT);
   m_defaultText->setDefaultTextColor(QColor(Qt::gray));
   showDefaultText();
+
+  setBackgroundBrush(QBrush(QColor(systemConfig(SystemConfig::backgroundColor).toString())));
 }
 
 Scene::~Scene() {
@@ -72,14 +75,6 @@ void Scene::keyPressEvent(QKeyEvent* event) {
   Editor::getInstance()->activeTool()->keyPressEvent(this, event);
   if ((Qt::Key_A == event->key()) && Qt::ControlModifier == event->modifiers()) {
     foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
-  }
-  if (Qt::Key_Control == event->key()) {
-    // TODO
-    //    FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(mousepo));
-    //    if (functionBlockNode && (Qt::ControlModifier == event->modifiers())) {
-    //      Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
-    //      QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
-    //    }
   }
   QGraphicsScene::keyPressEvent(event);
 }

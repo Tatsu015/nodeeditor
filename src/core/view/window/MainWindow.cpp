@@ -32,6 +32,5 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event) {
       Editor::getInstance()->project()->changeActiveSheet(sheetName);
     }
   }
-  qDebug() << "release";
   QMainWindow::keyReleaseEvent(event);
 }

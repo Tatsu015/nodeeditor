@@ -14,6 +14,7 @@
 #include <QAction>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QGuiApplication>
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
 
@@ -26,7 +27,7 @@ NodeEditTool::~NodeEditTool() {
 }
 
 void NodeEditTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
-  if (isSelectedNodesPressed(event->scenePos(), scene)) {
+  if (scene->findNode(event->scenePos())) {
     m_isNodeMoving = true;
     m_isNodeSelectable = false;
   }
@@ -72,6 +73,22 @@ void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
     }
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
+  if (Qt::Key_C == event->key() && Qt::ControlModifier == event->modifiers()) {
+    captureSelectedNodes(scene);
+  }
+  if (Qt::Key_V == event->key() && Qt::ControlModifier == event->modifiers()) {
+    pasteCopyNodes(scene);
+  }
+  if ((Qt::Key_Control == event->key()) && m_isNodeMoving) {
+    QGuiApplication::setOverrideCursor(QCursor(Qt::DragCopyCursor));
+    captureSelectedNodes(scene);
+  }
+}
+
+void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event) {
+  Q_UNUSED(scene);
+  Q_UNUSED(event);
+  QGuiApplication::restoreOverrideCursor();
 }
 
 QStringList NodeEditTool::nodeTypes() const {
@@ -159,5 +176,26 @@ void NodeEditTool::drawLeftGuideLineFromNearNodes(Scene* scene, AbstractNode* mo
     qreal bottom = qMax(nearNode->bottom(), movingNode->bottom()) + GUIDELINE_DRAWOVER_SIZE;
     GuideLine* guideLine = new GuideLine(x, top, x, bottom);
     scene->addGuideLine(guideLine);
+  }
+}
+
+void NodeEditTool::captureSelectedNodes(Scene* scene) {
+  m_copySrcNodes.clear();
+  m_copySrcNodes << scene->selectedNodes();
+  m_lastPastePos = QPointF();
+}
+
+void NodeEditTool::pasteCopyNodes(Scene* scene) {
+  foreach (AbstractNode* node, scene->selectedNodes()) { node->setSelected(false); }
+  foreach (AbstractNode* srcNode, m_copySrcNodes) {
+    Sheet* sheet = scene->sheet();
+    AbstractNode* copyNode = NodeFactory::getInstance()->createNode(sheet, srcNode->nodeType());
+    copyNode->setPos(srcNode->pos() + m_lastPastePos + QPointF(10, 10));
+
+    sheet->addNode(copyNode);
+    scene->addNode(copyNode);
+    copyNode->setSelected(true);
+    srcNode->setSelected(false);
+    m_lastPastePos += QPointF(10, 10);
   }
 }

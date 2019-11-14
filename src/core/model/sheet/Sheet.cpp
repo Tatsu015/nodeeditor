@@ -1,6 +1,7 @@
 #include "Sheet.h"
 #include "AbstractNode.h"
 #include "Connection.h"
+#include "Port.h"
 #include <QUuid>
 
 Sheet::Sheet() {
@@ -148,6 +149,42 @@ QJsonObject Sheet::toJsonObj() {
   jsonObj[JSON_NODES] = nodeJsonArray;
   jsonObj[JSON_NODE_TO_NODE_CONNECTIONS] = nodeToNodeConnectionJsonArray;
   jsonObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS] = nodeToConnectorConnectionJsonArray;
+
+  return jsonObj;
+}
+
+QJsonObject Sheet::toSelectedJsonObj() {
+  QJsonObject jsonObj;
+  jsonObj[JSON_NAME] = m_name;
+  jsonObj[JSON_ID] = m_id;
+
+  QJsonArray nodeJsonArray;
+  QList<AbstractNode*> selectedNodes;
+  foreach (AbstractNode* node, m_nodes) {
+    if (node->isSelected()) {
+      selectedNodes << node;
+      nodeJsonArray.append(node->toJsonObject());
+    }
+  }
+
+  QJsonArray nodeToNodeConnectionJsonArray;
+  foreach (Connection* connection, m_connections) {
+    if (selectedNodes.contains(connection->startPort()->parentNode()) &&
+        selectedNodes.contains(connection->endPort()->parentNode())) {
+      nodeToNodeConnectionJsonArray << connection->toJsonObj();
+    }
+  }
+  // TODO
+  //  QJsonArray nodeToConnectorConnectionJsonArray;
+  //  foreach (Connection* connection, m_connections) {
+  //    if (connection->hasStartConnector() || (connection->hasEndConnector())) {
+  //      nodeToConnectorConnectionJsonArray << connection->toJsonObj();
+  //    }
+  //  }
+
+  jsonObj[JSON_NODES] = nodeJsonArray;
+  jsonObj[JSON_NODE_TO_NODE_CONNECTIONS] = nodeToNodeConnectionJsonArray;
+  //  jsonObj[JSON_NODE_TO_CONNECTOR_CONNECTIONS] = nodeToConnectorConnectionJsonArray;
 
   return jsonObj;
 }

@@ -18,7 +18,8 @@ NodeMoveCommand::~NodeMoveCommand() {
 }
 
 void NodeMoveCommand::redo() {
-  m_scene->changeSheet(m_sheet);
+  // TODO this code do not work
+  //  m_scene->changeSheet(m_sheet);
   foreach (NodeMoveInfo* nodeMoveInfo, m_nodeMovenfos) {
     nodeMoveInfo->m_node->setPos(nodeMoveInfo->m_endScenePos);
     nodeMoveInfo->m_node->redraw();
@@ -26,7 +27,8 @@ void NodeMoveCommand::redo() {
 }
 
 void NodeMoveCommand::undo() {
-  m_scene->changeSheet(m_sheet);
+  // TODO this code do not work
+  //  m_scene->changeSheet(m_sheet);
   foreach (NodeMoveInfo* nodeMoveInfo, m_nodeMovenfos) {
     nodeMoveInfo->m_node->setPos(nodeMoveInfo->m_startScenePos);
     nodeMoveInfo->m_node->redraw();
