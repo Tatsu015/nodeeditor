@@ -6,14 +6,14 @@
 
 class Scene;
 class Sheet;
-class Connection;
+class AbstractConnection;
 class Port;
 class Connector;
 
 class ConnectToConnectorCommand : public QUndoCommand {
 public:
-  ConnectToConnectorCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* addScenePos,
-                            Connector* endConnector, Connection* dstConnection);
+  ConnectToConnectorCommand(Scene* scene, Sheet* sheet, AbstractConnection* connection, Port* addScenePos,
+                            Connector* endConnector, AbstractConnection* dstConnection, QList<QPointF> vertexes);
   virtual ~ConnectToConnectorCommand();
 
   virtual void redo();
@@ -22,10 +22,11 @@ public:
 private:
   Scene* m_scene = nullptr;
   Sheet* m_sheet = nullptr;
-  Connection* m_connection = nullptr;
+  AbstractConnection* m_connection = nullptr;
   Port* m_startPort = nullptr;
   Connector* m_endConnector = nullptr;
-  Connection* m_dstConnection = nullptr;
+  AbstractConnection* m_dstConnection = nullptr;
+  QList<QPointF> m_vertexes;
 };
 
 #endif // ConnectToConnectorCommand_H

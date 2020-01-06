@@ -1,6 +1,6 @@
 #include "Sheet.h"
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include <QUuid>
 
 Sheet::Sheet() {
@@ -78,8 +78,8 @@ int32_t Sheet::outNodeCount() const {
   return outNodes().count();
 }
 
-Connection* Sheet::connection(const QString& connectionName) const {
-  foreach (Connection* connection, m_connections) {
+AbstractConnection* Sheet::connection(const QString& connectionName) const {
+  foreach (AbstractConnection* connection, m_connections) {
     if (connectionName == connection->name()) {
       return connection;
     }
@@ -87,21 +87,21 @@ Connection* Sheet::connection(const QString& connectionName) const {
   return nullptr;
 }
 
-QList<Connection*> Sheet::connections() const {
+QList<AbstractConnection*> Sheet::connections() const {
   return m_connections;
 }
 
-void Sheet::addConnection(Connection* connection) {
+void Sheet::addConnection(AbstractConnection* connection) {
   m_connections << connection;
 }
 
-void Sheet::removeConnection(Connection* connection) {
+void Sheet::removeConnection(AbstractConnection* connection) {
   m_connections.removeOne(connection);
 }
 
 QStringList Sheet::connectionNames() const {
   QStringList names;
-  foreach (Connection* connection, m_connections) { names << connection->name(); }
+  foreach (AbstractConnection* connection, m_connections) { names << connection->name(); }
   return names;
 }
 
@@ -119,7 +119,7 @@ bool Sheet::contain(const QString& figureName) const {
       return true;
     }
   }
-  foreach (Connection* connection, m_connections) {
+  foreach (AbstractConnection* connection, m_connections) {
     if (figureName == connection->name()) {
       return true;
     }
@@ -137,7 +137,7 @@ QJsonObject Sheet::toJsonObj() {
 
   QJsonArray nodeToNodeConnectionJsonArray;
   QJsonArray nodeToConnectorConnectionJsonArray;
-  foreach (Connection* connection, m_connections) {
+  foreach (AbstractConnection* connection, m_connections) {
     if (connection->hasStartConnector() || (connection->hasEndConnector())) {
       nodeToConnectorConnectionJsonArray << connection->toJsonObj();
     } else {

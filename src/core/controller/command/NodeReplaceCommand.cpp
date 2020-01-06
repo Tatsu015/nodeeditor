@@ -1,6 +1,6 @@
 #include "NodeReplaceCommand.h"
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
@@ -16,10 +16,10 @@ void NodeReplaceCommand::redo() {
   m_dstNode->setPos(m_srcNode->pos());
   foreach (Port* oldPort, m_srcNode->ports()) {
     Port* newPort = m_dstNode->port(oldPort->number());
-    foreach (Connection* connection, oldPort->connections()) {
+    foreach (AbstractConnection* connection, oldPort->connections()) {
       oldPort->removeConnection(connection);
       newPort->addConnection(connection);
-      if (Connection::End == connection->whichEdge(oldPort)) {
+      if (AbstractConnection::End == connection->whichEdge(oldPort)) {
         connection->removeEndPort();
         connection->setEndPort(newPort);
       } else {
@@ -39,10 +39,10 @@ void NodeReplaceCommand::undo() {
   m_srcNode->setPos(m_dstNode->pos());
   foreach (Port* newPort, m_dstNode->ports()) {
     Port* oldPort = m_srcNode->port(newPort->number());
-    foreach (Connection* connection, newPort->connections()) {
+    foreach (AbstractConnection* connection, newPort->connections()) {
       newPort->removeConnection(connection);
       oldPort->addConnection(connection);
-      if (Connection::End == connection->whichEdge(newPort)) {
+      if (AbstractConnection::End == connection->whichEdge(newPort)) {
         connection->removeEndPort();
         connection->setEndPort(oldPort);
       } else {

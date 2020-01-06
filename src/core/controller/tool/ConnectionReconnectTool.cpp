@@ -1,7 +1,7 @@
 #include "ConnectionReconnectTool.h"
+#include "AbstractConnection.h"
 #include "AbstractNode.h"
 #include "ConnectToConnectorCommand.h"
-#include "Connection.h"
 #include "ConnectionFactory.h"
 #include "ConnectorFactory.h"
 #include "Define.h"
@@ -58,16 +58,16 @@ void ConnectionReconnectTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEv
   }
 
   if (isOnConnectablePort(scene, event)) {
-    m_connection->changeConnectionStyle(Connection::Connectable);
+    m_connection->changeConnectionStyle(AbstractConnection::Connectable);
     return;
   }
 
   if (isOnConnecttableConnection(scene, event)) {
-    m_connection->changeConnectionStyle(Connection::Connectable);
+    m_connection->changeConnectionStyle(AbstractConnection::Connectable);
     return;
   }
 
-  m_connection->changeConnectionStyle(Connection::Connecting);
+  m_connection->changeConnectionStyle(AbstractConnection::Connecting);
   m_connection->redraw(m_fixedPort, event->scenePos());
 }
 
@@ -76,7 +76,7 @@ void ConnectionReconnectTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMous
     return;
   }
 
-  m_connection->changeConnectionStyle(Connection::Connected);
+  m_connection->changeConnectionStyle(AbstractConnection::Connected);
 
   Port* endPort = scene->findPort(event->scenePos());
   if (m_lastEndPort == endPort) {
@@ -93,7 +93,7 @@ void ConnectionReconnectTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMous
   }
 
   if (isOnConnecttableConnection(scene, event)) {
-    Connection* dstConnection = scene->findConnection(event->scenePos(), m_connection);
+    AbstractConnection* dstConnection = scene->findConnection(event->scenePos(), m_connection);
     decideConnectToConnector(scene, event->scenePos(), dstConnection);
     reset();
     return;
@@ -113,7 +113,7 @@ void ConnectionReconnectTool::decideConnectToPort(Scene* scene, Port* lastEndPor
 }
 
 void ConnectionReconnectTool::decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos,
-                                                       Connection* dstConnection) {
+                                                       AbstractConnection* dstConnection) {
   Sheet* activeSheet = scene->sheet();
   Connector* connector = ConnectorFactory::getInstance()->createConnector(CONNECTOR, m_connection);
   connector->setPos(dstConnection->closeCenter(mouseReleaseScenePos) + connector->centerOffset());
@@ -125,8 +125,8 @@ void ConnectionReconnectTool::decideConnectToConnector(Scene* scene, QPointF mou
   connector->setXPosRate(xPosRate);
   connector->setYPosRate(yPosRate);
 
-  ConnectToConnectorCommand* command =
-      new ConnectToConnectorCommand(scene, activeSheet, m_connection, m_fixedPort, connector, dstConnection);
+  ConnectToConnectorCommand* command = new ConnectToConnectorCommand(scene, activeSheet, m_connection, m_fixedPort,
+                                                                     connector, dstConnection, QList<QPointF>());
   Editor::getInstance()->addCommand(command);
 
   m_fixedPort = nullptr;
@@ -160,7 +160,7 @@ bool ConnectionReconnectTool::isOnNode(Scene* scene, QGraphicsSceneMouseEvent* e
 }
 
 bool ConnectionReconnectTool::isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const {
-  QList<Connection*> connections = scene->findConnections(event->scenePos(), m_connection);
+  QList<AbstractConnection*> connections = scene->findConnections(event->scenePos(), m_connection);
   // now connection creating, so m_tmpConnection always contains in connections.
   // but this function need to find connect to connection, so remove m_tmpConnection.
 

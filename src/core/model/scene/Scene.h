@@ -5,7 +5,7 @@
 
 class AbstractNode;
 class InNode;
-class Connection;
+class AbstractConnection;
 class Port;
 class Connector;
 class GuideLine;
@@ -52,11 +52,11 @@ public:
   void addNode(AbstractNode* node);
   void removeNode(AbstractNode* node);
 
-  Connection* findConnection(const QPointF scenePos, Connection* tmponnection);
-  Connection* findConnection(const QString connectionName);
-  QList<Connection*> findConnections(const QPointF scenePos, Connection* tmponnection);
-  void addConnection(Connection* connection);
-  void removeConnection(Connection* connection);
+  AbstractConnection* findConnection(const QPointF scenePos, AbstractConnection* tmponnection);
+  AbstractConnection* findConnection(const QString connectionName);
+  QList<AbstractConnection*> findConnections(const QPointF scenePos, AbstractConnection* tmponnection);
+  void addConnection(AbstractConnection* connection);
+  void removeConnection(AbstractConnection* connection);
 
   void addGuideLine(GuideLine* guideLine);
   void clearGuideLine();

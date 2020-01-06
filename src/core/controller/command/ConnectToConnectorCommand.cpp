@@ -1,15 +1,15 @@
 #include "ConnectToConnectorCommand.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Connector.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
 
-ConnectToConnectorCommand::ConnectToConnectorCommand(Scene* scene, Sheet* sheet, Connection* connection,
+ConnectToConnectorCommand::ConnectToConnectorCommand(Scene* scene, Sheet* sheet, AbstractConnection* connection,
                                                      Port* startPort, Connector* endConnector,
-                                                     Connection* dstConnection)
+                                                     AbstractConnection* dstConnection, QList<QPointF> vertexes)
     : QUndoCommand(), m_scene(scene), m_sheet(sheet), m_connection(connection), m_startPort(startPort),
-      m_endConnector(endConnector), m_dstConnection(dstConnection) {
+      m_endConnector(endConnector), m_dstConnection(dstConnection), m_vertexes(vertexes) {
 }
 
 ConnectToConnectorCommand::~ConnectToConnectorCommand() {
@@ -24,12 +24,15 @@ void ConnectToConnectorCommand::redo() {
 
   m_connection->setEndConnector(m_endConnector);
   //  m_connection->setEndPos(m_endConnector->centerScenePos());
+  foreach (QPointF vertex, m_vertexes) { m_connection->addVertex(vertex); }
+
   m_endConnector->setDstConnection(m_dstConnection);
   m_endConnector->setSrcConnection(m_connection);
   m_dstConnection->addBranchConnector(m_endConnector);
 
   m_sheet->addConnection(m_connection);
   m_scene->addItem(m_connection);
+  m_connection->redraw();
 }
 
 void ConnectToConnectorCommand::undo() {

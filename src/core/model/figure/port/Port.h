@@ -5,7 +5,7 @@
 #include <QGraphicsPathItem>
 #include <QJsonObject>
 
-class Connection;
+class AbstractConnection;
 class Port;
 class AbstractNode;
 
@@ -21,10 +21,10 @@ public:
   QPointF centerScenePos();
   QPointF endOfPortPos();
   QPointF endOfNodePos();
-  void addConnection(Connection* connection);
-  void removeConnection(Connection* connection);
+  void addConnection(AbstractConnection* connection);
+  void removeConnection(AbstractConnection* connection);
 
-  QList<Connection*> connections() const;
+  QList<AbstractConnection*> connections() const;
 
   IO io() const;
   uint32_t number() const;
@@ -53,7 +53,7 @@ protected:
 private:
   QString m_portType;
   QString m_name;
-  QList<Connection*> m_connections;
+  QList<AbstractConnection*> m_connections;
   AbstractNode* m_parentNode = nullptr;
   IO m_io;
   uint32_t m_number;

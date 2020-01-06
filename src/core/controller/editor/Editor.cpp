@@ -1,12 +1,12 @@
 #include "Editor.h"
 #include "AndNode.h"
-#include "Connection.h"
 #include "ConnectionCreateTool.h"
 #include "ConnectionFactory.h"
 #include "ConnectionReconnectTool.h"
 #include "Connector.h"
 #include "ConnectorFactory.h"
 #include "Define.h"
+#include "ElbowConnection.h"
 #include "FunctionBlockNode.h"
 #include "InNode.h"
 #include "NodeEditTool.h"
@@ -15,6 +15,7 @@
 #include "OrNode.h"
 #include "OutNode.h"
 #include "PluginLoader.h"
+#include "PolylineConnection.h"
 #include "Project.h"
 #include "Scene.h"
 #include "SheetFactory.h"
@@ -66,7 +67,7 @@ void Editor::changeActiveTool(const QString& toolName) {
 }
 
 void Editor::changeDefaultTool() {
-  changeActiveTool(TOOL_NODE_CREATE);
+  changeActiveTool(TOOL_NODE_EDIT);
 }
 
 void Editor::addCommand(QUndoCommand* undoCommand) {
@@ -94,7 +95,8 @@ void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new AndNode());
   NodeFactory::getInstance()->addNode(new OrNode());
 
-  ConnectionFactory::getInstance()->addConnection(new Connection());
+  ConnectionFactory::getInstance()->addConnection(new ElbowConnection());
+  ConnectionFactory::getInstance()->addConnection(new PolylineConnection());
 
   ConnectorFactory::getInstance()->addConnector(new Connector());
 }
@@ -106,7 +108,7 @@ void Editor::initTool() {
   addTool(new SheetJumpTool());
 
   // set default tool
-  m_activeTool = m_tools[TOOL_NODE_CREATE];
+  m_activeTool = m_tools[TOOL_NODE_EDIT];
 }
 
 void Editor::initUndoStack() {

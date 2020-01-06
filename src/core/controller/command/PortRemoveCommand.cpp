@@ -1,13 +1,13 @@
 #include "PortRemoveCommand.h"
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
 
 PortRemoveCommand::PortRemoveCommand(Scene* scene, Sheet* sheet, AbstractNode* node, Port* port)
     : QUndoCommand(), m_scene(scene), m_sheet(sheet), m_node(node), m_port(port) {
-  foreach (Connection* connection, m_port->connections()) {
+  foreach (AbstractConnection* connection, m_port->connections()) {
     ConnectionInfo* connectionInfo = new ConnectionInfo();
     connectionInfo->m_connection = connection;
     connectionInfo->m_oppositeSidePort = connection->oppositeSidePort(m_port);
@@ -20,13 +20,13 @@ PortRemoveCommand::~PortRemoveCommand() {
 
 void PortRemoveCommand::redo() {
   foreach (ConnectionInfo* connectionInfo, m_connectionInfos) {
-    Connection* connection = connectionInfo->m_connection;
+    AbstractConnection* connection = connectionInfo->m_connection;
     Port* oppositeSidePort = connectionInfo->m_oppositeSidePort;
 
     oppositeSidePort->removeConnection(connection);
     m_port->removeConnection(connection);
-    Connection::Edge edge = connection->whichEdge(oppositeSidePort);
-    if (Connection::Start == edge) {
+    AbstractConnection::Edge edge = connection->whichEdge(oppositeSidePort);
+    if (AbstractConnection::Start == edge) {
       connection->removeStartPort();
     } else {
       connection->removeEndPort();
@@ -45,13 +45,13 @@ void PortRemoveCommand::undo() {
   m_port->setParentItem(m_node);
 
   foreach (ConnectionInfo* connectionInfo, m_connectionInfos) {
-    Connection* connection = connectionInfo->m_connection;
+    AbstractConnection* connection = connectionInfo->m_connection;
     Port* oppositeSidePort = connectionInfo->m_oppositeSidePort;
 
     oppositeSidePort->addConnection(connection);
     m_port->addConnection(connection);
-    Connection::Edge edge = connection->whichEdge(oppositeSidePort);
-    if (Connection::Start == edge) {
+    AbstractConnection::Edge edge = connection->whichEdge(oppositeSidePort);
+    if (AbstractConnection::Start == edge) {
       connection->setStartPort(oppositeSidePort);
       connection->setEndPort(m_port);
     } else {

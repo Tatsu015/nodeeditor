@@ -21,8 +21,6 @@ public:
 
   void setActiveNodeType(const QString& activeNodeType);
 
-  QStringList nodeTypes() const;
-
 private:
   bool isSelectedNodesPressed(QPointF scenePos, Scene* scene);
   void drawGuideLine(Scene* scene);
@@ -33,7 +31,6 @@ private:
 
 private:
   bool m_isNodeMoving = false;
-  QStringList m_nodeTypes;
   QString m_activeNodeType = "";
   QList<AbstractNode*> m_selectedNodes;
 };

@@ -1,6 +1,5 @@
 #include "ReplaceNodePlugin.h"
 #include "AbstractNode.h"
-#include "Connection.h"
 #include "Editor.h"
 #include "NodeFactory.h"
 #include "NodeReplaceCommand.h"

@@ -7,7 +7,7 @@
 
 class QAction;
 class AbstractNode;
-class Connection;
+class AbstractConnection;
 class Port;
 
 class ConnectionReconnectTool : public AbstractTool {
@@ -21,7 +21,7 @@ public:
 
 private:
   void decideConnectToPort(Scene* scene, Port* lastEndPort, Port* targetEndPort);
-  void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, Connection* dstConnection);
+  void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, AbstractConnection* dstConnection);
 
   bool isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
@@ -32,7 +32,7 @@ private:
 
 private:
   AbstractNode* m_disconnectedNode = nullptr;
-  Connection* m_connection = nullptr;
+  AbstractConnection* m_connection = nullptr;
   Port* m_fixedPort = nullptr;
   Port* m_lastEndPort = nullptr;
   bool m_isReconnecting = false;

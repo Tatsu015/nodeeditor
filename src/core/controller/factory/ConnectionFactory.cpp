@@ -1,5 +1,5 @@
 #include "ConnectionFactory.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "SerialNumberNamePublisher.h"
 #include "Sheet.h"
 
@@ -8,13 +8,14 @@ ConnectionFactory* ConnectionFactory::getInstance() {
   return &s;
 }
 
-void ConnectionFactory::addConnection(Connection* connection) {
+void ConnectionFactory::addConnection(AbstractConnection* connection) {
   m_connectionMap[connection->connectionType()] = connection;
+  m_nodeTypes.append(connection->connectionType());
 }
 
-Connection* ConnectionFactory::createConnection(const Sheet* sheet, const QString& type, const QString& name,
-                                                const QString& id) {
-  Connection* connection = nullptr;
+AbstractConnection* ConnectionFactory::createConnection(const Sheet* sheet, const QString& type, const QString& name,
+                                                        const QString& id) {
+  AbstractConnection* connection = nullptr;
   if (id.isEmpty()) {
     connection = m_connectionMap[type]->create();
   } else {
@@ -32,12 +33,22 @@ Connection* ConnectionFactory::createConnection(const Sheet* sheet, const QStrin
   return connection;
 }
 
-Connection* ConnectionFactory::createConnection(const QString& type, const QString& name, const QString& id) {
-  Connection* connection = nullptr;
+AbstractConnection* ConnectionFactory::createConnection(const QString& type, const QString& name, const QString& id) {
+  AbstractConnection* connection = nullptr;
   connection = m_connectionMap[type]->create(id);
   connection->setName(name);
 
   return connection;
+}
+
+QIcon ConnectionFactory::createIcon(const QString& type) const {
+  AbstractConnection* connection = m_connectionMap[type];
+
+  return QIcon(connection->pixmap());
+}
+
+QStringList ConnectionFactory::connectionTypes() const {
+  return m_nodeTypes;
 }
 
 ConnectionFactory::ConnectionFactory() {

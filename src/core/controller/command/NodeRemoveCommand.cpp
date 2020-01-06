@@ -1,12 +1,12 @@
 #include "NodeRemoveCommand.h"
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Connector.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
 
-NodeRemoveCommand::ConnectionInfo::ConnectionInfo(Connection* connection, Port* startPort, Port* endPort)
+NodeRemoveCommand::ConnectionInfo::ConnectionInfo(AbstractConnection* connection, Port* startPort, Port* endPort)
     : m_connection(connection), m_startPort(startPort), m_endPort(endPort) {
 }
 
@@ -38,7 +38,7 @@ void NodeRemoveCommand::redo() {
   }
   foreach (AbstractNode* node, m_nodes) {
     foreach (Port* port, node->ports()) {
-      foreach (Connection* connection, port->connections()) {
+      foreach (AbstractConnection* connection, port->connections()) {
         if (m_connections.contains(connection)) {
           continue;
         }
@@ -70,19 +70,19 @@ void NodeRemoveCommand::undo() {
     m_sheet->addNode(node);
     m_scene->addNode(node);
   }
-  foreach (Connection* connection, m_connections) {
+  foreach (AbstractConnection* connection, m_connections) {
     m_sheet->addConnection(connection);
     m_scene->addConnection(connection);
   }
   foreach (ConnectionInfo* connectionInfo, m_connectionInfos) { connectionInfo->reconnect(); }
 }
 
-bool NodeRemoveCommand::isStartNodeRemoved(const Connection* connection) const {
+bool NodeRemoveCommand::isStartNodeRemoved(const AbstractConnection* connection) const {
   AbstractNode* startNode = connection->startPort()->parentNode();
   return m_nodes.contains(startNode);
 }
 
-bool NodeRemoveCommand::isEndNodeRemoved(const Connection* connection) const {
+bool NodeRemoveCommand::isEndNodeRemoved(const AbstractConnection* connection) const {
   AbstractNode* endNode = connection->endPort()->parentNode();
   return m_nodes.contains(endNode);
 }

@@ -6,25 +6,27 @@
 class Port;
 class Connector;
 
-class Connection : public QGraphicsPathItem {
+class AbstractConnection : public QGraphicsPathItem {
 public:
   enum Direction : uint32_t { Vertical, Horizon, Other };
   enum ConnectionStyle : uint32_t { Connected, Connectable, Connecting };
   enum Edge : uint32_t { Start, End, None };
 
 public:
-  Connection(QGraphicsItem* parent = nullptr);
-  virtual ~Connection();
+  AbstractConnection(QGraphicsItem* parent = nullptr);
+  virtual ~AbstractConnection();
 
-  virtual Connection* create();
-  virtual Connection* create(const QString& id);
+  AbstractConnection* create();
+  virtual AbstractConnection* create(const QString& id) = 0;
+
+  QPixmap pixmap() const;
 
   QPointF startPos() const;
   void setStartPos(const QPointF& startPos);
   QPointF endPos() const;
   void setEndPos(const QPointF& endPos);
 
-  void redraw();
+  virtual void redraw() = 0;
   void redraw(Port* startPort, Port* endPort);
   void redraw(Port* startPort, QPointF endScenePos);
 
@@ -35,7 +37,6 @@ public:
   void setEndPort(Port* endPort);
   void removeEndPort();
   Port* oppositeSidePort(Port* port);
-  QVector<QPointF> points() const;
   int32_t areaIndex(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
   QPointF closeCenter(QPointF pos, QSizeF searchSize = QSizeF(3, 3));
   Direction direction(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
@@ -54,6 +55,9 @@ public:
   void addBranchConnector(Connector* connector);
   void removeBranchConnector(Connector* connector);
   QList<Connector*> branchConnectors() const;
+  void addVertex(QPointF vertex);
+  void addVertexes(QList<QPointF> vertex);
+  QList<QPointF> vertexes() const;
 
   QString name() const;
   void setName(const QString& name);
@@ -64,15 +68,19 @@ public:
 
   void changeConnectionStyle(const ConnectionStyle style);
 
-  QJsonObject toJsonObj();
+  virtual QJsonObject toJsonObj() = 0;
+
+private:
+  QVector<QPointF> points() const;
 
 protected:
   const static uint32_t PEN_SIZE;
 
-private:
+protected:
   QString m_id = "";
   QString m_name = "";
   QString m_connectionType = "";
+  QString m_pixmapFilePath = "";
   QPointF m_startPos;
   QPointF m_endPos;
   Port* m_startPort = nullptr;
@@ -82,6 +90,8 @@ private:
   Connector* m_endConnector = nullptr;
 
   QList<Connector*> m_branchConnectors;
+
+  QList<QPointF> m_vertexes;
 };
 
 #endif // CONNECTION_H

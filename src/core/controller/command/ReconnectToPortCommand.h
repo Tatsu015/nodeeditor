@@ -6,13 +6,13 @@
 
 class Scene;
 class Sheet;
-class Connection;
+class AbstractConnection;
 class Port;
 class Connector;
 
 class ReconnectToPortCommand : public QUndoCommand {
 public:
-  ReconnectToPortCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* lastPort, Port* targetPort,
+  ReconnectToPortCommand(Scene* scene, Sheet* sheet, AbstractConnection* connection, Port* lastPort, Port* targetPort,
                          bool isMoveStartPort);
   virtual ~ReconnectToPortCommand();
 
@@ -22,7 +22,7 @@ public:
 private:
   Scene* m_scene = nullptr;
   Sheet* m_sheet = nullptr;
-  Connection* m_connection = nullptr;
+  AbstractConnection* m_connection = nullptr;
   Port* m_lastPort = nullptr;
   Port* m_targetPort = nullptr;
   bool m_isMoveStartPort = false;

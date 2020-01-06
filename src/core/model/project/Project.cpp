@@ -1,6 +1,5 @@
 #include "Project.h"
 #include "AbstractNode.h"
-#include "Connection.h"
 #include "Connector.h"
 #include "Define.h"
 #include "Editor.h"

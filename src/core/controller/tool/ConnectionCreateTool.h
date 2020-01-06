@@ -5,7 +5,7 @@
 #include <QPointF>
 
 class Port;
-class Connection;
+class AbstractConnection;
 class Connector;
 
 class ConnectionCreateTool : public AbstractTool {
@@ -18,9 +18,12 @@ public:
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
 
+  void setActiveConnectionType(const QString& activeConnectionType);
+
 private:
-  void decideConnectToPort(Scene* scene, Port* endPort);
-  void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, Connection* dstConnection);
+  void decideConnectToPort(Scene* scene, Port* endPort, QList<QPointF> vertexes);
+  void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, AbstractConnection* dstConnection,
+                                QList<QPointF> vertexes);
 
   bool isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
   bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
@@ -30,8 +33,9 @@ private:
   void reset();
 
 private:
+  QString m_activeConnectionType = "";
   Port* m_startPort = nullptr;
-  Connection* m_tmpConnection = nullptr;
+  AbstractConnection* m_tmpConnection = nullptr;
 };
 
 #endif // CONNECTIONCREATETOOL_H

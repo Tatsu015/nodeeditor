@@ -7,7 +7,7 @@
 class Project;
 class Sheet;
 class AbstractNode;
-class Connection;
+class AbstractConnection;
 
 class ProjectParser {
 public:
@@ -19,8 +19,8 @@ public:
 private:
   Sheet* parseSheet(QJsonValue sheetJsonVal);
   AbstractNode* parseNode(QJsonValue nodeJsonVal);
-  Connection* parseNodeToNodeConnection(const Sheet* sheet, QJsonValue connectionJsonVal);
-  Connection* parseNodeToConnectorConnection(const Sheet* sheet, QJsonValue connectionJsonVal);
+  AbstractConnection* parseNodeToNodeConnection(const Sheet* sheet, QJsonValue connectionJsonVal);
+  AbstractConnection* parseNodeToConnectorConnection(const Sheet* sheet, QJsonValue connectionJsonVal);
 };
 
 #endif // PROJECTPARSER_H

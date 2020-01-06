@@ -6,7 +6,7 @@
 #include <QString>
 
 class AbstractNode;
-class Connection;
+class AbstractConnection;
 
 class Sheet {
 public:
@@ -29,10 +29,10 @@ public:
   QList<AbstractNode*> outNodes() const;
   int32_t outNodeCount() const;
 
-  Connection* connection(const QString& connectionName) const;
-  QList<Connection*> connections() const;
-  void addConnection(Connection* connection);
-  void removeConnection(Connection* connection);
+  AbstractConnection* connection(const QString& connectionName) const;
+  QList<AbstractConnection*> connections() const;
+  void addConnection(AbstractConnection* connection);
+  void removeConnection(AbstractConnection* connection);
   QStringList connectionNames() const;
 
   QString name() const;
@@ -46,7 +46,7 @@ private:
   QString m_id = "";
   QString m_name = "Untitled";
   QList<AbstractNode*> m_nodes;
-  QList<Connection*> m_connections;
+  QList<AbstractConnection*> m_connections;
 };
 
 #endif // SHEET_H

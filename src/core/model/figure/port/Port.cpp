@@ -1,6 +1,6 @@
 #include "Port.h"
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "SystemConfig.h"
 #include "float.h"
 #include <QBrush>
@@ -54,15 +54,15 @@ QPointF Port::endOfNodePos() {
   return centerScenePos();
 }
 
-void Port::addConnection(Connection* connection) {
+void Port::addConnection(AbstractConnection* connection) {
   m_connections << connection;
 }
 
-void Port::removeConnection(Connection* connection) {
+void Port::removeConnection(AbstractConnection* connection) {
   m_connections.removeOne(connection);
 }
 
-QList<Connection*> Port::connections() const {
+QList<AbstractConnection*> Port::connections() const {
   return m_connections;
 }
 
@@ -79,7 +79,7 @@ AbstractNode* Port::parentNode() const {
 }
 
 void Port::redraw() {
-  foreach (Connection* connection, m_connections) { connection->redraw(); }
+  foreach (AbstractConnection* connection, m_connections) { connection->redraw(); }
 }
 
 QString Port::portType() const {

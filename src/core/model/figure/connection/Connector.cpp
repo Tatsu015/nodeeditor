@@ -1,5 +1,5 @@
 #include "Connector.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "SystemConfig.h"
 #include <QBrush>
 #include <QPen>
@@ -30,19 +30,19 @@ QString Connector::connectorType() const {
   return "Connector";
 }
 
-Connection* Connector::dstConnection() const {
+AbstractConnection* Connector::dstConnection() const {
   return m_dstConnection;
 }
 
-void Connector::setDstConnection(Connection* fromConnection) {
+void Connector::setDstConnection(AbstractConnection* fromConnection) {
   m_dstConnection = fromConnection;
 }
 
-Connection* Connector::srcConnection() const {
+AbstractConnection* Connector::srcConnection() const {
   return m_srcConnection;
 }
 
-void Connector::setSrcConnection(Connection* srcConnection) {
+void Connector::setSrcConnection(AbstractConnection* srcConnection) {
   m_srcConnection = srcConnection;
   setParentItem(srcConnection);
 }

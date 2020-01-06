@@ -1,7 +1,9 @@
 #include "Builder.h"
+#include "AbstractConnection.h"
 #include "AbstractNode.h"
 #include "AndNode.h"
-#include "Connection.h"
+#include "ConnectionFactory.h"
+#include "ConnectionTypeToolButton.h"
 #include "Define.h"
 #include "Editor.h"
 #include "FunctionBlockToolButton.h"
@@ -10,11 +12,13 @@
 #include "MenuManager.h"
 #include "NodeEditTool.h"
 #include "NodeFactory.h"
+#include "NodeTypeToolButton.h"
 #include "OutNode.h"
 #include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
 #include "SheetListWidget.h"
+#include "ToolButtonGroup.h"
 #include "ui_MainWindow.h"
 #include <QAction>
 #include <QDebug>
@@ -67,20 +71,26 @@ void Builder::buildMenuBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
 void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
   Q_UNUSED(mainWindow);
 
-  NodeEditTool* nodeEditTool = dynamic_cast<NodeEditTool*>(Editor::getInstance()->tool(TOOL_NODE_CREATE));
-  ui->nodeToolBar->setNodeEditTool(nodeEditTool);
+  ToolButtonGroup* group = new ToolButtonGroup(ui->toolBar);
 
-  foreach (QString nodeType, nodeEditTool->nodeTypes()) {
-    QAction* action = new QAction(nodeType);
-    QIcon icon = NodeFactory::getInstance()->createIcon(nodeType);
-    action->setIcon(icon);
-    ui->nodeToolBar->addToolBarAction(action);
+  foreach (QString nodeType, NodeFactory::getInstance()->nodeTypes()) {
+    NodeTypeToolButton* nodeTypeToolButton = new NodeTypeToolButton(nodeType);
+    ui->toolBar->addWidget(nodeTypeToolButton);
+    group->add(nodeTypeToolButton);
   }
-  ui->nodeToolBar->addSeparator();
+
+  ui->toolBar->addSeparator();
+
   FunctionBlockToolButton* toolButton = new FunctionBlockToolButton();
-  ui->nodeToolBar->addToolButton(toolButton);
-  ui->nodeToolBar->changeDefaultTool();
+  ui->toolBar->addWidget(toolButton);
+  group->add(toolButton);
   Editor::getInstance()->project()->addObserver(toolButton);
+
+  ConnectionTypeToolButton* connectionTypeToolButton = new ConnectionTypeToolButton();
+  connectionTypeToolButton->setup();
+  ui->toolBar->addWidget(connectionTypeToolButton);
+
+  group->activateDefault();
 }
 
 void Builder::buildWindowTitle(MainWindow* mainWindow, Ui::MainWindow* ui) {

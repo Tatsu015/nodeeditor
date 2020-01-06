@@ -4,7 +4,7 @@
 #include <QGraphicsPathItem>
 #include <QList>
 
-class Connection;
+class AbstractConnection;
 
 class Connector : public QGraphicsPathItem {
 public:
@@ -16,10 +16,10 @@ public:
 
   QString connectorType() const;
 
-  Connection* dstConnection() const;
-  void setDstConnection(Connection* fromConnection);
-  Connection* srcConnection() const;
-  void setSrcConnection(Connection* srcConnection);
+  AbstractConnection* dstConnection() const;
+  void setDstConnection(AbstractConnection* fromConnection);
+  AbstractConnection* srcConnection() const;
+  void setSrcConnection(AbstractConnection* srcConnection);
 
   void removeDstConnection();
   void removeSrcConnection();
@@ -32,8 +32,8 @@ public:
   void setYPosRate(const qreal& yPosRate);
 
 private:
-  Connection* m_dstConnection = nullptr;
-  Connection* m_srcConnection = nullptr;
+  AbstractConnection* m_dstConnection = nullptr;
+  AbstractConnection* m_srcConnection = nullptr;
   QString m_name;
   qreal m_xPosRate;
   qreal m_yPosRate;

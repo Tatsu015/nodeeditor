@@ -17,9 +17,8 @@
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
 
-NodeEditTool::NodeEditTool() : AbstractTool(TOOL_NODE_CREATE) {
-  m_nodeTypes = NodeFactory::getInstance()->nodeTypes();
-  m_activeNodeType = m_nodeTypes.first();
+NodeEditTool::NodeEditTool() : AbstractTool(TOOL_NODE_EDIT) {
+  m_activeNodeType = NodeFactory::getInstance()->nodeTypes().first();
 }
 
 NodeEditTool::~NodeEditTool() {
@@ -72,10 +71,6 @@ void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
     }
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
-}
-
-QStringList NodeEditTool::nodeTypes() const {
-  return m_nodeTypes;
 }
 
 bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene) {

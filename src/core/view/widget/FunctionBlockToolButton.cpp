@@ -1,4 +1,7 @@
 #include "FunctionBlockToolButton.h"
+#include "Define.h"
+#include "Editor.h"
+#include "NodeEditTool.h"
 #include "Sheet.h"
 #include <QDebug>
 #include <QMenu>
@@ -13,6 +16,7 @@ FunctionBlockToolButton::FunctionBlockToolButton(QWidget* parent) : QToolButton(
   setText(DEFAULT_TEXT);
   setFixedWidth(100);
   setIcon(QIcon("../resource/fb.png"));
+  connect(this, &FunctionBlockToolButton::clicked, this, &FunctionBlockToolButton::onChangeNodeType);
 }
 
 FunctionBlockToolButton::~FunctionBlockToolButton() {
@@ -54,4 +58,9 @@ bool FunctionBlockToolButton::hasAction() const {
 void FunctionBlockToolButton::onChangeFunctionBlock() {
   QAction* action = dynamic_cast<QAction*>(sender());
   setText(action->text());
+}
+
+void FunctionBlockToolButton::onChangeNodeType() {
+  NodeEditTool* tool = dynamic_cast<NodeEditTool*>(Editor::getInstance()->tool(TOOL_NODE_EDIT));
+  tool->setActiveNodeType(text());
 }

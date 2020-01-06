@@ -1,13 +1,13 @@
 #include "ConnectToPortCommand.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
 
-ConnectToPortCommand::ConnectToPortCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* startPort,
-                                           Port* endPort)
+ConnectToPortCommand::ConnectToPortCommand(Scene* scene, Sheet* sheet, AbstractConnection* connection, Port* startPort,
+                                           Port* endPort, QList<QPointF> vertexes)
     : QUndoCommand(), m_scene(scene), m_sheet(sheet), m_connection(connection), m_startPort(startPort),
-      m_endPort(endPort) {
+      m_endPort(endPort), m_vertexes(vertexes) {
 }
 
 ConnectToPortCommand::~ConnectToPortCommand() {
@@ -24,8 +24,11 @@ void ConnectToPortCommand::redo() {
   m_connection->setEndPos(m_endPort->endOfPortPos());
   m_endPort->addConnection(m_connection);
 
+  foreach (QPointF vertex, m_vertexes) { m_connection->addVertex(vertex); }
+
   m_sheet->addConnection(m_connection);
   m_scene->addConnection(m_connection);
+  m_connection->redraw();
 }
 
 void ConnectToPortCommand::undo() {

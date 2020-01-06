@@ -1,10 +1,10 @@
 #include "ReconnectToPortCommand.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
 
-ReconnectToPortCommand::ReconnectToPortCommand(Scene* scene, Sheet* sheet, Connection* connection, Port* lastPort,
+ReconnectToPortCommand::ReconnectToPortCommand(Scene* scene, Sheet* sheet, AbstractConnection* connection, Port* lastPort,
                                                Port* targetPort, bool isMoveStartPort)
     : QUndoCommand(), m_scene(scene), m_sheet(sheet), m_connection(connection), m_lastPort(lastPort),
       m_targetPort(targetPort) {

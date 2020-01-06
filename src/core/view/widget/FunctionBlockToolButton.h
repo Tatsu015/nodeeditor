@@ -19,6 +19,7 @@ public:
 
 private slots:
   void onChangeFunctionBlock();
+  void onChangeNodeType();
 
 private:
   QMenu* m_menu = nullptr;

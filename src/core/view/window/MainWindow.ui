@@ -30,7 +30,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="NodeToolBar" name="nodeToolBar">
+  <widget class="QToolBar" name="toolBar">
    <property name="allowedAreas">
     <set>Qt::AllToolBarAreas</set>
    </property>
@@ -58,11 +58,6 @@
    <class>GraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>core/view/graphicsview/GraphicsView.h</header>
-  </customwidget>
-  <customwidget>
-   <class>NodeToolBar</class>
-   <extends>QToolBar</extends>
-   <header>core/view/widget/NodeToolBar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

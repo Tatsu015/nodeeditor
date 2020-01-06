@@ -2,7 +2,7 @@
 #include "AbstractTool.h"
 #include "AndNode.h"
 #include "Common.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "ConnectionReconnectTool.h"
 #include "Connector.h"
 #include "ContextMenuManager.h"
@@ -59,7 +59,9 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
 
 void Scene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
   Editor::getInstance()->activeTool()->mouseReleaseEvent(this, event);
-  Editor::getInstance()->changeDefaultTool();
+  if (!Editor::getInstance()->activeTool()->isUsing()) {
+    Editor::getInstance()->changeDefaultTool();
+  }
   QGraphicsScene::mouseReleaseEvent(event);
 }
 
@@ -109,14 +111,14 @@ void Scene::changeSheet(Sheet* sheet) {
   hideDefaultText();
   m_sheet = sheet;
   foreach (AbstractNode* node, m_sheet->nodes()) { addNode(node); }
-  foreach (Connection* connection, m_sheet->connections()) { addConnection(connection); }
+  foreach (AbstractConnection* connection, m_sheet->connections()) { addConnection(connection); }
 }
 
 void Scene::removeSheet() {
   // when first call this method, m_sheet is nullptr.
   if (m_sheet) {
     foreach (AbstractNode* node, m_sheet->nodes()) { removeNode(node); }
-    foreach (Connection* connection, m_sheet->connections()) { removeConnection(connection); }
+    foreach (AbstractConnection* connection, m_sheet->connections()) { removeConnection(connection); }
   }
   showDefaultText();
 }
@@ -161,11 +163,11 @@ void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
         Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
         QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
       } else {
-        Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+        Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
         QGuiApplication::restoreOverrideCursor();
       }
     } else {
-      Editor::getInstance()->changeActiveTool(TOOL_NODE_CREATE);
+      Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
       QGuiApplication::restoreOverrideCursor();
     }
   }
@@ -201,12 +203,12 @@ Port* Scene::findEndPort(QPointF scenePos) {
   return nullptr;
 }
 
-Connection* Scene::findConnection(const QPointF scenePos, Connection* tmponnection) {
+AbstractConnection* Scene::findConnection(const QPointF scenePos, AbstractConnection* tmponnection) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
 
-  Connection* connection = nullptr;
+  AbstractConnection* connection = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
-    connection = dynamic_cast<Connection*>(item);
+    connection = dynamic_cast<AbstractConnection*>(item);
     // remove creating connection from target
     if (connection != tmponnection) {
       return connection;
@@ -215,8 +217,8 @@ Connection* Scene::findConnection(const QPointF scenePos, Connection* tmponnecti
   return nullptr;
 }
 
-Connection* Scene::findConnection(const QString connectionName) {
-  foreach (Connection* connection, m_sheet->connections()) {
+AbstractConnection* Scene::findConnection(const QString connectionName) {
+  foreach (AbstractConnection* connection, m_sheet->connections()) {
     if (connectionName == connection->name()) {
       return connection;
     }
@@ -224,11 +226,11 @@ Connection* Scene::findConnection(const QString connectionName) {
   return nullptr;
 }
 
-QList<Connection*> Scene::findConnections(const QPointF scenePos, Connection* tmponnection) {
+QList<AbstractConnection*> Scene::findConnections(const QPointF scenePos, AbstractConnection* tmponnection) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
-  QList<Connection*> connections;
+  QList<AbstractConnection*> connections;
   foreach (QGraphicsItem* item, pressedItems) {
-    Connection* connection = dynamic_cast<Connection*>(item);
+    AbstractConnection* connection = dynamic_cast<AbstractConnection*>(item);
     // remove except connection and tmp connection from target
     if ((connection) && (connection != tmponnection)) {
       connections << connection;
@@ -373,12 +375,12 @@ void Scene::removeNode(AbstractNode* node) {
   notifyRemove(node);
 }
 
-void Scene::addConnection(Connection* connection) {
+void Scene::addConnection(AbstractConnection* connection) {
   addItem(connection);
   redraw();
 }
 
-void Scene::removeConnection(Connection* connection) {
+void Scene::removeConnection(AbstractConnection* connection) {
   removeItem(connection);
 }
 
@@ -411,5 +413,5 @@ void Scene::hideDefaultText() {
 }
 
 void Scene::redraw() {
-  foreach (Connection* connection, m_sheet->connections()) { connection->redraw(); }
+  foreach (AbstractConnection* connection, m_sheet->connections()) { connection->redraw(); }
 }

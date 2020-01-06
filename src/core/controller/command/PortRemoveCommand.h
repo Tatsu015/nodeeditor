@@ -8,12 +8,12 @@ class Scene;
 class Sheet;
 class AbstractNode;
 class Port;
-class Connection;
+class AbstractConnection;
 
 class PortRemoveCommand : public QUndoCommand {
 private:
   struct ConnectionInfo {
-    Connection* m_connection = nullptr;
+    AbstractConnection* m_connection = nullptr;
     Port* m_oppositeSidePort;
   };
 

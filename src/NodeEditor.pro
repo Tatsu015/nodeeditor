@@ -88,7 +88,6 @@ HEADERS += \
     core/extend/OpenPlugin.h \
     core/extend/QuitPlugin.h \
     core/extend/SavePlugin.h \
-    core/model/figure/connection/Connection.h \
     core/model/figure/connection/Connector.h \
     core/model/figure/guideline/GuideLine.h \
     core/model/figure/node/AbstractNode.h \
@@ -127,7 +126,14 @@ HEADERS += \
     core/view/dialog/InvertPortDialog.h \
     core/controller/parser/ProjectParser.h \
     core/view/widget/FunctionBlockToolButton.h \
-    core/controller/history/SheetChangeHistoryController.h
+    core/controller/history/SheetChangeHistoryController.h \
+    core/model/figure/connection/PolylineConnection.h \
+    core/model/figure/connection/AbstractConnection.h \
+    core/model/figure/connection/ElbowConnection.h \
+    core/view/widget/ConnectionTypeToolButton.h \
+    core/view/widget/ToolButtonGroup.h \
+    core/view/widget/NodeTypeToolButton.h \
+    core/util/JsonUtil.h
 
 
 SOURCES += \
@@ -165,7 +171,6 @@ SOURCES += \
     core/extend/OpenPlugin.cpp \
     core/extend/QuitPlugin.cpp \
     core/extend/SavePlugin.cpp \
-    core/model/figure/connection/Connection.cpp \
     core/model/figure/connection/Connector.cpp \
     core/model/figure/guideline/GuideLine.cpp \
     core/model/figure/node/AbstractNode.cpp \
@@ -203,7 +208,14 @@ SOURCES += \
     core/view/dialog/InvertPortDialog.cpp \
     core/controller/parser/ProjectParser.cpp \
     core/view/widget/FunctionBlockToolButton.cpp \
-    core/controller/history/SheetChangeHistoryController.cpp
+    core/controller/history/SheetChangeHistoryController.cpp \
+    core/model/figure/connection/PolylineConnection.cpp \
+    core/model/figure/connection/AbstractConnection.cpp \
+    core/model/figure/connection/ElbowConnection.cpp \
+    core/view/widget/ConnectionTypeToolButton.cpp \
+    core/view/widget/ToolButtonGroup.cpp \
+    core/view/widget/NodeTypeToolButton.cpp \
+    core/util/JsonUtil.cpp
 
 
 FORMS += \

@@ -1,5 +1,5 @@
 #include "AbstractNode.h"
-#include "Connection.h"
+#include "AbstractConnection.h"
 #include "Port.h"
 #include "SystemConfig.h"
 #include <QBrush>
@@ -40,7 +40,7 @@ void AbstractNode::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
 QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant& value) {
   if (ItemPositionChange == change) {
     foreach (Port* port, m_ports) {
-      foreach (Connection* connection, port->connections()) { connection->redraw(); }
+      foreach (AbstractConnection* connection, port->connections()) { connection->redraw(); }
     }
   }
   return QGraphicsPathItem::itemChange(change, value);
@@ -271,7 +271,7 @@ int32_t AbstractNode::outputPortCount() const {
 QList<AbstractNode*> AbstractNode::adjastOutNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
-    foreach (Connection* connection, port->connections()) {
+    foreach (AbstractConnection* connection, port->connections()) {
       AbstractNode* outNode = dynamic_cast<AbstractNode*>(connection->endPort()->parentItem());
       if (outNode != this) {
         nodes << outNode;
@@ -284,7 +284,7 @@ QList<AbstractNode*> AbstractNode::adjastOutNodes() {
 QList<AbstractNode*> AbstractNode::adjastInNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
-    foreach (Connection* connection, port->connections()) {
+    foreach (AbstractConnection* connection, port->connections()) {
       AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
       if (inNode != this) {
         nodes << inNode;
@@ -297,7 +297,7 @@ QList<AbstractNode*> AbstractNode::adjastInNodes() {
 QList<AbstractNode*> AbstractNode::adjastNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
-    foreach (Connection* connection, port->connections()) {
+    foreach (AbstractConnection* connection, port->connections()) {
       AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
       if (inNode != this) {
         // when exist loop, this check need
@@ -408,7 +408,7 @@ QJsonObject AbstractNode::toJsonObject() {
   QJsonObject jsonObj;
   jsonObj[JSON_ID] = m_id;
   jsonObj[JSON_NAME] = m_name;
-  jsonObj[JSON_NODETYPE] = m_nodeType;
+  jsonObj[JSON_NODE_TYPE] = m_nodeType;
   jsonObj[JSON_X] = pos().x();
   jsonObj[JSON_Y] = pos().y();
 
