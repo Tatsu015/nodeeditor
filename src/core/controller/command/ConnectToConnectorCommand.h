@@ -1,5 +1,5 @@
-#ifndef ConnectToConnectorCommand_H
-#define ConnectToConnectorCommand_H
+#ifndef CONNECTTOCONNECTORCOMMAND_H
+#define CONNECTTOCONNECTORCOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -29,4 +29,4 @@ private:
   QList<QPointF> m_vertexes;
 };
 
-#endif // ConnectToConnectorCommand_H
+#endif // CONNECTTOCONNECTORCOMMAND_H

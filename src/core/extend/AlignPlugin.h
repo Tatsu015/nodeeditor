@@ -1,5 +1,5 @@
-#ifndef AlignPlugin_H
-#define AlignPlugin_H
+#ifndef ALIGNPLUGIN_H
+#define ALIGNPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -27,4 +27,4 @@ private:
   QAction* m_alignBottomAction = nullptr;
 };
 
-#endif // AlignPlugin_H
+#endif // ALIGNPLUGIN_H

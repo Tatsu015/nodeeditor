@@ -1,5 +1,5 @@
-#ifndef FORDEBUGCONTROLWIDGET_H
-#define FORDEBUGCONTROLWIDGET_H
+#ifndef DEBUGCONTROLWIDGET_H
+#define DEBUGCONTROLWIDGET_H
 
 #include <QWidget>
 
@@ -23,4 +23,4 @@ private:
   Ui::DebugControlWidget* m_ui;
 };
 
-#endif // FORDEBUGCONTROLWIDGET_H
+#endif // DEBUGCONTROLWIDGET_H

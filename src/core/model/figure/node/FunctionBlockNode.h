@@ -1,5 +1,5 @@
-#ifndef FunctionBlockNode_H
-#define FunctionBlockNode_H
+#ifndef FUNCTIONBLOCKNODE_H
+#define FUNCTIONBLOCKNODE_H
 
 #include "AbstractNode.h"
 
@@ -21,4 +21,4 @@ private:
   Sheet* m_sheet = nullptr;
 };
 
-#endif // FunctionBlockNode_H
+#endif // FUNCTIONBLOCKNODE_H

@@ -1,5 +1,5 @@
-#ifndef NodeNameViewPlugin_H
-#define NodeNameViewPlugin_H
+#ifndef SHOWNODENAMEPLUGIN_H
+#define SHOWNODENAMEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -18,4 +18,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // NodeNameViewPlugin_H
+#endif // SHOWNODENAMEPLUGIN_H

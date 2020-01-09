@@ -1,5 +1,5 @@
-#ifndef AddPortPlugin_H
-#define AddPortPlugin_H
+#ifndef ADDPORTPLUGIN_H
+#define ADDPORTPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -20,4 +20,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // AddPortPlugin_H
+#endif // ADDPORTPLUGIN_H

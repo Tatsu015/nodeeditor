@@ -1,5 +1,5 @@
-#ifndef HiddenNode_H
-#define HiddenNode_H
+#ifndef ANDNODE_H
+#define ANDNODE_H
 
 #include "AbstractNode.h"
 
@@ -13,4 +13,4 @@ public:
   virtual bool execute(QList<bool> args);
 };
 
-#endif // HiddenNode_H
+#endif // ANDNODE_H

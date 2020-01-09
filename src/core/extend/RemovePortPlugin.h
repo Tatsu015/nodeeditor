@@ -1,5 +1,5 @@
-#ifndef RemovePortPlugin_H
-#define RemovePortPlugin_H
+#ifndef REMOVEPORTPLUGIN_H
+#define REMOVEPORTPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -20,4 +20,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // RemovePortPlugin_H
+#endif // REMOVEPORTPLUGIN_H

@@ -1,5 +1,5 @@
-#ifndef ConnectorFactory_H
-#define ConnectorFactory_H
+#ifndef CONNECTORFACTORY_H
+#define CONNECTORFACTORY_H
 
 #include "Connector.h"
 #include <QMap>
@@ -20,4 +20,4 @@ private:
   ~ConnectorFactory();
 };
 
-#endif // ConnectorFactory_H
+#endif // CONNECTORFACTORY_H

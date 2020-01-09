@@ -1,5 +1,5 @@
-#ifndef SheetJumpTool_H
-#define SheetJumpTool_H
+#ifndef SHEETJUMPTOOL_H
+#define SHEETJUMPTOOL_H
 
 #include "AbstractTool.h"
 
@@ -13,4 +13,4 @@ public:
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
 };
 
-#endif // SheetJumpTool_H
+#endif // SHEETJUMPTOOL_H

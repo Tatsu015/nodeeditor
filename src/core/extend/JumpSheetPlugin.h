@@ -1,5 +1,5 @@
-#ifndef JumpSheetPlugin_H
-#define JumpSheetPlugin_H
+#ifndef JUMPSHEETPLUGIN_H
+#define JUMPSHEETPLUGIN_H
 
 #include "AbstractPlugin.h"
 #include <QString>
@@ -24,4 +24,4 @@ private:
   mutable FunctionBlockNode* m_targetFunctionBlockNode = nullptr;
 };
 
-#endif // JumpSheetPlugin_H
+#endif // JUMPSHEETPLUGIN_H

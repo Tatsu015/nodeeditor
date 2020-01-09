@@ -1,5 +1,5 @@
-#ifndef ConnectToPortCommand_H
-#define ConnectToPortCommand_H
+#ifndef CONNECTTOPORTCOMMAND_H
+#define CONNECTTOPORTCOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -28,4 +28,4 @@ private:
   QList<QPointF> m_vertexes;
 };
 
-#endif // ConnectToPortCommand_H
+#endif // CONNECTTOPORTCOMMAND_H

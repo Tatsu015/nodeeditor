@@ -1,5 +1,5 @@
-#ifndef OrNode_H
-#define OrNode_H
+#ifndef ORNODE_H
+#define ORNODE_H
 
 #include "AbstractNode.h"
 
@@ -13,4 +13,4 @@ public:
   virtual bool execute(QList<bool> args);
 };
 
-#endif // OrNode_H
+#endif // ORNODE_H

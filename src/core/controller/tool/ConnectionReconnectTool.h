@@ -1,5 +1,5 @@
-#ifndef ConnectionReconnectTool_H
-#define ConnectionReconnectTool_H
+#ifndef CONNECTIONRECONNECTTOOL_H
+#define CONNECTIONRECONNECTTOOL_H
 
 #include "AbstractTool.h"
 #include <QPointF>
@@ -39,4 +39,4 @@ private:
   bool m_isMoveStartPort = false;
 };
 
-#endif // ConnectionReconnectTool_H
+#endif // CONNECTIONRECONNECTTOOL_H

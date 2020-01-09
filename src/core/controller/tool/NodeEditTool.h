@@ -1,5 +1,5 @@
-#ifndef NodeEditTool_H
-#define NodeEditTool_H
+#ifndef NODEEDITTOOL_H
+#define NODEEDITTOOL_H
 
 #include "AbstractTool.h"
 #include <QPointF>
@@ -35,4 +35,4 @@ private:
   QList<AbstractNode*> m_selectedNodes;
 };
 
-#endif // NodeEditTool_H
+#endif // NODEEDITTOOL_H

@@ -1,5 +1,5 @@
-#ifndef NodeMoveCommand_H
-#define NodeMoveCommand_H
+#ifndef NODEMOVECOMMAND_H
+#define NODEMOVECOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -32,4 +32,4 @@ private:
   QPointF m_diff;
 };
 
-#endif // NodeMoveCommand_H
+#endif // NODEMOVECOMMAND_H

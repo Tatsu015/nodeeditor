@@ -1,5 +1,5 @@
-#ifndef SheetFactory_H
-#define SheetFactory_H
+#ifndef SHEETFACTORY_H
+#define SHEETFACTORY_H
 
 #include <QMap>
 #include <QString>
@@ -22,4 +22,4 @@ private:
   ~SheetFactory();
 };
 
-#endif // SheetFactory_H
+#endif // SHEETFACTORY_H

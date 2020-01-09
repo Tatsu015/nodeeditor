@@ -1,5 +1,5 @@
-#ifndef ReplaceNodePlugin_H
-#define ReplaceNodePlugin_H
+#ifndef REPLACENODEPLUGIN_H
+#define REPLACENODEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -24,4 +24,4 @@ private:
   mutable AbstractNode* m_replaceNodeCache = nullptr;
 };
 
-#endif // ReplaceNodePlugin_H
+#endif // REPLACENODEPLUGIN_H

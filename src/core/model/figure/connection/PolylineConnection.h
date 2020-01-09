@@ -1,5 +1,5 @@
-#ifndef POLYLINEPolylineConnection_H
-#define POLYLINEPolylineConnection_H
+#ifndef POLYLINECONNECTION_H
+#define POLYLINECONNECTION_H
 
 #include "AbstractConnection.h"
 
@@ -15,4 +15,4 @@ public:
   virtual QJsonObject toJsonObj();
 };
 
-#endif // POLYLINEPolylineConnection_H
+#endif // POLYLINECONNECTION_H

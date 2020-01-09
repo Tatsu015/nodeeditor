@@ -1,5 +1,5 @@
-#ifndef PortFactory_H
-#define PortFactory_H
+#ifndef PORTFACTORY_H
+#define PORTFACTORY_H
 
 #include "Port.h"
 #include <QMap>
@@ -22,4 +22,4 @@ private:
   ~PortFactory();
 };
 
-#endif // PortFactory_H
+#endif // PORTFACTORY_H

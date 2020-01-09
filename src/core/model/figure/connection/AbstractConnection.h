@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef ABSTRACTCONNECTION_H
+#define ABSTRACTCONNECTION_H
 
 #include <QGraphicsPathItem>
 
@@ -94,4 +94,4 @@ protected:
   QList<QPointF> m_vertexes;
 };
 
-#endif // CONNECTION_H
+#endif // ABSTRACTCONNECTION_H

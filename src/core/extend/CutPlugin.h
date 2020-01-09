@@ -1,5 +1,5 @@
-#ifndef CutPlugin_H
-#define CutPlugin_H
+#ifndef CUTPLUGIN_H
+#define CUTPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -20,4 +20,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // CutPlugin_H
+#endif // CUTPLUGIN_H

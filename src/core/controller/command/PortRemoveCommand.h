@@ -1,5 +1,5 @@
-#ifndef PortRemoveCOMMAND_H
-#define PortRemoveCOMMAND_H
+#ifndef PORTREMOVECOMMAND_H
+#define PORTREMOVECOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -32,4 +32,4 @@ private:
   QList<ConnectionInfo*> m_connectionInfos;
 };
 
-#endif // PortRemoveCOMMAND_H
+#endif // PORTREMOVECOMMAND_H

@@ -1,5 +1,5 @@
-#ifndef InNode_H
-#define InNode_H
+#ifndef INNODE_H
+#define INNODE_H
 
 #include "AbstractNode.h"
 
@@ -15,4 +15,4 @@ public:
   virtual bool execute(QList<bool> args);
 };
 
-#endif // InNode_H
+#endif // INNODE_H

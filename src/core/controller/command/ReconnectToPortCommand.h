@@ -1,5 +1,5 @@
-#ifndef ReReconnectToPortCommand_H
-#define ReReconnectToPortCommand_H
+#ifndef RECONNECTTOPORTCOMMAND_H
+#define RECONNECTTOPORTCOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -28,4 +28,4 @@ private:
   bool m_isMoveStartPort = false;
 };
 
-#endif // ReReconnectToPortCommand_H
+#endif // RECONNECTTOPORTCOMMAND_H

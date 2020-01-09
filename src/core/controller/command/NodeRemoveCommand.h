@@ -1,5 +1,5 @@
-#ifndef noderemoveCOMMAND_H
-#define noderemoveCOMMAND_H
+#ifndef NODEREMOVECOMMAND_H
+#define NODEREMOVECOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -47,4 +47,4 @@ private:
   //  QList<NodeConnectedInfo*> m_nodeConnectedInfos;
 };
 
-#endif // noderemoveCOMMAND_H
+#endif // NODEREMOVECOMMAND_H

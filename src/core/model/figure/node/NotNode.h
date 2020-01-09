@@ -1,5 +1,5 @@
-#ifndef NotNode_H
-#define NotNode_H
+#ifndef NOTNODE_H
+#define NOTNODE_H
 
 #include "AbstractNode.h"
 
@@ -13,4 +13,4 @@ public:
   virtual bool execute(QList<bool> args);
 };
 
-#endif // NotNode_H
+#endif // NOTNODE_H

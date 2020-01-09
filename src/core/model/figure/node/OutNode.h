@@ -1,5 +1,5 @@
-#ifndef OutNode_H
-#define OutNode_H
+#ifndef OUTNODE_H
+#define OUTNODE_H
 
 #include "AbstractNode.h"
 
@@ -13,4 +13,4 @@ public:
   virtual bool execute(QList<bool> args);
 };
 
-#endif // OutNode_H
+#endif // OUTNODE_H

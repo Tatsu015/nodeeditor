@@ -1,5 +1,5 @@
-#ifndef OpenPLUGIN_H
-#define OpenPLUGIN_H
+#ifndef OPENPLUGIN_H
+#define OPENPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -15,4 +15,4 @@ private slots:
   void onExecute();
 };
 
-#endif // OpenPLUGIN_H
+#endif // OPENPLUGIN_H

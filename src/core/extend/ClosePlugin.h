@@ -1,5 +1,5 @@
-#ifndef ClosePlugin_H
-#define ClosePlugin_H
+#ifndef CLOSEPLUGIN_H
+#define CLOSEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -15,4 +15,4 @@ private slots:
   void onExecute();
 };
 
-#endif // ClosePlugin_H
+#endif // CLOSEPLUGIN_H

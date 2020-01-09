@@ -1,5 +1,5 @@
-#ifndef SerialNumberNamePublisher_H
-#define SerialNumberNamePublisher_H
+#ifndef SERIALNUMBERNAMEPUBLISHER_H
+#define SERIALNUMBERNAMEPUBLISHER_H
 
 #include <QMap>
 #include <QString>
@@ -17,4 +17,4 @@ private:
   ~SerialNumberNamePublisher();
 };
 
-#endif // SerialNumberNamePublisher_H
+#endif // SERIALNUMBERNAMEPUBLISHER_H

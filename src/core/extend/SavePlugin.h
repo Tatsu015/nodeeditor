@@ -1,5 +1,5 @@
-#ifndef SavePLUGIN_H
-#define SavePLUGIN_H
+#ifndef SAVEPLUGIN_H
+#define SAVEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -19,4 +19,4 @@ private slots:
   void onExecuteSaveAs();
 };
 
-#endif // SavePLUGIN_H
+#endif // SAVEPLUGIN_H

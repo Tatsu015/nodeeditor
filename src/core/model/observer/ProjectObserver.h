@@ -1,5 +1,5 @@
-#ifndef ProjectObserver_H
-#define ProjectObserver_H
+#ifndef PROJECTOBSERVER_H
+#define PROJECTOBSERVER_H
 
 class Sheet;
 
@@ -13,4 +13,4 @@ public:
   virtual void removeSheet(Sheet* sheet) = 0;
 };
 
-#endif // ProjectObserver_H
+#endif // PROJECTOBSERVER_H

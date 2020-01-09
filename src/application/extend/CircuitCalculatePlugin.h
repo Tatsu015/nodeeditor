@@ -1,5 +1,5 @@
-#ifndef CircuitCalculatePLUGIN_H
-#define CircuitCalculatePLUGIN_H
+#ifndef CIRCUITCALCULATEPLUGIN_H
+#define CIRCUITCALCULATEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -58,4 +58,4 @@ private:
   QDockWidget* m_ioSetDockWidget = nullptr;
 };
 
-#endif // CircuitCalculatePLUGIN_H
+#endif // CIRCUITCALCULATEPLUGIN_H

@@ -1,5 +1,5 @@
-#ifndef InvertPortPlugin_H
-#define InvertPortPlugin_H
+#ifndef INVERTPORTPLUGIN_H
+#define INVERTPORTPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -20,4 +20,4 @@ private:
   QAction* m_action = nullptr;
 };
 
-#endif // InvertPortPlugin_H
+#endif // INVERTPORTPLUGIN_H

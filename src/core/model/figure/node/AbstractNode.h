@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef ABSTRACTNODE_H
+#define ABSTRACTNODE_H
 
 #include "Common.h"
 #include "Define.h"
@@ -115,4 +115,4 @@ private:
   QGraphicsSimpleTextItem* m_nameText = nullptr;
 };
 
-#endif // NODE_H
+#endif // ABSTRACTNODE_H

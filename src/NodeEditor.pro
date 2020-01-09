@@ -107,7 +107,6 @@ HEADERS += \
     core/view/graphicsview/GraphicsView.h \
     core/view/menu/MenuManager.h \
     core/view/menu/ContextMenuManager.h \
-    core/view/widget/NodeToolBar.h \
     core/view/window/MainWindow.h \
     core/extend/ShowNodeNamePlugin.h \
     core/extend/AlignPlugin.h \
@@ -189,7 +188,6 @@ SOURCES += \
     core/view/graphicsview/GraphicsView.cpp \
     core/view/menu/MenuManager.cpp \
     core/view/menu/ContextMenuManager.cpp \
-    core/view/widget/NodeToolBar.cpp \
     core/view/window/MainWindow.cpp \
     core/extend/ShowNodeNamePlugin.cpp \
     core/extend/AlignPlugin.cpp \
