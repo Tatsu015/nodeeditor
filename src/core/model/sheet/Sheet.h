@@ -41,6 +41,7 @@ public:
   bool contain(const QString& figureName) const;
 
   QJsonObject toJsonObj();
+  QJsonObject toSelectedJsonObj();
 
 private:
   QString m_id = "";

@@ -19,7 +19,6 @@ GraphicsView::GraphicsView(QWidget* parent)
   setAlignment(Qt::AlignCenter);
   setMouseTracking(true);
   setDragMode(RubberBandDrag);
-  setBackgroundBrush(QBrush(QColor(systemConfig(SystemConfig::backgroundColor).toString())));
   qreal initScale = 1;
   scale(initScale, initScale);
   setAcceptDrops(true);

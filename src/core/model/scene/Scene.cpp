@@ -18,6 +18,7 @@
 #include "SceneObserver.h"
 #include "Sheet.h"
 #include "SheetJumpTool.h"
+#include "SystemConfig.h"
 #include <QAction>
 #include <QCursor>
 #include <QDebug>
@@ -40,6 +41,8 @@ Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent) {
   m_defaultText = new QGraphicsTextItem(DEFAULT_TEXT);
   m_defaultText->setDefaultTextColor(QColor(Qt::gray));
   showDefaultText();
+
+  setBackgroundBrush(QBrush(QColor(systemConfig(SystemConfig::backgroundColor).toString())));
 }
 
 Scene::~Scene() {
@@ -74,14 +77,6 @@ void Scene::keyPressEvent(QKeyEvent* event) {
   Editor::getInstance()->activeTool()->keyPressEvent(this, event);
   if ((Qt::Key_A == event->key()) && Qt::ControlModifier == event->modifiers()) {
     foreach (AbstractNode* node, m_sheet->nodes()) { node->setSelected(true); }
-  }
-  if (Qt::Key_Control == event->key()) {
-    // TODO
-    //    FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(mousepo));
-    //    if (functionBlockNode && (Qt::ControlModifier == event->modifiers())) {
-    //      Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
-    //      QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
-    //    }
   }
   QGraphicsScene::keyPressEvent(event);
 }
@@ -123,15 +118,22 @@ void Scene::removeSheet() {
   showDefaultText();
 }
 
-Port* Scene::findPort(QPointF scenePos) {
+Port* Scene::findPort(QPointF scenePos, bool penetrate) {
   QPointF offset = QPointF(2, 2);
   QRectF searchArea = QRectF(scenePos - offset, scenePos + offset);
   QList<QGraphicsItem*> pressedItems = items(searchArea);
 
-  Port* port = nullptr;
-  foreach (QGraphicsItem* item, pressedItems) {
-    port = dynamic_cast<Port*>(item);
-    if (port) {
+  if (penetrate) {
+    Port* port = nullptr;
+    foreach (QGraphicsItem* item, pressedItems) {
+      port = dynamic_cast<Port*>(item);
+      if (port) {
+        return port;
+      }
+    }
+  } else {
+    if (!pressedItems.isEmpty()) {
+      Port* port = dynamic_cast<Port*>(pressedItems.first());
       return port;
     }
   }
@@ -148,7 +150,7 @@ void Scene::takeOver(Scene* scene) {
 
 void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
-    Port* port = findPort(event->scenePos());
+    Port* port = findPort(event->scenePos(), false);
     FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(event->scenePos()));
     if (port) {
       if (port->canConnect()) {

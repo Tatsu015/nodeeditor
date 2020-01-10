@@ -7,6 +7,7 @@
 
 class QAction;
 class AbstractNode;
+class Connection;
 
 const static QString TOOL_NODE_EDIT = "NodeEdit";
 
@@ -20,8 +21,11 @@ public:
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
+  virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event);
 
   void setActiveNodeType(const QString& activeNodeType);
+
+  QStringList nodeTypes() const;
 
 private:
   bool isSelectedNodesPressed(QPointF scenePos, Scene* scene);
@@ -30,11 +34,16 @@ private:
   void drawBottomGuideLineFromNearNodes(Scene* scene, AbstractNode* movingNode);
   void drawRightGuideLineFromNearNodes(Scene* scene, AbstractNode* movingNode);
   void drawLeftGuideLineFromNearNodes(Scene* scene, AbstractNode* movingNode);
+  void captureSelectedNodes(Scene* scene);
+  void pasteCopyNodes(Scene* scene);
 
 private:
   bool m_isNodeMoving = false;
+  QStringList m_nodeTypes;
   QString m_activeNodeType = "";
-  QList<AbstractNode*> m_selectedNodes;
+  QPointF m_lastPastePos;
+  QList<AbstractNode*> m_copySrcNodes;
+  QList<Connection*> m_copyConnections;
 };
 
 #endif // NODEEDITTOOL_H

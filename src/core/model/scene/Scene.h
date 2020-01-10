@@ -62,7 +62,7 @@ public:
   void clearGuideLine();
 
   bool existPort(QPointF scenePos);
-  Port* findPort(QPointF scenePos);
+  Port* findPort(QPointF scenePos, bool penetrate = true);
 
   void addSceneObserver(SceneObserver* sceneObserver);
 
