@@ -22,6 +22,7 @@ public:
   void setDstConnection(AbstractConnection* fromConnection);
   AbstractConnection* srcConnection() const;
   void setSrcConnection(AbstractConnection* srcConnection);
+  AbstractConnection* anotherConnection(AbstractConnection* connection) const;
 
   void removeDstConnection();
   void removeSrcConnection();

@@ -59,6 +59,8 @@ public:
   void addVertexes(QList<QPointF> vertex);
   QList<QPointF> vertexes() const;
 
+  QList<AbstractConnection*> connectedConnections();
+
   QString name() const;
   void setName(const QString& name);
 
@@ -72,6 +74,7 @@ public:
 
 private:
   QVector<QPointF> points() const;
+  QList<AbstractConnection*> connectedConnections(const Connector* excludeConnector);
 
 protected:
   const static uint32_t PEN_SIZE;

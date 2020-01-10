@@ -216,6 +216,10 @@ QList<QPointF> AbstractConnection::vertexes() const {
   return m_vertexes;
 }
 
+QList<AbstractConnection*> AbstractConnection::connectedConnections() {
+  return connectedConnections(nullptr);
+}
+
 QString AbstractConnection::name() const {
   return m_name;
 }
@@ -255,4 +259,21 @@ QVector<QPointF> AbstractConnection::points() const {
     }
   }
   return elements;
+}
+
+QList<AbstractConnection*> AbstractConnection::connectedConnections(const Connector* excludeConnector) {
+  QList<AbstractConnection*> connections;
+  connections << this;
+  if (m_startConnector && (m_startConnector != excludeConnector)) {
+    connections << m_startConnector->anotherConnection(this)->connectedConnections(m_startConnector);
+  }
+  if (m_endConnector && (m_endConnector != excludeConnector)) {
+    connections << m_endConnector->anotherConnection(this)->connectedConnections(m_endConnector);
+  }
+  foreach (Connector* connector, m_branchConnectors) {
+    if (connector != excludeConnector) {
+      connections << connector->anotherConnection(this)->connectedConnections(connector);
+    }
+  }
+  return connections;
 }

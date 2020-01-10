@@ -47,6 +47,16 @@ void Connector::setSrcConnection(AbstractConnection* srcConnection) {
   setParentItem(srcConnection);
 }
 
+AbstractConnection* Connector::anotherConnection(AbstractConnection* connection) const {
+  if (connection == m_srcConnection) {
+    return m_dstConnection;
+  }
+  if (connection == m_dstConnection) {
+    return m_srcConnection;
+  }
+  return nullptr;
+}
+
 void Connector::removeSrcConnection() {
   m_srcConnection->removeBranchConnector(this);
   m_srcConnection = nullptr;
