@@ -39,18 +39,18 @@ QPointF Port::centerScenePos() {
 
 QPointF Port::endOfPortPos() {
   if (Output == m_io) {
-    return (sceneBoundingRect().topRight() + sceneBoundingRect().bottomRight()) * 0.5;
+    return QPointF(sceneBoundingRect().right(), sceneBoundingRect().center().y());
   } else if (Input == m_io) {
-    return (sceneBoundingRect().topLeft() + sceneBoundingRect().bottomLeft()) * 0.5;
+    return QPointF(sceneBoundingRect().left(), sceneBoundingRect().center().y());
   }
   return centerScenePos();
 }
 
 QPointF Port::endOfNodePos() {
   if (Input == m_io) {
-    return (sceneBoundingRect().topRight() + sceneBoundingRect().bottomRight()) * 0.5;
+    return QPointF(sceneBoundingRect().right(), sceneBoundingRect().center().y());
   } else if (Output == m_io) {
-    return (sceneBoundingRect().topLeft() + sceneBoundingRect().bottomLeft()) * 0.5;
+    return QPointF(sceneBoundingRect().left(), sceneBoundingRect().center().y());
   }
   return centerScenePos();
 }

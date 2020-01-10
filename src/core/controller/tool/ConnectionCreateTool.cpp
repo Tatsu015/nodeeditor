@@ -51,25 +51,27 @@ void ConnectionCreateTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent
     return;
   }
 
-  if (isOnConnectablePort(scene, event)) {
+  QPointF endScenePos = modifieredEndScenePos(event);
+
+  if (isOnConnectablePort(scene, endScenePos)) {
     m_tmpConnection->changeConnectionStyle(AbstractConnection::Connectable);
-    m_tmpConnection->redraw(m_startPort, event->scenePos());
+    m_tmpConnection->redraw(m_startPort, endScenePos);
     return;
   }
 
-  if (isOnConnecttableConnection(scene, event)) {
+  if (isOnConnecttableConnection(scene, endScenePos)) {
     m_tmpConnection->changeConnectionStyle(AbstractConnection::Connectable);
-    m_tmpConnection->redraw(m_startPort, event->scenePos());
+    m_tmpConnection->redraw(m_startPort, endScenePos);
     return;
   }
 
-  if (isOnNode(scene, event)) {
+  if (isOnNode(scene, endScenePos)) {
     m_tmpConnection->changeConnectionStyle(AbstractConnection::Connectable);
-    m_tmpConnection->redraw(m_startPort, event->scenePos());
+    m_tmpConnection->redraw(m_startPort, endScenePos);
     return;
   }
   m_tmpConnection->changeConnectionStyle(AbstractConnection::Connecting);
-  m_tmpConnection->redraw(m_startPort, event->scenePos());
+  m_tmpConnection->redraw(m_startPort, endScenePos);
 }
 
 void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
@@ -77,8 +79,10 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
     return;
   }
 
-  if (isOnConnectablePort(scene, event)) {
-    Port* endPort = scene->findPort(event->scenePos());
+  QPointF endScenePos = modifieredEndScenePos(event);
+
+  if (isOnConnectablePort(scene, endScenePos)) {
+    Port* endPort = scene->findPort(endScenePos);
     decideConnectToPort(scene, endPort, m_tmpConnection->vertexes());
     scene->removeConnection(m_tmpConnection);
     m_startPort->removeConnection(m_tmpConnection);
@@ -86,23 +90,23 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
     return;
   }
 
-  if (isOnConnecttableConnection(scene, event)) {
-    AbstractConnection* dstConnection = scene->findConnection(event->scenePos(), m_tmpConnection);
-    decideConnectToConnector(scene, event->scenePos(), dstConnection, m_tmpConnection->vertexes());
+  if (isOnConnecttableConnection(scene, endScenePos)) {
+    AbstractConnection* dstConnection = scene->findConnection(endScenePos, m_tmpConnection);
+    decideConnectToConnector(scene, endScenePos, dstConnection, m_tmpConnection->vertexes());
     scene->removeConnection(m_tmpConnection);
     m_startPort->removeConnection(m_tmpConnection);
     reset();
     return;
   }
 
-  if (isOnNode(scene, event)) {
-    AbstractNode* node = scene->findNodes(event->scenePos()).at(0);
+  if (isOnNode(scene, endScenePos)) {
+    AbstractNode* node = scene->findNodes(endScenePos).at(0);
     Port* endPort;
     IO io = m_startPort->io();
     if (Input == io) {
-      endPort = node->nearestOutputPort(event->scenePos());
+      endPort = node->nearestOutputPort(endScenePos);
     } else {
-      endPort = node->nearestInputPort(event->scenePos());
+      endPort = node->nearestInputPort(endScenePos);
     }
     decideConnectToPort(scene, endPort, m_tmpConnection->vertexes());
     scene->removeConnection(m_tmpConnection);
@@ -113,7 +117,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
   }
 
   if (CONNECTION_POLYLINE == m_tmpConnection->connectionType()) {
-    m_tmpConnection->addVertex(event->scenePos());
+    m_tmpConnection->addVertex(endScenePos);
     return;
   }
 
@@ -163,8 +167,8 @@ void ConnectionCreateTool::decideConnectToConnector(Scene* scene, QPointF mouseR
   Editor::getInstance()->addCommand(command);
 }
 
-bool ConnectionCreateTool::isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const {
-  Port* endPort = scene->findPort(event->scenePos());
+bool ConnectionCreateTool::isOnConnectablePort(Scene* scene, const QPointF scenePos) const {
+  Port* endPort = scene->findPort(scenePos);
 
   if (!endPort) {
     return false;
@@ -181,16 +185,16 @@ bool ConnectionCreateTool::isOnConnectablePort(Scene* scene, QGraphicsSceneMouse
   return true;
 }
 
-bool ConnectionCreateTool::isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const {
-  QList<AbstractNode*> nodes = scene->findNodes(event->scenePos());
+bool ConnectionCreateTool::isOnNode(Scene* scene, const QPointF scenePos) const {
+  QList<AbstractNode*> nodes = scene->findNodes(scenePos);
   if (0 >= nodes.count()) {
     return false;
   }
   return true;
 }
 
-bool ConnectionCreateTool::isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const {
-  QList<AbstractConnection*> connections = scene->findConnections(event->scenePos(), m_tmpConnection);
+bool ConnectionCreateTool::isOnConnecttableConnection(Scene* scene, const QPointF scenePos) const {
+  QList<AbstractConnection*> connections = scene->findConnections(scenePos, m_tmpConnection);
   // now connection creating, so m_tmpConnection always contains in connections.
   // but this function need to find connect to connection, so remove m_tmpConnection.
   connections.removeOne(m_tmpConnection);
@@ -210,4 +214,29 @@ void ConnectionCreateTool::reset() {
   m_isNodeSelectable = true;
 
   m_startPort = nullptr;
+}
+
+QPointF ConnectionCreateTool::modifieredEndScenePos(QGraphicsSceneMouseEvent* event) {
+  if (Qt::ShiftModifier != event->modifiers()) {
+    return event->scenePos();
+  } else {
+    QPointF lastPos;
+    if (m_tmpConnection->vertexes().isEmpty()) {
+      lastPos = m_startPort->endOfPortPos();
+    } else {
+      lastPos = m_tmpConnection->vertexes().last();
+    }
+    QLineF direction(lastPos, event->scenePos());
+    qreal angle = direction.angle();
+    if ((45 < angle) && (angle <= 135)) {
+      return QPointF(lastPos.x(), event->scenePos().y());
+    } else if ((135 < angle) && (angle <= 225)) {
+      return QPointF(event->scenePos().x(), lastPos.y());
+    } else if ((225 < angle) && (angle <= 315)) {
+      return QPointF(lastPos.x(), event->scenePos().y());
+    } else {
+      return QPointF(event->scenePos().x(), lastPos.y());
+    }
+  }
+  return QPointF();
 }

@@ -27,12 +27,14 @@ private:
   void decideConnectToConnector(Scene* scene, QPointF mouseReleaseScenePos, AbstractConnection* dstConnection,
                                 QList<QPointF> vertexes);
 
-  bool isOnConnectablePort(Scene* scene, QGraphicsSceneMouseEvent* event) const;
-  bool isOnNode(Scene* scene, QGraphicsSceneMouseEvent* event) const;
-  bool isOnConnecttableConnection(Scene* scene, QGraphicsSceneMouseEvent* event) const;
+  bool isOnConnectablePort(Scene* scene, const QPointF scenePos) const;
+  bool isOnNode(Scene* scene, const QPointF scenePos) const;
+  bool isOnConnecttableConnection(Scene* scene, const QPointF scenePos) const;
 
   void cancel();
   void reset();
+
+  QPointF modifieredEndScenePos(QGraphicsSceneMouseEvent* event);
 
 private:
   QString m_activeConnectionType = "";
