@@ -5,6 +5,8 @@
 #include <QFont>
 #include <QPen>
 
+const static QString NODE_NOT = "Not";
+
 NotNode::NotNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_NOT;
   m_io = Hidden;

@@ -3,6 +3,8 @@
 
 #include "AbstractTool.h"
 
+const static QString TOOL_SHEET_JUMP = "SheetJump";
+
 class SheetJumpTool : public AbstractTool {
 public:
   SheetJumpTool();

@@ -8,6 +8,8 @@
 class QAction;
 class AbstractNode;
 
+const static QString TOOL_NODE_EDIT = "NodeEdit";
+
 class NodeEditTool : public AbstractTool {
 public:
   NodeEditTool();

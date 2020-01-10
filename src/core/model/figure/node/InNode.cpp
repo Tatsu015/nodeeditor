@@ -6,6 +6,8 @@
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
 
+const static QString NODE_IN = "In";
+
 InNode::InNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_IN;
   m_io = Input;

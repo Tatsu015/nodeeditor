@@ -8,6 +8,8 @@ class Port;
 class AbstractConnection;
 class Connector;
 
+const static QString TOOL_CONNECTION_CREATE = "ConnectionCreate";
+
 class ConnectionCreateTool : public AbstractTool {
 public:
   ConnectionCreateTool();

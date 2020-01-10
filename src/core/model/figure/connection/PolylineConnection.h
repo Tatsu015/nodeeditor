@@ -3,6 +3,8 @@
 
 #include "AbstractConnection.h"
 
+const static QString CONNECTION_POLYLINE = "Polyline";
+
 class PolylineConnection : public AbstractConnection {
 public:
   PolylineConnection(QGraphicsItem* parent = nullptr);

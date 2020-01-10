@@ -6,8 +6,8 @@ QJsonArray pointFsToJson(QList<QPointF> points) {
   QJsonArray pointsJsonArray;
   foreach (QPointF point, points) {
     QJsonObject pointObject;
-    pointObject[JSON_X] = point.x();
-    pointObject[JSON_Y] = point.y();
+    pointObject[X] = point.x();
+    pointObject[Y] = point.y();
     pointsJsonArray.append(pointObject);
   }
   return pointsJsonArray;
@@ -16,7 +16,7 @@ QJsonArray pointFsToJson(QList<QPointF> points) {
 QList<QPointF> jsonToPointFs(QJsonArray jsonArray) {
   QList<QPointF> points;
   foreach (QJsonValue value, jsonArray) {
-    QPointF point(value[JSON_X].toInt(), value[JSON_Y].toInt());
+    QPointF point(value[X].toInt(), value[Y].toInt());
     points << point;
   }
   return points;

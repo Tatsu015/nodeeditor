@@ -1,6 +1,7 @@
 #include "Port.h"
-#include "AbstractNode.h"
 #include "AbstractConnection.h"
+#include "AbstractNode.h"
+#include "ProjectKeyDefine.h"
 #include "SystemConfig.h"
 #include "float.h"
 #include <QBrush>

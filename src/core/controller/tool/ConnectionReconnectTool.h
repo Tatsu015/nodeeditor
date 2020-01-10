@@ -10,6 +10,8 @@ class AbstractNode;
 class AbstractConnection;
 class Port;
 
+const static QString TOOL_CONNECTION_RECONNECT = "ConnectionReconnect";
+
 class ConnectionReconnectTool : public AbstractTool {
 public:
   ConnectionReconnectTool();

@@ -1,11 +1,13 @@
 #include "ElbowConnection.h"
 #include "AbstractNode.h"
 #include "Connector.h"
-#include "Define.h"
 #include "Port.h"
+#include "ProjectKeyDefine.h"
 #include "SystemConfig.h"
 #include <QPen>
 #include <QUuid>
+
+const static QString CONNECTION_ELBOW = "Elbow";
 
 ElbowConnection::ElbowConnection(QGraphicsItem* parent) : AbstractConnection(parent) {
   m_connectionType = CONNECTION_ELBOW;

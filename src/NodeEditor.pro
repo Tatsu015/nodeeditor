@@ -132,7 +132,8 @@ HEADERS += \
     core/view/widget/ConnectionTypeToolButton.h \
     core/view/widget/ToolButtonGroup.h \
     core/view/widget/NodeTypeToolButton.h \
-    core/util/JsonUtil.h
+    core/util/JsonUtil.h \
+    core/util/ProjectKeyDefine.h
 
 
 SOURCES += \

@@ -6,6 +6,8 @@
 
 class AbstractConnection;
 
+const static QString CONNECTOR = "Connector";
+
 class Connector : public QGraphicsPathItem {
 public:
   Connector(QGraphicsItem* parent = nullptr);

@@ -10,6 +10,8 @@ class Sheet;
 class ProjectObserver;
 class AbstractNode;
 
+const static QString APP_EXTENSION = "nd";
+
 class Project {
 public:
   Project();

@@ -27,7 +27,7 @@ QPointF Connector::centerScenePos() {
 }
 
 QString Connector::connectorType() const {
-  return "Connector";
+  return CONNECTOR;
 }
 
 AbstractConnection* Connector::dstConnection() const {

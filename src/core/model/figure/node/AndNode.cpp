@@ -6,6 +6,8 @@
 #include <QPen>
 #include <QUuid>
 
+const static QString NODE_AND = "And";
+
 AndNode::AndNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_AND;
   m_io = Hidden;

@@ -5,6 +5,8 @@
 #include <QFont>
 #include <QPen>
 
+const static QString NODE_OR = "Or";
+
 OrNode::OrNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_OR;
   m_io = Hidden;
