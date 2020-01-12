@@ -273,9 +273,16 @@ QList<AbstractNode*> AbstractNode::adjastOutNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
     foreach (AbstractConnection* connection, port->connections()) {
-      AbstractNode* outNode = dynamic_cast<AbstractNode*>(connection->endPort()->parentItem());
-      if (outNode != this) {
-        nodes << outNode;
+      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+        if (connectedConnection->hasInputPort()) {
+          AbstractNode* outNode = connectedConnection->inputPort()->parentNode();
+          if (outNode != this) {
+            // when exist loop, this check need
+            if (!nodes.contains(outNode)) {
+              nodes << outNode;
+            }
+          }
+        }
       }
     }
   }
@@ -286,9 +293,16 @@ QList<AbstractNode*> AbstractNode::adjastInNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
     foreach (AbstractConnection* connection, port->connections()) {
-      AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
-      if (inNode != this) {
-        nodes << inNode;
+      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+        if (connectedConnection->hasOutputPort()) {
+          AbstractNode* inNode = connectedConnection->outputPort()->parentNode();
+          if (inNode != this) {
+            // when exist loop, this check need
+            if (!nodes.contains(inNode)) {
+              nodes << inNode;
+            }
+          }
+        }
       }
     }
   }
@@ -299,23 +313,28 @@ QList<AbstractNode*> AbstractNode::adjastNodes() {
   QList<AbstractNode*> nodes;
   foreach (Port* port, m_ports) {
     foreach (AbstractConnection* connection, port->connections()) {
-      AbstractNode* inNode = dynamic_cast<AbstractNode*>(connection->startPort()->parentItem());
-      if (inNode != this) {
-        // when exist loop, this check need
-        if (!nodes.contains(inNode)) {
-          nodes << inNode;
+      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+        if (connectedConnection->hasInputPort()) {
+          AbstractNode* inNode = connectedConnection->inputPort()->parentNode();
+          if (inNode != this) {
+            // when exist loop, this check need
+            if (!nodes.contains(inNode)) {
+              nodes << inNode;
+            }
+          }
         }
-      }
-      AbstractNode* outNode = dynamic_cast<AbstractNode*>(connection->endPort()->parentItem());
-      if (outNode != this) {
-        // when exist loop, this check need
-        if (!nodes.contains(outNode)) {
-          nodes << outNode;
+        if (connectedConnection->hasOutputPort()) {
+          AbstractNode* outNode = connectedConnection->outputPort()->parentNode();
+          if (outNode != this) {
+            // when exist loop, this check need
+            if (!nodes.contains(outNode)) {
+              nodes << outNode;
+            }
+          }
         }
       }
     }
   }
-
   return nodes;
 }
 

@@ -1,6 +1,6 @@
 #include "NodeRemoveCommand.h"
-#include "AbstractNode.h"
 #include "AbstractConnection.h"
+#include "AbstractNode.h"
 #include "Connector.h"
 #include "Port.h"
 #include "Scene.h"
@@ -78,11 +78,17 @@ void NodeRemoveCommand::undo() {
 }
 
 bool NodeRemoveCommand::isStartNodeRemoved(const AbstractConnection* connection) const {
-  AbstractNode* startNode = connection->startPort()->parentNode();
-  return m_nodes.contains(startNode);
+  if (connection->hasStartPort()) {
+    AbstractNode* startNode = connection->startPort()->parentNode();
+    return m_nodes.contains(startNode);
+  }
+  return false;
 }
 
 bool NodeRemoveCommand::isEndNodeRemoved(const AbstractConnection* connection) const {
-  AbstractNode* endNode = connection->endPort()->parentNode();
-  return m_nodes.contains(endNode);
+  if (connection->hasEndPort()) {
+    AbstractNode* endNode = connection->endPort()->parentNode();
+    return m_nodes.contains(endNode);
+  }
+  return false;
 }

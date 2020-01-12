@@ -32,11 +32,17 @@ public:
 
   Port* startPort() const;
   void setStartPort(Port* startPort);
+  bool hasStartPort() const;
   void removeStartPort();
   Port* endPort() const;
   void setEndPort(Port* endPort);
+  bool hasEndPort() const;
   void removeEndPort();
   Port* oppositeSidePort(Port* port);
+  Port* inputPort() const;
+  bool hasInputPort() const;
+  Port* outputPort() const;
+  bool hasOutputPort() const;
   int32_t areaIndex(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;
   QPointF closeCenter(QPointF pos, QSizeF searchSize = QSizeF(3, 3));
   Direction direction(QPointF pos, QSizeF searchSize = QSizeF(3, 3)) const;

@@ -86,6 +86,8 @@ void Builder::buildToolBar(MainWindow* mainWindow, Ui::MainWindow* ui) {
   group->add(toolButton);
   Editor::getInstance()->project()->addObserver(toolButton);
 
+  ui->toolBar->addSeparator();
+
   ConnectionTypeToolButton* connectionTypeToolButton = new ConnectionTypeToolButton();
   connectionTypeToolButton->setup();
   ui->toolBar->addWidget(connectionTypeToolButton);

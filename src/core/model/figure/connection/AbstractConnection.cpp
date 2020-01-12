@@ -48,10 +48,24 @@ void AbstractConnection::setStartPort(Port* startPort) {
   redraw();
 }
 
+bool AbstractConnection::hasStartPort() const {
+  if (m_startPort) {
+    return true;
+  }
+  return false;
+}
+
 void AbstractConnection::setEndPort(Port* endPort) {
   m_endPort = endPort;
   m_endPos = endPort->endOfPortPos();
   redraw();
+}
+
+bool AbstractConnection::hasEndPort() const {
+  if (m_endPort) {
+    return true;
+  }
+  return false;
 }
 
 void AbstractConnection::redraw(Port* startPort, Port* endPort) {
@@ -88,6 +102,48 @@ Port* AbstractConnection::oppositeSidePort(Port* port) {
   } else {
     return m_startPort;
   }
+}
+
+Port* AbstractConnection::inputPort() const {
+  if (m_startPort) {
+    if (Input == m_startPort->io()) {
+      return m_startPort;
+    }
+  }
+  if (m_endPort) {
+    if (Input == m_endPort->io()) {
+      return m_endPort;
+    }
+  }
+  return nullptr;
+}
+
+bool AbstractConnection::hasInputPort() const {
+  if (inputPort()) {
+    return true;
+  }
+  return false;
+}
+
+Port* AbstractConnection::outputPort() const {
+  if (m_startPort) {
+    if (Output == m_startPort->io()) {
+      return m_startPort;
+    }
+  }
+  if (m_endPort) {
+    if (Output == m_endPort->io()) {
+      return m_endPort;
+    }
+  }
+  return nullptr;
+}
+
+bool AbstractConnection::hasOutputPort() const {
+  if (outputPort()) {
+    return true;
+  }
+  return false;
 }
 
 int32_t AbstractConnection::areaIndex(QPointF pos, QSizeF searchSize) const {

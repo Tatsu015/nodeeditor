@@ -107,6 +107,9 @@ CircuitCalculatePlugin::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
 
     while (unvisitedNodes.count()) {
       AbstractNode* checkNode = unvisitedNodes.takeLast();
+      if (connectedNodes.contains(checkNode)) {
+        continue;
+      }
       connectedNodes << checkNode;
       unusedNode.removeOne(checkNode);
       foreach (AbstractNode* adjastNode, checkNode->adjastNodes()) {
@@ -136,15 +139,15 @@ QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePl
     }
   }
   while (unVisitedNodes.count()) {
-    AbstractNode* checkNode = unVisitedNodes.last();
+    AbstractNode* checkNode = unVisitedNodes.takeLast();
     if (isAllAdjacentInNodeVisited(checkNode, visitedNodes)) {
       visitedNodes << checkNode;
       unVisitedNodes.removeOne(checkNode);
+    } else {
+      unVisitedNodes.prepend(checkNode);
     }
   }
 
-  qDebug() << "--------------------------------";
-  foreach (AbstractNode* node, visitedNodes) { qDebug() << node->name(); }
   return visitedNodes;
 }
 
@@ -167,6 +170,8 @@ void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
   m_connectedGraphs = ConnectedGraphs(nodes);
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
     connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
+    qDebug() << "----------------------------";
+    foreach (AbstractNode* n, connectedGraph->m_nodes) { qDebug() << n->name(); }
   }
 }
 
