@@ -45,17 +45,27 @@ void NodeRemoveCommand::redo() {
         // connection which start or end node is not removed, need to disconnect from remain node.
         // both side node removed, unneed to disconnect because when undo/redo reconnect.
         if (isStartNodeRemoved(connection) && !isEndNodeRemoved(connection)) {
-          Port* port = connection->endPort();
-          port->removeConnection(connection);
-          connection->removeEndPort();
-          ConnectionInfo* connectionInfo = new ConnectionInfo(connection, nullptr, port);
-          m_connectionInfos << connectionInfo;
+          if (connection->hasEndPort()) {
+            Port* port = connection->endPort();
+            port->removeConnection(connection);
+            connection->removeEndPort();
+            ConnectionInfo* connectionInfo = new ConnectionInfo(connection, nullptr, port);
+            m_connectionInfos << connectionInfo;
+          }
+          if (connection->hasEndConnector()) {
+            // TODO
+          }
         } else if (!isStartNodeRemoved(connection) && isEndNodeRemoved(connection)) {
-          Port* port = connection->startPort();
-          port->removeConnection(connection);
-          connection->removeStartPort();
-          ConnectionInfo* connectionInfo = new ConnectionInfo(connection, port, nullptr);
-          m_connectionInfos << connectionInfo;
+          if (connection->hasStartPort()) {
+            Port* port = connection->startPort();
+            port->removeConnection(connection);
+            connection->removeStartPort();
+            ConnectionInfo* connectionInfo = new ConnectionInfo(connection, port, nullptr);
+            m_connectionInfos << connectionInfo;
+          }
+          if (connection->hasStartConnector()) {
+            // TODO
+          }
         }
         m_connections << connection;
         m_sheet->removeConnection(connection);
