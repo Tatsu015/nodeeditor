@@ -3,6 +3,7 @@
 #include "EdgeHandle.h"
 #include "Port.h"
 #include "SystemConfig.h"
+#include "VertexHandle.h"
 #include <QPainter>
 #include <QPen>
 #include <QUuid>
@@ -12,7 +13,6 @@ const uint32_t AbstractConnection::PEN_SIZE = 3;
 AbstractConnection::AbstractConnection(QGraphicsItem* parent)
     : QGraphicsPathItem(parent), m_id(QUuid::createUuid().toString()) {
   setPen(QPen(QColor(systemConfig(SystemConfig::connectionColor).toString()), PEN_SIZE));
-  setFlag(ItemIsSelectable);
 
   m_startEdgeHandle = new EdgeHandle(Start, this);
   m_endEdgeHandle = new EdgeHandle(End, this);
@@ -30,15 +30,27 @@ void AbstractConnection::paint(QPainter* painter, const QStyleOptionGraphicsItem
     m_startEdgeHandle->show();
     m_endEdgeHandle->setPos(m_endPos);
     m_endEdgeHandle->show();
+    foreach (VertexHandle* vertexHandle, m_vertexHandles) { vertexHandle->show(); }
+  } else if (m_editingVertex) {
+    m_startEdgeHandle->setPos(m_startPos);
+    m_startEdgeHandle->show();
+    m_endEdgeHandle->setPos(m_endPos);
+    m_endEdgeHandle->show();
+    foreach (VertexHandle* vertexHandle, m_vertexHandles) { vertexHandle->show(); }
   } else {
     m_startEdgeHandle->hide();
     m_endEdgeHandle->hide();
+    foreach (VertexHandle* vertexHandle, m_vertexHandles) { vertexHandle->hide(); }
   }
   QGraphicsPathItem::paint(painter, option, widget);
 }
 
 AbstractConnection* AbstractConnection::create() {
   return create(QUuid::createUuid().toString());
+}
+
+void AbstractConnection::created() {
+  setFlag(ItemIsSelectable);
 }
 
 QPixmap AbstractConnection::pixmap() const {
@@ -282,15 +294,37 @@ QList<Connector*> AbstractConnection::branchConnectors() const {
 }
 
 void AbstractConnection::addVertex(QPointF vertex) {
-  m_vertexes << vertex;
+  VertexHandle* vertexHandle = new VertexHandle(this);
+  vertexHandle->setPos(vertex);
+  m_vertexHandles << vertexHandle;
 }
 
-void AbstractConnection::addVertexes(QList<QPointF> vertex) {
-  m_vertexes = vertex;
+void AbstractConnection::addVertexes(QList<QPointF> vertexes) {
+  foreach (QPointF vertex, vertexes) { addVertex(vertex); }
+}
+
+void AbstractConnection::insertVertex(VertexHandle* vertex, int32_t pos) {
+  vertex->setParentItem(this);
+  m_vertexHandles.insert(pos, vertex);
 }
 
 QList<QPointF> AbstractConnection::vertexes() const {
-  return m_vertexes;
+  QList<QPointF> vertexes;
+  foreach (VertexHandle* vertexHandle, m_vertexHandles) { vertexes << vertexHandle->scenePos(); }
+  return vertexes;
+}
+
+void AbstractConnection::removeVertex(VertexHandle* vertex) {
+  m_vertexHandles.removeOne(vertex);
+  redraw();
+}
+
+void AbstractConnection::startEditVertex() {
+  m_editingVertex = true;
+}
+
+void AbstractConnection::endEditVertex() {
+  m_editingVertex = false;
 }
 
 QList<AbstractConnection*> AbstractConnection::connectedConnections() {

@@ -82,6 +82,8 @@ AbstractNode* ProjectParser::parseNode(QJsonValue nodeJsonVal) {
       }
     }
   }
+
+  node->created();
   return node;
 }
 
@@ -108,6 +110,7 @@ AbstractConnection* ProjectParser::parseNodeToNodeConnection(const Sheet* sheet,
   connection->addVertexes(vertexes);
   endPort->addConnection(connection);
 
+  connection->created();
   return connection;
 }
 
@@ -139,5 +142,6 @@ AbstractConnection* ProjectParser::parseNodeToConnectorConnection(const Sheet* s
   endConnector->setSrcConnection(connection);
   dstConnection->addBranchConnector(endConnector);
 
+  connection->created();
   return connection;
 }

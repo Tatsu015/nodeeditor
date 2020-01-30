@@ -9,6 +9,7 @@ class AbstractConnection;
 class Port;
 class Connector;
 class EdgeHandle;
+class VertexHandle;
 class GuideLine;
 class SceneObserver;
 class Sheet;
@@ -66,6 +67,7 @@ public:
   Port* findPort(QPointF scenePos, bool penetrate = true);
 
   EdgeHandle* findEdgeHandle(QPointF scenePos, bool penetrate = true);
+  VertexHandle* findVertexHandle(QPointF scenePos, bool penetrate = true);
 
   void addSceneObserver(SceneObserver* sceneObserver);
 

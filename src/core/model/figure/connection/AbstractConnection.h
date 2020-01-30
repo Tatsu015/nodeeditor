@@ -7,6 +7,7 @@
 class Port;
 class Connector;
 class EdgeHandle;
+class VertexHandle;
 
 class AbstractConnection : public QGraphicsPathItem {
 public:
@@ -21,6 +22,7 @@ public:
 
   AbstractConnection* create();
   virtual AbstractConnection* create(const QString& id) = 0;
+  void created();
 
   QPixmap pixmap() const;
 
@@ -65,8 +67,12 @@ public:
   void removeBranchConnector(Connector* connector);
   QList<Connector*> branchConnectors() const;
   void addVertex(QPointF vertex);
-  void addVertexes(QList<QPointF> vertex);
+  void addVertexes(QList<QPointF> vertexes);
+  void insertVertex(VertexHandle* vertex, int32_t pos);
   QList<QPointF> vertexes() const;
+  void removeVertex(VertexHandle* vertex);
+  void startEditVertex();
+  void endEditVertex();
 
   QList<AbstractConnection*> connectedConnections();
 
@@ -102,10 +108,10 @@ protected:
 
   Connector* m_startConnector = nullptr;
   Connector* m_endConnector = nullptr;
+  QList<VertexHandle*> m_vertexHandles;
+  bool m_editingVertex = false;
 
   QList<Connector*> m_branchConnectors;
-
-  QList<QPointF> m_vertexes;
 };
 
 #endif // ABSTRACTCONNECTION_H

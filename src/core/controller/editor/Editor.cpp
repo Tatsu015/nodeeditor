@@ -21,6 +21,7 @@
 #include "SheetFactory.h"
 #include "SheetJumpTool.h"
 #include "SystemConfig.h"
+#include "VertexEditTool.h"
 #include <QGraphicsView>
 #include <QUndoStack>
 
@@ -106,6 +107,7 @@ void Editor::initTool() {
   addTool(new ConnectionCreateTool());
   addTool(new ConnectionReconnectTool());
   addTool(new SheetJumpTool());
+  addTool(new VertexEditTool());
 
   // set default tool
   m_activeTool = m_tools[TOOL_NODE_EDIT];

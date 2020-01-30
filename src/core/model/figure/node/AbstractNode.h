@@ -21,6 +21,7 @@ public:
 
   AbstractNode* create();
   virtual AbstractNode* create(const QString& id) = 0;
+  void created();
 
   QString name() const;
   void setName(const QString& name);

@@ -12,10 +12,6 @@
 #include <QUuid>
 
 AbstractNode::AbstractNode(QGraphicsItem* parent) : QGraphicsPathItem(parent) {
-  setFlag(ItemIsSelectable);
-  setFlag(ItemIsMovable);
-  setFlag(ItemSendsGeometryChanges);
-
   setAcceptHoverEvents(true);
 
   const static QBrush BLUSH = QBrush(QColor(systemConfig(SystemConfig::nodeFillColor).toString()));
@@ -49,6 +45,12 @@ QVariant AbstractNode::itemChange(QGraphicsItem::GraphicsItemChange change, cons
 
 AbstractNode* AbstractNode::create() {
   return create(QUuid::createUuid().toString());
+}
+
+void AbstractNode::created() {
+  setFlag(ItemIsSelectable);
+  setFlag(ItemIsMovable);
+  setFlag(ItemSendsGeometryChanges);
 }
 
 QString AbstractNode::name() const {

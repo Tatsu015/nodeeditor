@@ -29,6 +29,7 @@ void ConnectToPortCommand::redo() {
   m_sheet->addConnection(m_connection);
   m_scene->addConnection(m_connection);
   m_connection->redraw();
+  m_connection->created();
 }
 
 void ConnectToPortCommand::undo() {

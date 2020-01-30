@@ -134,8 +134,12 @@ HEADERS += \
     core/view/widget/NodeTypeToolButton.h \
     core/util/JsonUtil.h \
     core/util/ProjectKeyDefine.h \
-    core/model/figure/connection/EdgeHandle.h
-
+    core/model/figure/connection/EdgeHandle.h \
+    core/model/figure/connection/VertexHandle.h \
+    core/controller/tool/VertexEditTool.h \
+    core/controller/command/VertexMoveCommand.h \
+    core/controller/command/VertexRemoveCommand.h \
+    core/extend/VertexRemovePlugin.h
 
 SOURCES += \
     application/controller/CircuitCalculateExecutor.cpp \
@@ -216,7 +220,12 @@ SOURCES += \
     core/view/widget/ToolButtonGroup.cpp \
     core/view/widget/NodeTypeToolButton.cpp \
     core/util/JsonUtil.cpp \
-    core/model/figure/connection/EdgeHandle.cpp
+    core/model/figure/connection/EdgeHandle.cpp \
+    core/model/figure/connection/VertexHandle.cpp \
+    core/controller/tool/VertexEditTool.cpp \
+    core/controller/command/VertexMoveCommand.cpp \
+    core/controller/command/VertexRemoveCommand.cpp \
+    core/extend/VertexRemovePlugin.cpp
 
 
 FORMS += \

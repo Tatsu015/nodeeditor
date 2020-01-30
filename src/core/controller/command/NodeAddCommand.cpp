@@ -15,6 +15,7 @@ void NodeAddCommand::redo() {
   m_node->setPos(m_addScenePos);
   m_scene->addNode(m_node);
   m_sheet->addNode(m_node);
+  m_node->created();
 }
 
 void NodeAddCommand::undo() {

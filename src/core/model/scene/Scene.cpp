@@ -20,6 +20,8 @@
 #include "Sheet.h"
 #include "SheetJumpTool.h"
 #include "SystemConfig.h"
+#include "VertexEditTool.h"
+#include "VertexHandle.h"
 #include <QAction>
 #include <QCursor>
 #include <QDebug>
@@ -163,6 +165,28 @@ EdgeHandle* Scene::findEdgeHandle(QPointF scenePos, bool penetrate) {
   return nullptr;
 }
 
+VertexHandle* Scene::findVertexHandle(QPointF scenePos, bool penetrate) {
+  QPointF offset = QPointF(2, 2);
+  QRectF searchArea = QRectF(scenePos - offset, scenePos + offset);
+  QList<QGraphicsItem*> pressedItems = items(searchArea);
+
+  if (penetrate) {
+    VertexHandle* vertexHandle = nullptr;
+    foreach (QGraphicsItem* item, pressedItems) {
+      vertexHandle = dynamic_cast<VertexHandle*>(item);
+      if (vertexHandle) {
+        return vertexHandle;
+      }
+    }
+  } else {
+    if (!pressedItems.isEmpty()) {
+      VertexHandle* vertexHandle = dynamic_cast<VertexHandle*>(pressedItems.first());
+      return vertexHandle;
+    }
+  }
+  return nullptr;
+}
+
 void Scene::addSceneObserver(SceneObserver* sceneObserver) {
   m_sceneObservers << sceneObserver;
 }
@@ -175,6 +199,7 @@ void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
     Port* port = findPort(event->scenePos(), false);
     EdgeHandle* edgeHandle = findEdgeHandle(event->scenePos(), false);
+    VertexHandle* vertexHandle = findVertexHandle(event->scenePos(), false);
     FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(event->scenePos()));
     if (port) {
       if (port->canConnect()) {
@@ -191,6 +216,9 @@ void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
       }
     } else if (edgeHandle) {
       Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
+      QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
+    } else if (vertexHandle) {
+      Editor::getInstance()->changeActiveTool(TOOL_VERTEX_EDIT);
       QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
     } else {
       Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);

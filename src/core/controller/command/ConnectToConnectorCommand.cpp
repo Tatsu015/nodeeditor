@@ -33,6 +33,7 @@ void ConnectToConnectorCommand::redo() {
   m_sheet->addConnection(m_connection);
   m_scene->addItem(m_connection);
   m_connection->redraw();
+  m_connection->created();
 }
 
 void ConnectToConnectorCommand::undo() {
