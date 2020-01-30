@@ -8,6 +8,7 @@
 #include "Connector.h"
 #include "ContextMenuManager.h"
 #include "Define.h"
+#include "EdgeHandle.h"
 #include "Editor.h"
 #include "FunctionBlockNode.h"
 #include "GuideLine.h"
@@ -140,6 +141,28 @@ Port* Scene::findPort(QPointF scenePos, bool penetrate) {
   return nullptr;
 }
 
+EdgeHandle* Scene::findEdgeHandle(QPointF scenePos, bool penetrate) {
+  QPointF offset = QPointF(2, 2);
+  QRectF searchArea = QRectF(scenePos - offset, scenePos + offset);
+  QList<QGraphicsItem*> pressedItems = items(searchArea);
+
+  if (penetrate) {
+    EdgeHandle* edgeHandle = nullptr;
+    foreach (QGraphicsItem* item, pressedItems) {
+      edgeHandle = dynamic_cast<EdgeHandle*>(item);
+      if (edgeHandle) {
+        return edgeHandle;
+      }
+    }
+  } else {
+    if (!pressedItems.isEmpty()) {
+      EdgeHandle* edgeHandle = dynamic_cast<EdgeHandle*>(pressedItems.first());
+      return edgeHandle;
+    }
+  }
+  return nullptr;
+}
+
 void Scene::addSceneObserver(SceneObserver* sceneObserver) {
   m_sceneObservers << sceneObserver;
 }
@@ -151,14 +174,12 @@ void Scene::takeOver(Scene* scene) {
 void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
   if (!Editor::getInstance()->activeTool()->isUsing()) {
     Port* port = findPort(event->scenePos(), false);
+    EdgeHandle* edgeHandle = findEdgeHandle(event->scenePos(), false);
     FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(event->scenePos()));
     if (port) {
       if (port->canConnect()) {
         Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
         QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
-      } else {
-        Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
-        QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
       }
     } else if (functionBlockNode) {
       if (Qt::ControlModifier == event->modifiers()) {
@@ -168,6 +189,9 @@ void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
         Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
         QGuiApplication::restoreOverrideCursor();
       }
+    } else if (edgeHandle) {
+      Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
+      QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
     } else {
       Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
       QGuiApplication::restoreOverrideCursor();
@@ -205,14 +229,13 @@ Port* Scene::findEndPort(QPointF scenePos) {
   return nullptr;
 }
 
-AbstractConnection* Scene::findConnection(const QPointF scenePos, AbstractConnection* tmponnection) {
+AbstractConnection* Scene::findConnection(const QPointF scenePos, AbstractConnection* exclude) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
 
   AbstractConnection* connection = nullptr;
   foreach (QGraphicsItem* item, pressedItems) {
     connection = dynamic_cast<AbstractConnection*>(item);
-    // remove creating connection from target
-    if (connection != tmponnection) {
+    if (connection != exclude) {
       return connection;
     }
   }

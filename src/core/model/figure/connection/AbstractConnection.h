@@ -1,20 +1,23 @@
 #ifndef ABSTRACTCONNECTION_H
 #define ABSTRACTCONNECTION_H
 
+#include "Define.h"
 #include <QGraphicsPathItem>
 
 class Port;
 class Connector;
+class EdgeHandle;
 
 class AbstractConnection : public QGraphicsPathItem {
 public:
   enum Direction : uint32_t { Vertical, Horizon, Other };
   enum ConnectionStyle : uint32_t { Connected, Connectable, Connecting };
-  enum Edge : uint32_t { Start, End, None };
 
 public:
   AbstractConnection(QGraphicsItem* parent = nullptr);
   virtual ~AbstractConnection();
+
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 
   AbstractConnection* create();
   virtual AbstractConnection* create(const QString& id) = 0;
@@ -94,6 +97,8 @@ protected:
   QPointF m_endPos;
   Port* m_startPort = nullptr;
   Port* m_endPort = nullptr;
+  EdgeHandle* m_startEdgeHandle = nullptr;
+  EdgeHandle* m_endEdgeHandle = nullptr;
 
   Connector* m_startConnector = nullptr;
   Connector* m_endConnector = nullptr;

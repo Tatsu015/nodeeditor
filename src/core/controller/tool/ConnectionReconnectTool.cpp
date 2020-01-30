@@ -5,6 +5,7 @@
 #include "ConnectionFactory.h"
 #include "ConnectorFactory.h"
 #include "Define.h"
+#include "EdgeHandle.h"
 #include "Editor.h"
 #include "GuideLine.h"
 #include "NodeAddCommand.h"
@@ -30,7 +31,14 @@ ConnectionReconnectTool::~ConnectionReconnectTool() {
 }
 
 void ConnectionReconnectTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event) {
-  m_lastEndPort = scene->findPort(event->scenePos());
+  EdgeHandle* edgeHandle = scene->findEdgeHandle(event->scenePos());
+  AbstractConnection* connection = edgeHandle->connection();
+  if (Start == edgeHandle->edge()) {
+    m_lastEndPort = connection->startPort();
+  } else {
+    m_lastEndPort = connection->endPort();
+  }
+
   if (!m_lastEndPort) {
     return;
   }

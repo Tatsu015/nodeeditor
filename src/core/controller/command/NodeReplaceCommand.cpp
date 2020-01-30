@@ -1,6 +1,6 @@
 #include "NodeReplaceCommand.h"
-#include "AbstractNode.h"
 #include "AbstractConnection.h"
+#include "AbstractNode.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
@@ -19,7 +19,7 @@ void NodeReplaceCommand::redo() {
     foreach (AbstractConnection* connection, oldPort->connections()) {
       oldPort->removeConnection(connection);
       newPort->addConnection(connection);
-      if (AbstractConnection::End == connection->whichEdge(oldPort)) {
+      if (End == connection->whichEdge(oldPort)) {
         connection->removeEndPort();
         connection->setEndPort(newPort);
       } else {
@@ -42,7 +42,7 @@ void NodeReplaceCommand::undo() {
     foreach (AbstractConnection* connection, newPort->connections()) {
       newPort->removeConnection(connection);
       oldPort->addConnection(connection);
-      if (AbstractConnection::End == connection->whichEdge(newPort)) {
+      if (End == connection->whichEdge(newPort)) {
         connection->removeEndPort();
         connection->setEndPort(oldPort);
       } else {

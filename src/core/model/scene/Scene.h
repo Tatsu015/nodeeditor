@@ -8,6 +8,7 @@ class InNode;
 class AbstractConnection;
 class Port;
 class Connector;
+class EdgeHandle;
 class GuideLine;
 class SceneObserver;
 class Sheet;
@@ -52,7 +53,7 @@ public:
   void addNode(AbstractNode* node);
   void removeNode(AbstractNode* node);
 
-  AbstractConnection* findConnection(const QPointF scenePos, AbstractConnection* tmponnection);
+  AbstractConnection* findConnection(const QPointF scenePos, AbstractConnection* exclude);
   AbstractConnection* findConnection(const QString connectionName);
   QList<AbstractConnection*> findConnections(const QPointF scenePos, AbstractConnection* tmponnection);
   void addConnection(AbstractConnection* connection);
@@ -63,6 +64,8 @@ public:
 
   bool existPort(QPointF scenePos);
   Port* findPort(QPointF scenePos, bool penetrate = true);
+
+  EdgeHandle* findEdgeHandle(QPointF scenePos, bool penetrate = true);
 
   void addSceneObserver(SceneObserver* sceneObserver);
 

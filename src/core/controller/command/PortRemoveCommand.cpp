@@ -1,6 +1,6 @@
 #include "PortRemoveCommand.h"
-#include "AbstractNode.h"
 #include "AbstractConnection.h"
+#include "AbstractNode.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
@@ -25,8 +25,8 @@ void PortRemoveCommand::redo() {
 
     oppositeSidePort->removeConnection(connection);
     m_port->removeConnection(connection);
-    AbstractConnection::Edge edge = connection->whichEdge(oppositeSidePort);
-    if (AbstractConnection::Start == edge) {
+    Edge edge = connection->whichEdge(oppositeSidePort);
+    if (Start == edge) {
       connection->removeStartPort();
     } else {
       connection->removeEndPort();
@@ -50,8 +50,8 @@ void PortRemoveCommand::undo() {
 
     oppositeSidePort->addConnection(connection);
     m_port->addConnection(connection);
-    AbstractConnection::Edge edge = connection->whichEdge(oppositeSidePort);
-    if (AbstractConnection::Start == edge) {
+    Edge edge = connection->whichEdge(oppositeSidePort);
+    if (Start == edge) {
       connection->setStartPort(oppositeSidePort);
       connection->setEndPort(m_port);
     } else {

@@ -13,4 +13,6 @@ enum IO : uint32_t {
   Undefined,
 };
 
+enum Edge : uint32_t { Start, End, None };
+
 #endif // DEFINE_H

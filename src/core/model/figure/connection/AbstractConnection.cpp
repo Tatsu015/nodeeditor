@@ -1,8 +1,9 @@
 #include "AbstractConnection.h"
 #include "Connector.h"
-#include "Define.h"
+#include "EdgeHandle.h"
 #include "Port.h"
 #include "SystemConfig.h"
+#include <QPainter>
 #include <QPen>
 #include <QUuid>
 
@@ -11,9 +12,29 @@ const uint32_t AbstractConnection::PEN_SIZE = 3;
 AbstractConnection::AbstractConnection(QGraphicsItem* parent)
     : QGraphicsPathItem(parent), m_id(QUuid::createUuid().toString()) {
   setPen(QPen(QColor(systemConfig(SystemConfig::connectionColor).toString()), PEN_SIZE));
+  setFlag(ItemIsSelectable);
+
+  m_startEdgeHandle = new EdgeHandle(Start, this);
+  m_endEdgeHandle = new EdgeHandle(End, this);
+  m_startEdgeHandle->hide();
+  m_endEdgeHandle->hide();
 }
 
 AbstractConnection::~AbstractConnection() {
+}
+
+void AbstractConnection::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
+  painter->setPen(pen());
+  if (isSelected()) {
+    m_startEdgeHandle->setPos(m_startPos);
+    m_startEdgeHandle->show();
+    m_endEdgeHandle->setPos(m_endPos);
+    m_endEdgeHandle->show();
+  } else {
+    m_startEdgeHandle->hide();
+    m_endEdgeHandle->hide();
+  }
+  QGraphicsPathItem::paint(painter, option, widget);
 }
 
 AbstractConnection* AbstractConnection::create() {
@@ -205,7 +226,7 @@ AbstractConnection::Direction AbstractConnection::direction(QPointF pos, QSizeF 
   return Other;
 }
 
-AbstractConnection::Edge AbstractConnection::whichEdge(Port* port) {
+Edge AbstractConnection::whichEdge(Port* port) {
   if (m_startPort == port) {
     return Start;
   } else if (m_endPort == port) {

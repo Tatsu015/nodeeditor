@@ -133,7 +133,8 @@ HEADERS += \
     core/view/widget/ToolButtonGroup.h \
     core/view/widget/NodeTypeToolButton.h \
     core/util/JsonUtil.h \
-    core/util/ProjectKeyDefine.h
+    core/util/ProjectKeyDefine.h \
+    core/model/figure/connection/EdgeHandle.h
 
 
 SOURCES += \
@@ -214,7 +215,8 @@ SOURCES += \
     core/view/widget/ConnectionTypeToolButton.cpp \
     core/view/widget/ToolButtonGroup.cpp \
     core/view/widget/NodeTypeToolButton.cpp \
-    core/util/JsonUtil.cpp
+    core/util/JsonUtil.cpp \
+    core/model/figure/connection/EdgeHandle.cpp
 
 
 FORMS += \
