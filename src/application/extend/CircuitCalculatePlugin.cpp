@@ -16,8 +16,11 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDockWidget>
+#include <QFile>
 #include <QMenu>
 #include <QStatusBar>
+
+const static QString EXPORT_BASE = "../../Graphics/circuit/data/"; // TODO
 
 CircuitCalculatePlugin::CircuitCalculatePlugin(QObject* parent) : AbstractPlugin(parent) {
 }
@@ -160,7 +163,7 @@ bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode,
   }
   return true;
 }
-
+#include "AbstractConnection.h"
 void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
   if (!CheckError(nodes)) {
     qDebug() << "Do not connect finish!";
@@ -169,10 +172,52 @@ void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
 
   m_connectedGraphs = ConnectedGraphs(nodes);
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
-    qDebug() << "----------------------------";
-    foreach (AbstractNode* n, connectedGraph->m_nodes) { qDebug() << n->name(); }
+    exportCircuit(connectedGraph);
+    exportInnitialValue(connectedGraph);
   }
+}
+
+void CircuitCalculatePlugin::exportCircuit(ConnectedGraph* connectedGraph) {
+  QFile f(EXPORT_BASE + connectedGraph->m_name + ".circuit");
+  if (!f.open(QIODevice::WriteOnly)) {
+    qDebug() << "Cannot open file!";
+  }
+  connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
+  QString buf;
+  foreach (AbstractNode* n, connectedGraph->m_nodes) {
+    buf += n->name();
+    foreach (Port* port, n->ports()) {
+      buf += ",";
+      buf += port->connections().first()->id();
+    }
+    buf += "\n";
+  }
+  f.write(buf.toLocal8Bit());
+}
+
+void CircuitCalculatePlugin::exportInnitialValue(CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
+  QFile f(EXPORT_BASE + connectedGraph->m_name + ".initial");
+  if (!f.open(QIODevice::WriteOnly)) {
+    qDebug() << "Cannot open file!";
+  }
+  QList<AbstractConnection*> connections;
+  foreach (AbstractNode* n, connectedGraph->m_nodes) {
+    foreach (Port* port, n->ports()) {
+      foreach (AbstractConnection* connection, port->connections()) {
+        if (!connections.contains(connection)) {
+          connections << connection;
+        }
+      }
+    }
+  }
+
+  QString buf;
+  foreach (AbstractConnection* connection, connections) {
+    buf += connection->id() + ",false";
+    buf += "\n";
+  }
+
+  f.write(buf.toLocal8Bit());
 }
 
 void CircuitCalculatePlugin::tearDown() {
