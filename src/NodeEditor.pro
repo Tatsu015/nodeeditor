@@ -139,7 +139,10 @@ HEADERS += \
     core/controller/tool/VertexEditTool.h \
     core/controller/command/VertexMoveCommand.h \
     core/controller/command/VertexRemoveCommand.h \
-    core/extend/VertexRemovePlugin.h
+    core/extend/VertexRemovePlugin.h \
+    core/extend/VertexAddPlugin.h \
+    core/controller/command/VertexAddCommand.h \
+
 
 SOURCES += \
     application/controller/CircuitCalculateExecutor.cpp \
@@ -225,8 +228,9 @@ SOURCES += \
     core/controller/tool/VertexEditTool.cpp \
     core/controller/command/VertexMoveCommand.cpp \
     core/controller/command/VertexRemoveCommand.cpp \
-    core/extend/VertexRemovePlugin.cpp
-
+    core/extend/VertexRemovePlugin.cpp \
+    core/extend/VertexAddPlugin.cpp \
+    core/controller/command/VertexAddCommand.cpp \
 
 FORMS += \
     application/view/widget/DebugControlWidget.ui \

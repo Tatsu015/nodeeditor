@@ -181,15 +181,20 @@ bool AbstractConnection::hasOutputPort() const {
 
 int32_t AbstractConnection::areaIndex(QPointF pos, QSizeF searchSize) const {
   QVector<QPointF> elements = points();
-  for (int i = 0; i < elements.count() - 1; ++i) {
-    QRectF r(elements[i], elements[i + 1]);
-    QRectF dmg;
-    if (0 == r.width()) {
-      dmg = QRectF(r.x() - searchSize.width(), r.y(), 2 * searchSize.width(), r.height());
-    } else {
-      dmg = QRectF(r.x(), r.y() - searchSize.height(), r.width(), 2 * searchSize.height());
-    }
-    if (dmg.contains(pos)) {
+  QRectF searchRect(pos, searchSize);
+  searchRect.moveTo(-0.5 * searchSize.width(), 0.5 * searchSize.height());
+
+  for (int32_t i = 0; i < elements.count() - 1; ++i) {
+    QPainterPath searchArea;
+    // +1 is mergin for easy to search target.
+    QPointF ofs(searchSize.width() + 1, searchSize.height() + 1);
+    searchArea.moveTo(elements[i] - ofs);
+    searchArea.lineTo(elements[i] + ofs);
+    searchArea.lineTo(elements[i + 1] + ofs);
+    searchArea.lineTo(elements[i + 1] - ofs);
+    searchArea.closeSubpath();
+
+    if (searchArea.contains(pos)) {
       return i;
     }
   }

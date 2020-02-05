@@ -16,6 +16,7 @@
 #include "ReplaceNodePlugin.h"
 #include "SavePlugin.h"
 #include "ShowNodeNamePlugin.h"
+#include "VertexAddPlugin.h"
 #include "VertexRemovePlugin.h"
 #include "ui_MainWindow.h"
 
@@ -40,6 +41,7 @@ void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   addPlugin(mainWindow, ui, new RemovePortPlugin());
   addPlugin(mainWindow, ui, new JumpSheetPlugin());
   addPlugin(mainWindow, ui, new ReplaceNodePlugin());
+  addPlugin(mainWindow, ui, new VertexAddPlugin());
   addPlugin(mainWindow, ui, new VertexRemovePlugin());
 }
 

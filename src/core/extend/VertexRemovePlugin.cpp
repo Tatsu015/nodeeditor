@@ -1,14 +1,13 @@
 #include "VertexRemovePlugin.h"
 #include "AbstractConnection.h"
-#include "AbstractNode.h"
 #include "Editor.h"
 #include "MenuManager.h"
 #include "NodeRemoveCommand.h"
 #include "Project.h"
 #include "Scene.h"
 #include "VertexHandle.h"
+#include "VertexRemoveCommand.h"
 #include <QGraphicsSceneContextMenuEvent>
-#include <QMenu>
 
 VertexRemovePlugin::VertexRemovePlugin(QObject* parent) : AbstractPlugin(parent) {
 }
@@ -35,12 +34,8 @@ void VertexRemovePlugin::doInit() {
   connect(m_action, &QAction::triggered, this, &VertexRemovePlugin::onExecute);
 }
 
-#include "VertexRemoveCommand.h"
 void VertexRemovePlugin::onExecute() {
   Scene* scene = Editor::getInstance()->project()->scene();
   Sheet* activeSheet = scene->sheet();
   Editor::getInstance()->addCommand(new VertexRemoveCommand(scene, activeSheet, m_deleteVertexHandleCache));
-  //  AbstractConnection* connection = m_deleteVertexHandleCache->connection();
-  //  connection->deleteVertex(m_deleteVertexHandleCache);
-  //  scene->removeItem(m_deleteVertexHandleCache);
 }
