@@ -6,6 +6,7 @@
 #include "VertexHandle.h"
 #include <QPainter>
 #include <QPen>
+#include <QStyleOptionGraphicsItem>
 #include <QUuid>
 
 const uint32_t AbstractConnection::PEN_SIZE = 3;
@@ -42,7 +43,10 @@ void AbstractConnection::paint(QPainter* painter, const QStyleOptionGraphicsItem
     m_endEdgeHandle->hide();
     foreach (VertexHandle* vertexHandle, m_vertexHandles) { vertexHandle->hide(); }
   }
-  QGraphicsPathItem::paint(painter, option, widget);
+
+  QStyleOptionGraphicsItem newOption(*option);
+  newOption.state &= ~QStyle::State_Selected;
+  QGraphicsPathItem::paint(painter, &newOption, widget);
 }
 
 AbstractConnection* AbstractConnection::create() {
