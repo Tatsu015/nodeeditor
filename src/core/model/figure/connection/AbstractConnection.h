@@ -19,6 +19,7 @@ public:
   virtual ~AbstractConnection();
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
+  virtual QPainterPath shape() const;
 
   AbstractConnection* create();
   virtual AbstractConnection* create(const QString& id) = 0;

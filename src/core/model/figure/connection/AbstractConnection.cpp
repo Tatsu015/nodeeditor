@@ -49,6 +49,11 @@ void AbstractConnection::paint(QPainter* painter, const QStyleOptionGraphicsItem
   QGraphicsPathItem::paint(painter, &newOption, widget);
 }
 
+QPainterPath AbstractConnection::shape() const {
+  QPainterPathStroker pathStroker;
+  return pathStroker.createStroke(path());
+}
+
 AbstractConnection* AbstractConnection::create() {
   return create(QUuid::createUuid().toString());
 }
