@@ -1,19 +1,12 @@
 #include "Builder.h"
-#include "AbstractConnection.h"
-#include "AbstractNode.h"
-#include "AndNode.h"
-#include "ConnectionFactory.h"
 #include "ConnectionTypeToolButton.h"
 #include "Define.h"
 #include "Editor.h"
 #include "FunctionBlockToolButton.h"
-#include "InNode.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
-#include "NodeEditTool.h"
 #include "NodeFactory.h"
 #include "NodeTypeToolButton.h"
-#include "OutNode.h"
 #include "PluginLoader.h"
 #include "Project.h"
 #include "Scene.h"
@@ -21,10 +14,7 @@
 #include "ToolButtonGroup.h"
 #include "ui_MainWindow.h"
 #include <QAction>
-#include <QDebug>
 #include <QMenu>
-#include <QTabBar>
-#include <QToolButton>
 #include <QUndoStack>
 
 Builder* Builder::getInstance() {

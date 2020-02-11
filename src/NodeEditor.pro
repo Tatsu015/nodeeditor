@@ -96,6 +96,7 @@ HEADERS += \
     core/model/figure/node/OrNode.h \
     core/model/figure/node/OutNode.h \
     core/model/figure/node/NotNode.h \
+    core/model/figure/node/ClockNode.h \
     core/model/figure/node/FunctionBlockNode.h \
     core/model/figure/port/Port.h \
     core/model/observer/SceneObserver.h \
@@ -187,6 +188,7 @@ SOURCES += \
     core/model/figure/node/OrNode.cpp \
     core/model/figure/node/OutNode.cpp \
     core/model/figure/node/NotNode.cpp \
+    core/model/figure/node/ClockNode.cpp \
     core/model/figure/node/FunctionBlockNode.cpp \
     core/model/figure/port/Port.cpp \
     core/model/observer/SceneObserver.cpp \

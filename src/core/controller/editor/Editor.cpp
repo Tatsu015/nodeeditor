@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include "AndNode.h"
+#include "ClockNode.h"
 #include "ConnectionCreateTool.h"
 #include "ConnectionFactory.h"
 #include "ConnectionReconnectTool.h"
@@ -91,6 +92,7 @@ QUndoStack* Editor::undoStack() const {
 
 void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new InNode());
+  NodeFactory::getInstance()->addNode(new ClockNode());
   NodeFactory::getInstance()->addNode(new OutNode());
   NodeFactory::getInstance()->addNode(new NotNode());
   NodeFactory::getInstance()->addNode(new AndNode());

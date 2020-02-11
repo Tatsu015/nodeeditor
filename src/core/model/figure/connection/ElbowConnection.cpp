@@ -24,8 +24,9 @@ ElbowConnection* ElbowConnection::create(const QString& id) {
 }
 
 void ElbowConnection::redraw() {
-  // m_startPos and m_endPos need to change. Because port and connector position updated by QGraphicsItem::ItemMove, But
-  // m_startPos and m_endPos cannot update!
+  // m_startPos and m_endPos need to change.
+  // Because port and connector position updated by QGraphicsItem::ItemMove,
+  // But m_startPos and m_endPos cannot update!
   if (m_startPort) {
     m_startPos = m_startPort->endOfPortPos();
   }
