@@ -33,6 +33,7 @@ void NodeReplaceCommand::redo() {
   m_sheet->removeNode(m_srcNode);
   m_scene->addNode(m_dstNode);
   m_scene->removeNode(m_srcNode);
+  m_dstNode->created();
 }
 
 void NodeReplaceCommand::undo() {
