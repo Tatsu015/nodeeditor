@@ -6,7 +6,7 @@
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
 
-const static QString NODE_CLOCK = "Clock";
+const static QString NODE_CLOCK = CLOCK;
 
 ClockNode::ClockNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_CLOCK;

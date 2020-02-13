@@ -1,6 +1,7 @@
 #include "CircuitCalculatePlugin.h"
 #include "AbstractNode.h"
 #include "CircuitCalculateExecutor.h"
+#include "ClockNode.h"
 #include "DataBase.h"
 #include "DebugControlWidget.h"
 #include "Editor.h"
@@ -188,7 +189,12 @@ void CircuitCalculatePlugin::exportCircuit(ConnectedGraph* connectedGraph) {
     buf += n->name();
     foreach (Port* port, n->ports()) {
       buf += ",";
-      buf += port->connections().first()->id();
+      AbstractConnection* connection = port->connections().first();
+      if (CLOCK == connection->startPort()->parentNode()->nodeType()) {
+        buf += CLOCK;
+      } else {
+        buf += port->connections().first()->id();
+      }
     }
     buf += "\n";
   }
