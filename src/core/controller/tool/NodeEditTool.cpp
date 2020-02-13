@@ -99,6 +99,13 @@ bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene) {
   return false;
 }
 
+bool NodeEditTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
+  Q_UNUSED(scene);
+  Q_UNUSED(event);
+  QGuiApplication::restoreOverrideCursor();
+  return true;
+}
+
 void NodeEditTool::setActiveNodeType(const QString& activeNodeType) {
   m_activeNodeType = activeNodeType;
 }

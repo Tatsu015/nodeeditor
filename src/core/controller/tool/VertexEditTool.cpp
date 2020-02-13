@@ -5,7 +5,9 @@
 #include "Scene.h"
 #include "VertexHandle.h"
 #include "VertexMoveCommand.h"
+#include <QCursor>
 #include <QGraphicsSceneMouseEvent>
+#include <QGuiApplication>
 
 VertexEditTool::VertexEditTool() : AbstractTool(TOOL_VERTEX_EDIT) {
 }
@@ -48,4 +50,13 @@ void VertexEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* e
     m_editingVertexHandle->connection()->endEditVertex();
     m_editingVertexHandle = nullptr;
   }
+}
+
+bool VertexEditTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
+  VertexHandle* vertexHandle = scene->findVertexHandle(event->scenePos(), false);
+  if (vertexHandle) {
+    QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
+    return true;
+  }
+  return false;
 }

@@ -26,6 +26,7 @@ public:
   void setGraphicsView(QGraphicsView* graphicsView);
 
   AbstractTool* tool(const QString& toolName) const;
+  QList<AbstractTool*> tools() const;
   AbstractTool* activeTool() const;
   void changeActiveTool(const QString& toolName);
   void changeDefaultTool();
@@ -43,7 +44,7 @@ private:
   void addTool(AbstractTool* tool);
 
 private:
-  QMap<QString, AbstractTool*> m_tools;
+  QList<AbstractTool*> m_tools;
   AbstractTool* m_activeTool = nullptr;
   Project* m_project = nullptr;
   QGraphicsView* m_graphicsView = nullptr;

@@ -23,6 +23,8 @@ public:
   bool isUsing() const;
   bool isSelectable() const;
 
+  virtual bool isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) = 0;
+
 protected:
   bool m_isUsing = false;
   bool m_isNodeSelectable = true;

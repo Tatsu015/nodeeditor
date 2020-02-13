@@ -20,6 +20,8 @@ public:
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
 
+  virtual bool isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event);
+
   void setActiveConnectionType(const QString& activeConnectionType);
 
 private:

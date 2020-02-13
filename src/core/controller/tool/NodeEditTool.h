@@ -23,6 +23,8 @@ public:
   virtual void keyPressEvent(Scene* scene, QKeyEvent* event);
   virtual void keyReleaseEvent(Scene* scene, QKeyEvent* event);
 
+  virtual bool isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event);
+
   void setActiveNodeType(const QString& activeNodeType);
 
   QStringList nodeTypes() const;

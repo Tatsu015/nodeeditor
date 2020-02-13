@@ -9,14 +9,14 @@
 #include "Define.h"
 #include "Editor.h"
 #include "NodeRemoveCommand.h"
+#include "PolylineConnection.h"
 #include "Port.h"
 #include "Scene.h"
 #include "Sheet.h"
+#include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
-
-#include "ElbowConnection.h"
-#include "PolylineConnection.h"
+#include <QGuiApplication>
 
 ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
   m_activeConnectionType = ConnectionFactory::getInstance()->connectionTypes().first();
@@ -132,6 +132,17 @@ void ConnectionCreateTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
     Sheet* activeSheet = scene->sheet();
     Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
   }
+}
+
+bool ConnectionCreateTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
+  Port* port = scene->findPort(event->scenePos(), false);
+  if (port) {
+    if (port->canConnect()) {
+      QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
+      return true;
+    }
+  }
+  return false;
 }
 
 void ConnectionCreateTool::setActiveConnectionType(const QString& activeConnectionType) {

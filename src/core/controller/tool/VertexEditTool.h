@@ -16,6 +16,8 @@ public:
   virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
 
+  virtual bool isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event);
+
 private:
   VertexHandle* m_editingVertexHandle = nullptr;
 };

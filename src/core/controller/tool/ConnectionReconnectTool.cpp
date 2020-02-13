@@ -19,8 +19,10 @@
 #include "Scene.h"
 #include "Sheet.h"
 #include <QAction>
+#include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QGuiApplication>
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
 
@@ -109,6 +111,15 @@ void ConnectionReconnectTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMous
 
   cancel();
   reset();
+}
+
+bool ConnectionReconnectTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
+  EdgeHandle* edgeHandle = scene->findEdgeHandle(event->scenePos(), false);
+  if (edgeHandle) {
+    QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
+    return true;
+  }
+  return false;
 }
 
 void ConnectionReconnectTool::decideConnectToPort(Scene* scene, Port* lastEndPort, Port* targetEndPort) {

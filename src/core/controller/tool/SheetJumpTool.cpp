@@ -5,7 +5,9 @@
 #include "Project.h"
 #include "Scene.h"
 #include "SheetChangeHistoryController.h"
+#include <QCursor>
 #include <QGraphicsSceneMouseEvent>
+#include <QGuiApplication>
 
 SheetJumpTool::SheetJumpTool() : AbstractTool(TOOL_SHEET_JUMP) {
 }
@@ -19,4 +21,15 @@ void SheetJumpTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* ev
   QString sheetName = functionBlockNode->nodeType();
   project->changeActiveSheet(sheetName);
   SheetChangeHistoryController::getInstance()->add(sheetName);
+}
+
+bool SheetJumpTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
+  FunctionBlockNode* functionBlockNode = scene->findFunctionBlockNode(event->scenePos());
+  if (functionBlockNode) {
+    if (Qt::ControlModifier == event->modifiers()) {
+      QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
+      return true;
+    }
+  }
+  return false;
 }

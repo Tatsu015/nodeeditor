@@ -57,7 +57,16 @@ void Editor::setGraphicsView(QGraphicsView* graphicsView) {
 }
 
 AbstractTool* Editor::tool(const QString& toolName) const {
-  return m_tools[toolName];
+  foreach (AbstractTool* t, m_tools) {
+    if (t->name() == toolName) {
+      return t;
+    }
+  }
+  return nullptr;
+}
+
+QList<AbstractTool*> Editor::tools() const {
+  return m_tools;
 }
 
 AbstractTool* Editor::activeTool() const {
@@ -65,7 +74,10 @@ AbstractTool* Editor::activeTool() const {
 }
 
 void Editor::changeActiveTool(const QString& toolName) {
-  m_activeTool = m_tools[toolName];
+  AbstractTool* targetTool = tool(toolName);
+  if (targetTool) {
+    m_activeTool = targetTool;
+  }
 }
 
 void Editor::changeDefaultTool() {
@@ -82,8 +94,7 @@ void Editor::addCommand(QUndoCommand* undoCommand) {
 }
 
 void Editor::addTool(AbstractTool* tool) {
-  QString name = tool->name();
-  m_tools[name] = tool;
+  m_tools << tool;
 }
 
 QUndoStack* Editor::undoStack() const {
@@ -105,14 +116,15 @@ void Editor::initFactory() {
 }
 
 void Editor::initTool() {
-  addTool(new NodeEditTool());
-  addTool(new ConnectionCreateTool());
-  addTool(new ConnectionReconnectTool());
+  // arrange in order of priority
   addTool(new SheetJumpTool());
   addTool(new VertexEditTool());
+  addTool(new ConnectionReconnectTool());
+  addTool(new ConnectionCreateTool());
+  addTool(new NodeEditTool());
 
   // set default tool
-  m_activeTool = m_tools[TOOL_NODE_EDIT];
+  m_activeTool = tool(TOOL_NODE_EDIT);
 }
 
 void Editor::initUndoStack() {

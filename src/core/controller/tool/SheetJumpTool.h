@@ -10,9 +10,9 @@ public:
   SheetJumpTool();
   virtual ~SheetJumpTool();
 
-  //  virtual void mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
-  //  virtual void mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
   virtual void mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* event);
+
+  virtual bool isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event);
 };
 
 #endif // SHEETJUMPTOOL_H

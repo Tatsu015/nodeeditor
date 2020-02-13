@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 
 class AbstractNode;
+class FunctionBlockNode;
 class InNode;
 class AbstractConnection;
 class Port;
@@ -41,6 +42,7 @@ public:
   QList<AbstractNode*> findNodes(QPointF scenePos);
   AbstractNode* findNode(const QString& nodeName);
   AbstractNode* findNode(QPointF scenePos);
+  FunctionBlockNode* findFunctionBlockNode(QPointF scenePos);
   QList<AbstractNode*> nearTopNodes(const qreal top) const;
   QList<AbstractNode*> nearTopNodes(const qreal top, const SelectedFilter filter) const;
   QList<AbstractNode*> nearBottomNodes(const qreal bottom) const;

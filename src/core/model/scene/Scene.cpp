@@ -3,8 +3,6 @@
 #include "AbstractTool.h"
 #include "AndNode.h"
 #include "Common.h"
-#include "ConnectionCreateTool.h"
-#include "ConnectionReconnectTool.h"
 #include "Connector.h"
 #include "ContextMenuManager.h"
 #include "Define.h"
@@ -12,15 +10,12 @@
 #include "Editor.h"
 #include "FunctionBlockNode.h"
 #include "GuideLine.h"
-#include "NodeEditTool.h"
 #include "NodeRemoveCommand.h"
 #include "Port.h"
 #include "Project.h"
 #include "SceneObserver.h"
 #include "Sheet.h"
-#include "SheetJumpTool.h"
 #include "SystemConfig.h"
-#include "VertexEditTool.h"
 #include "VertexHandle.h"
 #include <QAction>
 #include <QCursor>
@@ -196,33 +191,13 @@ void Scene::takeOver(Scene* scene) {
 }
 
 void Scene::changeActiveTool(QGraphicsSceneMouseEvent* event) {
-  if (!Editor::getInstance()->activeTool()->isUsing()) {
-    Port* port = findPort(event->scenePos(), false);
-    EdgeHandle* edgeHandle = findEdgeHandle(event->scenePos(), false);
-    VertexHandle* vertexHandle = findVertexHandle(event->scenePos(), false);
-    FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(findNode(event->scenePos()));
-    if (port) {
-      if (port->canConnect()) {
-        Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_CREATE);
-        QGuiApplication::setOverrideCursor(QCursor(Qt::CrossCursor));
-      }
-    } else if (functionBlockNode) {
-      if (Qt::ControlModifier == event->modifiers()) {
-        Editor::getInstance()->changeActiveTool(TOOL_SHEET_JUMP);
-        QGuiApplication::setOverrideCursor(QCursor(Qt::PointingHandCursor));
-      } else {
-        Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
-        QGuiApplication::restoreOverrideCursor();
-      }
-    } else if (edgeHandle) {
-      Editor::getInstance()->changeActiveTool(TOOL_CONNECTION_RECONNECT);
-      QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
-    } else if (vertexHandle) {
-      Editor::getInstance()->changeActiveTool(TOOL_VERTEX_EDIT);
-      QGuiApplication::setOverrideCursor(QCursor(Qt::OpenHandCursor));
-    } else {
-      Editor::getInstance()->changeActiveTool(TOOL_NODE_EDIT);
-      QGuiApplication::restoreOverrideCursor();
+  if (Editor::getInstance()->activeTool()->isUsing()) {
+    return;
+  }
+  foreach (AbstractTool* tool, Editor::getInstance()->tools()) {
+    if (tool->isActivatable(this, event)) {
+      Editor::getInstance()->changeActiveTool(tool->name());
+      return;
     }
   }
 }
@@ -319,6 +294,12 @@ AbstractNode* Scene::findNode(QPointF scenePos) {
     return nullptr;
   }
   return nodes.first();
+}
+
+FunctionBlockNode* Scene::findFunctionBlockNode(QPointF scenePos) {
+  AbstractNode* node = findNode(scenePos);
+  FunctionBlockNode* functionBlockNode = dynamic_cast<FunctionBlockNode*>(node);
+  return functionBlockNode;
 }
 
 bool Scene::existPort(QPointF scenePos) {
