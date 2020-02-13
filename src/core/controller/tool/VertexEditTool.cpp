@@ -24,6 +24,7 @@ void VertexEditTool::mousePressEvent(Scene* scene, QGraphicsSceneMouseEvent* eve
     m_editingVertexHandle->connection()->startEditVertex();
     m_editingVertexHandle->setFlag(QGraphicsItem::ItemIsSelectable, true);
     m_editingVertexHandle->setFlag(QGraphicsItem::ItemIsMovable, true);
+    m_isUsing = true;
   }
 }
 
@@ -50,6 +51,7 @@ void VertexEditTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEvent* e
     m_editingVertexHandle->connection()->endEditVertex();
     m_editingVertexHandle = nullptr;
   }
+  m_isUsing = false;
 }
 
 bool VertexEditTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {

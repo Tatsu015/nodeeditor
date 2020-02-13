@@ -87,7 +87,7 @@ void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
 void NodeEditTool::keyReleaseEvent(Scene* scene, QKeyEvent* event) {
   Q_UNUSED(scene);
   Q_UNUSED(event);
-  QGuiApplication::restoreOverrideCursor();
+  QGuiApplication::setOverrideCursor(Qt::ArrowCursor);
 }
 
 bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene) {
@@ -102,7 +102,7 @@ bool NodeEditTool::isSelectedNodesPressed(QPointF scenePos, Scene* scene) {
 bool NodeEditTool::isActivatable(Scene* scene, QGraphicsSceneMouseEvent* event) {
   Q_UNUSED(scene);
   Q_UNUSED(event);
-  QGuiApplication::restoreOverrideCursor();
+  QGuiApplication::setOverrideCursor(Qt::ArrowCursor);
   return true;
 }
 

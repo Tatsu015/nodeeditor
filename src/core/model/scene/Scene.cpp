@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "AbstractConnection.h"
 #include "AbstractTool.h"
-#include "AndNode.h"
 #include "Common.h"
 #include "Connector.h"
 #include "ContextMenuManager.h"
