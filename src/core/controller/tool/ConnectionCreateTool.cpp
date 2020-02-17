@@ -59,7 +59,7 @@ void ConnectionCreateTool::mouseMoveEvent(Scene* scene, QGraphicsSceneMouseEvent
     return;
   }
 
-  if (isOnConnecttableConnection(scene, endScenePos)) {
+  if (isOnConnectableConnection(scene, endScenePos)) {
     m_tmpConnection->changeConnectionStyle(AbstractConnection::Connectable);
     m_tmpConnection->redraw(m_startPort, endScenePos);
     return;
@@ -90,7 +90,7 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
     return;
   }
 
-  if (isOnConnecttableConnection(scene, endScenePos)) {
+  if (isOnConnectableConnection(scene, endScenePos)) {
     AbstractConnection* dstConnection = scene->findConnection(endScenePos, m_tmpConnection);
     decideConnectToConnector(scene, endScenePos, dstConnection, m_tmpConnection->vertexes());
     scene->removeConnection(m_tmpConnection);
@@ -130,7 +130,8 @@ void ConnectionCreateTool::mouseReleaseEvent(Scene* scene, QGraphicsSceneMouseEv
 void ConnectionCreateTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
   if (Qt::Key_Delete == event->key()) {
     Sheet* activeSheet = scene->sheet();
-    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
+    Editor::getInstance()->addCommand(
+        new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes(), scene->selectedConnections()));
   }
 }
 
@@ -204,7 +205,7 @@ bool ConnectionCreateTool::isOnNode(Scene* scene, const QPointF scenePos) const 
   return true;
 }
 
-bool ConnectionCreateTool::isOnConnecttableConnection(Scene* scene, const QPointF scenePos) const {
+bool ConnectionCreateTool::isOnConnectableConnection(Scene* scene, const QPointF scenePos) const {
   QList<AbstractConnection*> connections = scene->findConnections(scenePos, m_tmpConnection);
   // now connection creating, so m_tmpConnection always contains in connections.
   // but this function need to find connect to connection, so remove m_tmpConnection.

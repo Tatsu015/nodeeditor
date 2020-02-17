@@ -46,6 +46,21 @@ Scene::~Scene() {
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+  // for debug. check connection state.
+  if (Qt::MiddleButton == event->button()) {
+    foreach (AbstractConnection* connection, m_sheet->connections()) {
+      QString startNodeName = "";
+      if (connection->startPort()) {
+        startNodeName = connection->startPort()->parentNode()->name();
+      }
+      QString endNodeName = "";
+      if (connection->endPort()) {
+        endNodeName = connection->endPort()->parentNode()->name();
+      }
+      qDebug() << connection->name() << " : "
+               << "[start] " << startNodeName << "[end] " << endNodeName;
+    }
+  }
   changeActiveTool(event);
   Editor::getInstance()->activeTool()->mousePressEvent(this, event);
   QGraphicsScene::mousePressEvent(event);
@@ -415,6 +430,16 @@ void Scene::addConnection(AbstractConnection* connection) {
 
 void Scene::removeConnection(AbstractConnection* connection) {
   removeItem(connection);
+}
+
+QList<AbstractConnection*> Scene::selectedConnections() const {
+  QList<AbstractConnection*> selectConnections;
+  foreach (AbstractConnection* connection, m_sheet->connections()) {
+    if (connection->isSelected()) {
+      selectConnections << connection;
+    }
+  }
+  return selectConnections;
 }
 
 void Scene::addGuideLine(GuideLine* guideLine) {

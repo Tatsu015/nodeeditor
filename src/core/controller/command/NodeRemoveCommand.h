@@ -24,10 +24,12 @@ private:
     AbstractConnection* m_connection = nullptr;
     Port* m_startPort = nullptr;
     Port* m_endPort = nullptr;
+    Connector* m_startConnector = nullptr;
+    Connector* m_endConnector = nullptr;
   };
 
 public:
-  NodeRemoveCommand(Scene* scene, Sheet* sheet, QList<AbstractNode*> nodes);
+  NodeRemoveCommand(Scene* scene, Sheet* sheet, QList<AbstractNode*> nodes, QList<AbstractConnection*> connections);
   virtual ~NodeRemoveCommand();
 
   virtual void redo();
@@ -43,8 +45,6 @@ private:
   QList<AbstractNode*> m_nodes;
   QList<AbstractConnection*> m_connections;
   QList<ConnectionInfo*> m_connectionInfos;
-  //  QList<NodeRemoveInfo*> m_nodeRemoveInfos;
-  //  QList<NodeConnectedInfo*> m_nodeConnectedInfos;
 };
 
 #endif // NODEREMOVECOMMAND_H

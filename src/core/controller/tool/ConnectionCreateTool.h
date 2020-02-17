@@ -31,7 +31,7 @@ private:
 
   bool isOnConnectablePort(Scene* scene, const QPointF scenePos) const;
   bool isOnNode(Scene* scene, const QPointF scenePos) const;
-  bool isOnConnecttableConnection(Scene* scene, const QPointF scenePos) const;
+  bool isOnConnectableConnection(Scene* scene, const QPointF scenePos) const;
 
   void cancel();
   void reset();

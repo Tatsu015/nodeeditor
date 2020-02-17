@@ -70,7 +70,8 @@ void NodeEditTool::keyPressEvent(Scene* scene, QKeyEvent* event) {
     if (!activeSheet) {
       return;
     }
-    Editor::getInstance()->addCommand(new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes()));
+    Editor::getInstance()->addCommand(
+        new NodeRemoveCommand(scene, activeSheet, scene->selectedNodes(), scene->selectedConnections()));
   }
   if (Qt::Key_C == event->key() && Qt::ControlModifier == event->modifiers()) {
     captureSelectedNodes(scene);

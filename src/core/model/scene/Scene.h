@@ -61,6 +61,7 @@ public:
   QList<AbstractConnection*> findConnections(const QPointF scenePos, AbstractConnection* tmponnection);
   void addConnection(AbstractConnection* connection);
   void removeConnection(AbstractConnection* connection);
+  QList<AbstractConnection*> selectedConnections() const;
 
   void addGuideLine(GuideLine* guideLine);
   void clearGuideLine();
