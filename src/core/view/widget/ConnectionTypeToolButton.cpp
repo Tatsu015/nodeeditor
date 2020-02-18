@@ -9,6 +9,7 @@ ConnectionTypeToolButton::ConnectionTypeToolButton(QWidget* parent) : QToolButto
   setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   setPopupMode(MenuButtonPopup);
   setFixedWidth(100);
+  setToolTip("Connection");
 }
 
 ConnectionTypeToolButton::~ConnectionTypeToolButton() {

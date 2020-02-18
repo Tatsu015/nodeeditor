@@ -8,6 +8,7 @@
 #include "ConnectorFactory.h"
 #include "Define.h"
 #include "ElbowConnection.h"
+#include "FlipFlopNode.h"
 #include "FunctionBlockNode.h"
 #include "InNode.h"
 #include "NodeEditTool.h"
@@ -108,6 +109,7 @@ void Editor::initFactory() {
   NodeFactory::getInstance()->addNode(new NotNode());
   NodeFactory::getInstance()->addNode(new AndNode());
   NodeFactory::getInstance()->addNode(new OrNode());
+  NodeFactory::getInstance()->addNode(new FlipFlopNode());
 
   ConnectionFactory::getInstance()->addConnection(new ElbowConnection());
   ConnectionFactory::getInstance()->addConnection(new PolylineConnection());

@@ -16,6 +16,7 @@ FunctionBlockToolButton::FunctionBlockToolButton(QWidget* parent) : QToolButton(
   setText(DEFAULT_TEXT);
   setFixedWidth(100);
   setIcon(QIcon("../resource/fb.png"));
+  setToolTip("Other sheet");
   connect(this, &FunctionBlockToolButton::clicked, this, &FunctionBlockToolButton::onChangeNodeType);
 }
 

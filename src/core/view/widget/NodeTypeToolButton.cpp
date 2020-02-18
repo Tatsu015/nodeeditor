@@ -7,6 +7,7 @@
 NodeTypeToolButton::NodeTypeToolButton(QString& nodeName, QWidget* parent) : QToolButton(parent) {
   setText(nodeName);
   setIcon(NodeFactory::getInstance()->createIcon(nodeName));
+  setToolTip(nodeName);
   connect(this, &NodeTypeToolButton::clicked, this, &NodeTypeToolButton::onChangeNodeType);
 }
 
