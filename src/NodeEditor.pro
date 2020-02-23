@@ -190,6 +190,7 @@ SOURCES += \
     core/model/figure/node/OutNode.cpp \
     core/model/figure/node/NotNode.cpp \
     core/model/figure/node/ClockNode.cpp \
+    core/model/figure/node/FlipFlopNode.cpp \
     core/model/figure/node/FunctionBlockNode.cpp \
     core/model/figure/port/Port.cpp \
     core/model/observer/SceneObserver.cpp \
