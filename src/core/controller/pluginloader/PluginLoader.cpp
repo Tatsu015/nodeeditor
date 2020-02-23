@@ -15,7 +15,7 @@
 #include "RemovePortPlugin.h"
 #include "ReplaceNodePlugin.h"
 #include "SavePlugin.h"
-#include "ShowNodeNamePlugin.h"
+#include "ShowNodeInfoPlugin.h"
 #include "VertexAddPlugin.h"
 #include "VertexRemovePlugin.h"
 #include "ui_MainWindow.h"
@@ -33,7 +33,7 @@ void PluginLoader::init(MainWindow* mainWindow, Ui::MainWindow* ui) {
   addPlugin(mainWindow, ui, new ClosePlugin());
   addPlugin(mainWindow, ui, new QuitPlugin());
   addPlugin(mainWindow, ui, new CircuitCalculatePlugin());
-  addPlugin(mainWindow, ui, new ShowNameViewPlugin());
+  addPlugin(mainWindow, ui, new ShowNodeInfoPlugin());
   addPlugin(mainWindow, ui, new CutPlugin());
   addPlugin(mainWindow, ui, new AlignPlugin());
   addPlugin(mainWindow, ui, new InvertPortPlugin());

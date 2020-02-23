@@ -44,7 +44,9 @@ public:
   Scene* scene() const;
 
   bool nodeNameVisible() const;
-  void setNodeNameVisible(bool nodeNameVisible);
+  void setNodeNameVisible(bool visible);
+  bool nodeIdVisible() const;
+  void setNodeIdVisible(bool visible);
   void takeOver(Project* src);
 
 private:
@@ -54,6 +56,7 @@ private:
   Scene* m_scene = nullptr;
   QString m_filePath;
   bool m_nodeNameVisible = true;
+  bool m_nodeIdVisible = false;
   QList<ProjectObserver*> m_projectObservers;
   QList<Sheet*> m_sheets;
   Sheet* m_activeSheet = nullptr;

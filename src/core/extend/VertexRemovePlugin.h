@@ -1,5 +1,5 @@
-#ifndef VERTEXDELETEPLUGIN_H
-#define VERTEXDELETEPLUGIN_H
+#ifndef VERTEXREMOVEPLUGIN_H
+#define VERTEXREMOVEPLUGIN_H
 
 #include "AbstractPlugin.h"
 
@@ -23,4 +23,4 @@ private:
   mutable VertexHandle* m_deleteVertexHandleCache = nullptr;
 };
 
-#endif // VERTEXDELETEPLUGIN_H
+#endif // VERTEXREMOVEPLUGIN_H

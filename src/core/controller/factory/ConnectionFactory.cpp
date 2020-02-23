@@ -29,6 +29,7 @@ AbstractConnection* ConnectionFactory::createConnection(const Sheet* sheet, cons
   }
 
   connection->setName(newName);
+  connection->setup();
 
   return connection;
 }
@@ -37,6 +38,7 @@ AbstractConnection* ConnectionFactory::createConnection(const QString& type, con
   AbstractConnection* connection = nullptr;
   connection = m_connectionMap[type]->create(id);
   connection->setName(name);
+  connection->setup();
 
   return connection;
 }

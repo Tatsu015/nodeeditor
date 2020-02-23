@@ -13,9 +13,10 @@ public:
 
   virtual ElbowConnection* create(const QString& id);
 
-  virtual void redraw();
-
   virtual QJsonObject toJsonObj();
+
+protected:
+  virtual void doRedraw();
 };
 
 #endif // ELBOWCONNECTION_H

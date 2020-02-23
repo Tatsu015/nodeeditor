@@ -23,7 +23,30 @@ ElbowConnection* ElbowConnection::create(const QString& id) {
   return connection;
 }
 
-void ElbowConnection::redraw() {
+// todo node dependency want to remove
+// node will change to port.
+QJsonObject ElbowConnection::toJsonObj() {
+  QJsonObject connectionJsonObj;
+  connectionJsonObj[JSON_ID] = m_id;
+  connectionJsonObj[JSON_NAME] = m_name;
+  connectionJsonObj[JSON_CONNECTION_TYPE] = m_connectionType;
+
+  if (m_endPort) {
+    connectionJsonObj[JSON_CONNECTION_START_NODE_NAME] = m_startPort->parentNode()->name();
+    connectionJsonObj[JSON_CONNECTION_START_PORT_NUMBER] = QString::number(m_startPort->number());
+    connectionJsonObj[JSON_CONNECTION_END_NODE_NAME] = m_endPort->parentNode()->name();
+    connectionJsonObj[JSON_CONNECTION_END_PORT_NUMBER] = QString::number(m_endPort->number());
+  } else if (m_endConnector) {
+    connectionJsonObj[JSON_CONNECTION_START_NODE_NAME] = m_startPort->parentNode()->name();
+    connectionJsonObj[JSON_CONNECTION_START_PORT_NUMBER] = QString::number(m_startPort->number());
+    connectionJsonObj[JSON_CONNECTOR_POS_X_RATE] = QString::number(m_endConnector->xPosRate());
+    connectionJsonObj[JSON_CONNECTOR_POS_Y_RATE] = QString::number(m_endConnector->yPosRate());
+    connectionJsonObj[JSON_CONNECTOR_DST_CONNECTION_NAME] = m_endConnector->dstConnection()->name();
+  }
+  return connectionJsonObj;
+}
+
+void ElbowConnection::doRedraw() {
   // m_startPos and m_endPos need to change.
   // Because port and connector position updated by QGraphicsItem::ItemMove,
   // But m_startPos and m_endPos cannot update!
@@ -57,27 +80,4 @@ void ElbowConnection::redraw() {
   path.lineTo(elbow2);
   path.lineTo(m_endPos);
   setPath(path);
-}
-
-// todo node dependency want to remove
-// node will change to port.
-QJsonObject ElbowConnection::toJsonObj() {
-  QJsonObject connectionJsonObj;
-  connectionJsonObj[JSON_ID] = m_id;
-  connectionJsonObj[JSON_NAME] = m_name;
-  connectionJsonObj[JSON_CONNECTION_TYPE] = m_connectionType;
-
-  if (m_endPort) {
-    connectionJsonObj[JSON_CONNECTION_START_NODE_NAME] = m_startPort->parentNode()->name();
-    connectionJsonObj[JSON_CONNECTION_START_PORT_NUMBER] = QString::number(m_startPort->number());
-    connectionJsonObj[JSON_CONNECTION_END_NODE_NAME] = m_endPort->parentNode()->name();
-    connectionJsonObj[JSON_CONNECTION_END_PORT_NUMBER] = QString::number(m_endPort->number());
-  } else if (m_endConnector) {
-    connectionJsonObj[JSON_CONNECTION_START_NODE_NAME] = m_startPort->parentNode()->name();
-    connectionJsonObj[JSON_CONNECTION_START_PORT_NUMBER] = QString::number(m_startPort->number());
-    connectionJsonObj[JSON_CONNECTOR_POS_X_RATE] = QString::number(m_endConnector->xPosRate());
-    connectionJsonObj[JSON_CONNECTOR_POS_Y_RATE] = QString::number(m_endConnector->yPosRate());
-    connectionJsonObj[JSON_CONNECTOR_DST_CONNECTION_NAME] = m_endConnector->dstConnection()->name();
-  }
-  return connectionJsonObj;
 }

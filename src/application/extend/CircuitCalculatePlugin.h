@@ -32,12 +32,17 @@ protected:
   void doInit();
 
 private:
-  bool CheckError(const QList<AbstractNode*>& nodes);
-  bool CheckAllPortFilled(const QList<AbstractNode*>& nodes);
-  QList<ConnectedGraph*> ConnectedGraphs(const QList<AbstractNode*>& nodes);
-  QList<AbstractNode*> ExecuteOrderSort(ConnectedGraph* connectedGraph);
+  bool checkError(const QList<AbstractNode*>& nodes);
+  bool checkAllPortFilled(const QList<AbstractNode*>& nodes);
+  QList<ConnectedGraph*> connectedGraphs(const QList<AbstractNode*>& nodes);
+  QList<QList<AbstractNode*>> loopedNodes(const ConnectedGraph* connectedGraph);
+  bool hasLoop(const ConnectedGraph* connectedGraph);
+  bool isAlreadyUsed(AbstractNode* checkNode, QList<AbstractNode*>& usedNodes);
+  bool isAlreadyUsed(AbstractNode* checkNode, QList<AbstractNode*>& usedNodes, QList<AbstractNode*>& nodes);
+  QList<AbstractNode*> executeOrderSort(ConnectedGraph* connectedGraph);
 
-  bool isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes);
+  bool isAllAdjacentInNodeVisited(AbstractNode* checkNode, const QList<AbstractNode*>& visitedNodes,
+                                  QList<QList<AbstractNode*>> loopedNodes);
 
 private:
   void compile(QList<AbstractNode*>& nodes);

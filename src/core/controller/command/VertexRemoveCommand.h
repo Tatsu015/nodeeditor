@@ -1,5 +1,5 @@
-#ifndef VertexRemoveCommand_H
-#define VertexRemoveCommand_H
+#ifndef VERTEXREMOVECOMMAND_H
+#define VERTEXREMOVECOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -25,4 +25,4 @@ private:
   int32_t m_index = 0;
 };
 
-#endif // VertexRemoveCommand_H
+#endif // VERTEXREMOVECOMMAND_H

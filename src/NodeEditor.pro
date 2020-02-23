@@ -110,7 +110,6 @@ HEADERS += \
     core/view/menu/MenuManager.h \
     core/view/menu/ContextMenuManager.h \
     core/view/window/MainWindow.h \
-    core/extend/ShowNodeNamePlugin.h \
     core/extend/AlignPlugin.h \
     core/extend/CutPlugin.h \
     core/extend/InvertPortPlugin.h \
@@ -144,6 +143,7 @@ HEADERS += \
     core/extend/VertexRemovePlugin.h \
     core/extend/VertexAddPlugin.h \
     core/controller/command/VertexAddCommand.h \
+    core/extend/ShowNodeInfoPlugin.h
 
 
 SOURCES += \
@@ -190,7 +190,6 @@ SOURCES += \
     core/model/figure/node/OutNode.cpp \
     core/model/figure/node/NotNode.cpp \
     core/model/figure/node/ClockNode.cpp \
-    core/model/figure/node/FlipFlopNode.cpp \
     core/model/figure/node/FunctionBlockNode.cpp \
     core/model/figure/port/Port.cpp \
     core/model/observer/SceneObserver.cpp \
@@ -202,7 +201,6 @@ SOURCES += \
     core/view/menu/MenuManager.cpp \
     core/view/menu/ContextMenuManager.cpp \
     core/view/window/MainWindow.cpp \
-    core/extend/ShowNodeNamePlugin.cpp \
     core/extend/AlignPlugin.cpp \
     core/extend/CutPlugin.cpp \
     core/extend/InvertPortPlugin.cpp \
@@ -235,6 +233,7 @@ SOURCES += \
     core/extend/VertexRemovePlugin.cpp \
     core/extend/VertexAddPlugin.cpp \
     core/controller/command/VertexAddCommand.cpp \
+    core/extend/ShowNodeInfoPlugin.cpp
 
 FORMS += \
     application/view/widget/DebugControlWidget.ui \

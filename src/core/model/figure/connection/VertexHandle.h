@@ -1,5 +1,5 @@
-#ifndef VertexHANDLE_H
-#define VertexHANDLE_H
+#ifndef VERTEXHANDLE_H
+#define VERTEXHANDLE_H
 
 #include "Define.h"
 #include <QGraphicsPathItem>
@@ -14,4 +14,4 @@ public:
   AbstractConnection* connection() const;
 };
 
-#endif // VertexHANDLE_H
+#endif // VERTEXHANDLE_H

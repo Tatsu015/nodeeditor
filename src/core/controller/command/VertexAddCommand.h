@@ -1,5 +1,5 @@
-#ifndef VertexAddCommand_H
-#define VertexAddCommand_H
+#ifndef VERTEXADDCOMMAND_H
+#define VERTEXADDCOMMAND_H
 
 #include <QPointF>
 #include <QUndoCommand>
@@ -11,7 +11,8 @@ class AbstractConnection;
 
 class VertexAddCommand : public QUndoCommand {
 public:
-  VertexAddCommand(Scene* scene, Sheet* sheet, VertexHandle* addVertexHandle,AbstractConnection* targetConnection, int32_t index);
+  VertexAddCommand(Scene* scene, Sheet* sheet, VertexHandle* addVertexHandle, AbstractConnection* targetConnection,
+                   int32_t index);
   virtual ~VertexAddCommand();
 
   virtual void redo();
@@ -25,4 +26,4 @@ private:
   int32_t m_areaIndex = 0;
 };
 
-#endif // VertexAddCommand_H
+#endif // VERTEXADDCOMMAND_H

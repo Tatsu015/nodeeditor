@@ -53,6 +53,12 @@ void AbstractNode::created() {
   setFlag(ItemSendsGeometryChanges);
 }
 
+void AbstractNode::setup() {
+  setupNameText();
+  setupIdText();
+  doSetup();
+}
+
 QString AbstractNode::name() const {
   return m_name;
 }
@@ -82,16 +88,18 @@ QPointF AbstractNode::centerOffset() const {
   return offset;
 }
 
-void AbstractNode::setup() {
-  setupNameText();
-  doSetup();
-}
-
 void AbstractNode::setupNameText() {
   m_nameText = new QGraphicsSimpleTextItem(m_name, this);
-  m_nameText->setPos(0, -20);
+  m_nameText->setPos(0, -15);
   m_nameText->setPen(QPen(Qt::white));
   m_nameText->setBrush(QBrush(Qt::white));
+}
+
+void AbstractNode::setupIdText() {
+  m_idText = new QGraphicsSimpleTextItem(m_id, this);
+  m_idText->setPos(0, -30);
+  m_idText->setPen(QPen(Qt::white));
+  m_idText->setBrush(QBrush(Qt::white));
 }
 
 void AbstractNode::doSetup() {
@@ -419,6 +427,14 @@ void AbstractNode::setNameTextVisible(const bool visible) {
     m_nameText->show();
   } else {
     m_nameText->hide();
+  }
+}
+
+void AbstractNode::setIdTextVisible(const bool visible) {
+  if (visible) {
+    m_idText->show();
+  } else {
+    m_idText->hide();
   }
 }
 

@@ -62,6 +62,10 @@ void AbstractConnection::created() {
   setFlag(ItemIsSelectable);
 }
 
+void AbstractConnection::setup() {
+  setupIdText();
+}
+
 QPixmap AbstractConnection::pixmap() const {
   return QPixmap(m_pixmapFilePath);
 }
@@ -82,6 +86,11 @@ QPointF AbstractConnection::endPos() const {
 void AbstractConnection::setEndPos(const QPointF& endPos) {
   m_endPos = endPos;
   redraw();
+}
+
+void AbstractConnection::redraw() {
+  redrawIdText();
+  doRedraw();
 }
 
 void AbstractConnection::setStartPort(Port* startPort) {
@@ -374,6 +383,14 @@ void AbstractConnection::changeConnectionStyle(const AbstractConnection::Connect
   }
 }
 
+void AbstractConnection::setIdTextVisible(const bool visible) {
+  if (visible) {
+    m_idText->show();
+  } else {
+    m_idText->hide();
+  }
+}
+
 QVector<QPointF> AbstractConnection::points() const {
   QVector<QPointF> elements;
   int32_t elementCount = path().elementCount();
@@ -401,4 +418,15 @@ QList<AbstractConnection*> AbstractConnection::connectedConnections(const Connec
     }
   }
   return connections;
+}
+
+void AbstractConnection::redrawIdText() {
+  m_idText->setPos(m_startPos);
+}
+
+void AbstractConnection::setupIdText() {
+  m_idText = new QGraphicsSimpleTextItem(m_id, this);
+  m_idText->setPos(0, -30);
+  m_idText->setPen(QPen(Qt::white));
+  m_idText->setBrush(QBrush(Qt::white));
 }

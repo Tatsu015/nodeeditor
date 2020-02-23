@@ -4,6 +4,7 @@
 #include "Define.h"
 
 const static QString JSON_NODE_NAME_VISIBLE = "nodeNameVisible";
+const static QString JSON_NODE_ID_VISIBLE = "nodeIdVisible";
 const static QString JSON_ID = "id";
 const static QString JSON_SHEETS = "sheets";
 const static QString JSON_NODES = "nodes";

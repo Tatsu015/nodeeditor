@@ -25,6 +25,8 @@ public:
   virtual AbstractConnection* create(const QString& id) = 0;
   void created();
 
+  void setup();
+
   QPixmap pixmap() const;
 
   QPointF startPos() const;
@@ -32,7 +34,7 @@ public:
   QPointF endPos() const;
   void setEndPos(const QPointF& endPos);
 
-  virtual void redraw() = 0;
+  void redraw();
   void redraw(Port* startPort, Port* endPort);
   void redraw(Port* startPort, QPointF endScenePos);
 
@@ -88,9 +90,17 @@ public:
 
   virtual QJsonObject toJsonObj() = 0;
 
+  void setIdTextVisible(const bool visible);
+
+protected:
+  virtual void doRedraw() = 0;
+
 private:
+  void setupIdText();
   QVector<QPointF> points() const;
   QList<AbstractConnection*> connectedConnections(const Connector* excludeConnector);
+
+  void redrawIdText();
 
 protected:
   const static uint32_t PEN_SIZE;
@@ -113,6 +123,8 @@ protected:
   bool m_editingVertex = false;
 
   QList<Connector*> m_branchConnectors;
+
+  QGraphicsSimpleTextItem* m_idText = nullptr;
 };
 
 #endif // ABSTRACTCONNECTION_H

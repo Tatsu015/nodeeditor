@@ -79,11 +79,11 @@ void CircuitCalculatePlugin::doInit() {
   connect(showDebugControlWidgetAction, &QAction::triggered, this, &CircuitCalculatePlugin::onStartDebug);
 }
 
-bool CircuitCalculatePlugin::CheckError(const QList<AbstractNode*>& nodes) {
-  return CheckAllPortFilled(nodes);
+bool CircuitCalculatePlugin::checkError(const QList<AbstractNode*>& nodes) {
+  return checkAllPortFilled(nodes);
 }
 
-bool CircuitCalculatePlugin::CheckAllPortFilled(const QList<AbstractNode*>& nodes) {
+bool CircuitCalculatePlugin::checkAllPortFilled(const QList<AbstractNode*>& nodes) {
   bool ret = true;
   foreach (AbstractNode* node, nodes) {
     foreach (Port* port, node->ports()) {
@@ -98,7 +98,7 @@ bool CircuitCalculatePlugin::CheckAllPortFilled(const QList<AbstractNode*>& node
 }
 
 QList<CircuitCalculatePlugin::ConnectedGraph*>
-CircuitCalculatePlugin::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
+CircuitCalculatePlugin::connectedGraphs(const QList<AbstractNode*>& nodes) {
   QList<ConnectedGraph*> connectedGraphs;
   QList<AbstractNode*> unusedNode = nodes;
   uint64_t id = 0;
@@ -132,9 +132,87 @@ CircuitCalculatePlugin::ConnectedGraphs(const QList<AbstractNode*>& nodes) {
   return connectedGraphs;
 }
 
-QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
+QList<QList<AbstractNode*>>
+CircuitCalculatePlugin::loopedNodes(const CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
+  QList<QList<AbstractNode*>> loopNodesList;
+  QList<AbstractNode*> inputNodes;
+
+  foreach (AbstractNode* node, connectedGraph->m_nodes) {
+    if (Input == node->io()) {
+      inputNodes << node;
+    }
+  }
+
+  foreach (AbstractNode* checkNode, inputNodes) {
+    QList<AbstractNode*> usedNodes;
+    usedNodes << checkNode;
+    foreach (AbstractNode* node, checkNode->adjastOutNodes()) {
+      QList<AbstractNode*> loopNodes;
+      loopNodes << checkNode;
+      if (isAlreadyUsed(node, usedNodes, loopNodes)) {
+        QList<AbstractNode*> tmp;
+        for (int32_t i = loopNodes.indexOf(node); i < loopNodes.count(); ++i) {
+          tmp << loopNodes[i];
+        }
+        loopNodesList << tmp;
+      }
+    }
+  }
+
+  return loopNodesList;
+}
+
+bool CircuitCalculatePlugin::hasLoop(const CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
+  QList<AbstractNode*> usedNodes;
+  QList<AbstractNode*> unUsedNodes = connectedGraph->m_nodes;
+  AbstractNode* checkNode = unUsedNodes.takeFirst();
+  usedNodes << checkNode;
+
+  foreach (AbstractNode* node, checkNode->adjastOutNodes()) {
+    if (isAlreadyUsed(node, usedNodes)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool CircuitCalculatePlugin::isAlreadyUsed(AbstractNode* checkNode, QList<AbstractNode*>& usedNodes) {
+  if (usedNodes.contains(checkNode)) {
+    return true;
+  }
+  foreach (AbstractNode* node, checkNode->adjastOutNodes()) {
+    if (isAlreadyUsed(node, usedNodes)) {
+      return true;
+    }
+    usedNodes << node;
+  }
+  return false;
+}
+
+bool CircuitCalculatePlugin::isAlreadyUsed(AbstractNode* checkNode, QList<AbstractNode*>& usedNodes,
+                                           QList<AbstractNode*>& nodes) {
+  if (usedNodes.contains(checkNode)) {
+    return true;
+  }
+  usedNodes << checkNode;
+  nodes << checkNode;
+  foreach (AbstractNode* node, checkNode->adjastOutNodes()) {
+    if (isAlreadyUsed(node, usedNodes, nodes)) {
+      return true;
+    }
+    usedNodes << node;
+    nodes << node;
+  }
+  //  nodes.removeOne(checkNode);
+  return false;
+}
+
+QList<AbstractNode*> CircuitCalculatePlugin::executeOrderSort(CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
   QList<AbstractNode*> visitedNodes;
   QList<AbstractNode*> unVisitedNodes;
+  QList<QList<AbstractNode*>> loopNodes = loopedNodes(connectedGraph);
+
   foreach (AbstractNode* node, connectedGraph->m_nodes) {
     if (Input == node->io()) {
       visitedNodes << node;
@@ -144,7 +222,7 @@ QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePl
   }
   while (unVisitedNodes.count()) {
     AbstractNode* checkNode = unVisitedNodes.takeLast();
-    if (isAllAdjacentInNodeVisited(checkNode, visitedNodes)) {
+    if (isAllAdjacentInNodeVisited(checkNode, visitedNodes, loopNodes)) {
       visitedNodes << checkNode;
       unVisitedNodes.removeOne(checkNode);
     } else {
@@ -156,23 +234,39 @@ QList<AbstractNode*> CircuitCalculatePlugin::ExecuteOrderSort(CircuitCalculatePl
 }
 
 bool CircuitCalculatePlugin::isAllAdjacentInNodeVisited(AbstractNode* checkNode,
-                                                        const QList<AbstractNode*>& visitedNodes) {
+                                                        const QList<AbstractNode*>& visitedNodes,
+                                                        QList<QList<AbstractNode*>> loopedNodes) {
   foreach (AbstractNode* inNode, checkNode->adjastInNodes()) {
     if (!visitedNodes.contains(inNode)) {
-      return false;
+      foreach (QList<AbstractNode*> loopedNode, loopedNodes) {
+        if (!loopedNode.contains(inNode)) {
+          return false;
+        }
+      }
     }
   }
   return true;
 }
+
 #include "AbstractConnection.h"
 void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
-  if (!CheckError(nodes)) {
+  if (!checkError(nodes)) {
     qDebug() << "Do not connect finish!";
     return;
   }
 
-  m_connectedGraphs = ConnectedGraphs(nodes);
+  m_connectedGraphs = connectedGraphs(nodes);
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
+    //    QList<QList<AbstractNode *>> loopedNode = loopedNodes(connectedGraph);
+    //    foreach (QList<AbstractNode *> nodes, loopedNodes(connectedGraph)) {
+    //      //      foreach (AbstractNode* node, nodes) { qDebug() <<
+    //      node->name(); }
+    //    }
+
+    //    if (hasLoop(connectedGraph)) {
+    //      qDebug() << "aaaaaaaaaaaaaaaaaaa";
+    //    }
+
     exportCircuit(connectedGraph);
     exportInnitialValue(connectedGraph);
   }
@@ -183,7 +277,7 @@ void CircuitCalculatePlugin::exportCircuit(ConnectedGraph* connectedGraph) {
   if (!f.open(QIODevice::WriteOnly)) {
     qDebug() << "Cannot open file!";
   }
-  connectedGraph->m_nodes = ExecuteOrderSort(connectedGraph);
+  connectedGraph->m_nodes = executeOrderSort(connectedGraph);
   QString buf;
   foreach (AbstractNode* n, connectedGraph->m_nodes) {
     buf += n->name();

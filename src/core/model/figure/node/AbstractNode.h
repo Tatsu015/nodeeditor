@@ -23,6 +23,8 @@ public:
   virtual AbstractNode* create(const QString& id) = 0;
   void created();
 
+  void setup();
+
   QString name() const;
   void setName(const QString& name);
 
@@ -32,8 +34,6 @@ public:
   qreal left() const;
 
   QPointF centerOffset() const;
-
-  void setup();
 
   QList<Port*> ports() const;
   int32_t portCount() const;
@@ -75,6 +75,7 @@ public:
   void resetColor();
 
   void setNameTextVisible(const bool visible);
+  void setIdTextVisible(const bool visible);
 
   virtual bool execute(QList<bool> args) = 0;
 
@@ -86,6 +87,7 @@ private:
   void adjustInputPortPos();
   void adjustOutputPortPos();
   void setupNameText();
+  void setupIdText();
   virtual void doSetup();
 
   bool isInputPortEditable() const;
@@ -114,6 +116,7 @@ private:
   QList<Port*> m_ports;
   QString m_name = "";
   QGraphicsSimpleTextItem* m_nameText = nullptr;
+  QGraphicsSimpleTextItem* m_idText = nullptr;
 };
 
 #endif // ABSTRACTNODE_H

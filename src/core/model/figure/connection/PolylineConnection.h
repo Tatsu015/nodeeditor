@@ -12,9 +12,10 @@ public:
 
   virtual PolylineConnection* create(const QString& id);
 
-  virtual void redraw();
-
   virtual QJsonObject toJsonObj();
+
+protected:
+  virtual void doRedraw();
 };
 
 #endif // POLYLINECONNECTION_H
