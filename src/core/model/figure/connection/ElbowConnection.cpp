@@ -46,38 +46,18 @@ QJsonObject ElbowConnection::toJsonObj() {
   return connectionJsonObj;
 }
 
-void ElbowConnection::doRedraw() {
-  // m_startPos and m_endPos need to change.
-  // Because port and connector position updated by QGraphicsItem::ItemMove,
-  // But m_startPos and m_endPos cannot update!
-  if (m_startPort) {
-    m_startPos = m_startPort->endOfPortPos();
-  }
-  if (m_endPort) {
-    m_endPos = m_endPort->endOfPortPos();
-  }
-  if (m_endConnector) {
-    m_endPos = m_endConnector->centerScenePos();
+QList<QPointF> ElbowConnection::createVertexes() {
+  QList<QPointF> vertexes;
+
+  if (hasEndConnector()) {
+    AbstractConnection* targetConnection = m_endConnector->dstConnection();
+    if (targetConnection && (Horizon == targetConnection->direction(m_endPos))) {
+      vertexes << QPointF(m_endPos.x(), m_startPos.y());
+      return vertexes;
+    }
   }
 
   QPointF elbowPos = (m_startPos + m_endPos) * 0.5;
-
-  foreach (Connector* connector, m_branchConnectors) {
-    QPointF pos = m_endPos - m_startPos;
-    QPointF connectorPos(m_startPos.x() + pos.x() * connector->xPosRate(),
-                         m_startPos.y() + pos.y() * connector->yPosRate());
-    connectorPos += connector->centerOffset();
-    connector->setPos(connectorPos);
-    // redraw connector connected connection
-    connector->srcConnection()->redraw();
-  }
-
-  QPainterPath path;
-  QPointF elbow1(elbowPos.x(), m_startPos.y());
-  QPointF elbow2(elbowPos.x(), m_endPos.y());
-  path.moveTo(m_startPos);
-  path.lineTo(elbow1);
-  path.lineTo(elbow2);
-  path.lineTo(m_endPos);
-  setPath(path);
+  vertexes << QPointF(elbowPos.x(), m_startPos.y()) << QPointF(elbowPos.x(), m_endPos.y());
+  return vertexes;
 }

@@ -93,7 +93,7 @@ public:
   void setIdTextVisible(const bool visible);
 
 protected:
-  virtual void doRedraw() = 0;
+  virtual QList<QPointF> createVertexes() = 0;
 
 private:
   void setupIdText();
@@ -101,6 +101,7 @@ private:
   QList<AbstractConnection*> connectedConnections(const Connector* excludeConnector);
 
   void redrawIdText();
+  void redrawConnection();
 
 protected:
   const static uint32_t PEN_SIZE;

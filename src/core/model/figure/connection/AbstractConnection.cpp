@@ -90,7 +90,7 @@ void AbstractConnection::setEndPos(const QPointF& endPos) {
 
 void AbstractConnection::redraw() {
   redrawIdText();
-  doRedraw();
+  redrawConnection();
 }
 
 void AbstractConnection::setStartPort(Port* startPort) {
@@ -424,9 +424,43 @@ void AbstractConnection::redrawIdText() {
   m_idText->setPos(m_startPos);
 }
 
+void AbstractConnection::redrawConnection() {
+  // m_startPos and m_endPos need to change. Because port and connector position
+  // updated by QGraphicsItem::ItemMove, But
+  // m_startPos and m_endPos cannot update!
+  if (m_startPort) {
+    m_startPos = m_startPort->endOfPortPos();
+  }
+  if (m_endPort) {
+    m_endPos = m_endPort->endOfPortPos();
+  }
+  if (m_endConnector) {
+    m_endPos = m_endConnector->centerScenePos();
+  }
+
+  foreach (Connector* connector, m_branchConnectors) {
+    QPointF pos = m_endPos - m_startPos;
+    QPointF connectorPos(m_startPos.x() + pos.x() * connector->xPosRate(),
+                         m_startPos.y() + pos.y() * connector->yPosRate());
+    connectorPos += connector->centerOffset();
+    connector->setPos(connectorPos);
+    // redraw connector connected connection
+    connector->srcConnection()->redraw();
+  }
+
+  QList<QPointF> vertexes = createVertexes();
+
+  QPainterPath path;
+  path.moveTo(m_startPos);
+  foreach (QPointF vertex, vertexes) { path.lineTo(vertex); }
+  path.lineTo(m_endPos);
+  setPath(path);
+}
+
 void AbstractConnection::setupIdText() {
   m_idText = new QGraphicsSimpleTextItem(m_id, this);
   m_idText->setPos(0, -30);
   m_idText->setPen(QPen(Qt::white));
   m_idText->setBrush(QBrush(Qt::white));
+  m_idText->hide();
 }

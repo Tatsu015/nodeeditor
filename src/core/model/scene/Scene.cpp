@@ -246,17 +246,12 @@ Port* Scene::findEndPort(QPointF scenePos) {
   return nullptr;
 }
 
-AbstractConnection* Scene::findConnection(const QPointF scenePos, AbstractConnection* exclude) {
-  QList<QGraphicsItem*> pressedItems = items(scenePos);
-
-  AbstractConnection* connection = nullptr;
-  foreach (QGraphicsItem* item, pressedItems) {
-    connection = dynamic_cast<AbstractConnection*>(item);
-    if (connection != exclude) {
-      return connection;
-    }
+AbstractConnection* Scene::findConnection(const QPointF scenePos, AbstractConnection* excludeConnection) {
+  QList<AbstractConnection*> connections = findConnections(scenePos, excludeConnection);
+  if (connections.isEmpty()) {
+    return nullptr;
   }
-  return nullptr;
+  return connections.first();
 }
 
 AbstractConnection* Scene::findConnection(const QString connectionName) {
@@ -268,13 +263,13 @@ AbstractConnection* Scene::findConnection(const QString connectionName) {
   return nullptr;
 }
 
-QList<AbstractConnection*> Scene::findConnections(const QPointF scenePos, AbstractConnection* tmponnection) {
+QList<AbstractConnection*> Scene::findConnections(const QPointF scenePos, AbstractConnection* exclideConnection) {
   QList<QGraphicsItem*> pressedItems = items(scenePos);
   QList<AbstractConnection*> connections;
   foreach (QGraphicsItem* item, pressedItems) {
     AbstractConnection* connection = dynamic_cast<AbstractConnection*>(item);
-    // remove except connection and tmp connection from target
-    if ((connection) && (connection != tmponnection)) {
+    // remove exclude connection from target
+    if ((connection) && (connection != exclideConnection)) {
       connections << connection;
     }
   }

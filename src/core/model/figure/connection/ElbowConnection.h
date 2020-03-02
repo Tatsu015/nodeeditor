@@ -2,6 +2,7 @@
 #define ELBOWCONNECTION_H
 
 #include "AbstractConnection.h"
+#include <QPointF>
 
 class Port;
 class Connector;
@@ -16,7 +17,7 @@ public:
   virtual QJsonObject toJsonObj();
 
 protected:
-  virtual void doRedraw();
+  virtual QList<QPointF> createVertexes();
 };
 
 #endif // ELBOWCONNECTION_H

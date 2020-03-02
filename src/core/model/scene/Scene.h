@@ -56,9 +56,9 @@ public:
   void addNode(AbstractNode* node);
   void removeNode(AbstractNode* node);
 
-  AbstractConnection* findConnection(const QPointF scenePos, AbstractConnection* exclude);
+  AbstractConnection* findConnection(const QPointF scenePos, AbstractConnection* excludeConnection);
   AbstractConnection* findConnection(const QString connectionName);
-  QList<AbstractConnection*> findConnections(const QPointF scenePos, AbstractConnection* tmponnection);
+  QList<AbstractConnection*> findConnections(const QPointF scenePos, AbstractConnection* exclideConnection);
   void addConnection(AbstractConnection* connection);
   void removeConnection(AbstractConnection* connection);
   QList<AbstractConnection*> selectedConnections() const;

@@ -15,7 +15,7 @@ public:
   virtual QJsonObject toJsonObj();
 
 protected:
-  virtual void doRedraw();
+  virtual QList<QPointF> createVertexes();
 };
 
 #endif // POLYLINECONNECTION_H
