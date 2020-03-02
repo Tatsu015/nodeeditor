@@ -8,6 +8,7 @@
 #include "IOTableWidget.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "OutNode.h"
 #include "Port.h"
 #include "Project.h"
 #include "Scene.h"
@@ -151,7 +152,11 @@ CircuitCalculatePlugin::loopedNodes(const CircuitCalculatePlugin::ConnectedGraph
       loopNodes << checkNode;
       if (isAlreadyUsed(node, usedNodes, loopNodes)) {
         QList<AbstractNode*> tmp;
-        for (int32_t i = loopNodes.indexOf(node); i < loopNodes.count(); ++i) {
+        int32_t initialIndex = loopNodes.indexOf(node);
+        if (-1 == initialIndex) {
+          continue;
+        }
+        for (int32_t i = initialIndex; i < loopNodes.count(); ++i) {
           tmp << loopNodes[i];
         }
         loopNodesList << tmp;
@@ -204,7 +209,6 @@ bool CircuitCalculatePlugin::isAlreadyUsed(AbstractNode* checkNode, QList<Abstra
     usedNodes << node;
     nodes << node;
   }
-  //  nodes.removeOne(checkNode);
   return false;
 }
 
@@ -257,18 +261,9 @@ void CircuitCalculatePlugin::compile(QList<AbstractNode*>& nodes) {
 
   m_connectedGraphs = connectedGraphs(nodes);
   foreach (ConnectedGraph* connectedGraph, m_connectedGraphs) {
-    //    QList<QList<AbstractNode *>> loopedNode = loopedNodes(connectedGraph);
-    //    foreach (QList<AbstractNode *> nodes, loopedNodes(connectedGraph)) {
-    //      //      foreach (AbstractNode* node, nodes) { qDebug() <<
-    //      node->name(); }
-    //    }
-
-    //    if (hasLoop(connectedGraph)) {
-    //      qDebug() << "aaaaaaaaaaaaaaaaaaa";
-    //    }
-
     exportCircuit(connectedGraph);
     exportInnitialValue(connectedGraph);
+    exportDebugInfo(connectedGraph);
   }
 }
 
@@ -279,15 +274,16 @@ void CircuitCalculatePlugin::exportCircuit(ConnectedGraph* connectedGraph) {
   }
   connectedGraph->m_nodes = executeOrderSort(connectedGraph);
   QString buf;
-  foreach (AbstractNode* n, connectedGraph->m_nodes) {
-    buf += n->name();
-    foreach (Port* port, n->ports()) {
+  foreach (AbstractNode* node, connectedGraph->m_nodes) {
+    buf += node->name();
+    foreach (Port* port, node->ports()) {
       buf += ",";
-      AbstractConnection* connection = port->connections().first();
-      if (CLOCK == connection->startPort()->parentNode()->nodeType()) {
-        buf += CLOCK;
+      if (0 == node->adjastInNodes(port).count()) {
+        buf += node->id();
+      } else if (0 == node->adjastOutNodes().count()) {
+        buf += node->adjastInNodes().first()->id() + "," + node->id();
       } else {
-        buf += port->connections().first()->id();
+        buf += node->adjastInNodes(port).first()->id();
       }
     }
     buf += "\n";
@@ -300,23 +296,28 @@ void CircuitCalculatePlugin::exportInnitialValue(CircuitCalculatePlugin::Connect
   if (!f.open(QIODevice::WriteOnly)) {
     qDebug() << "Cannot open file!";
   }
-  QList<AbstractConnection*> connections;
-  foreach (AbstractNode* n, connectedGraph->m_nodes) {
-    foreach (Port* port, n->ports()) {
-      foreach (AbstractConnection* connection, port->connections()) {
-        if (!connections.contains(connection)) {
-          connections << connection;
-        }
-      }
-    }
+
+  QString buf;
+  buf += "#id,value,name\n";
+  foreach (AbstractNode* node, connectedGraph->m_nodes) {
+    buf += node->id() + "," + btos(node->initState()) + "," + node->name();
+    buf += "\n";
+  }
+  f.write(buf.toLocal8Bit());
+}
+
+void CircuitCalculatePlugin::exportDebugInfo(CircuitCalculatePlugin::ConnectedGraph* connectedGraph) {
+  QFile f(EXPORT_BASE + connectedGraph->m_name + ".debug");
+  if (!f.open(QIODevice::WriteOnly)) {
+    qDebug() << "Cannot open file!";
   }
 
   QString buf;
-  foreach (AbstractConnection* connection, connections) {
-    buf += connection->id() + ",false";
+  buf += "Clock,Clock\n";
+  foreach (AbstractNode* node, connectedGraph->m_nodes) {
+    buf += node->id() + "," + node->name();
     buf += "\n";
   }
-
   f.write(buf.toLocal8Bit());
 }
 

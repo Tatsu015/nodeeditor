@@ -3,6 +3,8 @@
 #include "Define.h"
 #include "Port.h"
 #include <QBrush>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSimpleTextItem>
 #include <QPen>
 
@@ -24,6 +26,15 @@ InNode::InNode(QGraphicsItem* parent) : AbstractNode(parent) {
 }
 
 InNode::~InNode() {
+}
+
+// TODO for debug...
+void InNode::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+  if (Qt::MiddleButton == event->button()) {
+    m_initState = !m_initState;
+    qDebug() << m_initState;
+  }
+  AbstractNode::mousePressEvent(event);
 }
 
 AbstractNode* InNode::create(const QString& id) {

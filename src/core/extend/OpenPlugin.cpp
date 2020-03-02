@@ -4,6 +4,7 @@
 #include "PluginLoader.h"
 #include "Project.h"
 #include "ProjectParser.h"
+#include <QFileDialog>
 #include <QJsonDocument>
 #include <QMenu>
 
@@ -26,8 +27,7 @@ void OpenPlugin::doInit() {
 void OpenPlugin::onExecute() {
   Project* lastProject = Editor::getInstance()->project();
 
-  // TODO this process will change to opendialog
-  QString filePath = lastProject->filePath();
+  QString filePath = QFileDialog::getOpenFileName(nullptr, "Open file", ".", "*.nd");
 
   QFile f(filePath);
   if (!f.open(QIODevice::ReadOnly)) {
@@ -39,7 +39,7 @@ void OpenPlugin::onExecute() {
   Project* newProject = parser.parse(data, lastProject);
 
   delete lastProject;
-  lastProject->setFilePath(filePath);
+  newProject->setFilePath(filePath);
   Editor::getInstance()->changeProject(newProject);
   PluginLoader::getInstance()->reset();
 

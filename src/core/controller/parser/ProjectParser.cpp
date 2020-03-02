@@ -31,6 +31,8 @@ Project* ProjectParser::parse(const QByteArray& data, Project* lastProject) {
     Sheet* sheet = parseSheet(sheetJsonValue);
     project->addSheet(sheet);
   }
+  project->setNodeNameVisible(rootObj[JSON_NODE_NAME_VISIBLE].toBool());
+  project->setNodeIdVisible(rootObj[JSON_NODE_ID_VISIBLE].toBool());
 
   return project;
 }

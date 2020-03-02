@@ -47,7 +47,8 @@ void ShowNodeInfoPlugin::onExecuteShowNodeId() {
   project->setNodeIdVisible(nextState);
   foreach (Sheet* sheet, project->sheets()) {
     foreach (AbstractNode* node, sheet->nodes()) { node->setIdTextVisible(nextState); }
-    foreach (AbstractConnection* connection, sheet->connections()) { connection->setIdTextVisible(nextState); }
+    //    foreach (AbstractConnection* connection, sheet->connections()) {
+    //    connection->setIdTextVisible(nextState); }
   }
   m_showNodeIdAction->setChecked(nextState);
 }

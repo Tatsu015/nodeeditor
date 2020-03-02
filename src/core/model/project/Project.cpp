@@ -41,7 +41,7 @@ QJsonObject Project::toJson() {
 
   QJsonObject jsonObj;
   jsonObj[JSON_NODE_NAME_VISIBLE] = m_nodeNameVisible;
-  jsonObj[JSON_NODE_NAME_VISIBLE] = m_nodeIdVisible;
+  jsonObj[JSON_NODE_ID_VISIBLE] = m_nodeIdVisible;
   jsonObj[JSON_SHEETS] = sheetJsonArray;
 
   return jsonObj;
@@ -173,8 +173,6 @@ void Project::setNodeIdVisible(bool visible) {
 
 void Project::takeOver(Project* src) {
   m_projectObservers = src->m_projectObservers;
-  m_nodeNameVisible = src->m_nodeNameVisible;
-  m_nodeIdVisible = src->m_nodeIdVisible;
 }
 
 Scene* Project::scene() const {

@@ -53,13 +53,16 @@ void SavePlugin::onExecuteSave() {
   Project* project = Editor::getInstance()->project();
   QString filePath = project->filePath();
 
-  //  project->save(fileName);
-
-  save(filePath);
+  QFile f(filePath);
+  if (f.exists()) {
+    save(filePath);
+  } else {
+    onExecuteSaveAs();
+  }
 }
 
 void SavePlugin::onExecuteSaveAs() {
-  QString filePath = QFileDialog::getSaveFileName(nullptr);
+  QString filePath = QFileDialog::getSaveFileName(nullptr, "Save file", ".", "*.nd");
 
   if (filePath.isEmpty()) {
     return;

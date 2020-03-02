@@ -48,6 +48,7 @@ private:
   void compile(QList<AbstractNode*>& nodes);
   void exportCircuit(ConnectedGraph* connectedGraph);
   void exportInnitialValue(ConnectedGraph* connectedGraph);
+  void exportDebugInfo(ConnectedGraph* connectedGraph);
   void tearDown();
 
 private slots:

@@ -50,9 +50,6 @@ public:
   void takeOver(Project* src);
 
 private:
-  void notify();
-
-private:
   Scene* m_scene = nullptr;
   QString m_filePath;
   bool m_nodeNameVisible = true;

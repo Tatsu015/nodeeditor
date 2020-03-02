@@ -10,6 +10,8 @@ public:
   InNode(QGraphicsItem* parent = nullptr);
   virtual ~InNode();
 
+  void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+
   virtual AbstractNode* create(const QString& id);
 
   virtual bool execute(QList<bool> args);

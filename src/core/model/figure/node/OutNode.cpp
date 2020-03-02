@@ -4,8 +4,6 @@
 #include <QBrush>
 #include <QPen>
 
-const static QString NODE_OUT = "Out";
-
 OutNode::OutNode(QGraphicsItem* parent) : AbstractNode(parent) {
   m_nodeType = NODE_OUT;
   m_io = Output;

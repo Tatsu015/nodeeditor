@@ -57,8 +57,11 @@ public:
   int32_t outputPortCount() const;
 
   QList<AbstractNode*> adjastOutNodes();
+  QList<AbstractNode*> adjastOutNodes(const Port* port);
   QList<AbstractNode*> adjastInNodes();
+  QList<AbstractNode*> adjastInNodes(const Port* port);
   QList<AbstractNode*> adjastNodes();
+  QList<AbstractNode*> adjastNodes(const Port* port);
 
   EPosition portPosition(Port* port);
 
@@ -82,6 +85,7 @@ public:
   QString id() const;
 
   QJsonObject toJsonObject();
+  bool initState() const;
 
 private:
   void adjustInputPortPos();
@@ -111,6 +115,7 @@ protected:
   int32_t m_maxOutputPortCount = 1;
   int32_t m_minInputPortCount = 1;
   int32_t m_minOutputPortCount = 1;
+  bool m_initState = false;
 
 private:
   QList<Port*> m_ports;

@@ -123,6 +123,10 @@ void AbstractNode::changeHighlightColor() {
   setBrush(QBrush(QColor(systemConfig(SystemConfig::nodeFillHighLightColor).toString())));
 }
 
+bool AbstractNode::initState() const {
+  return m_initState;
+}
+
 QList<Port*> AbstractNode::ports() const {
   return m_ports;
 }
@@ -281,16 +285,20 @@ int32_t AbstractNode::outputPortCount() const {
 
 QList<AbstractNode*> AbstractNode::adjastOutNodes() {
   QList<AbstractNode*> nodes;
-  foreach (Port* port, m_ports) {
-    foreach (AbstractConnection* connection, port->connections()) {
-      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
-        if (connectedConnection->hasInputPort()) {
-          AbstractNode* outNode = connectedConnection->inputPort()->parentNode();
-          if (outNode != this) {
-            // when exist loop, this check need
-            if (!nodes.contains(outNode)) {
-              nodes << outNode;
-            }
+  foreach (Port* port, m_ports) { nodes << adjastOutNodes(port); }
+  return nodes;
+}
+
+QList<AbstractNode*> AbstractNode::adjastOutNodes(const Port* port) {
+  QList<AbstractNode*> nodes;
+  foreach (AbstractConnection* connection, port->connections()) {
+    foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+      if (connectedConnection->hasInputPort()) {
+        AbstractNode* outNode = connectedConnection->inputPort()->parentNode();
+        if (outNode != this) {
+          // when exist loop, this check need
+          if (!nodes.contains(outNode)) {
+            nodes << outNode;
           }
         }
       }
@@ -301,16 +309,20 @@ QList<AbstractNode*> AbstractNode::adjastOutNodes() {
 
 QList<AbstractNode*> AbstractNode::adjastInNodes() {
   QList<AbstractNode*> nodes;
-  foreach (Port* port, m_ports) {
-    foreach (AbstractConnection* connection, port->connections()) {
-      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
-        if (connectedConnection->hasOutputPort()) {
-          AbstractNode* inNode = connectedConnection->outputPort()->parentNode();
-          if (inNode != this) {
-            // when exist loop, this check need
-            if (!nodes.contains(inNode)) {
-              nodes << inNode;
-            }
+  foreach (Port* port, m_ports) { nodes << adjastInNodes(port); }
+  return nodes;
+}
+
+QList<AbstractNode*> AbstractNode::adjastInNodes(const Port* port) {
+  QList<AbstractNode*> nodes;
+  foreach (AbstractConnection* connection, port->connections()) {
+    foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+      if (connectedConnection->hasOutputPort()) {
+        AbstractNode* inNode = connectedConnection->outputPort()->parentNode();
+        if (inNode != this) {
+          // when exist loop, this check need
+          if (!nodes.contains(inNode)) {
+            nodes << inNode;
           }
         }
       }
@@ -321,25 +333,29 @@ QList<AbstractNode*> AbstractNode::adjastInNodes() {
 
 QList<AbstractNode*> AbstractNode::adjastNodes() {
   QList<AbstractNode*> nodes;
-  foreach (Port* port, m_ports) {
-    foreach (AbstractConnection* connection, port->connections()) {
-      foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
-        if (connectedConnection->hasInputPort()) {
-          AbstractNode* inNode = connectedConnection->inputPort()->parentNode();
-          if (inNode != this) {
-            // when exist loop, this check need
-            if (!nodes.contains(inNode)) {
-              nodes << inNode;
-            }
+  foreach (Port* port, m_ports) { nodes << adjastNodes(port); }
+  return nodes;
+}
+
+QList<AbstractNode*> AbstractNode::adjastNodes(const Port* port) {
+  QList<AbstractNode*> nodes;
+  foreach (AbstractConnection* connection, port->connections()) {
+    foreach (AbstractConnection* connectedConnection, connection->connectedConnections()) {
+      if (connectedConnection->hasInputPort()) {
+        AbstractNode* inNode = connectedConnection->inputPort()->parentNode();
+        if (inNode != this) {
+          // when exist loop, this check need
+          if (!nodes.contains(inNode)) {
+            nodes << inNode;
           }
         }
-        if (connectedConnection->hasOutputPort()) {
-          AbstractNode* outNode = connectedConnection->outputPort()->parentNode();
-          if (outNode != this) {
-            // when exist loop, this check need
-            if (!nodes.contains(outNode)) {
-              nodes << outNode;
-            }
+      }
+      if (connectedConnection->hasOutputPort()) {
+        AbstractNode* outNode = connectedConnection->outputPort()->parentNode();
+        if (outNode != this) {
+          // when exist loop, this check need
+          if (!nodes.contains(outNode)) {
+            nodes << outNode;
           }
         }
       }
