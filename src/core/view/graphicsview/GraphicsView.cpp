@@ -49,7 +49,7 @@ void GraphicsView::wheelEvent(QWheelEvent* event) {
     return;
   }
 
-  int numDegrees = event->delta() / 8;
+  int numDegrees = event->angleDelta().y() / 8;
   int numSteps = numDegrees / 15;
 
   m_numScheduledScalings += numSteps;

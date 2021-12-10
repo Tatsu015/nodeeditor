@@ -14,7 +14,7 @@ public:
   ~Sheet();
 
   Sheet* create();
-  Sheet* create(const QString& id);
+  Sheet* create(const QString& name, const QString& id);
 
   QString id() const;
 

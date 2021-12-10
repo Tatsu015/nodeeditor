@@ -18,13 +18,13 @@ SheetListWidget::SheetListWidget(QWidget* parent) : QWidget(parent), ui(new Ui::
   ui->sheetListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
   m_addSheetNameAction = new QAction("Add");
-  connect(m_addSheetNameAction, &QAction::triggered, this, &SheetListWidget::onAddSheext);
+  connect(m_addSheetNameAction, &QAction::triggered, this, &SheetListWidget::onAddSheet);
   m_deleteSheetNameAction = new QAction("Delete");
   connect(m_deleteSheetNameAction, &QAction::triggered, this, &SheetListWidget::onDeleteSheet);
   m_renameSheetAction = new QAction("Rename");
   connect(m_renameSheetAction, &QAction::triggered, this, &SheetListWidget::onChangeSheetName);
 
-  connect(ui->addPushButton, &QPushButton::clicked, this, &SheetListWidget::onAddSheext);
+  connect(ui->addPushButton, &QPushButton::clicked, this, &SheetListWidget::onAddSheet);
   connect(ui->deletePushButton, &QPushButton::clicked, this, &SheetListWidget::onDeleteSheet);
   connect(ui->sheetListWidget, &QListWidget::itemDoubleClicked, this, &SheetListWidget::onChangeActiveSheet);
 
@@ -59,9 +59,9 @@ void SheetListWidget::removeSheet(Sheet* sheet) {
   delete item;
 }
 
-void SheetListWidget::onAddSheext() {
+void SheetListWidget::onAddSheet() {
   Project* project = Editor::getInstance()->project();
-  Sheet* sheet = SheetFactory::getInstance()->createSheet(project->sheetNames());
+  Sheet* sheet = SheetFactory::getInstance()->createSheet();
   project->addSheet(sheet);
   project->setActiveSheet(sheet);
   SheetChangeHistoryController::getInstance()->add(sheet->name());
@@ -92,6 +92,7 @@ void SheetListWidget::onChangeSheetName() {
     Sheet* sheet = project->sheet(item->text());
     sheet->setName(newSheetName);
     item->setText(newSheetName);
+    project->setActiveSheet(sheet);
   }
 }
 

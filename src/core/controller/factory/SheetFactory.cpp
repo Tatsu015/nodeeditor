@@ -9,13 +9,13 @@ SheetFactory* SheetFactory::getInstance() {
   return &s;
 }
 
-void SheetFactory::addSheet(Sheet* sheet) {
-  m_sheet = sheet;
+void SheetFactory::addSheetBase(Sheet* sheet) {
+  m_sheetBase = sheet;
 }
 
 Sheet* SheetFactory::createSheet(const QString& name, const QString& id) {
   Sheet* sheet;
-  sheet = m_sheet->create(id);
+  sheet = m_sheetBase->create(name, id);
 
   sheet->setName(name);
 
@@ -25,15 +25,8 @@ Sheet* SheetFactory::createSheet(const QString& name, const QString& id) {
   return sheet;
 }
 
-Sheet* SheetFactory::createSheet(const QStringList existNames, const QString& id) {
-  Sheet* sheet;
-  if (id.isEmpty()) {
-    sheet = m_sheet->create();
-  } else {
-    sheet = m_sheet->create(id);
-  }
-  QString name = SerialNumberNamePublisher::getInstance()->createName(existNames, "Sheet");
-  sheet->setName(name);
+Sheet* SheetFactory::createSheet() {
+  Sheet* sheet = m_sheetBase->create();
 
   FunctionBlockNode* functionBlockNode = new FunctionBlockNode(sheet);
   NodeFactory::getInstance()->addNode(functionBlockNode);

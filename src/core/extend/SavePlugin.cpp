@@ -31,14 +31,20 @@ void SavePlugin::doInit() {
 }
 
 void SavePlugin::save(const QString& filePath) {
-  QFile f(filePath);
+  QFileInfo info(filePath);
+  QString filePathWithSuffix = filePath;
+  if (APP_EXTENSION != info.suffix()) {
+    filePathWithSuffix += QString("." + APP_EXTENSION);
+  }
+
+  QFile f(filePathWithSuffix);
   if (!f.open(QIODevice::WriteOnly)) {
     QMessageBox::warning(nullptr, "Warning", "Can not create " + filePath);
     return;
   }
 
   Project* project = Editor::getInstance()->project();
-  project->setFilePath(filePath);
+  project->setFilePath(filePathWithSuffix);
 
   QJsonObject jsonObj = project->toJson();
   QJsonDocument doc(jsonObj);

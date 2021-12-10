@@ -22,7 +22,7 @@ public:
   virtual void removeSheet(Sheet* sheet);
 
 private slots:
-  void onAddSheext();
+  void onAddSheet();
   void onDeleteSheet();
   void onChangeSheetName();
   //  void onChangeSheetName(QListWidgetItem* item);

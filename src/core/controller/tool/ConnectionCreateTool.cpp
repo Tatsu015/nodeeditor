@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
+#include <QKeyEvent>
 
 ConnectionCreateTool::ConnectionCreateTool() : AbstractTool(TOOL_CONNECTION_CREATE) {
   m_activeConnectionType = ConnectionFactory::getInstance()->connectionTypes().first();

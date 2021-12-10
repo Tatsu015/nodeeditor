@@ -1,6 +1,5 @@
 #include "Sheet.h"
 #include "AbstractConnection.h"
-#include "AbstractConnection.h"
 #include "AbstractNode.h"
 #include "Port.h"
 #include "ProjectKeyDefine.h"
@@ -13,12 +12,14 @@ Sheet::~Sheet() {
 }
 
 Sheet* Sheet::create() {
-  return create(QUuid::createUuid().toString());
+  QString uuid = QUuid::createUuid().toString();
+  return create(uuid, uuid);
 }
 
-Sheet* Sheet::create(const QString& id) {
+Sheet* Sheet::create(const QString& name, const QString& id) {
   Sheet* sheet = new Sheet();
   sheet->m_id = id;
+  sheet->m_name = name;
   return sheet;
 }
 

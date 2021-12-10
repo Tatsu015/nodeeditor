@@ -4,6 +4,7 @@
 #include <QList>
 
 class QMenu;
+class QAction;
 
 class MenuManager {
 public:

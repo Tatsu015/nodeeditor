@@ -35,7 +35,7 @@ void FunctionBlockToolButton::addSheet(Sheet* sheet) {
 }
 
 void FunctionBlockToolButton::changeSheet(Sheet* sheet) {
-  qDebug() << "chcanged!";
+  setText(sheet->name());
 }
 
 void FunctionBlockToolButton::removeSheet(Sheet* sheet) {

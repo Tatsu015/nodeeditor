@@ -5,16 +5,17 @@
 #include "GuideLine.h"
 #include "NodeAddCommand.h"
 #include "NodeFactory.h"
-#include "NodeFactory.h"
 #include "NodeMoveCommand.h"
 #include "NodeRemoveCommand.h"
 #include "Project.h"
 #include "Scene.h"
 #include "Sheet.h"
 #include <QAction>
+#include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
+#include <QKeyEvent>
 
 const static qreal GUIDELINE_DRAWOVER_SIZE = 10;
 
