@@ -20,7 +20,6 @@
 #include <QCursor>
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneMouseEvent>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QMenu>
@@ -30,7 +29,7 @@ const static QRectF SCENE_RECT(0, 0, 300, 400);
 
 Scene::Scene(QObject* parent) : QGraphicsScene(SCENE_RECT, parent) {
   const static QString DEFAULT_TEXT = "    How to Open Project\n"
-                                      "---------------------------\n"
+                                      "\n"
                                       "    ・ File -> Open\n"
                                       "    ・ File -> New\n"
                                       "    ・ Drag and Drop *." +
@@ -399,6 +398,9 @@ QList<AbstractNode*> Scene::nearLeftNodes(const qreal left, const Scene::Selecte
 }
 
 QList<AbstractNode*> Scene::selectedNodes() const {
+  if (!m_sheet) {
+    return QList<AbstractNode*>();
+  }
   QList<AbstractNode*> selectNodes;
   foreach (AbstractNode* node, m_sheet->nodes()) {
     if (node->isSelected()) {
