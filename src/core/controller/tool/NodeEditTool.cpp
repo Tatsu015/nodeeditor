@@ -59,8 +59,9 @@ void NodeEditTool::mouseDoubleClickEvent(Scene* scene, QGraphicsSceneMouseEvent*
     return;
   }
   AbstractNode* node = NodeFactory::getInstance()->createNode(activeSheet, m_activeNodeType);
-  bool nodeNameVisible = Editor::getInstance()->project()->nodeNameVisible();
-  node->setNameTextVisible(nodeNameVisible);
+  Project* project = Editor::getInstance()->project();
+  node->setNameTextVisible(project->nodeNameVisible());
+  node->setIdTextVisible(project->nodeIdVisible());
   QPointF addScenePos = event->scenePos() - node->centerOffset();
   Editor::getInstance()->addCommand(new NodeAddCommand(scene, activeSheet, node, addScenePos));
 }

@@ -100,6 +100,7 @@ void AbstractNode::setupIdText() {
   m_idText->setPos(0, -30);
   m_idText->setPen(QPen(Qt::white));
   m_idText->setBrush(QBrush(Qt::white));
+  m_idText->hide();
 }
 
 void AbstractNode::doSetup() {

@@ -23,7 +23,7 @@ void ShowNodeInfoPlugin::doInit() {
 
   m_showNodeIdAction = new QAction("Show Node Id");
   m_showNodeIdAction->setCheckable(true);
-  m_showNodeIdAction->setChecked(true);
+  m_showNodeIdAction->setChecked(false);
   m_menu->addAction(m_showNodeIdAction);
   connect(m_showNodeIdAction, &QAction::triggered, this, &ShowNodeInfoPlugin::onExecuteShowNodeId);
 
