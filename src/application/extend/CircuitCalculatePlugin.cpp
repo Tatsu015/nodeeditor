@@ -348,7 +348,11 @@ void CircuitCalculatePlugin::onRun() {
 }
 
 void CircuitCalculatePlugin::onStartDebug() {
-  QList<AbstractNode*> nodes = Editor::getInstance()->project()->activeSheet()->nodes();
+  Sheet* activeSheet = Editor::getInstance()->project()->activeSheet();
+  if (!activeSheet) {
+    return;
+  }
+  QList<AbstractNode*> nodes = activeSheet->nodes();
   compile(nodes);
   CircuitCalculateExecutor::getInstance()->teardownStack();
   m_DebugControlWidget->setup();
